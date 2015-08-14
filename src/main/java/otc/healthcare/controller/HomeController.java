@@ -1,4 +1,4 @@
-package otc.healthcare.app;
+package otc.healthcare.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
