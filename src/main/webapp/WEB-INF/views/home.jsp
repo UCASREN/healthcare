@@ -1,14 +1,27 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ page session="false"%>
 <html>
 <head>
-	<title>Home</title>
+<title>Home</title>
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
+	<p>
+		Message <b><c:out value="${message}" /></b>
+	</p>
+	<p>
+		<a href="./j_spring_security_logout">Log Out</a>
+	</p>
 
-<P>  The time on the server is ${serverTime}. </P>
+	<sec:authorize access="hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')">
+		<p>Must have ROLE_ADMIN and ROLE_USER</p>
+	</sec:authorize>
+	<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+		<p>Must have ROLE_ADMIN or ROLE_USER</p>
+	</sec:authorize>
+	<sec:authorize access="!hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+		<p>Must not have ROLE_ADMIN or ROLE_USER</p>
+	</sec:authorize>
 </body>
 </html>
