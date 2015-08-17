@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,6 +54,26 @@ public class MetadataController {
 			}
 		}
 		return returnList;
+	}
+	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)
+	@ResponseBody
+	public String databaseOperation(@RequestParam(value="operation",required=true)String operation,
+			@RequestParam(value="id",required=true)String id,@RequestParam(value="parent")String parent,
+			@RequestParam(value="position")String position,@RequestParam(value="text")String text){
+		String operationResult="fail";
+		String operationType=id.contains("alldatabase")?"database":"table";//detect operation type
+		String operationId=id.substring(parent.indexOf("_")+1);
+		switch(operation){
+		case "delete_node":{
+			operationResult=(operationType.equals("database")?this.oracleSerive.deleteDatabase(operationId):this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_")+1), operationId))?"success":"fail";
+			
+		} break;
+		case "create_node":{
+			operationResult=(operationType.equals("database")?this.oracleSerive.deleteDatabase(operationId):this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_")+1), operationId))?"success":"fail";
+			
+		}break;
+		}
+		return null;
 	}
 	public OracleService getOracleSerive() {
 		return oracleSerive;

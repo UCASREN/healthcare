@@ -42,8 +42,9 @@ public class OracleService implements IService {
 				"system", "cuiguangfan");
 		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			ResultSet res = dbUtil.query("select * from \"SYSTEM\".\"table\" where tableid="+"\""+""+"\"");
+			ResultSet res = dbUtil.query("select * from \"SYSTEM\".\"table\" where \"table\".\"databaseid\"="+databaseid);
 			while (res.next()) {
+				
 				TableInfo tim=new TableInfo();
 				tim.setTableid(res.getString(1));
 				tim.setDatabaseid(res.getString(2));
@@ -81,6 +82,47 @@ public class OracleService implements IService {
 			dbUtil.close();
 		}
 		return resultList;
+	}
+	public boolean deleteDatabase(String databaseid){
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
+				"system", "cuiguangfan");
+		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			return dbUtil.execute("delete from \"SYSTEM\".\"database\" where \"database\".\"databaseid\"="+databaseid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
+	public boolean deleteTable(String databaseid,String tableid){
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
+				"system", "cuiguangfan");
+		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			return dbUtil.execute("delete from \"SYSTEM\".\"table\" where \"table\".\"databaseid\"="+databaseid
+					+"\"table\".\"tableid\"="+tableid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
+	public boolean createTable(String databaseid,String tablename,String comment){//insert into database table one row
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
+				"system", "cuiguangfan");
+		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			return dbUtil.execute("insert into \"SYSTEM\".\"table\" (\"tableid\",\"databaseid\",\"name\",\"comments\") values(\"table_tableid\".nextval,"+databaseid
+					+","+tablename+","+comment+");");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
 	}
 	@Override
 	public String getName() {
