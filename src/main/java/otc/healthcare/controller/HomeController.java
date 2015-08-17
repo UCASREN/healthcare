@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import otc.healthcare.util.SpringWiredBean;
+import otc.healthcare.util.hcConfiguration;
+
 
 /**
  * Handles requests for the application home page.
@@ -22,12 +25,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	private hcConfiguration hcConfiguration;
+	private hcConfiguration gethcConfiguration() {
+		if(hcConfiguration==null)
+			hcConfiguration= SpringWiredBean.getInstance().getBeanByClass(hcConfiguration.class);
+		return hcConfiguration;
+	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-
+		
+		String test = this.gethcConfiguration().getProperty(hcConfiguration.DB_URL);
+		System.out.println("njz_test : "+test);
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails) {
 			model.addAttribute("username", ((UserDetails) principal).getUsername());
