@@ -8,6 +8,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/spring/app-security.xml
+			/WEB-INF/spring/root-context.xml
 			<!-- classpath:service-context.xml
 			classpath:persistence-context.xml
 			classpath:dataSource-context.xml -->

@@ -8,11 +8,13 @@
 </head>
 <body>
 	<p>
-		Message <b><c:out value="${message}" /></b>
-	</p>
-	<p>
-		<a href="./j_spring_security_logout">Log Out</a>
-	</p>
+      Hello <b><c:out value="${pageContext.request.remoteUser}"/></b>
+    </p>
+	<c:url var="logoutUrl" value="/logout"/>
+    <form class="form-inline" action="${logoutUrl}" method="post">
+      <input type="submit" value="Log out" />
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
 
 	<sec:authorize access="hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')">
 		<p>Must have ROLE_ADMIN and ROLE_USER</p>

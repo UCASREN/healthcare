@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import otc.healthcare.service.MessageService;
 
 /**
  * Handles requests for the application home page.
@@ -23,12 +22,6 @@ import otc.healthcare.service.MessageService;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	private final MessageService messageService;
-
-	@Autowired
-	public HomeController(MessageService messageService) {
-		this.messageService = messageService;
-	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -41,7 +34,7 @@ public class HomeController {
 		} else {
 			model.addAttribute("username", principal);
 		}
-		model.addAttribute("message", messageService.getMessage());
+		model.addAttribute("message", "helloworld");
 		return "home";
 	}
 	

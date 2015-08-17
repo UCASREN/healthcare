@@ -8,25 +8,23 @@
 
 <body>
 	<h1>Login</h1>
-
-	<c:url var="loginUrl" value="/j_spring_security_check" />
 	<form action="${loginUrl}" method="post">
 		<p>
-			<label for="j_username">User:</label>
+			<label for="username">User:</label>
 		</p>
-		<input type="text" id="j_username" name="j_username" />
+		<input type="text" id="username" name="username" />
 
 		<p>
-			<label for="j_password">Password:</label>
+			<label for="password">Password:</label>
 		</p>
-		<input type="password" id="j_password" name="j_password">
+		<input type="password" id="password" name="password">
 
 		<p>
 			<label for="_spring_security_remember_me">Remember Me</label>
 		</p>
 		<input type="checkbox" id="_spring_security_remember_me"
 			name="_spring_security_remember_me" />
-
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<div>
 			<input name="submit" type="submit" />
 		</div>
