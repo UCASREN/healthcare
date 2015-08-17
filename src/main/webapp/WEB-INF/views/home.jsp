@@ -18,7 +18,7 @@
 
 <!--#set var='compatible' value=''-->
 <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-<link rel="icon" href="icons/home/home.ico" type="image/x-icon" />
+<link rel="icon" href="home/icons/home/home.ico" type="image/x-icon" />
 
 <!-- <script>
 function FileManagerClass(){
@@ -56,22 +56,22 @@ function FileManagerClass(){
 			'http://core.pc.lietou-static.com/revs/js/common/plugins/jquery.tipsui_03bbd011.js',
 			'http://www.pc.lietou-static.com/revs/v1/js/lt.apps_f462ac2c.js');
 </script> -->
-	<link rel="stylesheet" href="style/home/common_6e2f763e.css" />
-	<link rel="stylesheet" href="style/home/public_eb211bd4.css" />
-	<link rel="stylesheet" href="style/home/footer_47d2c33b.css" />
-	<link rel="stylesheet" href="style/home/header_c8045ce8.css" />
+	<link rel="stylesheet" href="home/style/home/common_6e2f763e.css" />
+	<link rel="stylesheet" href="home/style/home/public_eb211bd4.css" />
+	<link rel="stylesheet" href="home/style/home/footer_47d2c33b.css" />
+	<link rel="stylesheet" href="home/style/home/header_c8045ce8.css" />
 	
-	<script src="script/home/jquery-1.7.1.min_c7e0488b.js"></script>
-	<script src="script/home/lt.core_a59af84a.js"></script>
-	<script src="script/home/jquery.artDialog_d121c362.js"></script>
-	<script src="script/home/jquery.loadingui_6a6316c4.js"></script>
-	<script src="script/home/jquery.tipsui_03bbd011.js"></script>
-	<script src="script/home/lt.apps_f462ac2c.js"></script>
-	<script src="script/home/jquery.placeholderui_4ea8db00.js"></script>
-	<script src="script/home/jquery.checkboxui_1589ca87.js"></script>
-	<script src="script/home/jquery.validTip_3908ed67.js"></script>
-	<script src="script/home/jquery.valid_cbce39ff.js"></script>
-	<script src="script/home/quick_menu_3bf9fc99.js"></script>
+	<script src="home/script/home/jquery-1.7.1.min_c7e0488b.js"></script>
+	<script src="home/script/home/lt.core_a59af84a.js"></script>
+	<script src="home/script/home/jquery.artDialog_d121c362.js"></script>
+	<script src="home/script/home/jquery.loadingui_6a6316c4.js"></script>
+	<script src="home/script/home/jquery.tipsui_03bbd011.js"></script>
+	<script src="home/script/home/lt.apps_f462ac2c.js"></script>
+	<script src="home/script/home/jquery.placeholderui_4ea8db00.js"></script>
+	<script src="home/script/home/jquery.checkboxui_1589ca87.js"></script>
+	<script src="home/script/home/jquery.validTip_3908ed67.js"></script>
+	<script src="home/script/home/jquery.valid_cbce39ff.js"></script>
+	<script src="home/script/home/quick_menu_3bf9fc99.js"></script>
 	
 	
 <script type="text/javascript">
@@ -117,7 +117,7 @@ function FileManagerClass(){
  <script type="text/javascript">FileManager.get('http://core.pc.lietou-static.com/revs/js/common/header_126a5e4a.js');</script> 
  -->
  
-	<script src="script/home/header_38df507b.js"></script>
+	<script src="home/script/home/header_38df507b.js"></script>
 	<script>HeaderHelper.navbar("home")</script>
 	
 <div class="slider"> 
@@ -319,10 +319,11 @@ function FileManagerClass(){
   FileManager.get('http://www.pc.lietou-static.com/revs/v1/js/home_278079d0.js');
 </script> --> 
 
-<script type="text/javascript" src="script/home/home_278079d0.js"></script>
+<script type="text/javascript" src="home/script/home/home_278079d0.js"></script>
 <!-- <script type="text/javascript">window.FileManager&&FileManager.get('http://core.pc.lietou-static.com/revs/js/common/stat_f37a07ef.js');</script>
  -->
 
 
 </body>
+
 </html>
