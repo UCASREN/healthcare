@@ -97,7 +97,7 @@ function FileManagerClass(){
   <div class="header">
     <div class="wrap">
       <div class="logo">
-        <a href="http://www.liepin.com/"><img alt="猎聘网logo" class="pngfix" src="images/home/logo_7012c4a4.png" width="110" height="40" /><em><i class="icons16 icons16-home-white" title="首页"></i></em></a>
+        <a href="http://www.liepin.com/"><img alt="猎聘网logo" class="pngfix" src="home/images/home/logo_7012c4a4.png" width="110" height="40" /><em><i class="icons16 icons16-home-white" title="首页"></i></em></a>
       </div>
       <nav>
         <ul>
@@ -123,11 +123,11 @@ function FileManagerClass(){
 <div class="slider"> 
   <div class="slider-list">
   	  
-  	<div style="background:url(images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #4d3722;">
+  	<div style="background:url(home/images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #4d3722;">
     	<a href="http://company.liepin.com/1663745#sfrom=click-pc_homepage-front_admap-new_32_0"  target="_blank"></a>
     </div>
     
-  	<div style="background:url(images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #0e5164;">
+  	<div style="background:url(home/images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #0e5164;">
     	<a href="http://event.liepin.com/t/1438679695603/#sfrom=click-pc_homepage-front_admap-new_33_1"  target="_blank"></a>
     </div>
     
