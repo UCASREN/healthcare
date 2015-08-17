@@ -20,10 +20,10 @@
 		<input type="password" id="password" name="password">
 
 		<p>
-			<label for="_spring_security_remember_me">Remember Me</label>
+			<label for="remember-me">Remember Me(Implemented,but not security enough)</label>
 		</p>
-		<input type="checkbox" id="_spring_security_remember_me"
-			name="_spring_security_remember_me" />
+		<input type="checkbox" id="remember-me"
+			name="remember-me" />
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<div>
 			<input name="submit" type="submit" />
