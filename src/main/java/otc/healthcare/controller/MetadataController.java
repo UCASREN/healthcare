@@ -60,20 +60,23 @@ public class MetadataController {
 	public String databaseOperation(@RequestParam(value="operation",required=true)String operation,
 			@RequestParam(value="id",required=true)String id,@RequestParam(value="parent")String parent,
 			@RequestParam(value="position")String position,@RequestParam(value="text")String text){
-		String operationResult="fail";
+		String operationResult="";
 		String operationType=id.contains("alldatabase")?"database":"table";//detect operation type
 		String operationId=id.substring(parent.indexOf("_")+1);
 		switch(operation){
 		case "delete_node":{
 			operationResult=(operationType.equals("database")?this.oracleSerive.deleteDatabase(operationId):this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_")+1), operationId))?"success":"fail";
-			
 		} break;
 		case "create_node":{
-			operationResult=(operationType.equals("database")?this.oracleSerive.deleteDatabase(operationId):this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_")+1), operationId))?"success":"fail";
-			
+			operationResult="alltable_"+this.oracleSerive.createTable(parent.substring(parent.indexOf("_")+1), text, "备注为空");
 		}break;
+		case "rename_node":{
+			operationResult=(operationType.equals("database")?this.oracleSerive.changeDatabase(operationId, text, null):this.oracleSerive.changeTable(parent.substring(parent.indexOf("_")+1), operationId, text, null))?"success":"fail";
+		} break;
+		default:
+			operationResult="sucess";
 		}
-		return null;
+		return operationResult;
 	}
 	public OracleService getOracleSerive() {
 		return oracleSerive;

@@ -15,7 +15,7 @@ public class DBUtil {
 	private int count = 0;
 
 	public DBUtil(Connection conn) {
-		this.conn = conn;
+		this.setConn(conn);
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class DBUtil {
 	@SuppressWarnings("finally")
 	public ResultSet query(String sql) {
 		try {
-			pstmt = conn.prepareStatement(sql);
+			pstmt = getConn().prepareStatement(sql);
 			/** 查询 */
 			resultSet = pstmt.executeQuery();
 		} catch (SQLException e) {
@@ -46,7 +46,7 @@ public class DBUtil {
 	 */
 	public int update(String sql) {
 		try {
-			pstmt = conn.prepareStatement(sql);
+			pstmt = getConn().prepareStatement(sql);
 			count = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -67,7 +67,7 @@ public class DBUtil {
 				pstmt.close();
 			}
 
-			conn.close();
+			getConn().close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,7 +75,7 @@ public class DBUtil {
 
 	public boolean execute(String sql) {
 		try {
-			Statement stmt = conn.createStatement();
+			Statement stmt = getConn().createStatement();
 			stmt.execute(sql);
 			return true;
 		} catch (SQLException e) {
@@ -99,6 +99,14 @@ public class DBUtil {
 			this.close();
 		}
 		return results;
+	}
+
+	public Connection getConn() {
+		return conn;
+	}
+
+	public void setConn(Connection conn) {
+		this.conn = conn;
 	}
 
 }

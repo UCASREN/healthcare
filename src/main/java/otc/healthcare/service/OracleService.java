@@ -7,10 +7,13 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import otc.healthcare.dao.ConnectionFactory;
+import otc.healthcare.dao.OracleDBUtil;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.TableInfo;
-import otc.healthcare.util.DBUtil;
+/**
+ * @author xingkong
+ */
 @Component
 public class OracleService implements IService {
 
@@ -19,7 +22,7 @@ public class OracleService implements IService {
 		List<DatabaseInfo> resultList=new ArrayList<DatabaseInfo>();
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
 				"system", "cuiguangfan");
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from \"SYSTEM\".\"database\"");
 			while (res.next()) {
@@ -40,7 +43,7 @@ public class OracleService implements IService {
 		List<TableInfo> resultList=new ArrayList<TableInfo>();
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
 				"system", "cuiguangfan");
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from \"SYSTEM\".\"table\" where \"table\".\"databaseid\"="+databaseid);
 			while (res.next()) {
@@ -63,7 +66,7 @@ public class OracleService implements IService {
 		List<FieldInfo> resultList=new ArrayList<FieldInfo>();
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
 				"system", "cuiguangfan");
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from \"SYSTEM\".\"field\"");
 			while (res.next()) {
@@ -86,7 +89,7 @@ public class OracleService implements IService {
 	public boolean deleteDatabase(String databaseid){
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
 				"system", "cuiguangfan");
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			return dbUtil.execute("delete from \"SYSTEM\".\"database\" where \"database\".\"databaseid\"="+databaseid);
 		} catch (Exception e) {
@@ -99,7 +102,7 @@ public class OracleService implements IService {
 	public boolean deleteTable(String databaseid,String tableid){
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
 				"system", "cuiguangfan");
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			return dbUtil.execute("delete from \"SYSTEM\".\"table\" where \"table\".\"databaseid\"="+databaseid
 					+"\"table\".\"tableid\"="+tableid);
@@ -110,13 +113,53 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
-	public boolean createTable(String databaseid,String tablename,String comment){//insert into database table one row
+	public Integer createTable(String databaseid,String tablename,String comment){//insert into database table one row
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
 				"system", "cuiguangfan");
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			return dbUtil.execute("insert into \"SYSTEM\".\"table\" (\"tableid\",\"databaseid\",\"name\",\"comments\") values(\"table_tableid\".nextval,"+databaseid
-					+","+tablename+","+comment+");");
+			return dbUtil.insertDataReturnKeyByReturnInto("insert into \"SYSTEM\".\"table\" (\"tableid\",\"databaseid\",\"name\",\"comments\") values(\"table_tableid\".nextval,"+databaseid
+					+","+tablename+","+comment+") returning tableid into :1");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return null;
+	}
+	public boolean changeDatabase(String databaseid,String newName,String newComments){
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
+				"system", "cuiguangfan");
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		String sql="";
+		try {
+		if(newName!=null)
+			sql="update \"SYSTEM\".\"database\" set \"database\".\"name\"="+newName+"  where \"database\".\"databaseid\"="+databaseid;
+			dbUtil.execute(sql);
+		if(newComments!=null)
+			sql="update \"SYSTEM\".\"database\" set \"database\".\"comments\"="+newComments+"  where \"database\".\"databaseid\"="+databaseid;
+			dbUtil.execute(sql);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
+	public boolean changeTable(String databaseid,String tableid,String newName,String newComments){
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
+				"system", "cuiguangfan");
+		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		String sql="";
+		try {
+		if(newName!=null)
+			sql="update \"SYSTEM\".\"table\" set \"table\".\"name\"="+newName+"  where \"table\".\"databaseid\"="+databaseid+" and \"table\".\"tableid\"="+tableid;
+			dbUtil.execute(sql);
+		if(newComments!=null)
+			sql="update \"SYSTEM\".\"table\" set \"table\".\"comments\"="+newComments+"  where \"table\".\"databaseid\"="+databaseid+" and \"table\".\"tableid\"="+tableid;
+			dbUtil.execute(sql);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
