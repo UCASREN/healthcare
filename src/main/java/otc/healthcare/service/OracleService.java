@@ -1,6 +1,8 @@
 package otc.healthcare.service;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +106,7 @@ public class OracleService implements IService {
 				"system", "cuiguangfan");
 		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			return dbUtil.execute("delete from \"SYSTEM\".\"table\" where \"table\".\"databaseid\"="+databaseid
+			return dbUtil.execute("delete from \"SYSTEM\".\"table\" where \"table\".\"databaseid\"="+databaseid+" and "
 					+"\"table\".\"tableid\"="+tableid);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,8 +120,9 @@ public class OracleService implements IService {
 				"system", "cuiguangfan");
 		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			return dbUtil.insertDataReturnKeyByReturnInto("insert into \"SYSTEM\".\"table\" (\"tableid\",\"databaseid\",\"name\",\"comments\") values(\"table_tableid\".nextval,"+databaseid
-					+","+tablename+","+comment+") returning tableid into :1");
+			String vsql="insert into \"SYSTEM\".\"table\" (\"tableid\",\"databaseid\",\"name\",\"comments\") values(\"table_tableid\".nextval,"+databaseid
+					+",'"+tablename+"','"+comment+"')";
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -133,13 +136,15 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		String sql="";
 		try {
-		if(newName!=null)
-			sql="update \"SYSTEM\".\"database\" set \"database\".\"name\"="+newName+"  where \"database\".\"databaseid\"="+databaseid;
+		if(newName!=null){
+			sql="update \"SYSTEM\".\"database\" set \"database\".\"name\"='"+newName+"'  where \"database\".\"databaseid\"="+databaseid;
 			dbUtil.execute(sql);
-		if(newComments!=null)
-			sql="update \"SYSTEM\".\"database\" set \"database\".\"comments\"="+newComments+"  where \"database\".\"databaseid\"="+databaseid;
+		}
+		if(newComments!=null){
+			sql="update \"SYSTEM\".\"database\" set \"database\".\"comments\"='"+newComments+"'  where \"database\".\"databaseid\"="+databaseid;
 			dbUtil.execute(sql);
-			return true;
+		}
+		return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -153,12 +158,14 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil=new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		String sql="";
 		try {
-		if(newName!=null)
-			sql="update \"SYSTEM\".\"table\" set \"table\".\"name\"="+newName+"  where \"table\".\"databaseid\"="+databaseid+" and \"table\".\"tableid\"="+tableid;
+		if(newName!=null){
+			sql="update \"SYSTEM\".\"table\" set \"table\".\"name\"='"+newName+"'  where \"table\".\"databaseid\"="+databaseid+" and \"table\".\"tableid\"="+tableid;
 			dbUtil.execute(sql);
-		if(newComments!=null)
-			sql="update \"SYSTEM\".\"table\" set \"table\".\"comments\"="+newComments+"  where \"table\".\"databaseid\"="+databaseid+" and \"table\".\"tableid\"="+tableid;
+		}
+		if(newComments!=null){
+			sql="update \"SYSTEM\".\"table\" set \"table\".\"comments\"='"+newComments+"'  where \"table\".\"databaseid\"="+databaseid+" and \"table\".\"tableid\"="+tableid;
 			dbUtil.execute(sql);
+		}
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -58,11 +58,11 @@ public class MetadataController {
 	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)
 	@ResponseBody
 	public String databaseOperation(@RequestParam(value="operation",required=true)String operation,
-			@RequestParam(value="id",required=true)String id,@RequestParam(value="parent")String parent,
-			@RequestParam(value="position")String position,@RequestParam(value="text")String text){
+			@RequestParam(value="id",required=false)String id,@RequestParam(value="parent",required=false)String parent,
+			@RequestParam(value="position",required=false)String position,@RequestParam(value="text",required=false)String text){
 		String operationResult="";
-		String operationType=id.contains("alldatabase")?"database":"table";//detect operation type
-		String operationId=id.substring(parent.indexOf("_")+1);
+		String operationType=id!=null?(id.contains("alldatabase")?"database":"table"):"";//detect operation type
+		String operationId=id!=null?(id.substring(id.indexOf("_")+1)):"";
 		switch(operation){
 		case "delete_node":{
 			operationResult=(operationType.equals("database")?this.oracleSerive.deleteDatabase(operationId):this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_")+1), operationId))?"success":"fail";

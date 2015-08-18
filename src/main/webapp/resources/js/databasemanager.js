@@ -30,7 +30,7 @@ var TableEditable = function () {
             "state" : { "key" : "demo3" },
             "plugins" : [ "contextmenu","unique","dnd", "types" ]
         }).on('delete_node.jstree', function (e, data) {
-			$.get('nodeoperation?operation=delete_node', { 'id' : data.node.id })
+			$.get('dataresource/nodeoperation?operation=delete_node', { 'id' : data.node.id ,'parent' : data.node.parent})
 			.done(function(d){
 				alert(d);
 			})
@@ -39,7 +39,7 @@ var TableEditable = function () {
 			});
 	})
 	.on('create_node.jstree', function (e, data) {
-		$.get('nodeoperation?operation=create_node', { 'parent' : data.node.parent, 'position' : data.position, 'text' : data.node.text })
+		$.get('dataresource/nodeoperation?operation=create_node', { 'parent' : data.node.parent, 'position' : data.position, 'text' : data.node.text })
 			.done(function (d) {
 				data.instance.set_id(data.node, d);
 			})
@@ -48,7 +48,7 @@ var TableEditable = function () {
 			});
 	})
 	.on('rename_node.jstree', function (e, data) {
-		$.get('nodeoperation?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
+		$.get('dataresource/nodeoperation?operation=rename_node', { 'id' : data.node.id,'parent' : data.node.parent, 'text' : data.text })
 			.fail(function () {
 				data.instance.refresh();
 			});
