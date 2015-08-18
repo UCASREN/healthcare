@@ -10,7 +10,24 @@ public class FieldInfo {
 	private String tableid;
 	private String name;
 	private String datatype;
+	private String datalength;
+	private String nullable;
 	private String comments;
+
+	@XmlElement(name = "datalength")
+	public String getDatalength() {
+		return datalength;
+	}
+	public void setDatalength(String datalength) {
+		this.datalength = datalength;
+	}
+	@XmlElement(name = "nullable")
+	public String getNullable() {
+		return nullable;
+	}
+	public void setNullable(String nullable) {
+		this.nullable = nullable;
+	}
 	@XmlElement(name = "fieldid")
 	public String getFieldid() {
 		return fieldid;

@@ -1,5 +1,6 @@
 package otc.healthcare.util;
 
+import java.nio.channels.DatagramChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,11 +80,22 @@ public class DBUtil {
 			stmt.execute(sql);
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-
+	}
+	
+	public boolean execute(String sql,List<String> data) {
+		try {
+			pstmt = conn.prepareStatement(sql);
+			for(int i=0; i<data.size(); i++){
+				pstmt.setString(i+1, data.get(i));
+			}
+			return  pstmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public List<String> showListResults(String sql) {
