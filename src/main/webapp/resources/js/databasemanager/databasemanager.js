@@ -39,6 +39,7 @@ var TableEditable = function () {
 			});
 	})
 	.on('create_node.jstree', function (e, data) {
+		if(data.node.parent.indexOf("alldatabase")!=-1){
 		$.get('dataresource/nodeoperation?operation=create_node', { 'parent' : data.node.parent, 'position' : data.position, 'text' : data.node.text })
 			.done(function (d) {
 				data.instance.set_id(data.node, d);
@@ -46,6 +47,10 @@ var TableEditable = function () {
 			.fail(function () {
 				data.instance.refresh();
 			});
+		}else{
+			alert("Can't create node under table node");
+			data.instance.refresh();
+		}
 	})
 	.on('rename_node.jstree', function (e, data) {
 		$.get('dataresource/nodeoperation?operation=rename_node', { 'id' : data.node.id,'parent' : data.node.parent, 'text' : data.text })
@@ -60,7 +65,8 @@ var TableEditable = function () {
 				data.instance.refresh();
 			});
 		*/
-		alert("not supported");
+		alert("Move operation not supported");
+		data.instance.refresh();
 	})
 	.on('copy_node.jstree', function (e, data) {
 		/*
@@ -69,7 +75,8 @@ var TableEditable = function () {
 				data.instance.refresh();
 			});
 		*/
-		alert("not supported");
+		alert("Copy operation not supported");
+		data.instance.refresh();
 	})
 	.on('changed.jstree', function (e, data) {
 		/*
@@ -87,6 +94,10 @@ var TableEditable = function () {
 //		 {
 //			location.reload(true);
 //		 }
+	}).on('select_node.jstree', function (e, data) {
+		if(data.node.id.indexOf("alldatabase")!=-1){
+			
+		}
 	});
 
         

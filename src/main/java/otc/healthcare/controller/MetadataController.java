@@ -78,6 +78,26 @@ public class MetadataController {
 		}
 		return operationResult;
 	}
+	@RequestMapping(value = "/getalldatabaseinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public List<DatabaseInfo> getAllDatabaseInfo(){
+		System.out.println("get_all_database_info_list");
+		List<DatabaseInfo> list=this.oracleSerive.getALLDatabaseInfo();
+		for(int i=0;i<list.size();i++){
+			System.out.println(list.get(i).getDatabaseid()+"::"+list.get(i).getName()+"::"+list.get(i).getComments());
+		}
+		return list;
+	}
+	@RequestMapping(value = "/getdatabaseinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public List<TableInfo> getDatabaseInfo(@RequestParam(value="databaseid",required=true)String databaseid){
+		System.out.println("get_database_info_list");
+		List<TableInfo> list=this.oracleSerive.getDatabaseInfo(databaseid);
+		for(int i=0;i<list.size();i++){
+			System.out.println(list.get(i).getTableid()+"::"+list.get(i).getDatabaseid()+"::"+list.get(i).getName()+"::"+list.get(i).getComments());
+		}
+		return list;
+	}
 	public OracleService getOracleSerive() {
 		return oracleSerive;
 	}
