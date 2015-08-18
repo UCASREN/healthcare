@@ -22,7 +22,9 @@ import otc.healthcare.service.OracleService;
 @RequestMapping("/dataresource")
 public class MetadataController {
 	
+	@Autowired
 	private OracleService oracleSerive;
+	
 	@RequestMapping(value = "/getdatabasetreeinfo", method = RequestMethod.GET)
 	@ResponseBody
 	public List<TreeJson> getDatabaseTreeInfo(@RequestParam(value="parent",required=true)String parent){
@@ -54,10 +56,17 @@ public class MetadataController {
 		}
 		return returnList;
 	}
+	
+	@RequestMapping(value = "/createhcDB")
+	public boolean createHealthCareDB(){
+		return this.oracleSerive.createHcDB();
+	}
+	
+	
 	public OracleService getOracleSerive() {
 		return oracleSerive;
 	}
-	@Autowired
+	
 	public void setOracleSerive(OracleService oracleSerive) {
 		this.oracleSerive = oracleSerive;
 	}

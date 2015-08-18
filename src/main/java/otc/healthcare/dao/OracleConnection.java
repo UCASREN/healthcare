@@ -33,4 +33,5 @@ public class OracleConnection extends ConnectionBase implements IConnection {
 			System.out.println(s);
 		}
 	}
+	
 }

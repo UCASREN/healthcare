@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.springframework.stereotype.Component;
 
 @Component
-public class hcConfiguration {
+public class HealthcareConfiguration {
 	private static final String PROERTIES_FILE_NAME = "healthcare.properties";
 
 	public static final String DB_URL = "db_url";
@@ -16,11 +16,11 @@ public class hcConfiguration {
 	
 	private Properties properties;
 
-	public hcConfiguration() {
-		ClassLoader loader = hcConfiguration.class.getClassLoader();
+	public HealthcareConfiguration() {
+		ClassLoader loader = HealthcareConfiguration.class.getClassLoader();
 		URL url;
 		try {
-			url = loader.getResource(hcConfiguration.PROERTIES_FILE_NAME);
+			url = loader.getResource(HealthcareConfiguration.PROERTIES_FILE_NAME);
 			this.properties = new Properties();
 			FileInputStream inputFile = new FileInputStream(
 					java.net.URLDecoder.decode(url.getFile(), "utf-8"));

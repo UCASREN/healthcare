@@ -1,140 +1,66 @@
-package otc.healthcare.service;
+package otc.healthcare.util;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import javax.naming.InitialContext;
 
 import otc.healthcare.dao.ConnectionFactory;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.util.DBUtil;
-import otc.healthcare.util.SpringWiredBean;
 import otc.healthcare.util.HealthcareConfiguration;
+import otc.healthcare.util.SpringWiredBean;
 
-@Component
-public class OracleService implements IService {
 
-	private HealthcareConfiguration hcConfiguration;
-	private HealthcareConfiguration getHealthcareConfiguration() {
+public class dbConnect {
+	
+	private  HealthcareConfiguration hcConfiguration;
+	private  HealthcareConfiguration getHealthcareConfiguration() {
 		if(hcConfiguration==null)
 			hcConfiguration = SpringWiredBean.getInstance().getBeanByClass(HealthcareConfiguration.class);
 		return hcConfiguration;
 	}
 	
-	
-	public List<DatabaseInfo> getALLDatabaseInfo() {
+	public static void main(String[] args){
+		
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
-		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		
+//		String oracle_url = getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+//		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+//		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		
+		String oracle_username = "SYSTEM";  
+	    String oracle_password = "123456"; 
+	    String oracle_url = "jdbc:oracle:thin:@localhost:1521:XE";
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url,oracle_username, oracle_password);
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
-		try {
-			ResultSet res = dbUtil.query("select * from SYSTEM.HC_DATABASE");
-			while (res.next()) {
-				DatabaseInfo dim=new DatabaseInfo();
-				dim.setDatabaseid(res.getString(1));
-				dim.setName(res.getString(2));
-				dim.setComments(res.getString(3));
-				resultList.add(dim);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			dbUtil.close();
-		}
-		return resultList;
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		
+		//GET
+		List<String> dbList = getDataBaseList(dbUtil);//得到用户（数据库）
+		Map<String,List<TableInfo>> tableMap = getTableMap(dbUtil,dbList);
+		Map<String,List<FieldInfo>> fieldMap = getFieldMap(dbUtil,tableMap);
+		
+		//DELETE
+		InitOracle(dbUtil);
+		
+		//INSERT
+		insertDB(dbUtil,dbList);
+		insertTable(dbUtil,tableMap);
+		insertField(dbUtil,fieldMap);
+		
+		dbUtil.close();
+		System.out.println("All Done!");
 	}
-	
-	public List<TableInfo> getDatabaseInfo(String databaseid){
-		List<TableInfo> resultList=new ArrayList<TableInfo>();
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
-		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url,oracle_username, oracle_password);
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
-		try {
-			ResultSet res = dbUtil.query("select * from SYSTEM.HC_TABLE where TABLEID="+"'"+databaseid+"'");
-			while (res.next()) {
-				TableInfo tim=new TableInfo();
-				tim.setTableid(res.getString(1));
-				tim.setDatabaseid(res.getString(2));
-				tim.setName(res.getString(3));
-				tim.setComments(res.getString(4));
-				resultList.add(tim);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			dbUtil.close();
-		}
-		return resultList;
-	}
-	
-	public boolean createHcDB(){
-		List<TableInfo> resultList=new ArrayList<TableInfo>();
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
-		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url,oracle_username, oracle_password);
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
-		try {
-			
-			//GET
-			List<String> dbList = getDataBaseList(dbUtil);//得到用户（数据库）
-			Map<String,List<TableInfo>> tableMap = getTableMap(dbUtil,dbList);
-			Map<String,List<FieldInfo>> fieldMap = getFieldMap(dbUtil,tableMap);
-			
-			//DELETE
-			InitOracle(dbUtil);
-			
-			//INSERT
-			insertDB(dbUtil,dbList);
-			insertTable(dbUtil,tableMap);
-			insertField(dbUtil,fieldMap);
-			
-			System.out.println("create healthCare DataBase Done!");
-			return true;
-		} catch (Exception e) {
-			System.out.println("create healthCare DataBase Error!");
-			e.printStackTrace();
-			return false;
-		} finally {
-			dbUtil.close();
-		}
-	}
-	
-	public List<FieldInfo> getTableInfo(String tableid){
-		List<FieldInfo> resultList=new ArrayList<FieldInfo>();
-		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
-				"system", "cuiguangfan");
-		DBUtil dbUtil=new DBUtil(connectionFactory.getInstance().getConnection());
-		try {
-			ResultSet res = dbUtil.query("select * from \"SYSTEM\".\"field\"");
-			while (res.next()) {
-				FieldInfo fim=new FieldInfo();
-				fim.setFieldid(res.getString(1));
-				fim.setDatabaseid(res.getString(2));
-				fim.setTableid(res.getString(3));
-				fim.setName(res.getString(4));
-				fim.setDatatype(res.getString(5));
-				fim.setComments(res.getString(6));
-				resultList.add(fim);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			dbUtil.close();
-		}
-		return resultList;
-	}
-	
 
 	//信息初始化
 	private static void InitOracle(DBUtil dbUtil) {
@@ -303,23 +229,4 @@ public class OracleService implements IService {
 		return DBid;
 	}
 
-	
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int checkStatus() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-}
+}//end class
