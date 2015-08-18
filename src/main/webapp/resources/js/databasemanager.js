@@ -12,7 +12,7 @@ var TableEditable = function () {
                 "check_callback" : true,
                 'data' : {
                     'url' : function (node) {
-                      return '../../dataResource/getDatabaseTreeInfo';
+                      return 'dataresource/getdatabasetreeinfo';
                     },
                     'data' : function (node) {
                       return { 'parent' : node.id };
@@ -29,8 +29,67 @@ var TableEditable = function () {
             },
             "state" : { "key" : "demo3" },
             "plugins" : [ "contextmenu","unique","dnd", "types" ]
-        });
-    
+        }).on('delete_node.jstree', function (e, data) {
+			$.get('dataresource/nodeoperation?operation=delete_node', { 'id' : data.node.id ,'parent' : data.node.parent})
+			.done(function(d){
+				alert(d);
+			})
+			.fail(function () {
+				data.instance.refresh();
+			});
+	})
+	.on('create_node.jstree', function (e, data) {
+		$.get('dataresource/nodeoperation?operation=create_node', { 'parent' : data.node.parent, 'position' : data.position, 'text' : data.node.text })
+			.done(function (d) {
+				data.instance.set_id(data.node, d);
+			})
+			.fail(function () {
+				data.instance.refresh();
+			});
+	})
+	.on('rename_node.jstree', function (e, data) {
+		$.get('dataresource/nodeoperation?operation=rename_node', { 'id' : data.node.id,'parent' : data.node.parent, 'text' : data.text })
+			.fail(function () {
+				data.instance.refresh();
+			});
+	})
+	.on('move_node.jstree', function (e, data) {
+		/*
+		$.get('?operation=move_node', { 'id' : data.node.id, 'parent' : data.parent, 'position' : data.position })
+			.fail(function () {
+				data.instance.refresh();
+			});
+		*/
+		alert("not supported");
+	})
+	.on('copy_node.jstree', function (e, data) {
+		/*
+		$.get('?operation=copy_node', { 'id' : data.original.id, 'parent' : data.parent, 'position' : data.position })
+			.always(function () {
+				data.instance.refresh();
+			});
+		*/
+		alert("not supported");
+	})
+	.on('changed.jstree', function (e, data) {
+		/*
+		if(data && data.selected && data.selected.length) {
+			$.get('?operation=get_content&id=' + data.selected.join(':'), function (d) {
+				$('#data .default').html(d.content).show();
+			});
+		}
+		else {
+			$('#data .content').hide();
+			$('#data .default').html('Select a file from the tree.').show();
+		}
+		*/
+//		if(confirm("reload this page"))
+//		 {
+//			location.reload(true);
+//		 }
+	});
+
+        
     }
     var handleTable = function () {
     	
