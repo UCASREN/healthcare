@@ -263,10 +263,10 @@
 
 	<!-- END PAGE LEVEL PLUGINS -->
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
-	<script src="resources/js/databasemanager_metronic.js"
+	<script src="resources/js/databasemanager/databasemanager_metronic.js"
 		type="text/javascript"></script>
 	<script src="resources/js/components-pickers.js" type="text/javascript"></script>
-	<script src="resources/js/databasemanager.js" type="text/javascript"></script>
+	<script src="resources/js/databasemanager/databasemanager.js" type="text/javascript"></script>
 	<script>
 		jQuery(document).ready(function() {
 			Metronic.init();

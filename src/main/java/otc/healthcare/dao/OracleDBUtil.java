@@ -23,7 +23,7 @@ public class OracleDBUtil extends DBUtil{
 	    pstmt.executeUpdate();  
 	    pstmt.close();  
 	    //then select it out
-	    vsql="select \"table_tableid\".currval as id from \"SYSTEM\".\"table\"";  
+	    vsql="select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE";  
 	    pstmt =(PreparedStatement)getConn().prepareStatement(vsql);  
 	    ResultSet rs=pstmt.executeQuery();  
 	    rs.next();  

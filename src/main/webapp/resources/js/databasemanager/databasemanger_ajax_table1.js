@@ -138,7 +138,7 @@ var TableEditable1 = function() {
 					editRow(oTable, nRow);
 				});
 		$(function() {
-			var url = "../../dataResource/getalldatabaseinfo";
+			var url = "dataresource/getdatabaseinfo";
 			$.getJSON(url, function(data) {
 				$.each(data, function(i, database) {
 					if (database.databaseid > maxId)
@@ -217,7 +217,6 @@ var TableEditable1 = function() {
 		// main function to initiate the module
 		init : function() {
 			handleTable();
-			AjaxTree();
 		}
 
 	};

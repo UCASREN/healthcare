@@ -217,7 +217,6 @@ var TableEditable2 = function() {
 		// main function to initiate the module
 		init : function() {
 			handleTable();
-			AjaxTree();
 		}
 
 	};
