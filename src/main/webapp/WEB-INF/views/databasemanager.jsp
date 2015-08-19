@@ -94,116 +94,136 @@
 				<div class="col-md-10">
 					<div class="row">
 						<div class="col-md-6">
-							<div class="table-toolbar">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="table-toolbar">
 
-								<div class="row">
-									<div class="col-md-6">
-										<div class="btn-group">
-											<button id="editable_1_new" class="btn green">
-												添加 <i class="fa fa-plus"></i>
-											</button>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="btn-group">
+													<button id="editable_1_new" class="btn green">
+														添加 <i class="fa fa-plus"></i>
+													</button>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="btn-group pull-right">
+													<button class="btn dropdown-toggle" data-toggle="dropdown">
+														工具<i class="fa fa-angle-down"></i>
+													</button>
+													<ul class="dropdown-menu pull-right">
+														<li><a href="javascript:;"> 打印</a></li>
+														<li><a href="javascript:;"> 保存为PDF </a></li>
+														<li><a href="javascript:;"> 导出Excel </a></li>
+													</ul>
+												</div>
+											</div>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="btn-group pull-right">
-											<button class="btn dropdown-toggle" data-toggle="dropdown">
-												工具<i class="fa fa-angle-down"></i>
-											</button>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="javascript:;"> 打印</a></li>
-												<li><a href="javascript:;"> 保存为PDF </a></li>
-												<li><a href="javascript:;"> 导出Excel </a></li>
-											</ul>
-										</div>
-									</div>
+
+									<table class="table table-striped table-hover table-bordered"
+										id="editable_1">
+										<thead>
+											<tr>
+												<th>编号</th>
+												<th>表名</th>
+												<th>备注</th>
+												<th>操作</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+
+										</tbody>
+									</table>
 								</div>
 							</div>
-
-							<table class="table table-striped table-hover table-bordered"
-								id="editable_1">
-								<thead>
-									<tr>
-										<th>编号</th>
-										<th>数据库名</th>
-										<th>备注</th>
-										<th>操作</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-
-								</tbody>
-							</table>
+							<div class="row">
+								<div class="col-md-12">
+									<p class="text-center" id="whichdatabase"></p>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="table-toolbar">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="table-toolbar">
 
-								<div class="row">
-									<div class="col-md-6">
-										<div class="btn-group">
-											<button id="editable_2_new" class="btn green">
-												添加 <i class="fa fa-plus"></i>
-											</button>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="btn-group">
+													<button id="editable_2_new" class="btn green">
+														添加 <i class="fa fa-plus"></i>
+													</button>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="btn-group pull-right">
+													<button class="btn dropdown-toggle" data-toggle="dropdown">
+														工具<i class="fa fa-angle-down"></i>
+													</button>
+													<ul class="dropdown-menu pull-right">
+														<li><a href="javascript:;"> 打印</a></li>
+														<li><a href="javascript:;"> 保存为PDF </a></li>
+														<li><a href="javascript:;"> 导出Excel </a></li>
+													</ul>
+												</div>
+											</div>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="btn-group pull-right">
-											<button class="btn dropdown-toggle" data-toggle="dropdown">
-												工具<i class="fa fa-angle-down"></i>
-											</button>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="javascript:;"> 打印</a></li>
-												<li><a href="javascript:;"> 保存为PDF </a></li>
-												<li><a href="javascript:;"> 导出Excel </a></li>
-											</ul>
-										</div>
-									</div>
+
+									<table class="table table-striped table-hover table-bordered"
+										id="editable_2">
+										<thead>
+											<tr>
+												<th>编号</th>
+												<th>列名</th>
+												<th>备注</th>
+												<th>操作</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+
+										</tbody>
+									</table>
 								</div>
 							</div>
-
-							<table class="table table-striped table-hover table-bordered"
-								id="editable_2">
-								<thead>
-									<tr>
-										<th>编号</th>
-										<th>数据库名</th>
-										<th>备注</th>
-										<th>操作</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-
-								</tbody>
-							</table>
+							<div class="row">
+								<div class="col-md-12">
+									<p class="text-center" id="whichtable"></p>
+								</div>
+							</div>
 						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- BEGIN Portlet PORTLET-->
+							<div class="portlet gren">
+								<div class="portlet-title">
+									<div class="caption">
+										<i class="fa fa-gift"></i>概要信息
+									</div>
+									<div class="tools">
+										<a href="javascript:;" class="collapse"> </a> <a
+											href="#portlet-config" data-toggle="modal" class="config">
+										</a> <a href="javascript:;" class="reload"> </a> <a href=""
+											class="fullscreen"> </a> <a href="javascript:;"
+											class="remove"> </a>
+									</div>
+								</div>
+								<div class="portlet-body">
+									<div class="scroller" style="height: 200px"></div>
+								</div>
+							</div>
+							<!-- END Portlet PORTLET-->
+
+						</div>
+
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<!-- BEGIN Portlet PORTLET-->
-					<div class="portlet gren">
-						<div class="portlet-title">
-							<div class="caption">
-								<i class="fa fa-gift"></i>概要信息
-							</div>
-							<div class="tools">
-								<a href="javascript:;" class="collapse"> </a> <a
-									href="#portlet-config" data-toggle="modal" class="config">
-								</a> <a href="javascript:;" class="reload"> </a> <a href=""
-									class="fullscreen"> </a> <a href="javascript:;" class="remove">
-								</a>
-							</div>
-						</div>
-						<div class="portlet-body">
-							<div class="scroller" style="height: 200px"></div>
-						</div>
-					</div>
-					<!-- END Portlet PORTLET-->
 
-				</div>
-			</div>
 		</div>
 	</div>
 	<!-- END EXAMPLE TABLE PORTLET-->
@@ -266,12 +286,14 @@
 	<script src="resources/js/databasemanager/databasemanager_metronic.js"
 		type="text/javascript"></script>
 	<script src="resources/js/components-pickers.js" type="text/javascript"></script>
-	<script src="resources/js/databasemanager/databasemanager.js" type="text/javascript"></script>
+	<script src="resources/js/databasemanager/databasemanager.js"
+		type="text/javascript"></script>
+	<!-- <script src="resources/js/databasemanager/tabletable.js" type="text/javascript"></script>
+	<script src="resources/js/databasemanager/ajaxtree.js" type="text/javascript"></script> -->
 	<script>
 		jQuery(document).ready(function() {
 			Metronic.init();
 			ComponentsPickers.init();
-			TableEditable.init();
 
 		});
 	</script>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import otc.healthcare.pojo.DatabaseInfo;
+import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.pojo.TreeJson;
 import otc.healthcare.service.OracleService;
@@ -122,7 +123,17 @@ public class MetadataController {
 		}
 		return list;
 	}
-
+	@RequestMapping(value = "/gettableinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public List<FieldInfo> getTableInfo(@RequestParam(value = "databaseid", required = true) String databaseid,@RequestParam(value = "tableid", required = true) String tableid) {
+		System.out.println("get_table_info_list");
+		List<FieldInfo> list = this.oracleSerive.getTableInfo(databaseid,tableid);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getFieldid() + "::" + list.get(i).getTableid() + "::" + list.get(i).getDatabaseid() + "::"
+					+ list.get(i).getName() + "::" + list.get(i).getComments());
+		}
+		return list;
+	}
 	public OracleService getOracleSerive() {
 		return oracleSerive;
 	}
