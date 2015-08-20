@@ -58,8 +58,9 @@ public class MetadataController {
 	}
 
 	@RequestMapping(value = "/createhcDB")
-	public boolean createHealthCareDB() {
-		return this.oracleSerive.createHcDB();
+	public String createHealthCareDB() {
+		this.oracleSerive.createHcDB();
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)

@@ -213,7 +213,7 @@ function FileManagerClass(){
 	    <span class="icons48 icons48-it"></span>
 	    <b>数据发布</b>
 	  </a>
-	  <a href="">
+	  <a href="apply/applydata">
 	    <span class="icons48 icons48-estate"></span>
 	    <b>数据申请</b>
 	  </a>

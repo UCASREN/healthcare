@@ -196,6 +196,12 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- ftl -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.23</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
