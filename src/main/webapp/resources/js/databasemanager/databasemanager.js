@@ -2,7 +2,17 @@
  * This file is responsible for database information show
  *  @author xingkong
  * */
-
+function getCookie(objName){//获取指定名称的cookie的值 
+	var arrStr = document.cookie.split(";");
+	var returnvalue;
+	for(var i = 0;i < arrStr.length;i ++){ 
+		var temp = arrStr[i].split("="); 
+		if($.trim(temp[0]) == $.trim(objName)) {
+			returnvalue=unescape(temp[1]);
+			return returnvalue; 
+		}
+	} 
+} 
 var ajaxTable1 = function() {
 
 	function restoreRow(oTable, nRow) {
@@ -42,26 +52,43 @@ var ajaxTable1 = function() {
 		var aData = oTable.fnGetData(nRow);
 		var options;
 		if (nNew) {
-			/*
-			 * options={ type : "post",//请求方式 url : "addpath.action",//发送请求地址
-			 * dataType : "json", data:{ "path.pid":aData[0],
-			 * "path.name":aData[1], "path.startPosition":aData[2],
-			 * "path.endPosition":aData[3], "path.startTime":aData[4]+':00',
-			 * "path.endTime":aData[5]+':00', "path.part":aData[6] }, success :
-			 * function(data) { if(nNew) maxId++; alert(data); } }
-			 */
-			alert("添加加入接口");
+			options={ 
+					type : "get",//请求方式 
+					url : "dataresource/nodeoperation",//发送请求地址
+					dataType : "json", 
+					data:{ 
+						operation:"create_node",
+						parent:"alldatabase_"+$("#whichdatabaseid").text(),
+						text:aData[1], 
+						comments:aData[2]
+					}, 
+					success :function(data) {
+						alert(data); 
+						//data.instance.refresh();
+						location.reload(true);
+					} 
+				}
+			//alert("添加加入接口");
 			nNew = false;// xingkong add
 		} else {
-			/*
-			 * options={ type : "post",//请求方式 url : "updatepath.action",//发送请求地址
-			 * dataType : "json", data:{ "path.pid":aData[0],
-			 * "path.name":aData[1], "path.startPosition":aData[2],
-			 * "path.endPosition":aData[3], "path.startTime":aData[4],
-			 * "path.endTime":aData[5], "path.part":aData[6] }, success :
-			 * function(data) { if(nNew) maxId++; alert(data); } }
-			 */
-			alert("添加更新接口");
+			options={ 
+					type : "get",//请求方式 
+					url : "dataresource/nodeoperation",//发送请求地址
+					dataType : "json", 
+					data:{ 
+						operation:"rename_node",
+						id:aData[0],
+						parent:"alldatabase_"+$("#whichdatabaseid").text(),
+						text:aData[1], 
+						comments:aData[2]
+					}, 
+					success :function(data) {
+						alert(data); 
+						//data.instance.refresh();
+						location.reload(true);
+					} 
+				}
+			//alert("添加更新接口");
 		}
 
 		$.ajax(options);
@@ -240,26 +267,46 @@ var ajaxTable2 = function() {
 		var aData = oTable.fnGetData(nRow);
 		var options;
 		if (nNew) {
-			/*
-			 * options={ type : "post",//请求方式 url : "addpath.action",//发送请求地址
-			 * dataType : "json", data:{ "path.pid":aData[0],
-			 * "path.name":aData[1], "path.startPosition":aData[2],
-			 * "path.endPosition":aData[3], "path.startTime":aData[4]+':00',
-			 * "path.endTime":aData[5]+':00', "path.part":aData[6] }, success :
-			 * function(data) { if(nNew) maxId++; alert(data); } }
-			 */
-			alert("添加加入接口");
+			options={ 
+				type : "get",//请求方式 
+				url : "dataresource/fieldoperation",//发送请求地址
+				dataType : "json", 
+				data:{ 
+					operation:"create",
+					databaseid:$("#whichtableid_belong").text(),
+					tableid:$("#whichtableid").text(),
+					name:aData[1], 
+					comments:aData[2]
+				}, 
+				success :function(data) {
+					alert(data); 
+					//data.instance.refresh();
+					location.reload(true);
+				} 
+			}
+			 
+			//alert("添加加入接口");
 			nNew = false;// xingkong add
 		} else {
-			/*
-			 * options={ type : "post",//请求方式 url : "updatepath.action",//发送请求地址
-			 * dataType : "json", data:{ "path.pid":aData[0],
-			 * "path.name":aData[1], "path.startPosition":aData[2],
-			 * "path.endPosition":aData[3], "path.startTime":aData[4],
-			 * "path.endTime":aData[5], "path.part":aData[6] }, success :
-			 * function(data) { if(nNew) maxId++; alert(data); } }
-			 */
-			alert("添加更新接口");
+			options={ 
+					type : "get",//请求方式 
+					url : "dataresource/fieldoperation",//发送请求地址
+					dataType : "json", 
+					data:{ 
+						operation:"rename",
+						databaseid:$("#whichtableid_belong").text(),
+						tableid:$("#whichtableid").text(),
+						fieldid:aData[0],
+						name:aData[1], 
+						comments:aData[2]
+					}, 
+					success :function(data) {
+						alert(data); 
+						//data.instance.refresh();
+						location.reload(true);
+					} 
+				}
+			//alert("添加更新接口");
 		}
 
 		$.ajax(options);
@@ -436,7 +483,7 @@ var AjaxTree = function() {
 		"state" : {
 			"key" : "demo3"
 		},
-		"plugins" : [ "contextmenu", "unique", "dnd", "types" ]
+		"plugins" : [ "contextmenu", "unique", "dnd", "types","state" ]
 	}).on('delete_node.jstree', function(e, data) {
 		$.get('dataresource/nodeoperation?operation=delete_node', {
 			'id' : data.node.id,
@@ -503,8 +550,38 @@ var AjaxTree = function() {
 				});
 			});
 			$("#whichdatabase").text("数据库:"+data.node.text);
+			$("#whichdatabaseid").text(data.node.id.substring(data.node.id.indexOf("_")+1));
+			
+			//恢复操作
+			if(getCookie("lastclick")=="database"){
+				//reload tabletable data
+				oTable2.fnClearTable();
+				$(function() {
+					var url = "dataresource/gettableinfo?databaseid="+getCookie("restoretable").split("_")[0]+"&tableid="+getCookie("restoretable").split("_")[1];
+					$.getJSON(url, function(data) {
+						$.each(data, function(i, field) {
+							/* if (field.fieldid > maxId)
+								maxId = field.fieldid; */
+							oTable2.fnAddData([ field.fieldid, field.name,
+							                   field.comments, '<a class="edit" href="">Edit</a>',
+									'<a class="delete" href="">Delete</a>' ]);
+						});
+					});
+				});
+				$("#whichtable").text("表:"+getCookie("restoretable").split("_")[2]);
+				console.log(getCookie("restoretable").split("_")[1]);
+				$("#whichtableid").text(getCookie("restoretable").split("_")[1]);
+				console.log(getCookie("restoretable").split("_")[0]);
+				$("#whichtableid_belong").text(getCookie("restoretable").split("_")[0]);
+			}
+			//end恢复操作
+			//记录上次点击的是哪种元素
+			document.cookie="restoredatabase="+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+data.node.text;
+			//记录上次带年纪的是哪种
+			document.cookie="lastclick="+"database";
 		}
 		if (data.node.id.indexOf("alltable") != -1) {
+			//reload database
 			oTable2.fnClearTable();
 			$(function() {
 				var url = "dataresource/gettableinfo?databaseid="+data.node.parent.substring(data.node.parent.indexOf("_")+1)+"&tableid="+data.node.id.substring(data.node.id.indexOf("_")+1);
@@ -519,6 +596,38 @@ var AjaxTree = function() {
 				});
 			});
 			$("#whichtable").text("表:"+data.node.text);
+			console.log(data.node.id.substring(data.node.id.indexOf("_")+1));
+			$("#whichtableid").text(data.node.id.substring(data.node.id.indexOf("_")+1));
+			console.log(data.node.parent.substring(data.node.parent.indexOf("_")+1));
+			$("#whichtableid_belong").text(data.node.parent.substring(data.node.parent.indexOf("_")+1));
+			
+			
+			//恢复数据
+			if(getCookie("lastclick")=="table"){
+				//reload tabletable data
+				oTable1.fnClearTable();
+				$(function() {
+					var url = "dataresource/getdatabaseinfo?databaseid="+getCookie("restoredatabase").split("_")[0];
+					$.getJSON(url, function(data) {
+						$.each(data, function(i, table) {
+							/* if (table.tableid > maxId)
+								maxId = table.tableid; */
+							oTable1.fnAddData([ table.tableid, table.name,
+							                   table.comments, '<a class="edit" href="">Edit</a>',
+									'<a class="delete" href="">Delete</a>' ]);
+						});
+					});
+				});
+				$("#whichdatabase").text("数据库:"+getCookie("restoredatabase").split("_")[1]);
+				$("#whichdatabaseid").text(getCookie("restoredatabase").split("_")[0]);
+			}
+			
+			//记录上次点击的是哪种元素
+			document.cookie="restoretable="+data.node.parent.substring(data.node.parent.indexOf("_")+1)+"_"
+							+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+data.node.text;
+			//记录上次带年纪的是哪种
+			document.cookie="lastclick="+"table";
+			
 		}
 	});
 	

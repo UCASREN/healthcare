@@ -141,6 +141,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<p class="text-center" id="whichdatabase"></p>
+									<p class="hidden" id="whichdatabaseid" ></p>
 								</div>
 							</div>
 						</div>
@@ -192,6 +193,8 @@
 							<div class="row">
 								<div class="col-md-12">
 									<p class="text-center" id="whichtable"></p>
+									<div class="hidden" id="whichtableid" ></div>
+									<div class="hidden" id="whichtableid_belong" ></div>
 								</div>
 							</div>
 						</div>

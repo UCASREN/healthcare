@@ -80,7 +80,8 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
-	public List<FieldInfo> getTableInfo(String databaseid,String tableid) {
+
+	public List<FieldInfo> getTableInfo(String databaseid, String tableid) {
 		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
 		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
@@ -89,7 +90,9 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			ResultSet res = dbUtil.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS from SYSTEM.HC_FIELD where DATABASEID=" + databaseid+" and TABLEID="+tableid);
+			ResultSet res = dbUtil
+					.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS from SYSTEM.HC_FIELD where DATABASEID="
+							+ databaseid + " and TABLEID=" + tableid);
 			while (res.next()) {
 
 				FieldInfo fim = new FieldInfo();
@@ -107,6 +110,7 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
+
 	public boolean createHcDB() {
 		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
@@ -139,31 +143,6 @@ public class OracleService implements IService {
 			dbUtil.close();
 		}
 	}
-
-//	public List<FieldInfo> getTableInfo(String tableid) {
-//		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
-//		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", "jdbc:oracle:thin:@localhost:1521:XE",
-//				"system", "cuiguangfan");
-//		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
-//		try {
-//			ResultSet res = dbUtil.query("select * from \"SYSTEM\".\"field\"");
-//			while (res.next()) {
-//				FieldInfo fim = new FieldInfo();
-//				fim.setFieldid(res.getString(1));
-//				fim.setDatabaseid(res.getString(2));
-//				fim.setTableid(res.getString(3));
-//				fim.setName(res.getString(4));
-//				fim.setDatatype(res.getString(5));
-//				fim.setComments(res.getString(6));
-//				resultList.add(fim);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			dbUtil.close();
-//		}
-//		return resultList;
-//	}
 
 	// 信息初始化
 	private static void InitOracle(DBUtil dbUtil) {
@@ -366,8 +345,25 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
+	public boolean deleteField(String databaseid, String tableid,String fieldid) {
+		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			return dbUtil.execute(
+					"delete from SYSTEM.HC_FIELD where DATABASEID=" + databaseid + " and " + "TABLEID=" + tableid+" and "+"FIELDID="+fieldid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
 
-	public Integer createTable(String databaseid, String tablename, String comment) {// insert
+	public Integer createTable(String databaseid, String tablename, String comments) {// insert
 																						// into
 																						// database
 																						// table
@@ -381,7 +377,27 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			String vsql = "insert into SYSTEM.HC_TABLE (TABLEID,DATABASEID,NAME,COMMENTS) values(TABLE_TABLEID.nextval,"
-					+ databaseid + ",'" + tablename + "','" + comment + "')";
+					+ databaseid + ",'" + tablename + "','" + comments + "')";
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return null;
+	}
+
+	public Integer createField(String databaseid, String tableid, String fieldname,String comments) {// insert
+		// into database table one row
+		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			String vsql = "insert into SYSTEM.HC_FIELD (FIELDID,TABLEID,DATABASEID,NAME,COMMENTS) values(FIELD_FIELDID.nextval,"
+					+ tableid + ",'"+ databaseid + ",'" + fieldname + "','" + comments + "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -444,7 +460,33 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
-
+	public boolean changeField(String fieldid,String databaseid, String tableid, String newName, String newComments) {
+		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		String sql = "";
+		try {
+			if (newName != null) {
+				sql = "update SYSTEM.HC_FIELD set NAME='" + newName + "'  where DATABASEID=" + databaseid
+						+ " and TABLEID=" + tableid+ " and FIELDID=" + fieldid;
+				dbUtil.execute(sql);
+			}
+			if (newComments != null) {
+				sql = "update SYSTEM.HC_FIELD set COMMENTS='" + newComments + "'   where DATABASEID=" + databaseid
+						+ " and TABLEID=" + tableid+ " and FIELDID=" + fieldid;
+				dbUtil.execute(sql);
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
