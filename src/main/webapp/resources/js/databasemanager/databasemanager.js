@@ -2,6 +2,7 @@
  * This file is responsible for database information show
  *  @author xingkong
  * */
+var reloadCount=0;//控制恢复数据的次数，一次页面只有一次
 function getCookie(objName){//获取指定名称的cookie的值 
 	var arrStr = document.cookie.split(";");
 	var returnvalue;
@@ -593,7 +594,8 @@ var AjaxTree = function() {
 			$("#whichdatabaseid").text(data.node.id.substring(data.node.id.indexOf("_")+1));
 			
 			//恢复操作
-			if(getCookie("lastclick")=="database"){
+			if(getCookie("lastclick")=="database"&&reloadCount==0){
+				reloadCount++;
 				//reload tabletable data
 				oTable2.fnClearTable();
 				$(function() {
@@ -643,7 +645,8 @@ var AjaxTree = function() {
 			
 			
 			//恢复数据
-			if(getCookie("lastclick")=="table"){
+			if(getCookie("lastclick")=="table"&&reloadCount==0){
+				reloadCount++;
 				//reload tabletable data
 				oTable1.fnClearTable();
 				$(function() {
