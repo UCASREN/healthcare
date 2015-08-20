@@ -557,6 +557,7 @@ var AjaxTree = function() {
 		}).fail(function() {
 			data.instance.refresh();
 		});
+		location.reload(true);
 	}).on('move_node.jstree', function(e, data) {
 		/*
 		 * $.get('?operation=move_node', { 'id' : data.node.id, 'parent' :
