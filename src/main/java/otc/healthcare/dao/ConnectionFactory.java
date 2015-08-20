@@ -21,7 +21,6 @@ public class ConnectionFactory {
 			iConnection = new DMConnection(url, username, password);
 		else if (type.equals("oracle")) {
 			iConnection = new OracleConnection(url, username, password);
-			System.out.println("Oracle herer");
 		}
 		// else if (type.equals("sqlserver"))
 		// driverName = "com.microsoft.jdbc.sqlserver.SQLServerDriver";

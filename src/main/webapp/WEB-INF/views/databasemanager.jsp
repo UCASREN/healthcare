@@ -23,13 +23,15 @@
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/> -->
 <link href="resources/plugins/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
-<link href="resources/plugins/simple-line-icons/simple-line-icons.min.css"
+<link
+	href="resources/plugins/simple-line-icons/simple-line-icons.min.css"
 	rel="stylesheet" type="text/css" />
-<link href="resources/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css" />
-<link href="resources/plugins/uniform/css/uniform.default.css" rel="stylesheet"
-	type="text/css" />
-<link href="resources/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+<link href="resources/plugins/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet" type="text/css" />
+<link href="resources/plugins/uniform/css/uniform.default.css"
+	rel="stylesheet" type="text/css" />
+<link
+	href="resources/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
 	rel="stylesheet" type="text/css" />
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN PAGE LEVEL STYLES -->
@@ -60,118 +62,174 @@
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/layout.css" rel="stylesheet" type="text/css" />
-<link id="style_color" href="resources/css/darkblue.css" rel="stylesheet"
-	type="text/css" />
+<link id="style_color" href="resources/css/darkblue.css"
+	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 <body>
-	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 
-	<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true"></button>
-					<h4 class="modal-title">设置路线</h4>
+	<!-- BEGIN EXAMPLE TABLE PORTLET-->
+	<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-edit"></i>数据库管理
+			</div>
+			<div class="tools">
+				<a href="javascript:;" class="collapse"> </a> <a
+					href="#portlet-config" data-toggle="modal" class="config"> </a> <a
+					href="javascript:;" class="reload"> </a> <a href="javascript:;"
+					class="remove"> </a>
+			</div>
+		</div>
+		<div class="portlet-body">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="portlet-body">
+						<div id="tree" class="tree-demo"></div>
+					</div>
 				</div>
-				<div class="modal-body">
-					<table class="table table-striped table-bordered table-hover"
-						id="sample_1">
-						<thead>
-							<tr>
-								<th class="table-checkbox"><input type="checkbox"
-									class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
-								<th>编号</th>
-								<th>表名</th>
-								<th>备注</th>
-							</tr>
-						</thead>
-						<tbody>
+				<div class="col-md-10">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="table-toolbar">
 
-						</tbody>
-					</table>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn blue" id="savepath">保存</button>
-					<button type="button" class="btn default" data-dismiss="modal">关闭</button>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="btn-group">
+													<button id="editable_1_new" class="btn green">
+														添加 <i class="fa fa-plus"></i>
+													</button>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="btn-group pull-right">
+													<button class="btn dropdown-toggle" data-toggle="dropdown">
+														工具<i class="fa fa-angle-down"></i>
+													</button>
+													<ul class="dropdown-menu pull-right">
+														<li><a href="javascript:;"> 打印</a></li>
+														<li><a href="javascript:;"> 保存为PDF </a></li>
+														<li><a href="javascript:;"> 导出Excel </a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<table class="table table-striped table-hover table-bordered"
+										id="editable_1">
+										<thead>
+											<tr>
+												<th>编号</th>
+												<th>表名</th>
+												<th>备注</th>
+												<th>操作</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<p class="text-center" id="whichdatabase"></p>
+									<p class="hidden" id="whichdatabaseid" ></p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="table-toolbar">
+
+										<div class="row">
+											<div class="col-md-6">
+												<div class="btn-group">
+													<button id="editable_2_new" class="btn green">
+														添加 <i class="fa fa-plus"></i>
+													</button>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="btn-group pull-right">
+													<button class="btn dropdown-toggle" data-toggle="dropdown">
+														工具<i class="fa fa-angle-down"></i>
+													</button>
+													<ul class="dropdown-menu pull-right">
+														<li><a href="javascript:;"> 打印</a></li>
+														<li><a href="javascript:;"> 保存为PDF </a></li>
+														<li><a href="javascript:;"> 导出Excel </a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<table class="table table-striped table-hover table-bordered"
+										id="editable_2">
+										<thead>
+											<tr>
+												<th>编号</th>
+												<th>列名</th>
+												<th>备注</th>
+												<th>操作</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<p class="text-center" id="whichtable"></p>
+									<div class="hidden" id="whichtableid" ></div>
+									<div class="hidden" id="whichtableid_belong" ></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- BEGIN Portlet PORTLET-->
+							<div class="portlet gren">
+								<div class="portlet-title">
+									<div class="caption">
+										<i class="fa fa-gift"></i>概要信息
+									</div>
+									<div class="tools">
+										<a href="javascript:;" class="collapse"> </a> <a
+											href="#portlet-config" data-toggle="modal" class="config">
+										</a> <a href="javascript:;" class="reload"> </a> <a href=""
+											class="fullscreen"> </a> <a href="javascript:;"
+											class="remove"> </a>
+									</div>
+								</div>
+								<div class="portlet-body">
+									<div class="scroller" style="height: 200px"></div>
+								</div>
+							</div>
+							<!-- END Portlet PORTLET-->
+
+						</div>
+
+					</div>
 				</div>
 			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-		<!-- BEGIN EXAMPLE TABLE PORTLET-->
-						<div class="portlet box blue">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="fa fa-edit"></i>数据库管理
-								</div>
-								<div class="tools">
-									<a href="javascript:;" class="collapse"> </a> <a
-										href="#portlet-config" data-toggle="modal" class="config">
-									</a> <a href="javascript:;" class="reload"> </a> <a
-										href="javascript:;" class="remove"> </a>
-								</div>
-							</div>
-							<div class="portlet-body">
-								<div class="row">
-								<div class="col-md-2">
-									<div class="portlet-body">
-							<div id="tree" class="tree-demo"></div>
-						</div>
-									</div>
-									<div class="col-md-10">
-									<div class="table-toolbar">
-									
-									<div class="row">
-										<div class="col-md-6">
-											<div class="btn-group">
-												<button id="sample_editable_1_new" class="btn green">
-													添加 <i class="fa fa-plus"></i>
-												</button>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="btn-group pull-right">
-												<button class="btn dropdown-toggle" data-toggle="dropdown">
-													工具<i class="fa fa-angle-down"></i>
-												</button>
-												<ul class="dropdown-menu pull-right">
-													<li><a href="javascript:;"> 打印</a></li>
-													<li><a href="javascript:;"> 保存为PDF </a></li>
-													<li><a href="javascript:;"> 导出Excel </a></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-								</div>
-								<table class="table table-striped table-hover table-bordered"
-									id="sample_editable_1">
-									<thead>
-										<tr>
-											<th>编号</th>
-											<th>数据库名</th>
-											<th>备注</th>
-											<th>操作</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody>
 
-									</tbody>
-								</table>
-									</div>
-								</div>
-								
-							</div>
-						</div>
-						<!-- END EXAMPLE TABLE PORTLET-->
+		</div>
+	</div>
+	<!-- END EXAMPLE TABLE PORTLET-->
 
 
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
@@ -190,17 +248,20 @@
 	<script
 		src="resources/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
 		type="text/javascript"></script>
-	<script src="resources/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
+	<script
+		src="resources/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
 		type="text/javascript"></script>
 	<script src="resources/js/jquery.blockui.min.js" type="text/javascript"></script>
 	<script src="resources/js/jquery.cokie.min.js" type="text/javascript"></script>
 	<script src="resources/plugins/uniform/jquery.uniform.min.js"
 		type="text/javascript"></script>
-	<script src="resources/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
+	<script
+		src="resources/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
 		type="text/javascript"></script>
 	<!-- END CORE PLUGINS -->
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
-	<script type="text/javascript" src="resources/plugins/select2/select2.min.js"></script>
+	<script type="text/javascript"
+		src="resources/plugins/select2/select2.min.js"></script>
 	<script type="text/javascript"
 		src="resources/plugins/datatables/media/js/jquery.dataTables.js"></script>
 	<script type="text/javascript"
@@ -225,14 +286,17 @@
 
 	<!-- END PAGE LEVEL PLUGINS -->
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
-	<script src="resources/js/databasemanager_metronic.js" type="text/javascript"></script>
+	<script src="resources/js/databasemanager/databasemanager_metronic.js"
+		type="text/javascript"></script>
 	<script src="resources/js/components-pickers.js" type="text/javascript"></script>
-	<script src="resources/js/databasemanager.js" type="text/javascript"></script>
+	<script src="resources/js/databasemanager/databasemanager.js"
+		type="text/javascript"></script>
+	<!-- <script src="resources/js/databasemanager/tabletable.js" type="text/javascript"></script>
+	<script src="resources/js/databasemanager/ajaxtree.js" type="text/javascript"></script> -->
 	<script>
 		jQuery(document).ready(function() {
 			Metronic.init();
 			ComponentsPickers.init();
-			TableEditable.init();
 
 		});
 	</script>

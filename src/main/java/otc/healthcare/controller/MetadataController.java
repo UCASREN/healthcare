@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import otc.healthcare.pojo.DatabaseInfo;
+import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.pojo.TreeJson;
 import otc.healthcare.service.OracleService;
@@ -69,11 +70,10 @@ public class MetadataController {
 			@RequestParam(value = "id", required = false) String id,
 			@RequestParam(value = "parent", required = false) String parent,
 			@RequestParam(value = "position", required = false) String position,
-			@RequestParam(value = "text", required = false) String text) {
+			@RequestParam(value = "text", required = false) String text,
+			@RequestParam(value = "comments", required = false) String comments) {
 		String operationResult = "";
-		String operationType = id != null ? (id.contains("alldatabase") ? "database" : "table") : "";// detect
-																										// operation
-																										// type
+		String operationType = id != null ? (id.contains("alldatabase") ? "database" : "table") : "";// detect  operation type
 		String operationId = id != null ? (id.substring(id.indexOf("_") + 1)) : "";
 		switch (operation) {
 		case "delete_node": {
@@ -84,13 +84,13 @@ public class MetadataController {
 			break;
 		case "create_node": {
 			operationResult = "alltable_"
-					+ this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text, "备注为空");
+					+ this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text, comments==null?"备注为空":comments);
 		}
 			break;
 		case "rename_node": {
 			operationResult = (operationType.equals("database")
 					? this.oracleSerive.changeDatabase(operationId, text, null)
-					: this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, null))
+					: this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments))
 							? "success" : "fail";
 		}
 			break;
@@ -99,7 +99,74 @@ public class MetadataController {
 		}
 		return operationResult;
 	}
+	
+	@RequestMapping(value = "/fieldoperation", method = RequestMethod.GET)
+	@ResponseBody
+	public String fieldOperation(@RequestParam(value = "operation", required = true) String operation,
+			@RequestParam(value = "databaseid", required = false) String databaseid,
+			@RequestParam(value = "tableid", required = false) String tableid,
+			@RequestParam(value = "fieldid", required = false) String fieldid,
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "comments", required = false) String comments) {
+		String operationResult="";
+		switch (operation) {
+		case "delete": {
+			this.oracleSerive.deleteField(databaseid, tableid, fieldid);
+			operationResult="success";
+		}
+			break;
+		case "create": {
+//			operationResult = "alltable_"
+//					+ this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text, comments==null?"备注为空":comments);
+			this.oracleSerive.createField(databaseid, tableid, name, comments);
+			operationResult="success";
+		}
+			break;
+		case "rename": {
+			this.oracleSerive.changeField(fieldid, databaseid, tableid, name, comments);
+			operationResult="success";
+		}
+			break;
+		default:
+			operationResult = "fail";
+		}
+		return operationResult;
+	}
 
+	@RequestMapping(value = "/getalldatabaseinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public List<DatabaseInfo> getAllDatabaseInfo() {
+		System.out.println("get_all_database_info_list");
+		List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(
+					list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
+		}
+		return list;
+	}
+
+	@RequestMapping(value = "/getdatabaseinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public List<TableInfo> getDatabaseInfo(@RequestParam(value = "databaseid", required = true) String databaseid) {
+		System.out.println("get_database_info_list");
+		List<TableInfo> list = this.oracleSerive.getDatabaseInfo(databaseid);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getTableid() + "::" + list.get(i).getDatabaseid() + "::"
+					+ list.get(i).getName() + "::" + list.get(i).getComments());
+		}
+		return list;
+	}
+	@RequestMapping(value = "/gettableinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public List<FieldInfo> getTableInfo(@RequestParam(value = "databaseid", required = true) String databaseid,@RequestParam(value = "tableid", required = true) String tableid) {
+		System.out.println("get_table_info_list");
+		List<FieldInfo> list = this.oracleSerive.getTableInfo(databaseid,tableid);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getFieldid() + "::" + list.get(i).getTableid() + "::" + list.get(i).getDatabaseid() + "::"
+					+ list.get(i).getName() + "::" + list.get(i).getComments());
+		}
+		return list;
+	}
 	public OracleService getOracleSerive() {
 		return oracleSerive;
 	}
