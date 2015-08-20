@@ -397,7 +397,7 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			String vsql = "insert into SYSTEM.HC_FIELD (FIELDID,TABLEID,DATABASEID,NAME,COMMENTS) values(FIELD_FIELDID.nextval,"
-					+ tableid + ",'"+ databaseid + ",'" + fieldname + "','" + comments + "')";
+					+ tableid + ","+ databaseid + ",'" + fieldname + "','" + comments + "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql);
 		} catch (Exception e) {
 			e.printStackTrace();

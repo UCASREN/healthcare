@@ -65,10 +65,11 @@ var ajaxTable1 = function() {
 					success :function(data) {
 						alert(data); 
 						//data.instance.refresh();
-						location.reload(true);
+						
 					} 
 				}
 			//alert("添加加入接口");
+			//location.reload(true);
 			nNew = false;// xingkong add
 		} else {
 			options={ 
@@ -85,13 +86,14 @@ var ajaxTable1 = function() {
 					success :function(data) {
 						alert(data); 
 						//data.instance.refresh();
-						location.reload(true);
+						
 					} 
 				}
 			//alert("添加更新接口");
 		}
-
+		
 		$.ajax(options);
+		location.reload(true);
 	}
 
 	var table = $('#editable_1');
@@ -153,7 +155,7 @@ var ajaxTable1 = function() {
 					}
 				}
 
-				var aiNew = oTable.fnAddData([ maxId + 1, "", "",
+				var aiNew = oTable.fnAddData([ "自动生成", "", "",
 						'<a class="edit" href="">Edit</a>',
 						'<a class="delete" href="">Delete</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
@@ -175,7 +177,25 @@ var ajaxTable1 = function() {
 		var aData = oTable.fnGetData(nRow);
 
 		$(function() {
-			alert("添加删除接口");
+			//alert("添加删除接口");
+			options={ 
+					type : "get",//请求方式 
+					url : "dataresource/nodeoperation",//发送请求地址
+					dataType : "json", 
+					data:{ 
+						operation:"delete_node",
+						id:aData[0],
+						parent:"alldatabase_"+$("#whichdatabaseid").text()
+					}, 
+					success :function(data) {
+						alert(data); 
+						//data.instance.refresh();
+						
+					} 
+				}
+			$.ajax(options);
+			oTable.fnDeleteRow(nRow);
+			location.reload(true);
 			/*
 			 * var url = "deletepath.action?path.pid="+aData[0]; $.getJSON(url,
 			 * function(data) { if(data=="删除路线成功！"){ oTable.fnDeleteRow(nRow);
@@ -281,10 +301,10 @@ var ajaxTable2 = function() {
 				success :function(data) {
 					alert(data); 
 					//data.instance.refresh();
-					location.reload(true);
+					
 				} 
 			}
-			 
+			
 			//alert("添加加入接口");
 			nNew = false;// xingkong add
 		} else {
@@ -303,13 +323,14 @@ var ajaxTable2 = function() {
 					success :function(data) {
 						alert(data); 
 						//data.instance.refresh();
-						location.reload(true);
+						//location.reload(true);
 					} 
 				}
 			//alert("添加更新接口");
 		}
 
 		$.ajax(options);
+		location.reload(true);
 	}
 
 	var table = $('#editable_2');
@@ -371,7 +392,7 @@ var ajaxTable2 = function() {
 					}
 				}
 
-				var aiNew = oTable.fnAddData([ maxId + 1, "", "",
+				var aiNew = oTable.fnAddData([ "自动生成", "", "",
 						'<a class="edit" href="">Edit</a>',
 						'<a class="delete" href="">Delete</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
@@ -393,7 +414,26 @@ var ajaxTable2 = function() {
 		var aData = oTable.fnGetData(nRow);
 
 		$(function() {
-			alert("添加删除接口");
+			//alert("添加删除接口");
+			options={ 
+					type : "get",//请求方式 
+					url : "dataresource/fieldoperation",//发送请求地址
+					dataType : "json", 
+					data:{ 
+						operation:"delete",
+						databaseid:$("#whichtableid_belong").text(),
+						tableid:$("#whichtableid").text(),
+						fieldid:aData[0]
+					}, 
+					success :function(data) {
+						alert(data); 
+						//data.instance.refresh();
+						//location.reload(true);
+					} 
+				}
+			$.ajax(options);
+			oTable.fnDeleteRow(nRow);
+			location.reload(true);
 			/*
 			 * var url = "deletepath.action?path.pid="+aData[0]; $.getJSON(url,
 			 * function(data) { if(data=="删除路线成功！"){ oTable.fnDeleteRow(nRow);
