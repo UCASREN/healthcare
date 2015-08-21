@@ -31,7 +31,16 @@ public class MetadataController {
 	public List<TreeJson> getDatabaseTreeInfo(@RequestParam(value = "parent", required = true) String parent) {
 		System.out.println(parent);
 		List<TreeJson> returnList = new ArrayList<TreeJson>();
-		if (parent.equals("#")) {
+		if(parent.equals("#")){
+			TreeJson tm = new TreeJson();
+			tm.setId("all_" + 1);
+			tm.setText("所有数据库");
+			tm.setChildren(true);
+			tm.setIcon("fa fa-folder icon-lg icon-state-success");
+			tm.setType("root");
+			returnList.add(tm);
+		}
+		if (parent.indexOf("all_")!=-1) {
 			List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
 			for (int i = 0; i < list.size(); i++) {
 				TreeJson tm = new TreeJson();
@@ -42,7 +51,8 @@ public class MetadataController {
 				tm.setType("root");
 				returnList.add(tm);
 			}
-		} else {
+		}  
+		if(parent.indexOf("alldatabase_")!=-1){
 			String databaseid = parent.substring(parent.indexOf("_") + 1);
 			List<TableInfo> list = this.oracleSerive.getDatabaseInfo(databaseid);
 			for (int i = 0; i < list.size(); i++) {
@@ -73,7 +83,7 @@ public class MetadataController {
 			@RequestParam(value = "text", required = false) String text,
 			@RequestParam(value = "comments", required = false) String comments) {
 		String operationResult = "";
-		String operationType = id != null ? (id.contains("alldatabase") ? "database" : "table") : "";// detect  operation type
+		String operationType = id != null ? (id.contains("alldatabase") ? "database" : (id.contains("table") ?"table":"all")) : "";// detect  operation type
 		String operationId = id != null ? (id.substring(id.indexOf("_") + 1)) : "";
 		switch (operation) {
 		case "delete_node": {
@@ -83,15 +93,26 @@ public class MetadataController {
 		}
 			break;
 		case "create_node": {
-			operationResult = "alltable_"
+			operationResult = parent.indexOf("all_")!=-1?"alldatabase_"+this.oracleSerive.createDatabase(text, comments==null?"备注为空":comments):"alltable_"
 					+ this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text, comments==null?"备注为空":comments);
 		}
 			break;
 		case "rename_node": {
-			operationResult = (operationType.equals("database")
+			if(operationType.equals("database")){
+				this.oracleSerive.changeDatabase(operationId, text, null);
+				operationResult="success";
+			}
+			if(operationType.equals("table")){
+				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments);
+				operationResult="success";
+			}
+			if(operationType.equals("all")){
+				operationResult="fail";
+			}
+			/*operationResult = (operationType.equals("database")
 					? this.oracleSerive.changeDatabase(operationId, text, null)
 					: this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments))
-							? "success" : "fail";
+							? "success" : "fail";*/
 		}
 			break;
 		default:

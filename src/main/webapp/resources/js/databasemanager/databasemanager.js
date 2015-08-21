@@ -530,12 +530,16 @@ var AjaxTree = function() {
 			'id' : data.node.id,
 			'parent' : data.node.parent
 		}).done(function(d) {
-			alert(d);
+			//alert(d);
+			console.log(d);
 		}).fail(function() {
 			data.instance.refresh();
 		});
 	}).on('create_node.jstree', function(e, data) {
-		if (data.node.parent.indexOf("alldatabase") != -1) {
+		if (data.node.parent.indexOf("alltable") != -1) {
+			alert("Can't create node under table node");
+			data.instance.refresh();
+		} else {
 			$.get('dataresource/nodeoperation?operation=create_node', {
 				'parent' : data.node.parent,
 				'position' : data.position,
@@ -545,9 +549,6 @@ var AjaxTree = function() {
 			}).fail(function() {
 				data.instance.refresh();
 			});
-		} else {
-			alert("Can't create node under table node");
-			data.instance.refresh();
 		}
 	}).on('rename_node.jstree', function(e, data) {
 		$.get('dataresource/nodeoperation?operation=rename_node', {

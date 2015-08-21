@@ -16,15 +16,15 @@ public class OracleDBUtil extends DBUtil{
 		super(conn);
 		// TODO Auto-generated constructor stub
 	}
-	public int insertDataReturnKeyByReturnInto(String vsql) throws Exception {   
+	public int insertDataReturnKeyByReturnInto(String insertsql,String selectsql) throws Exception {   
 	    //String vsql = "insert into t1(id) values(seq_t1.nextval)";  
 		//first you should insert into it
-	    PreparedStatement pstmt =(PreparedStatement)getConn().prepareStatement(vsql);  
+	    PreparedStatement pstmt =(PreparedStatement)getConn().prepareStatement(insertsql);  
 	    pstmt.executeUpdate();  
 	    pstmt.close();  
 	    //then select it out
-	    vsql="select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE";  
-	    pstmt =(PreparedStatement)getConn().prepareStatement(vsql);  
+	    //vsql="select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE";  
+	    pstmt =(PreparedStatement)getConn().prepareStatement(selectsql);  
 	    ResultSet rs=pstmt.executeQuery();  
 	    rs.next();  
 	    int id=rs.getInt(1);  
