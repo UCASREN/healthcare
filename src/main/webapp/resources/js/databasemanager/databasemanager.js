@@ -106,7 +106,7 @@ var ajaxTable1 = function() {
 		// values
 		// here
 		],
-		"pageLength" : 10,
+		"pageLength" : 5,
 
 		"language" : {
 			"lengthMenu" : " _MENU_ records",
@@ -343,7 +343,7 @@ var ajaxTable2 = function() {
 		// values
 		// here
 		],
-		"pageLength" : 10,
+		"pageLength" : 5,
 
 		"language" : {
 			"lengthMenu" : " _MENU_ records",
