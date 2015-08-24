@@ -1,7 +1,9 @@
 package otc.healthcare.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -187,6 +189,45 @@ public class MetadataController {
 					+ list.get(i).getName() + "::" + list.get(i).getComments());
 		}
 		return list;
+	}
+	@RequestMapping(value = "/gettablecssinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> getTableCssInfo(@RequestParam(value = "databaseid", required = false) String databaseid,
+			@RequestParam(value = "tableid", required = false) String tableid,
+			@RequestParam(value = "length", required = false) Integer length,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "draw", required = false) Integer draw) {
+		System.out.println("get_table_info_list");
+		List<FieldInfo> list=null;
+		if(databaseid==null||tableid==null){
+			list=this.oracleSerive.getAllTableInfo();
+		}else{
+			list = this.oracleSerive.getTableInfo(databaseid,tableid);
+		}
+		//分页
+		int totalRecords=list.size();
+		int displayLength=length<0?totalRecords:length;
+		int displayStart=start;
+		int end=displayStart+displayLength;
+		end=end>totalRecords?totalRecords:end;
+		Map<String,Object> resultMap=new HashMap<String,Object>();
+		List<ArrayList<String>> store=new ArrayList<ArrayList<String>>();
+		for(int i=start;i<end;i++){
+			FieldInfo fieldInfo=list.get(i);
+			ArrayList<String> tempStore=new ArrayList<String>();
+			tempStore.add("<input type='checkbox' name='id"+fieldInfo.getFieldid()+"' value='"+fieldInfo.getFieldid()+"'>");
+			tempStore.add(fieldInfo.getFieldid());
+			tempStore.add(fieldInfo.getName());
+			tempStore.add(fieldInfo.getComments());
+			tempStore.add("0");
+			tempStore.add("100");
+			store.add(tempStore);
+		}
+		resultMap.put("draw", draw);
+		resultMap.put("recordsTotal", totalRecords);
+		resultMap.put("recordsFiltered", totalRecords);
+		resultMap.put("data", store);
+		return resultMap;
 	}
 	public OracleService getOracleSerive() {
 		return oracleSerive;

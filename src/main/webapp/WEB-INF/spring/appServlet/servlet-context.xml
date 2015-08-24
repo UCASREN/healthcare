@@ -16,6 +16,7 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/home/**" location="/home/" />
+	<resources mapping="/img/**" location="/resources/img/" />
 	<!-- <resources mapping="/icons/**" location="/icons/" />
 	<resources mapping="/images/**" location="/images/" />
 	<resources mapping="/style/**" location="/style/" />
@@ -32,5 +33,5 @@
 	
 	<!-- div view-controller -->
 	<view-controller path="/databasemanager" view-name="databasemanager"/>
-	
+	<view-controller path="/userdatabaseview" view-name="userdatabaseview"/>
 </beans:beans>

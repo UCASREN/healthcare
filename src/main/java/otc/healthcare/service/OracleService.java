@@ -110,6 +110,34 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
+	public List<FieldInfo> getAllTableInfo() {
+		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
+		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil
+					.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS from SYSTEM.HC_FIELD");
+			while (res.next()) {
+
+				FieldInfo fim = new FieldInfo();
+				fim.setFieldid(res.getString(1));
+				fim.setTableid(res.getString(2));
+				fim.setDatabaseid(res.getString(3));
+				fim.setName(res.getString(4));
+				fim.setComments(res.getString(5));
+				resultList.add(fim);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return resultList;
+	}
 
 	public boolean createHcDB() {
 		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
