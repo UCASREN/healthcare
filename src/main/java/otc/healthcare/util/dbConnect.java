@@ -19,18 +19,17 @@ import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
-import otc.healthcare.util.SpringWiredBean;
 
 
 public class dbConnect {
 	
 	private  HealthcareConfiguration hcConfiguration;
-	private  HealthcareConfiguration getHealthcareConfiguration() {
+/*	private  HealthcareConfiguration getHealthcareConfiguration() {
 		if(hcConfiguration==null)
 			hcConfiguration = SpringWiredBean.getInstance().getBeanByClass(HealthcareConfiguration.class);
 		return hcConfiguration;
 	}
-	
+*/	
 	public static void main(String[] args){
 		
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();

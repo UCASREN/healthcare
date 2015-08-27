@@ -70,7 +70,7 @@ var FormWizard = function () {
                     country: {
                         required: true
                     },
-                    //payment
+                    //useFields
                     card_name: {
                         required: true
                     },
@@ -88,14 +88,14 @@ var FormWizard = function () {
                     card_expiry_date: {
                         required: true
                     },
-                    'payment[]': {
+                    'useFields[]': {
                         required: true,
                         minlength: 1
                     }
                 },
 
                 messages: { // custom messages for radio buttons and checkboxes
-                    'payment[]': {
+                    'useFields[]': {
                         required: "Please select at least one option",
                         minlength: jQuery.validator.format("Please select at least one option")
                     }
@@ -104,8 +104,8 @@ var FormWizard = function () {
                 errorPlacement: function (error, element) { // render error placement for each input type
                     if (element.attr("name") == "gender") { // for uniform radio buttons, insert the after the given container
                         error.insertAfter("#form_gender_error");
-                    } else if (element.attr("name") == "payment[]") { // for uniform checkboxes, insert the after the given container
-                        error.insertAfter("#form_payment_error");
+                    } else if (element.attr("name") == "useFields[]") { // for uniform checkboxes, insert the after the given container
+                        error.insertAfter("#form_useFields_error");
                     } else {
                         error.insertAfter(element); // for other inputs, just perform default behavior
                     }
@@ -128,7 +128,7 @@ var FormWizard = function () {
                 },
 
                 success: function (label) {
-                    if (label.attr("for") == "gender" || label.attr("for") == "payment[]") { // for checkboxes and radio buttons, no need to show OK icon
+                    if (label.attr("for") == "gender" || label.attr("for") == "useFields[]") { // for checkboxes and radio buttons, no need to show OK icon
                         label
                             .closest('.form-group').removeClass('has-error').addClass('has-success');
                         label.remove(); // remove error label here
@@ -159,12 +159,12 @@ var FormWizard = function () {
                         $(this).html(input.find('option:selected').text());
                     } else if (input.is(":radio") && input.is(":checked")) {
                         $(this).html(input.attr("data-title"));
-                    } else if ($(this).attr("data-display") == 'payment[]') {
-                        var payment = [];
-                        $('[name="payment[]"]:checked', form).each(function(){ 
-                            payment.push($(this).attr('data-title'));
+                    } else if ($(this).attr("data-display") == 'useFields[]') {
+                        var useFields = [];
+                        $('[name="useFields[]"]:checked', form).each(function(){ 
+                            useFields.push($(this).attr('data-title'));
                         });
-                        $(this).html(payment.join("<br>"));
+                        $(this).html(useFields.join("<br>"));
                     }
                 });
             }
@@ -173,7 +173,7 @@ var FormWizard = function () {
                 var total = navigation.find('li').length;
                 var current = index + 1;
                 // set wizard title
-                $('.step-title', $('#form_wizard_1')).text('Step ' + (index + 1) + ' of ' + total);
+                $('.step-title', $('#form_wizard_1')).text(' ' + (index + 1) + ' / ' + total);
                 // set done steps
                 jQuery('li', $('#form_wizard_1')).removeClass("done");
                 var li_list = navigation.find('li');
@@ -190,10 +190,12 @@ var FormWizard = function () {
                 if (current >= total) {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
+                    $('#form_wizard_1').find('.button-wordPreview').show();
                     displayConfirm();
                 } else {
                     $('#form_wizard_1').find('.button-next').show();
                     $('#form_wizard_1').find('.button-submit').hide();
+                    $('#form_wizard_1').find('.button-wordPreview').hide();
                 }
                 Metronic.scrollTo($('.page-title'));
             }
@@ -202,6 +204,7 @@ var FormWizard = function () {
             $('#form_wizard_1').bootstrapWizard({
                 'nextSelector': '.button-next',
                 'previousSelector': '.button-previous',
+                
                 onTabClick: function (tab, navigation, index, clickedIndex) {
                     return false;
                     /*
@@ -229,6 +232,7 @@ var FormWizard = function () {
 
                     handleTitle(tab, navigation, index);
                 },
+                
                 onTabShow: function (tab, navigation, index) {
                     var total = navigation.find('li').length;
                     var current = index + 1;
@@ -243,6 +247,11 @@ var FormWizard = function () {
             $('#form_wizard_1 .button-submit').click(function () {
                 alert('提交成功，我们会尽快进行审核，请耐心等待！');
                 $('#submit_form').submit(); 
+            }).hide();
+            
+            $('#form_wizard_1 .button-wordPreview').click(function () {
+                alert('word文档预览');
+                //window.open ("/healthcare/", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
             }).hide();
 
             //apply validation on select2 dropdown value change, this only needed for chosen dropdown integration.

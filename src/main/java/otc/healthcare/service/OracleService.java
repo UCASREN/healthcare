@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import otc.healthcare.dao.ConnectionFactory;
@@ -16,22 +17,16 @@ import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
-import otc.healthcare.util.SpringWiredBean;
 
 @Component
 public class OracleService implements IService {
 
+	@Autowired
 	private HealthcareConfiguration hcConfiguration;
-
-	private HealthcareConfiguration getHealthcareConfiguration() {
-		if (hcConfiguration == null)
-			hcConfiguration = SpringWiredBean.getInstance().getBeanByClass(HealthcareConfiguration.class);
-		return hcConfiguration;
-	}
 
 	public List<DatabaseInfo> getALLDatabaseInfo() {
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -56,7 +51,7 @@ public class OracleService implements IService {
 
 	public List<TableInfo> getDatabaseInfo(String databaseid) {
 		List<TableInfo> resultList = new ArrayList<TableInfo>();
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -83,7 +78,7 @@ public class OracleService implements IService {
 
 	public List<FieldInfo> getTableInfo(String databaseid, String tableid) {
 		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -112,7 +107,7 @@ public class OracleService implements IService {
 	}
 
 	public boolean createHcDB() {
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -312,7 +307,7 @@ public class OracleService implements IService {
 	}
 
 	public boolean deleteDatabase(String databaseid) {
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -329,7 +324,7 @@ public class OracleService implements IService {
 	}
 
 	public boolean deleteTable(String databaseid, String tableid) {
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -346,7 +341,7 @@ public class OracleService implements IService {
 		return false;
 	}
 	public boolean deleteField(String databaseid, String tableid,String fieldid) {
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -369,7 +364,7 @@ public class OracleService implements IService {
 																						// table
 																						// one
 																						// row
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -389,7 +384,7 @@ public class OracleService implements IService {
 
 	public Integer createField(String databaseid, String tableid, String fieldname,String comments) {// insert
 		// into database table one row
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -408,7 +403,7 @@ public class OracleService implements IService {
 	}
 
 	public boolean changeDatabase(String databaseid, String newName, String newComments) {
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -434,7 +429,7 @@ public class OracleService implements IService {
 	}
 
 	public boolean changeTable(String databaseid, String tableid, String newName, String newComments) {
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -461,7 +456,7 @@ public class OracleService implements IService {
 		return false;
 	}
 	public boolean changeField(String fieldid,String databaseid, String tableid, String newName, String newComments) {
-		String oracle_url = this.getHealthcareConfiguration().getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
