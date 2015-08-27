@@ -112,8 +112,8 @@
 		</div>
 		<div class="portlet-body">
 			<div class="table-container">
-				<!-- <div class="table-actions-wrapper">
-					<span> </span> <select
+				<div class="table-actions-wrapper">
+					<span> </span> <!-- <select
 						class="table-group-action-input form-control input-inline input-small input-sm">
 						<option value="">Select...</option>
 						<option value="Cancel">Cancel</option>
@@ -123,8 +123,8 @@
 					</select>
 					<button class="btn btn-sm yellow table-group-action-submit">
 						<i class="fa fa-check"></i> Submit
-					</button>
-				</div> -->
+					</button> -->
+				</div>
 
 				<table class="table table-striped table-bordered table-hover"
 					id="datatable_ajax">
