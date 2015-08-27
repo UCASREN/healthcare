@@ -1,16 +1,26 @@
 package otc.healthcare.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
@@ -229,6 +239,35 @@ public class MetadataController {
 		resultMap.put("data", store);
 		return resultMap;
 	}
+	@RequestMapping(value="/batchupload", method= RequestMethod.POST)
+	@ResponseBody
+    public String handleFileUpload(HttpServletRequest request){
+        List<MultipartFile> files = ((MultipartHttpServletRequest)request).getFiles("file");
+        for (int i =0; i< files.size(); ++i) {
+            MultipartFile file = files.get(i);
+            String name = file.getName();
+            if (!file.isEmpty()) {
+            	System.out.println("文件长度: " + file.getSize());  
+                System.out.println("文件类型: " + file.getContentType());  
+                System.out.println("文件名称: " + file.getName());  
+                System.out.println("文件原名: " + file.getOriginalFilename());  
+                System.out.println("========================================");  
+                //如果用的是Tomcat服务器，则文件会上传到\\%TOMCAT_HOME%\\webapps\\YourWebProject\\WEB-INF\\upload\\文件夹中  
+                String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");  
+                //这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的  
+                try {
+					FileUtils.copyInputStreamToFile(file.getInputStream(), new File(realPath, file.getOriginalFilename()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return "You failed to upload " + name + " because internal error.";
+				} 
+            } else {
+                return "You failed to upload " + name + " because the file was empty.";
+            }
+        }
+        return "upload successful";
+    }
 	public OracleService getOracleSerive() {
 		return oracleSerive;
 	}

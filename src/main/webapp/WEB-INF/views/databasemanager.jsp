@@ -55,6 +55,8 @@
 
 <link rel="stylesheet" type="text/css"
 	href="resources/plugins/jstree/dist/themes/default/style.min.css" />
+<link href="resources/plugins/dropzone/css/dropzone.css"
+	rel="stylesheet" />
 
 <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN THEME STYLES -->
@@ -92,6 +94,12 @@
 					</div>
 				</div>
 				<div class="col-md-10">
+					<div class="row">
+						<div class="col-md-12">
+							<a class="btn default" data-toggle="modal"
+								href="#fileuploadmodal"> 上传文件</a>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="row">
@@ -141,7 +149,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<p class="text-center" id="whichdatabase"></p>
-									<p class="hidden" id="whichdatabaseid" ></p>
+									<p class="hidden" id="whichdatabaseid"></p>
 								</div>
 							</div>
 						</div>
@@ -193,8 +201,8 @@
 							<div class="row">
 								<div class="col-md-12">
 									<p class="text-center" id="whichtable"></p>
-									<div class="hidden" id="whichtableid" ></div>
-									<div class="hidden" id="whichtableid_belong" ></div>
+									<div class="hidden" id="whichtableid"></div>
+									<div class="hidden" id="whichtableid_belong"></div>
 								</div>
 							</div>
 						</div>
@@ -230,7 +238,43 @@
 		</div>
 	</div>
 	<!-- END EXAMPLE TABLE PORTLET-->
-
+	<div class="modal fade bs-modal-lg" id="fileuploadmodal" tabindex="-1"
+		role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title">文件上传</h4>
+					<h5>
+						<label class="checkbox-inline" style="padding-left: 0px;">
+							<i class="fa fa-database"></i> 数据库
+						</label> <label class="checkbox-inline" style="padding-left: 0px;">
+							<select id="database" class="form-control select2me"
+							data-placeholder="Select...">
+								<option value="">请选择一个数据库...</option>
+						</select>
+						</label>
+						<label class="checkbox-inline" style="padding-left: 0px;">
+					或者新建一个数据库
+			</label> 
+					</h5>
+				</div>
+				<div class="modal-body">
+					<form action="dataresource/batchupload?${_csrf.parameterName}=${_csrf.token}"
+						class="dropzone" id="myDropzone" enctype="multipart/form-data" method="post">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						</form>
+				</div>
+				<div class="modal-footer" style="text-align:left;">
+					<button type="button" class="btn blue" id="submit-all" disabled="disabled">上传</button>
+					<button type="button" class="btn default" data-dismiss="modal">返回主界面</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
 
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->
@@ -283,6 +327,8 @@
 		src="resources/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript"
 		src="resources/plugins/jstree/dist/jstree.min.js"></script>
+	<script type="text/javascript"
+		src="resources/plugins/dropzone/dropzone.js"></script>
 
 	<!-- END PAGE LEVEL PLUGINS -->
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -291,13 +337,15 @@
 	<script src="resources/js/components-pickers.js" type="text/javascript"></script>
 	<script src="resources/js/databasemanager/databasemanager.js"
 		type="text/javascript"></script>
+	<script src="resources/js/databasemanager/form-dropzone.js"
+		type="text/javascript"></script>
 	<!-- <script src="resources/js/databasemanager/tabletable.js" type="text/javascript"></script>
 	<script src="resources/js/databasemanager/ajaxtree.js" type="text/javascript"></script> -->
 	<script>
 		jQuery(document).ready(function() {
 			Metronic.init();
 			ComponentsPickers.init();
-
+			FormDropzone.init();
 		});
 	</script>
 </body>
