@@ -105,6 +105,34 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
+	public List<FieldInfo> getAllTableInfo() {
+		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil
+					.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS from SYSTEM.HC_FIELD");
+			while (res.next()) {
+
+				FieldInfo fim = new FieldInfo();
+				fim.setFieldid(res.getString(1));
+				fim.setTableid(res.getString(2));
+				fim.setDatabaseid(res.getString(3));
+				fim.setName(res.getString(4));
+				fim.setComments(res.getString(5));
+				resultList.add(fim);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return resultList;
+	}
 
 	public boolean createHcDB() {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -314,7 +342,10 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			return dbUtil.execute("delete from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);
+			dbUtil.execute("delete from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);//删除HC_DATABASE表
+			dbUtil.execute("delete from SYSTEM.HC_TABLE where DATABASEID=" + databaseid);//删除HC_TABLE表
+			dbUtil.execute("delete from SYSTEM.HC_FIELD where DATABASEID=" + databaseid);//删除HC_FIELD表
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -357,13 +388,25 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
-
-	public Integer createTable(String databaseid, String tablename, String comments) {// insert
-																						// into
-																						// database
-																						// table
-																						// one
-																						// row
+	public Integer createDatabase(String databasename, String comments) {// insert into database table row
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			String vsql = "insert into SYSTEM.HC_DATABASE (DATABASEID,NAME,COMMENTS) values(DATABASE_DATABASEID.nextval,"
+					+ "'" + databasename + "','" + comments + "')";
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql,"select DATABASE_DATABASEID.currval as id from SYSTEM.HC_DATABASE");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return null;
+	}
+	public Integer createTable(String databaseid, String tablename, String comments) {// insert into database table row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -373,7 +416,7 @@ public class OracleService implements IService {
 		try {
 			String vsql = "insert into SYSTEM.HC_TABLE (TABLEID,DATABASEID,NAME,COMMENTS) values(TABLE_TABLEID.nextval,"
 					+ databaseid + ",'" + tablename + "','" + comments + "')";
-			return dbUtil.insertDataReturnKeyByReturnInto(vsql);
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql,"select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -393,7 +436,7 @@ public class OracleService implements IService {
 		try {
 			String vsql = "insert into SYSTEM.HC_FIELD (FIELDID,TABLEID,DATABASEID,NAME,COMMENTS) values(FIELD_FIELDID.nextval,"
 					+ tableid + ","+ databaseid + ",'" + fieldname + "','" + comments + "')";
-			return dbUtil.insertDataReturnKeyByReturnInto(vsql);
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql,"select FIELD_FIELDID.currval as id from SYSTEM.HC_FIELD");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

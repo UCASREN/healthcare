@@ -209,7 +209,7 @@ function FileManagerClass(){
 <div class="box">
   <div class="wrap">
   	<p class="subsite-btn clearfix">
-	  <a href="http://www.liepin.com/it/?imscid=R000000030">
+	  <a href="databasemanager" target="_blank">
 	    <span class="icons48 icons48-it"></span>
 	    <b>数据发布</b>
 	  </a>
