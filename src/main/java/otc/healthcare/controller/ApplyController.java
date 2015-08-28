@@ -32,7 +32,18 @@ public class ApplyController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/";
+		return "redirect:/apply/applydata";
+	}
+	
+	@RequestMapping(value = "/wordonline", method = RequestMethod.GET)
+	public String showDocWordOnline(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			req. setCharacterEncoding("UTF-8");
+			this.WordService.docConvert(req, resp);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "documentView";
 	}
 	
 	public WordService getWordService() {

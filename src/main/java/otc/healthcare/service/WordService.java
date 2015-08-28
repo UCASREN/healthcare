@@ -2,23 +2,18 @@ package otc.healthcare.service;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -27,16 +22,23 @@ import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import otc.healthcare.util.HealthcareConfiguration;
-import otc.healthcare.util.SpringWiredBean;
+import otc.healthcare.util.docConvertUtil;
 
 @Component
 public class WordService implements IService{
 
 	//freemarker configuration
 	private Configuration configuration;
+	@Autowired
+	private HealthcareConfiguration hcConfiguration;
+
+/*	private HealthcareConfiguration getHealthcareConfiguration() {
+		if (hcConfiguration == null)
+			hcConfiguration = SpringWiredBean.getInstance().getBeanByClass(HealthcareConfiguration.class);
+		return hcConfiguration;
+	}*/
 	
 	@SuppressWarnings("deprecation")
 	public Configuration getConfiguration(){
@@ -48,55 +50,23 @@ public class WordService implements IService{
 	}
 	
 	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp){
-		
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		getData(req , dataMap);
-		
 		File file = null;  
-	    file = createDoc(dataMap, "test"); 
-	    
-	    /*  浏览器 --- 文件下载
-	    InputStream fin = null;  
-	    ServletOutputStream out = null;  
-        try {  
-            // 调用createDoc方法生成Word文档  
-            file = createDoc(dataMap, "test");  
-            fin = new FileInputStream(file);  
-              
-            resp.setCharacterEncoding("utf-8");  
-            resp.setContentType("application/msword");  
-            // 设置浏览器以下载的方式处理该文件默认名为resume.doc  
-            resp.addHeader("Content-Disposition", "attachment;filename=resume.doc");  
-              
-            out = resp.getOutputStream();  
-            byte[] buffer = new byte[512];  // 缓冲区  
-            int bytesToRead = -1;  
-            // 通过循环将读入的Word文件的内容输出到浏览器中  
-            while((bytesToRead = fin.read(buffer)) != -1) {  
-                out.write(buffer, 0, bytesToRead);  
-            }  
-        } catch (IOException e) {
-			e.printStackTrace();
-		} finally {  
-				try {
-					  if(fin != null) fin.close();
-					  if(out != null) out.close();  
-			           if(file != null) file.exists(); // 删除临时文件 
-				} catch (IOException e) {
-					e.printStackTrace();
-				}  
-        }  
-        */
-            
+	    file = createDoc(dataMap, "dataApply"); 
         System.out.println("加载word模版成功，生成word文件！");
 	}
 
 	
 	 public File createDoc(Map<?, ?> dataMap, String typeName) {  
-	        String name = "E:/outFile" +  (int)(Math.random() * 100000) + ".doc";  
+		 	WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
+		    ServletContext servletContext = webApplicationContext.getServletContext(); 
+		    String docPath = servletContext.getRealPath("/WEB-INF/hc_doc");
+//	        String name = docPath +"\\"+  (int)(Math.random() * 100000) + ".docx";//用户名加uuid  
+		    String name = docPath +"/njz.doc";
 	        File f = new File(name);  
 	        getConfiguration();
-	        Template t = getTemplates(typeName);  
+	        Template t = getTemplates(servletContext,typeName);  
 	        try {  
 	            // 这个地方不能使用FileWriter因为需要指定编码类型否则生成的Word文档会因为有无法识别的编码而无法打开
 	        	Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "utf-8"));
@@ -115,15 +85,13 @@ public class WordService implements IService{
 	/*
 	 * 获取word——ftl模版
 	 */
-	private Template getTemplates(String TemplateName) {
+	private Template getTemplates(ServletContext servletContext, String TemplateName) {
 		
-		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
-	    ServletContext servletContext = webApplicationContext.getServletContext(); 
-		configuration.setServletContextForTemplateLoading(servletContext, "/resources/doc_ftl");
+		configuration.setServletContextForTemplateLoading(servletContext, "resources");
 //		configuration.setDirectoryForTemplateLoading(new File("C:/Users/Andy/Documents/workspace-sts-3.7.0.RELEASE/java2word"));
 		Template t = null;
 		try {
-			t = configuration.getTemplate(TemplateName+".ftl");
+			t = configuration.getTemplate("/hc_docftl/"+TemplateName+".ftl");
 		} catch (TemplateNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -141,28 +109,51 @@ public class WordService implements IService{
 	}
 
 	private void getData(HttpServletRequest req, Map<String, Object> dataMap) {
-		String hc_username = req.getParameter("username");
-		String hc_email = req.getParameter("email");
-		System.out.println("test : " + hc_username);
-		dataMap.put("hc_username", hc_username);
-		dataMap.put("hc_usertel", hc_email);
-//		dataMap.put("month", "2");
-//		dataMap.put("day", "13");
-//		dataMap.put("auditor", "唐鑫");
-//		dataMap.put("phone", "13020265912");
-//		dataMap.put("weave", "占文涛");
-//		dataMap.put("number", 1);
-//		dataMap.put("content", "内容"+2);
+		String hc_userName = req.getParameter("userName");
+		String hc_userEmail = req.getParameter("userEmail");
+		System.out.println("test : " + hc_userName);
 		
-//		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-//		for (int i = 0; i < 10; i++) {
-//			Map<String,Object> map = new HashMap<String,Object>();
-//			map.put("number", i);
-//			map.put("content", "内容"+i);
-//			list.add(map);
-//		}
-//		dataMap.put("list", list);
+		//user info(6)
+		dataMap.put("hc_UserName", hc_userName);
+		dataMap.put("hc_UserDepartment", hc_userName);
+		dataMap.put("hc_UserAddress", hc_userName);
+		dataMap.put("hc_UserTel", hc_userEmail);
+		dataMap.put("hc_UserEmail",hc_userEmail);
+		dataMap.put("hc_UserDemand",hc_userEmail);
+		
+		//project info(5)
+		dataMap.put("hc_ProName", hc_userName);
+		dataMap.put("hc_ProChair", hc_userName);
+		dataMap.put("hc_ProSource", hc_userName);
+		dataMap.put("hc_ProUndertaking", hc_userName);
+		dataMap.put("hc_ProRemarks", hc_userName);
+		
 	}
+	
+	/*
+	 * word在线预览
+	 */
+	public void docConvert(HttpServletRequest req, HttpServletResponse resp) {
+		String swftoolPath = hcConfiguration.getProperty(HealthcareConfiguration.SWFTOOLS_PATH);
+	    ServletContext servletContext = req.getServletContext(); 
+		String docPath = servletContext.getRealPath("/WEB-INF/hc_doc");
+		String swfPath = servletContext.getRealPath("/resources/swf");
+//		String docFileName = (String) req.getAttribute("docFileName");
+		String docName = docPath +"\\" + "njz.doc";
+		
+		//开始转换
+		docConvertUtil docUtil = new docConvertUtil(docName,swfPath);
+		String swfFilePath = docUtil.conver(swftoolPath);
+		
+		if(!swfFilePath.equals("")){
+			System.out.println("****swf生成操作成功，可以完成在线预览****");
+			String swfpath = "../resources/swf"+swfFilePath.substring(swfFilePath.lastIndexOf("/"));
+			req.getSession().setAttribute("swfFilePath", swfpath);
+		}
+		else
+			System.out.println("****swf生成操作失败****");
+		
+	}	
 	
 	@Override
 	public String getName() {
@@ -182,4 +173,41 @@ public class WordService implements IService{
 		return 0;
 	}
 
+
 }
+
+
+
+
+/*  浏览器 --- 文件下载
+InputStream fin = null;  
+ServletOutputStream out = null;  
+try {  
+    // 调用createDoc方法生成Word文档  
+    file = createDoc(dataMap, "test");  
+    fin = new FileInputStream(file);  
+      
+    resp.setCharacterEncoding("utf-8");  
+    resp.setContentType("application/msword");  
+    // 设置浏览器以下载的方式处理该文件默认名为resume.doc  
+    resp.addHeader("Content-Disposition", "attachment;filename=resume.doc");  
+      
+    out = resp.getOutputStream();  
+    byte[] buffer = new byte[512];  // 缓冲区  
+    int bytesToRead = -1;  
+    // 通过循环将读入的Word文件的内容输出到浏览器中  
+    while((bytesToRead = fin.read(buffer)) != -1) {  
+        out.write(buffer, 0, bytesToRead);  
+    }  
+} catch (IOException e) {
+	e.printStackTrace();
+} finally {  
+		try {
+			  if(fin != null) fin.close();
+			  if(out != null) out.close();  
+	           if(file != null) file.exists(); // 删除临时文件 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+}  
+*/
