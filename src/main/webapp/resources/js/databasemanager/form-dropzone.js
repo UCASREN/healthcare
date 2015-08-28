@@ -20,7 +20,6 @@ var FormDropzone = function() {
 					myDropzone = this;
 					 var submitButton = $("#submit-all");
 					submitButton.click(function() {
-						console.log("submit");
 						myDropzone.processQueue();
 					});
 					this.on("addedfile", function(file) {
@@ -49,16 +48,10 @@ var FormDropzone = function() {
 					});
 					//当上传完成后的事件，接受的数据为JSON格式
 					this.on("complete", function(data) {
-						console.log("hello");
 						if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-							var res = eval('(' + data.xhr.responseText + ')');
-							var msg;
-							if (res.result) {
-								msg = "恭喜，已成功上传" + res.count + "个文件！";
-							} else {
-								msg = "上传失败，失败的原因是：" + res.message;
-							}
-							console.log(msg);
+							console.log(data);
+							//var msg = eval('(' + data.xhr.responseText + ')');
+							//console.log(msg);
 							// $("#message").text(msg);
 							// $("#dialog").dialog("open");
 						}

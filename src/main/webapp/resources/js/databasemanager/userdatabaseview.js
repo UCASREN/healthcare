@@ -1,3 +1,69 @@
+//显示数据库概述信息部分
+var database_grid;
+var table_grid;
+var TableAjax_database = function () {
+
+    var initPickers = function () {
+        //init date pickers
+        $('.date-picker').datepicker({
+            rtl: Metronic.isRTL(),
+            autoclose: true
+        });
+    }
+
+    var handleRecords = function () {
+
+        var grid = new Datatable();
+        database_grid=grid;
+        grid.init({
+            src: $("#datatable_ajax_database"),
+            onSuccess: function (grid) {
+                // execute some code after table records loaded
+            },
+            onError: function (grid) {
+                // execute some code on network or other general error  
+            },
+            onDataLoad: function(grid) {
+                // execute some code on ajax data load
+            },
+            loadingMessage: 'Loading...',
+            dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
+
+                // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
+                // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/scripts/datatable.js). 
+                // So when dropdowns used the scrollable div should be removed. 
+                //"dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>",
+                
+                "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
+
+                "lengthMenu": [
+                    [2,10, 20, 50, 100, 150, -1],
+                    [2,10, 20, 50, 100, 150, "All"] // change per page values here
+                ],
+                "pageLength": 10, // default record count per page
+                "ajax": {
+                    "url": "dataresource/getdatabasecssinfo", // ajax source
+                },
+                "order": [
+                    [1, "asc"]
+                ]// set first column as a default sort by asc
+            }
+        });
+    }
+
+    return {
+
+        //main function to initiate the module
+        init: function () {
+
+            initPickers();
+            handleRecords();
+        }
+
+    };
+
+}();
+TableAjax_database.init();
 var TableAjax = function () {
 
     var initPickers = function () {
@@ -11,7 +77,7 @@ var TableAjax = function () {
     var handleRecords = function () {
 
         var grid = new Datatable();
-
+        table_grid=grid;
         grid.init({
             src: $("#datatable_ajax"),
             onSuccess: function (grid) {
@@ -77,6 +143,7 @@ var TableAjax = function () {
             }
         });
         */
+        
         $.ajax({
         	type : "get",//请求方式
         	url : "dataresource/getalldatabaseinfo",//发送请求地址
@@ -87,6 +154,7 @@ var TableAjax = function () {
                 });
         	}
         });
+        
         $("#database").change(function(){
         	if($("#database").val()!=""){
         		$("#table").empty();
@@ -104,14 +172,18 @@ var TableAjax = function () {
         		        });
         			}
         		});
+        		database_grid.setAjaxParam("databaseid", $("#database").select2("val"));
+        		database_grid.getDataTable().ajax.reload();
+        		//database_grid.clearAjaxParams();
         	}
         });
         $("#table").change(function(){
         	if($("#table").val()!=""&&$("#database").val()!=""){
-        		grid.setAjaxParam("databaseid", $("#table").val());
-                grid.setAjaxParam("tableid", $("#database").val());
+        		//console.log("tableid:"+$("#table").select2("val"));
+        		grid.setAjaxParam("databaseid", $("#database").select2("val"));
+                grid.setAjaxParam("tableid", $("#table").select2("val"));
                 grid.getDataTable().ajax.reload();
-                grid.clearAjaxParams();
+                //grid.clearAjaxParams();
         	}
         });
     }
@@ -128,4 +200,109 @@ var TableAjax = function () {
     };
 
 }();
+TableAjax.init();
 
+
+/*
+ * This file is responsible for database tree
+ *  @author xingkong
+ * */
+var AjaxTree = function() {
+
+	$("#tree").jstree({
+		"core" : {
+			"themes" : {
+				"responsive" : false
+			},
+			// so that create works
+			"check_callback" : true,
+			'data' : {
+				'url' : function(node) {
+					return 'dataresource/getdatabasetreeinfo';
+				},
+				'data' : function(node) {
+					return {
+						'parent' : node.id
+					};
+				}
+			}
+		},
+		"types" : {
+			"default" : {
+				"icon" : "fa fa-folder icon-state-warning icon-lg"
+			},
+			"file" : {
+				"icon" : "fa fa-file icon-state-warning icon-lg"
+			}
+		},
+		"state" : {
+			"key" : "demo3"
+		},
+		"plugins" : [  "unique", "dnd", "types" ]
+	}).on('delete_node.jstree', function(e, data) {
+		$.get('dataresource/nodeoperation?operation=delete_node', {
+			'id' : data.node.id,
+			'parent' : data.node.parent
+		}).done(function(d) {
+			//alert(d);
+			console.log(d);
+		}).fail(function() {
+			data.instance.refresh();
+		});
+	}).on('create_node.jstree', function(e, data) {
+		if (data.node.parent.indexOf("alltable") != -1) {
+			alert("Can't create node under table node");
+			data.instance.refresh();
+		} else {
+			$.get('dataresource/nodeoperation?operation=create_node', {
+				'parent' : data.node.parent,
+				'position' : data.position,
+				'text' : data.node.text
+			}).done(function(d) {
+				data.instance.set_id(data.node, d);
+			}).fail(function() {
+				data.instance.refresh();
+			});
+		}
+	}).on('rename_node.jstree', function(e, data) {
+		$.get('dataresource/nodeoperation?operation=rename_node', {
+			'id' : data.node.id,
+			'parent' : data.node.parent,
+			'text' : data.node.text
+		}).fail(function() {
+			data.instance.refresh();
+		});
+		location.reload(true);
+	}).on('move_node.jstree', function(e, data) {
+		/*
+		 * $.get('?operation=move_node', { 'id' : data.node.id, 'parent' :
+		 * data.parent, 'position' : data.position }) .fail(function () {
+		 * data.instance.refresh(); });
+		 */
+		alert("Move operation not supported");
+		data.instance.refresh();
+	}).on('copy_node.jstree', function(e, data) {
+		/*
+		 * $.get('?operation=copy_node', { 'id' : data.original.id, 'parent' :
+		 * data.parent, 'position' : data.position }) .always(function () {
+		 * data.instance.refresh(); });
+		 */
+		alert("Copy operation not supported");
+		data.instance.refresh();
+	}).on('changed.jstree', function(e, data) {
+
+	}).on('select_node.jstree', function(e, data) {
+		if (data.node.id.indexOf("alldatabase") != -1) {
+			database_grid.setAjaxParam("databaseid", data.node.id.substring(data.node.id.indexOf("_")+1));
+    		database_grid.getDataTable().ajax.reload();
+		}
+		if (data.node.id.indexOf("alltable") != -1) {
+			table_grid.setAjaxParam("databaseid",data.node.parent.substring(data.node.parent.indexOf("_")+1));
+			table_grid.setAjaxParam("tableid", data.node.id.substring(data.node.id.indexOf("_")+1));
+			table_grid.getDataTable().ajax.reload();
+			
+		}
+	});
+	
+}
+AjaxTree();

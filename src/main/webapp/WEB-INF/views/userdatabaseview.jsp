@@ -75,19 +75,18 @@
 	<!-- Begin: life time stats -->
 	<div class="portlet  box blue">
 		<div class="portlet-title">
-			<label class="checkbox-inline" style="padding-left: 0px;">
-					<i class="fa fa-database"></i> 数据库
-			</label> 
-			<label class="checkbox-inline" style="padding-left: 0px;"> 
-			<select id="database" class="form-control select2me" data-placeholder="Select...">
+			<label class="checkbox-inline" style="padding-left: 0px;"> <i
+				class="fa fa-database"></i> 数据库
+			</label> <label class="checkbox-inline" style="padding-left: 0px;"> <select
+				id="database" class="form-control select2me"
+				data-placeholder="Select..." style="min-width:100px;">
 					<option value="">请选择一个数据库...</option>
 			</select>
-			</label>
-			<label class="checkbox-inline" style="padding-left: 0px;">
-					<i class="fa fa-table"></i> 表
-			</label> 
-			<label class="checkbox-inline" style="padding-left: 0px;"> 
-			<select id="table" class="form-control select2me" data-placeholder="Select...">
+			</label> <label class="checkbox-inline" style="padding-left: 0px;"> <i
+				class="fa fa-table"></i> 表
+			</label> <label class="checkbox-inline" style="padding-left: 0px;"> <select
+				id="table" class="form-control select2me"
+				data-placeholder="Select..." style="min-width:100px;">
 					<option value="">请选择数据库下的表...</option>
 			</select>
 			</label>
@@ -111,37 +110,105 @@
 			</div>
 		</div>
 		<div class="portlet-body">
-			<div class="table-container">
-				<div class="table-actions-wrapper">
-					<span> </span> <!-- <select
-						class="table-group-action-input form-control input-inline input-small input-sm">
-						<option value="">Select...</option>
-						<option value="Cancel">Cancel</option>
-						<option value="Cancel">Hold</option>
-						<option value="Cancel">On Hold</option>
-						<option value="Close">Close</option>
-					</select>
-					<button class="btn btn-sm yellow table-group-action-submit">
-						<i class="fa fa-check"></i> Submit
-					</button> -->
+			<div class="row">
+				<div class="col-md-2">
+					<div id="tree" class="tree-demo"></div>
 				</div>
+				<div class="col-md-10">
+				<div class="row">
+					<div class="col-md-5">
+						<!-- BEGIN Portlet PORTLET-->
+							<div class="portlet gren">
+								<div class="portlet-title">
+									<div class="caption">
+										<i class="fa fa-gift"></i>概要信息
+									</div>
+									<div class="tools">
+										<a href="javascript:;" class="collapse"> </a> <a
+											href="#portlet-config" data-toggle="modal" class="config">
+										</a> <a href="javascript:;" class="reload"> </a> <a href=""
+											class="fullscreen"> </a> <a href="javascript:;"
+											class="remove"> </a>
+									</div>
+								</div>
+								<div class="portlet-body">
+									<div class="scroller" style="height: 200px"></div>
+								</div>
+							</div>
+							<!-- END Portlet PORTLET-->
+					</div>
+					<div class="col-md-7">
+					<div class="table-container">
+						<div class="table-actions-wrapper">
+							<span> </span>
+						</div>
 
-				<table class="table table-striped table-bordered table-hover"
-					id="datatable_ajax">
-					<thead>
-						<tr role="row" class="heading">
-							<th width="2%"><input type="checkbox"
-								class="group-checkable"></th>
-							<th width="5%">编号</th>
-							<th width="15%">名称</th>
-							<th width="15%">备注</th>
-							<th width="10%">最小值</th>
-							<th width="10%">最大值</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
+						<table class="table table-striped table-bordered table-hover"
+							id="datatable_ajax_database">
+							<thead>
+								<tr role="row" class="heading">
+									<th width="2%"><input type="checkbox"
+										class="group-checkable"></th>
+									<th width="5%">编号</th>
+									<th width="15%">名称</th>
+									<th width="15%">备注</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col-md-5">
+					<!-- BEGIN Portlet PORTLET-->
+							<div class="portlet gren">
+								<div class="portlet-title">
+									<div class="caption">
+										<i class="fa fa-gift"></i>概要信息
+									</div>
+									<div class="tools">
+										<a href="javascript:;" class="collapse"> </a> <a
+											href="#portlet-config" data-toggle="modal" class="config">
+										</a> <a href="javascript:;" class="reload"> </a> <a href=""
+											class="fullscreen"> </a> <a href="javascript:;"
+											class="remove"> </a>
+									</div>
+								</div>
+								<div class="portlet-body">
+									<div class="scroller" style="height: 200px"></div>
+								</div>
+							</div>
+							<!-- END Portlet PORTLET-->
+				</div>
+				<div class="col-md-7">
+					<div class="table-container">
+						<div class="table-actions-wrapper">
+							<span> </span>
+						</div>
+
+						<table class="table table-striped table-bordered table-hover"
+							id="datatable_ajax">
+							<thead>
+								<tr role="row" class="heading">
+									<th width="2%"><input type="checkbox"
+										class="group-checkable"></th>
+									<th width="5%">编号</th>
+									<th width="15%">名称</th>
+									<th width="15%">备注</th>
+									<th width="10%">最小值</th>
+									<th width="10%">最大值</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					</div>
+				</div>
+					
+				</div>
 			</div>
 		</div>
 	</div>
@@ -214,9 +281,8 @@
 		jQuery(document).ready(function() {
 			Metronic.init();
 			ComponentsPickers.init();
-			TableAjax.init();
+			
 		});
-		
 	</script>
 </body>
 <!-- END BODY -->
