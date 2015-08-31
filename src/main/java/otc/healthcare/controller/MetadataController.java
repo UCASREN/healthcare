@@ -222,7 +222,7 @@ public class MetadataController {
 		for (int i = start; i < end; i++) {
 			TableInfo tableInfo = list.get(i);
 			ArrayList<String> tempStore = new ArrayList<String>();
-			tempStore.add("<input type='checkbox' name='id" + tableInfo.getDatabaseid() + "' value='"
+			tempStore.add("<input type='checkbox' name='id" + tableInfo.getTableid() + "' value='"
 					+ tableInfo.getDatabaseid() + "'>");
 			tempStore.add(tableInfo.getDatabaseid());
 			tempStore.add(tableInfo.getName());
