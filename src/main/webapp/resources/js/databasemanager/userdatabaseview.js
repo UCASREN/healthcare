@@ -174,7 +174,21 @@ var TableAjax = function () {
         		});
         		database_grid.setAjaxParam("databaseid", $("#database").select2("val"));
         		database_grid.getDataTable().ajax.reload();
-        		//database_grid.clearAjaxParams();
+        		//更新数据库概要信息
+        		$.ajax({
+                	type : "get",//请求方式
+                	url : "dataresource/getdatabasesummary",//发送请求地址
+                	dataType : "json",
+                	data:{
+                		databaseid:$("#database").select2("val")
+                	},
+                	success : function(data) {
+                		$("#showdatabaseinfo_name").text("数据库名："+data.name);
+                		$("#showdatabaseinfo_comments").text("备注："+data.comments);
+                		$("#showdatabaseinfo_others").text("其它："+data.others);
+                		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
+                	}
+                });
         	}
         });
         $("#table").change(function(){
@@ -183,7 +197,23 @@ var TableAjax = function () {
         		grid.setAjaxParam("databaseid", $("#database").select2("val"));
                 grid.setAjaxParam("tableid", $("#table").select2("val"));
                 grid.getDataTable().ajax.reload();
-                //grid.clearAjaxParams();
+              //更新表概要信息
+    			$.ajax({
+                	type : "get",//请求方式
+                	url : "dataresource/gettablesummary",//发送请求地址
+                	dataType : "json",
+                	data:{
+                		databaseid:$("#database").select2("val"),
+                		tableid:$("#table").select2("val")
+                	},
+                	success : function(data) {
+                		console.log(data);
+                		$("#showtableinfo_name").text("表名："+data.name);
+                		$("#showtableinfo_comments").text("备注："+data.comments);
+                		$("#showtableinfo_others").text("其它："+data.others);
+                		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
+                	}
+                });
         	}
         });
     }
@@ -295,12 +325,43 @@ var AjaxTree = function() {
 		if (data.node.id.indexOf("alldatabase") != -1) {
 			database_grid.setAjaxParam("databaseid", data.node.id.substring(data.node.id.indexOf("_")+1));
     		database_grid.getDataTable().ajax.reload();
+    		//更新数据库概要信息
+    		$.ajax({
+            	type : "get",//请求方式
+            	url : "dataresource/getdatabasesummary",//发送请求地址
+            	dataType : "json",
+            	data:{
+            		databaseid:data.node.id.substring(data.node.id.indexOf("_")+1)
+            	},
+            	success : function(data) {
+            		$("#showdatabaseinfo_name").text("数据库名："+data.name);
+            		$("#showdatabaseinfo_comments").text("备注："+data.comments);
+            		$("#showdatabaseinfo_others").text("其它："+data.others);
+            		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
+            	}
+            });
 		}
 		if (data.node.id.indexOf("alltable") != -1) {
 			table_grid.setAjaxParam("databaseid",data.node.parent.substring(data.node.parent.indexOf("_")+1));
 			table_grid.setAjaxParam("tableid", data.node.id.substring(data.node.id.indexOf("_")+1));
 			table_grid.getDataTable().ajax.reload();
-			
+			//更新表概要信息
+			$.ajax({
+            	type : "get",//请求方式
+            	url : "dataresource/gettablesummary",//发送请求地址
+            	dataType : "json",
+            	data:{
+            		databaseid:data.node.parent.substring(data.node.parent.indexOf("_")+1),
+            		tableid:data.node.id.substring(data.node.id.indexOf("_")+1)
+            	},
+            	success : function(data) {
+            		console.log(data);
+            		$("#showtableinfo_name").text("表名："+data.name);
+            		$("#showtableinfo_comments").text("备注："+data.comments);
+            		$("#showtableinfo_others").text("其它："+data.others);
+            		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
+            	}
+            });
 		}
 	});
 	

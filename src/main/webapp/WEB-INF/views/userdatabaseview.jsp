@@ -125,25 +125,10 @@
 							<div class="tab-pane active" id="showdatabaseinfo">
 								<div class="row">
 									<div class="col-md-5">
-										<!-- BEGIN Portlet PORTLET-->
-										<div class="portlet gren">
-											<div class="portlet-title">
-												<div class="caption">
-													<i class="fa fa-gift"></i>概要信息
-												</div>
-												<div class="tools">
-													<a href="javascript:;" class="collapse"> </a> <a
-														href="#portlet-config" data-toggle="modal" class="config">
-													</a> <a href="javascript:;" class="reload"> </a> <a href=""
-														class="fullscreen"> </a> <a href="javascript:;"
-														class="remove"> </a>
-												</div>
-											</div>
-											<div class="portlet-body">
-												<div class="scroller" style="height: 200px"></div>
-											</div>
-										</div>
-										<!-- END Portlet PORTLET-->
+										<p id="showdatabaseinfo_name"></p>
+										<p id="showdatabaseinfo_comments"></p>
+										<p id="showdatabaseinfo_others"></p>
+										<p id="showdatabaseinfo_tablenumber"></p>
 									</div>
 									<div class="col-md-7">
 										<div class="table-container">
@@ -172,25 +157,12 @@
 							<div class="tab-pane" id="showtableinfo">
 								<div class="row">
 									<div class="col-md-5">
-										<!-- BEGIN Portlet PORTLET-->
-										<div class="portlet gren">
-											<div class="portlet-title">
-												<div class="caption">
-													<i class="fa fa-gift"></i>概要信息
-												</div>
-												<div class="tools">
-													<a href="javascript:;" class="collapse"> </a> <a
-														href="#portlet-config" data-toggle="modal" class="config">
-													</a> <a href="javascript:;" class="reload"> </a> <a href=""
-														class="fullscreen"> </a> <a href="javascript:;"
-														class="remove"> </a>
-												</div>
-											</div>
-											<div class="portlet-body">
-												<div class="scroller" style="height: 200px"></div>
-											</div>
-										</div>
-										<!-- END Portlet PORTLET-->
+
+										<p id="showtableinfo_name"></p>
+										<p id="showtableinfo_comments"></p>
+										<p id="showtableinfo_others"></p>
+										<p id="showtableinfo_fieldnumber"></p>
+
 									</div>
 									<div class="col-md-7">
 										<div class="table-container">

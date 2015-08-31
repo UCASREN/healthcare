@@ -185,7 +185,14 @@ public class MetadataController {
 		}
 		return list;
 	}
-
+	@RequestMapping(value = "/getdatabasesummary", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,String> getDatabaseSummary(@RequestParam(value = "databaseid", required = true) String databaseid) {
+		System.out.println("get_database_info_summary");
+		Map<String,String> resultMap=this.oracleSerive.getDatabaseSummary(databaseid);
+		resultMap.put("length",this.oracleSerive.getDatabaseInfo(databaseid).size()+"");
+		return resultMap;
+	}
 	@RequestMapping(value = "/getdatabaseinfo", method = RequestMethod.GET)
 	@ResponseBody
 	public List<TableInfo> getDatabaseInfo(@RequestParam(value = "databaseid", required = true) String databaseid) {
@@ -235,7 +242,15 @@ public class MetadataController {
 		resultMap.put("data", store);
 		return resultMap;
 	}
-
+	@RequestMapping(value = "/gettablesummary", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,String> getTableSummary(@RequestParam(value = "databaseid", required = true) String databaseid,
+			@RequestParam(value = "tableid", required = true) String tableid) {
+		System.out.println("get_table_info_summary");
+		Map<String,String> resultMap=this.oracleSerive.getTableSummary(databaseid, tableid);
+		resultMap.put("length", this.oracleSerive.getTableInfo(databaseid, tableid).size()+"");
+		return resultMap;
+	}
 	@RequestMapping(value = "/gettableinfo", method = RequestMethod.GET)
 	@ResponseBody
 	public List<FieldInfo> getTableInfo(@RequestParam(value = "databaseid", required = true) String databaseid,

@@ -48,7 +48,28 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
-
+	public Map<String,String> getDatabaseSummary(String databaseid){
+		Map<String,String> databaseSummary=new HashMap<String,String>();
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil.query("select * from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);
+			while (res.next()) {
+				databaseSummary.put("name", res.getString(2));
+				databaseSummary.put("comments", res.getString(3));
+				databaseSummary.put("others", "still need to be filled");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return databaseSummary;
+	}
 	public List<TableInfo> getDatabaseInfo(String databaseid) {
 		List<TableInfo> resultList = new ArrayList<TableInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -75,7 +96,29 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
-
+	public Map<String,String> getTableSummary(String databaseid,String tableid) {
+		Map<String,String> tableSummary=new HashMap<String,String>();
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil.query("select * from SYSTEM.HC_TABLE where DATABASEID=" + databaseid+" AND TABLEID="+tableid);
+			while (res.next()) {
+				tableSummary.put("name", res.getString(3));
+				tableSummary.put("comments", res.getString(4));
+				tableSummary.put("others", "still need to be filled");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return tableSummary;
+	}
+	
 	public List<FieldInfo> getTableInfo(String databaseid, String tableid) {
 		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
