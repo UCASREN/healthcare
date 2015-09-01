@@ -36,7 +36,7 @@ public class MetadataController {
 
 	@Autowired
 	private OracleService oracleSerive;
-
+	
 	@RequestMapping(value = "/getdatabasetreeinfo", method = RequestMethod.GET)
 	@ResponseBody
 	public List<TreeJson> getDatabaseTreeInfo(@RequestParam(value = "parent", required = true) String parent) {
@@ -176,12 +176,13 @@ public class MetadataController {
 
 	@RequestMapping(value = "/getalldatabaseinfo", method = RequestMethod.GET)
 	@ResponseBody
-	public List<DatabaseInfo> getAllDatabaseInfo() {
+	public List<DatabaseInfo> getAllDatabaseInfo(@RequestParam(value = "operation", required = false) String operation) {
 		System.out.println("get_all_database_info_list");
 		List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(
-					list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
+			System.out.println(list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
+			if(operation!=null&&operation.equals("all"))
+				list.get(i).setTablelist(this.oracleSerive.getDatabaseInfo(list.get(i).getDatabaseid()));
 		}
 		return list;
 	}

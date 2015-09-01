@@ -167,6 +167,26 @@ var Layout = function () {
                     handleSidebarAndContentHeight();
                 });
             } else if (hasSubMenu) {
+            	$("#showtableinfo").hide();
+            	$("#showdatabaseinfo").show();
+				var databaseid=$(this).attr("id").substring($(this).attr("id").indexOf("_")+1);
+				database_grid.setAjaxParam("databaseid",databaseid);
+				database_grid.getDataTable().ajax.reload();
+				//更新数据库概要信息
+				$.ajax({
+			    	type : "get",//请求方式
+			    	url : "dataresource/getdatabasesummary",//发送请求地址
+			    	dataType : "json",
+			    	data:{
+			    		databaseid:databaseid
+			    	},
+			    	success : function(data) {
+			    		$("#showdatabaseinfo_name").text("数据库名："+data.name);
+			    		$("#showdatabaseinfo_comments").text("备注："+data.comments);
+			    		$("#showdatabaseinfo_others").text("其它："+data.others);
+			    		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
+			    	}
+			    });
                 $('.arrow', $(this)).addClass("open");
                 $(this).parent().addClass("open");
                 sub.slideDown(slideSpeed, function () {
