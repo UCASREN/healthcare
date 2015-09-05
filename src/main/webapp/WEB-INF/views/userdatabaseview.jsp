@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>Metronic | Page Layouts - Horizontal & Sidebar Menu</title>
+<title>用户界面</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -90,7 +90,7 @@
 			</div>
 			<!-- END HORIZANTAL MENU -->
 			<!-- BEGIN HEADER SEARCH BOX -->
-			<form class="search-form" action="extra_search.html" method="GET">
+			<form class="search-form" action="#" method="GET">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search..."
 						name="query"> <span class="input-group-btn"> <a
@@ -146,14 +146,16 @@
 				</select>
 				</label>
 				<p></p>
-				<div class="row" id="showdatabaseinfo" style="display:none;">
-					<div class="col-md-5">
-						<p id="showdatabaseinfo_name"></p>
-						<p id="showdatabaseinfo_comments"></p>
-						<p id="showdatabaseinfo_others"></p>
-						<p id="showdatabaseinfo_tablenumber"></p>
+				<div  id="showdatabaseinfo" style="display:none;">
+					<div class="row">
+						<span id="showdatabaseinfo_name"></span>
+						<span id="showdatabaseinfo_comments"></span>
+						<span id="showdatabaseinfo_others"></span>
+						<span id="showdatabaseinfo_tablenumber"></span>
 					</div>
-					<div class="col-md-7">
+					<p></p>
+					<div class="row">
+						<div class="col-md-7">
 						<div class="table-container">
 							<div class="table-actions-wrapper">
 								<span> </span>
@@ -174,18 +176,23 @@
 								</tbody>
 							</table>
 						</div>
+						</div>
+						<div class="col-md-5">
+						</div>
 					</div>
 				</div>
-				<div class="row" id="showtableinfo" style="display:none;">
-					<div class="col-md-5">
+				<div  id="showtableinfo" style="display:none;">
+					<div class="row">
 
-						<p id="showtableinfo_name"></p>
-						<p id="showtableinfo_comments"></p>
-						<p id="showtableinfo_others"></p>
-						<p id="showtableinfo_fieldnumber"></p>
+						<span id="showtableinfo_name"></span>
+						<span id="showtableinfo_comments"></span>
+						<span id="showtableinfo_others"></span>
+						<span id="showtableinfo_fieldnumber"></span>
 
 					</div>
-					<div class="col-md-7">
+					<p></p>
+					<div class="row">'
+						<div class="col-md-7">
 						<div class="table-container">
 							<div class="table-actions-wrapper">
 								<span> </span>
@@ -207,6 +214,9 @@
 								<tbody>
 								</tbody>
 							</table>
+						</div>
+						</div>
+						<div class="col-md-5">
 						</div>
 					</div>
 				</div>

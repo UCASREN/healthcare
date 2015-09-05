@@ -115,7 +115,7 @@ public class MetadataController {
 			break;
 		case "rename_node": {
 			if (operationType.equals("database")) {
-				this.oracleSerive.changeDatabase(operationId, text, null);
+				this.oracleSerive.changeDatabase(operationId, text, comments);
 				operationResult = "success";
 			}
 			if (operationType.equals("table")) {
@@ -322,20 +322,19 @@ public class MetadataController {
 				System.out.println("文件名称: " + file.getName());
 				System.out.println("文件原名: " + file.getOriginalFilename());
 				System.out.println("========================================");
-				// 如果用的是Tomcat服务器，则文件会上传到\\%TOMCAT_HOME%\\webapps\\YourWebProject\\WEB-INF\\upload\\文件夹中
-				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-				File exitfile = new File(realPath + "/"+ user.getUsername() );
+				String realPath = request.getSession().getServletContext().getRealPath(File.separator+"WEB-INF"+File.separator+"upload");
+				File exitfile = new File(realPath + File.separator+ user.getUsername() );
 				// 如果文件夹不存在则创建
 				if (!exitfile.exists() && !exitfile.isDirectory()) {
-					System.out.println("目录 "+realPath + "/"+ user.getUsername()+" 不存在");
+					System.out.println("目录 "+realPath + File.separator+ user.getUsername()+" 不存在");
 					exitfile.mkdir();
 				} else {
-					System.out.println("目录 "+realPath + "/"+ user.getUsername()+" 存在");
+					System.out.println("目录 "+realPath + File.separator+ user.getUsername()+" 存在");
 				}
 				// 这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的
 				try {
 					FileUtils.copyInputStreamToFile(file.getInputStream(),
-							new File(realPath + "/"+ user.getUsername(), file.getOriginalFilename()));
+							new File(realPath + File.separator+ user.getUsername(), file.getOriginalFilename()));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

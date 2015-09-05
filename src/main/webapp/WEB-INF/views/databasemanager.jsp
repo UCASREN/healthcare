@@ -97,7 +97,8 @@
 					<div class="row">
 						<div class="col-md-12">
 							<a class="btn default" data-toggle="modal"
-								href="#fileuploadmodal"> 上传文件</a>
+								href="#fileuploadmodal"> 上传文件</a> <a class="btn default"
+								data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
 						</div>
 					</div>
 					<div class="row">
@@ -249,25 +250,27 @@
 					<h5>
 						<label class="checkbox-inline" style="padding-left: 0px;">
 							<i class="fa fa-database"></i> 数据库
-						</label> <label class="checkbox-inline" style="padding-left: 0px;">
+						</label><label class="checkbox-inline" style="padding-left: 5px;">
 							<select id="database" class="form-control select2me"
-							data-placeholder="Select...">
+							data-placeholder="Select..." style="min-width: 100px;">
 								<option value="">请选择一个数据库...</option>
 						</select>
-						</label>
-						<label class="checkbox-inline" style="padding-left: 0px;">
-					或者新建一个数据库
-			</label> 
+						</label> <label class="checkbox-inline" style="padding-left: 0px;">
+							或者新建一个数据库 </label>
 					</h5>
 				</div>
 				<div class="modal-body">
-					<form action="dataresource/batchupload?${_csrf.parameterName}=${_csrf.token}"
-						class="dropzone" id="myDropzone" enctype="multipart/form-data" method="post">
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						</form>
+					<form
+						action="dataresource/batchupload?${_csrf.parameterName}=${_csrf.token}"
+						class="dropzone" id="myDropzone" enctype="multipart/form-data"
+						method="post">
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form>
 				</div>
-				<div class="modal-footer" style="text-align:left;">
-					<button type="button" class="btn blue" id="submit-all" disabled="disabled">上传</button>
+				<div class="modal-footer" style="text-align: left;">
+					<button type="button" class="btn blue" id="submit-all"
+						disabled="disabled">上传</button>
 					<button type="button" class="btn default" data-dismiss="modal">返回主界面</button>
 				</div>
 			</div>
@@ -275,6 +278,131 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
+	<div id="changedatabaseinfo" class="modal fade" tabindex="-1"
+		data-width="400">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title" >数据库信息更改</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<form class="form-horizontal" role="form" action="">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="col-md-2 control-label">名称</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入数据库名称">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">备注</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入数据库备注">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">语种</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入语种">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">字符集</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入字符集">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">学科分类</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入学科分类">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">关键词</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入关键词">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">可信度</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入可信度">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">负责单位名称</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入负责单位名称">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">负责人姓名</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入负责人姓名">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">通讯地址</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入通讯地址">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">邮政编码</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入邮政编码">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">联系电话</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入联系电话">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">电子邮件</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入电子邮件地址">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">资源链接</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"
+												placeholder="输入资源链接地址">
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn">Close</button>
+					<button type="button" class="btn red">Ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->
