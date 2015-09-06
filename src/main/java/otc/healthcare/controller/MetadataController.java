@@ -398,7 +398,6 @@ public class MetadataController {
 					FileUtils.copyInputStreamToFile(file.getInputStream(),
 							new File(realPath + File.separator+ user.getUsername(), file.getOriginalFilename()));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return "You failed to upload " + name + " because internal error.";
 				}

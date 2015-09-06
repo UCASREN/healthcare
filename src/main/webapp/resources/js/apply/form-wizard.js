@@ -1,110 +1,134 @@
 var FormWizard = function () {
 
-
     return {
         //main function to initiate the module
         init: function () {
             if (!jQuery().bootstrapWizard) {
                 return;
             }
-
-            function format(state) {
-                if (!state.id) return state.text; // optgroup
-                return "<img class='flag' src='../../assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
-            }
-
-            $("#country_list").select2({
-                placeholder: "Select",
-                allowClear: true,
-                formatResult: format,
-                formatSelection: format,
-                escapeMarkup: function (m) {
-                    return m;
-                }
-            });
-
+            
             var form = $('#submit_form');
             var error = $('.alert-danger', form);
             var success = $('.alert-success', form);
+            
+            var fillForm = function (hc_doc){
+            	console.log("begin fill the form---");
+            	$.each(hc_doc,function(key,val){
+            		console.log(key+" : "+val);
+            	});
+            	
+            	$('#submit_form_userName').val(hc_doc.name);
+            	$('#submit_form_userDepartment').val(hc_doc.department);
+            	$('#submit_form_userAddress').val(hc_doc.address);
+            	$('#submit_form_userTel').val(hc_doc.tel);
+                
+            	
+            	$('#submit_form_userDemand').val(hc_doc.demand);
+            	
+            	$('#submit_form_projectName').val(hc_doc.proName);
+            	$('#submit_form_projectChairman').val(hc_doc.proChair);
+            	$('#submit_form_projectSource').val(hc_doc.proSource);
+            	$('#submit_form_projectUndertaking').val(hc_doc.proUndertake);
+            	$('#submit_form_applyDate').val('暂无');
+            	$('#submit_form_projectRemarks').val(hc_doc.proRemark);
 
-          /*  form.validate({
+            }
+            
+            //获取文档id
+            var param = $.query.get('docid');
+            if(param != ""){
+            	   console.log('参数:'+param);
+            	   options={ 
+       					type : "get",//请求方式 
+       					url : "getdocdatabydocid",//发送请求地址
+       					dataType : "json", 
+       					data:{ 
+       						docid : param
+       					}, 
+       					success :function(data) {
+       						//alert(data); 
+       						console.log(param+" : "+data);
+       						fillForm(data);
+       					} 
+       				}
+       			$.ajax(options);
+            }else{
+            	console.log('参数为空:'+param)
+            };
+            
+         
+            
+
+            form.validate({
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
                 errorElement: 'span', //default input error message container
                 errorClass: 'help-block help-block-error', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
-                    //account
-                    username: {
-                        minlength: 5,
+                    //用户信息
+                	userName: {
                         required: true
                     },
-                    password: {
-                        minlength: 5,
+                    userDepartment: {
                         required: true
                     },
-                    rpassword: {
-                        minlength: 5,
+                    userAddress: {
                         required: true,
-                        equalTo: "#submit_form_password"
+//                        equalTo: "#submit_form_password"
                     },
-                    //profile
-                    fullname: {
+                    userTel: {
+//                        digits: true,
+                    	required: true,
+                    },
+                    userEmail: {
+                    	required:true,
+//                    	email: true
+                    },
+                    
+                    //数据需求
+                    userDemandType:{
+                    	required: true,
+                    },
+                    userDemand: {
                         required: true
                     },
-                    email: {
+                    
+                    //数据使用目的--project
+                    projectName: {
+                        required: true
+                    },
+                    projectChairman: {
+                        required: true
+                    },
+                    projectSource: {
                         required: true,
-                        email: true
                     },
-                    phone: {
+                    projectUndertaking: {
                         required: true
                     },
-                    gender: {
-                        required: true
+                    applyDate:{
+                    	required: true,
                     },
-                    address: {
-                        required: true
-                    },
-                    city: {
-                        required: true
-                    },
-                    country: {
-                        required: true
-                    },
-                    //useFields
-                    card_name: {
-                        required: true
-                    },
-                    card_number: {
-                        minlength: 16,
-                        maxlength: 16,
-                        required: true
-                    },
-                    card_cvc: {
-                        digits: true,
-                        required: true,
-                        minlength: 3,
-                        maxlength: 4
-                    },
-                    card_expiry_date: {
-                        required: true
-                    },
-                    'useFields[]': {
+                    'useFields': {
                         required: true,
                         minlength: 1
+                    },
+                    projectRemarks:{
+                    	required: true,
                     }
                 },
 
                 messages: { // custom messages for radio buttons and checkboxes
-                    'useFields[]': {
-                        required: "Please select at least one option",
-                        minlength: jQuery.validator.format("Please select at least one option")
+                    'useFields': {
+                        required: "至少选择一个应用领域",
+                        minlength: jQuery.validator.format("至少选择一个应用领域")
                     }
                 },
 
                 errorPlacement: function (error, element) { // render error placement for each input type
-                    if (element.attr("name") == "gender") { // for uniform radio buttons, insert the after the given container
-                        error.insertAfter("#form_gender_error");
-                    } else if (element.attr("name") == "useFields[]") { // for uniform checkboxes, insert the after the given container
+                    if (element.attr("name") == "userDemandType") { // for uniform radio buttons, insert the after the given container
+                        error.insertAfter("#form_demand_error");
+                    } else if (element.attr("name") == "useFields") { // for uniform checkboxes, insert the after the given container
                         error.insertAfter("#form_useFields_error");
                     } else {
                         error.insertAfter(element); // for other inputs, just perform default behavior
@@ -128,24 +152,26 @@ var FormWizard = function () {
                 },
 
                 success: function (label) {
-                    if (label.attr("for") == "gender" || label.attr("for") == "useFields[]") { // for checkboxes and radio buttons, no need to show OK icon
+                    if (label.attr("for") == "userDemandType" || label.attr("for") == "useFields") { // for checkboxes and radio buttons, no need to show OK icon
                         label
                             .closest('.form-group').removeClass('has-error').addClass('has-success');
                         label.remove(); // remove error label here
                     } else { // display success icon for other inputs
-                        label
-                            .addClass('valid') // mark the current input as valid and display OK icon
+                        label.addClass('valid') // mark the current input as valid and display OK icon
                         .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
                     }
                 },
 
+                //处理提交信息
                 submitHandler: function (form) {
                     success.show();
                     error.hide();
                     //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
+                    console.log('提交表单啦');
+                    form.submit();
                 }
 
-            });*/
+            });
 
             var displayConfirm = function() {
                 $('#tab4 .form-control-static', form).each(function(){
@@ -159,9 +185,9 @@ var FormWizard = function () {
                         $(this).html(input.find('option:selected').text());
                     } else if (input.is(":radio") && input.is(":checked")) {
                         $(this).html(input.attr("data-title"));
-                    } else if ($(this).attr("data-display") == 'useFields[]') {
+                    } else if ($(this).attr("data-display") == 'useFields') {
                         var useFields = [];
-                        $('[name="useFields[]"]:checked', form).each(function(){ 
+                        $('[name="useFields"]:checked', form).each(function(){ 
                             useFields.push($(this).attr('data-title'));
                         });
                         $(this).html(useFields.join("<br>"));
@@ -254,10 +280,6 @@ var FormWizard = function () {
                 //window.open ("/healthcare/", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
             }).hide();
 
-            //apply validation on select2 dropdown value change, this only needed for chosen dropdown integration.
-            $('#country_list', form).change(function () {
-                form.validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
-            });
         }
 
     };

@@ -222,7 +222,7 @@ request.setCharacterEncoding("UTF-8");
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="createdataword" class="form-horizontal" id="submit_form" method="POST" accept-charset="UTF-8">
+							<form action="/healthcare/apply/createdataword" class="form-horizontal" id="submit_form" method="POST" accept-charset="UTF-8">
 							 	<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 								<div class="form-wizard">
 									<div class="form-body">
@@ -280,7 +280,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" class="form-control" name="userName"/>
+														<input type="text" class="form-control" name="userName" id="submit_form_userName"/>
 														<span class="help-block">
 														请提供您的姓名 </span>
 													</div>
@@ -290,7 +290,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" class="form-control" name=userDepartment id="submit_form_userdepartment"/>
+														<input type="text" class="form-control" name=userDepartment id="submit_form_userDepartment"/>
 														<span class="help-block">
 														请提供您的所在单位 </span>
 													</div>
@@ -320,7 +320,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" class="form-control" name="userEmail"/>
+														<input type="text" class="form-control" name="userEmail" id="submit_form_userEmail"/>
 														<span class="help-block">
 														请提供您的Email </span>
 													</div>
@@ -336,12 +336,12 @@ request.setCharacterEncoding("UTF-8");
 													<div class="col-md-4">
 														<div class="icheck-list">
 															<label>
-																<input type="radio" name="userDemandType" class="icheck" value="dataAnalyze" 
+																<input type="radio" name="userDemandType" class="icheck" value="数据分析需求" 
 																data-title="数据分析需求" data-radio="iradio_flat-blue">
 																数据分析需求 
 															</label>
 															<label>
-																<input type="radio" name="userDemandType" class="icheck" value="dataUse" 
+																<input type="radio" name="userDemandType" class="icheck" value="数据使用需求" 
 																data-title="数据使用需求" data-radio="iradio_flat-blue">
 																数据使用需求 
 															</label>
@@ -356,7 +356,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-5">
-														<textarea class="form-control" cols="15" rows="4" name="userDemand"></textarea>
+														<textarea class="form-control" cols="15" rows="4" name="userDemand" id="submit_form_userDemand"></textarea>
 													</div>
 												</div>
 											</div>
@@ -372,28 +372,29 @@ request.setCharacterEncoding("UTF-8");
 														<div>
 															<label>
 															<input type="checkbox" class="icheck" checked data-checkbox="icheckbox_flat-blue"
-															name="useFields[]" value="1" data-title="政府决策"> 政府决策 </label>
+															name="useFields" value="政府决策" data-title="政府决策"> 政府决策 </label>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
-															name="useFields[]" value="2" data-title="科学研究"> 科学研究 </label>
+															name="useFields" value="科学研究" data-title="科学研究"> 科学研究 </label>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
-															name="useFields[]" value="3" data-title="教学"> 教学 </label>
+															name="useFields" value="教学" data-title="教学"> 教学 </label>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
-															name="useFields[]" value="4" data-title="博士论文"> 博士论文 </label>
+															name="useFields" value="博士论文" data-title="博士论文"> 博士论文 </label>
 															</br>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
-															name="useFields[]" value="5" data-title="硕士论文"> 硕士论文 </label>
+															name="useFields" value="硕士论文" data-title="硕士论文"> 硕士论文 </label>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
-															name="useFields[]" value="6" data-title="商业应用 "> 商业应用 </label>
+															name="useFields" value="商业应用" data-title="商业应用 "> 商业应用 </label>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
-															name="useFields[]" value="7" data-title="其他"> 其他 </label>
+															name="useFields" value="其他" data-title="其他"> 其他 </label>
 														</div>
-														
+														<div id="form_useFields_error">
+														</div>
 													</div>
 												</div>
 												<div class="form-group">
@@ -401,7 +402,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" class="form-control" name="projectName"/>
+														<input type="text" class="form-control" name="projectName" id="submit_form_projectName"/>
 														<span class="help-block">
 														</span>
 													</div>
@@ -411,7 +412,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" placeholder="" class="form-control" name="projectChairman"/>
+														<input type="text" placeholder="" class="form-control" name="projectChairman" id="submit_form_projectChairman"/>
 														<span class="help-block">
 														</span>
 													</div>
@@ -421,7 +422,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" placeholder="" class="form-control" name="projectSource"/>
+														<input type="text" placeholder="" class="form-control" name="projectSource" id="submit_form_projectSource"/>
 														<span class="help-block">
 														</span>
 													</div>
@@ -431,7 +432,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" placeholder="" class="form-control" name="projectUndertaking"/>
+														<input type="text" placeholder="" class="form-control" name="projectUndertaking" id="submit_form_projectUndertaking"/>
 														<span class="help-block">
 														</span>
 													</div>
@@ -441,7 +442,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" placeholder="MM/YYYY" maxlength="7" class="form-control" name="applyDate"/>
+														<input type="text" placeholder="MM/YYYY" maxlength="7" class="form-control" name="applyDate" id="submit_form_applyDate"/>
 														<span class="help-block">
 														例 ：  11/2020 </span>
 													</div>
@@ -451,7 +452,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-5">
-														<textarea class="form-control" cols="15" rows="4" name="projectRemarks"></textarea>
+														<textarea class="form-control" cols="15" rows="4" name="projectRemarks" id="submit_form_projectRemarks"></textarea>
 														<span class="help-block">
 														具体说明服务对象的情况，如该数据集在项目中的作用以及所产生的成果的描述等</span>
 													</div>
@@ -517,7 +518,7 @@ request.setCharacterEncoding("UTF-8");
 												<div class="form-group">
 													<label class="control-label col-md-3">应用领域：</label>
 													<div class="col-md-4">
-														<p class="form-control-static" data-display="useFields[]">
+														<p class="form-control-static" data-display="useFields">
 														</p>
 													</div>
 												</div>
@@ -621,6 +622,7 @@ request.setCharacterEncoding("UTF-8");
 <script src="../resources/plugins/jquery.cokie.min.js" type="text/javascript"></script>
 <script src="../resources/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <script src="../resources/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="../resources/js/jquery.query.js"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="../resources/plugins/jquery-validation/js/jquery.validate.min.js"></script>
@@ -632,11 +634,11 @@ request.setCharacterEncoding("UTF-8");
 <script type="text/javascript" src="../resources/plugins/icheck/icheck.min.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../resources/js/metronic.js" type="text/javascript"></script>
+<script src="../resources/js/apply/apply_metronic.js" type="text/javascript"></script>
 <script src="../resources/js/layout.js" type="text/javascript"></script>
 <script src="../resources/js/quick-sidebar.js" type="text/javascript"></script>
 <script src="../resources/js/demo.js" type="text/javascript"></script>
-<script src="../resources/js/form-wizard.js"></script>
+<script src="../resources/js/apply/form-wizard.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <script>

@@ -8,12 +8,16 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -24,8 +28,13 @@ import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateNotFoundException;
 import otc.healthcare.util.HealthcareConfiguration;
+import otc.healthcare.util.MSWordManager;
 import otc.healthcare.util.docConvertUtil;
 
+/**
+ * @author Andy
+ *
+ */
 @Component
 public class WordService implements IService{
 
@@ -49,35 +58,59 @@ public class WordService implements IService{
 		return configuration;
 	}
 	
-	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp){
+	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp, String f_path_name){
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		getData(req , dataMap);
-		File file = null;  
-	    file = createDoc(dataMap, "dataApply"); 
+	    createDoc(dataMap, "dataApply",f_path_name); 
         System.out.println("加载word模版成功，生成word文件！");
 	}
 
 	
-	 public File createDoc(Map<?, ?> dataMap, String typeName) {  
-		 	WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
+	/**
+	 * DOC  xml--->doc
+	 * 将freemarker生成的xml格式文档，转换为doc格式
+	 * @param servletContext2 
+	 * @param fileName 
+	 */
+	public void changeDocFormat(File openFile, ServletContext servletContext) {
+		String docPath = servletContext.getRealPath("/resources/swf");
+		String saveFileName = docPath+"/"+ openFile.getName();
+        MSWordManager ms = new MSWordManager(false);     
+        ms.openDocument(openFile.getAbsolutePath());
+        ms.save(saveFileName);     
+        ms.close();     
+        ms.closeDocument();    
+//        System.out.println("doc 格式转换成功!");
+	}
+	
+	/**
+	 * 
+	 * @param dataMap 数据
+	 * @param typeName 模版类型
+	 * @param f_path_name 文件名称
+	 * @return
+	 */
+	 public File createDoc(Map<?, ?> dataMap, String typeName, String f_path_name) {  
+	        
+	    	WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
 		    ServletContext servletContext = webApplicationContext.getServletContext(); 
-		    String docPath = servletContext.getRealPath("/WEB-INF/hc_doc");
-//	        String name = docPath +"\\"+  (int)(Math.random() * 100000) + ".docx";//用户名加uuid  
-		    String name = docPath +"/njz.doc";
-	        File f = new File(name);  
 	        getConfiguration();
 	        Template t = getTemplates(servletContext,typeName);  
+	        File f = new File(f_path_name);
 	        try {  
+	        	
 	            // 这个地方不能使用FileWriter因为需要指定编码类型否则生成的Word文档会因为有无法识别的编码而无法打开
 	        	Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "utf-8"));
-//	            Writer w = new OutputStreamWriter(new FileOutputStream(f), "utf-8");  
+	        	
 	            t.process(dataMap, out);  
 	            out.flush();
 	            out.close();  
 	        } catch (Exception ex) {  
 	            ex.printStackTrace();  
 	            throw new RuntimeException(ex);  
-	        }  
+	        } finally {
+	        	changeDocFormat(f,servletContext);
+			} 
 	        return f;  
 	   }  
 	
@@ -88,7 +121,6 @@ public class WordService implements IService{
 	private Template getTemplates(ServletContext servletContext, String TemplateName) {
 		
 		configuration.setServletContextForTemplateLoading(servletContext, "resources");
-//		configuration.setDirectoryForTemplateLoading(new File("C:/Users/Andy/Documents/workspace-sts-3.7.0.RELEASE/java2word"));
 		Template t = null;
 		try {
 			t = configuration.getTemplate("/hc_docftl/"+TemplateName+".ftl");
@@ -136,10 +168,10 @@ public class WordService implements IService{
 	public void docConvert(HttpServletRequest req, HttpServletResponse resp) {
 		String swftoolPath = hcConfiguration.getProperty(HealthcareConfiguration.SWFTOOLS_PATH);
 	    ServletContext servletContext = req.getServletContext(); 
-		String docPath = servletContext.getRealPath("/WEB-INF/hc_doc");
 		String swfPath = servletContext.getRealPath("/resources/swf");
-//		String docFileName = (String) req.getAttribute("docFileName");
-		String docName = docPath +"\\" + "njz.doc";
+		HttpSession session = req.getSession();
+		String name = (String) session.getAttribute("docName");
+		String docName = swfPath +"\\" + name;
 		
 		//开始转换
 		docConvertUtil docUtil = new docConvertUtil(docName,swfPath);

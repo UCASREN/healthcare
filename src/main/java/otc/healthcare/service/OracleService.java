@@ -1,19 +1,30 @@
 package otc.healthcare.service;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import otc.healthcare.dao.ConnectionFactory;
+import otc.healthcare.dao.HcApplydataDao;
 import otc.healthcare.dao.OracleDBUtil;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
+import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
@@ -23,7 +34,9 @@ public class OracleService implements IService {
 
 	@Autowired
 	private HealthcareConfiguration hcConfiguration;
-
+	@Autowired
+	private HcApplydataDao hcApplydataDao;
+	
 	public List<DatabaseInfo> getALLDatabaseInfo() {
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -60,6 +73,14 @@ public class OracleService implements IService {
 			dbUtil.close();
 		}
 		return resultList;
+	}
+
+	public HcApplydataDao getHcApplydataDao() {
+		return hcApplydataDao;
+	}
+
+	public void setHcApplydataDao(HcApplydataDao hcApplydataDao) {
+		this.hcApplydataDao = hcApplydataDao;
 	}
 	public Map<String,String> getDatabaseSummary(String databaseid){
 		Map<String,String> databaseSummary=new HashMap<String,String>();
@@ -597,6 +618,63 @@ public class OracleService implements IService {
 	public int checkStatus() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	/*
+	 * insert the ApplyData into db
+	 */
+	@Transactional
+	public void insertApplyData(HttpServletRequest req, String f_path_name) {
+		
+		HcApplydata hc_applydata = new HcApplydata();
+		
+		String hc_userName = req.getParameter("userName");
+		String hc_userDepartment  = req.getParameter("userDepartment");
+		String hc_userAddress = req.getParameter("userAddress");
+		String hc_userTel = req.getParameter("userTel");
+		String hc_userEmail = req.getParameter("userEmail");
+		
+		String hc_userDemandType = req.getParameter("userDemandType");//
+		String hc_userDemand = req.getParameter("userDemand");
+		
+		String hc_useFields = req.getParameter("useFields[]");//
+		String hc_projectName = req.getParameter("projectName");
+		String hc_projectChairman = req.getParameter("projectChairman");
+		String hc_projectSource = req.getParameter("projectSource");
+		String hc_projectUndertaking = req.getParameter("projectUndertaking");
+		String hc_applyDate = req.getParameter("applyDate");//
+		String hc_projectRemarks = req.getParameter("projectRemarks");
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		hc_applydata.setHcUsername(user.getUsername());//hc系统用户名
+		hc_applydata.setDocName(f_path_name);//主键
+		
+		hc_applydata.setName(hc_userName);//申请表填写用户
+		hc_applydata.setDepartment(hc_userDepartment);
+		hc_applydata.setAddress(hc_userAddress);
+		hc_applydata.setTel(hc_userTel);
+		hc_applydata.setEmail(hc_userEmail);
+		
+		hc_applydata.setDemand(hc_userDemand);
+		
+		hc_applydata.setProName(hc_projectName);
+		hc_applydata.setProChair(hc_projectChairman);
+		hc_applydata.setProSource(hc_projectSource);
+		hc_applydata.setProUndertake(hc_projectUndertaking);
+		hc_applydata.setProRemark(hc_projectRemarks);
+		
+		hcApplydataDao.attachDirty(hc_applydata);
+		System.out.println("insert hc_doc ok");
+	}
+	
+	/*
+	 * get the apply docdata from db
+	 */
+	@Transactional
+	public HcApplydata getDocBydocID(String docid) {
+		HcApplydata docData = hcApplydataDao.findById(docid);
+		return docData;
 	}
 
 }

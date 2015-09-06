@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-9-1 20:01:36 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="otc.healthcare.pojo.HcApplydata" table="HC_APPLYDATA" schema="SYSTEM">
+        <id name="docName" type="string">
+            <column name="DOC_NAME" />
+            <generator class="assigned" />
+        </id>
+        <property name="hcUsername" type="string">
+            <column name="HC_USERNAME" not-null="true">
+                <comment>&#207;&#181;&#205;&#179;&#211;&#195;&#187;&#167;&#195;&#251;</comment>
+            </column>
+        </property>
+        <property name="name" type="string">
+            <column name="NAME">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#211;&#195;&#187;&#167;&#195;&#251;</comment>
+            </column>
+        </property>
+        <property name="department" type="string">
+            <column name="DEPARTMENT">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#203;&#249;&#212;&#218;&#181;&#165;&#206;&#187;</comment>
+            </column>
+        </property>
+        <property name="address" type="string">
+            <column name="ADDRESS">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#211;&#195;&#187;&#167;&#181;&#216;&#214;&#183;</comment>
+            </column>
+        </property>
+        <property name="tel" type="string">
+            <column name="TEL">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#211;&#195;&#187;&#167;&#193;&#170;&#207;&#181;&#183;&#189;&#202;&#189;</comment>
+            </column>
+        </property>
+        <property name="email" type="string">
+            <column name="EMAIL">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#211;&#195;&#187;&#167;&#181;&#231;&#211;&#202;</comment>
+            </column>
+        </property>
+        <property name="demandtype" type="string">
+            <column name="DEMANDTYPE">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#211;&#195;&#187;&#167;&#208;&#232;&#199;&#243;&#192;&#224;&#208;&#205;</comment>
+            </column>
+        </property>
+        <property name="demand" type="string">
+            <column name="DEMAND" length="4000">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#211;&#195;&#187;&#167;&#208;&#232;&#199;&#243;&#195;&#247;&#207;&#184;</comment>
+            </column>
+        </property>
+        <property name="proName" type="string">
+            <column name="PRO_NAME">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#207;&#238;&#196;&#191;&#195;&#251;&#179;&#198;</comment>
+            </column>
+        </property>
+        <property name="proChair" type="string">
+            <column name="PRO_CHAIR">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#207;&#238;&#196;&#191;&#184;&#186;&#212;&#240;&#200;&#203;</comment>
+            </column>
+        </property>
+        <property name="proSource" type="string">
+            <column name="PRO_SOURCE">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#207;&#238;&#196;&#191;&#192;&#180;&#212;&#180;</comment>
+            </column>
+        </property>
+        <property name="proUndertake" type="string">
+            <column name="PRO_UNDERTAKE">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#207;&#238;&#196;&#191;&#179;&#208;&#181;&#163;&#181;&#165;&#206;&#187;</comment>
+            </column>
+        </property>
+        <property name="proRemark" type="string">
+            <column name="PRO_REMARK" length="4000">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#207;&#238;&#196;&#191;&#211;&#166;&#211;&#195;&#203;&#181;&#195;&#247;</comment>
+            </column>
+        </property>
+        <property name="proUsefield" type="string">
+            <column name="PRO_USEFIELD">
+                <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#207;&#238;&#196;&#191;&#211;&#166;&#211;&#195;&#193;&#236;&#211;&#242;</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>
