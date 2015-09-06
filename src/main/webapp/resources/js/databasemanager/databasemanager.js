@@ -580,7 +580,21 @@ var AjaxTree = function() {
 	}).on('select_node.jstree', function(e, data) {
 		
 		if (data.node.id.indexOf("alldatabase") != -1) {
+			//更新“更改数据库信息”模态框中表单内容
 			$("#setchangedatabasetitle").text("更改数据库"+data.node.text+"的信息");
+			$.ajax({
+				type : "get",//请求方式
+				url : "dataresource/databaseoperation",//发送请求地址
+				data:{
+					operation:"get",
+					id:data.node.id.substring(data.node.id.indexOf("_")+1)
+				},
+				dataType : "json",
+				success : function(data) {
+					$("#form_database_name").val(data.name);
+					$("#form_database_comments").val(data.comments);
+				}
+			});
 			oTable1.fnClearTable();
 			$(function() {
 				var url = "dataresource/getdatabaseinfo?databaseid="+data.node.id.substring(data.node.id.indexOf("_")+1);
@@ -596,6 +610,8 @@ var AjaxTree = function() {
 			});
 			$("#whichdatabase").text("数据库:"+data.node.text);
 			$("#whichdatabaseid").text(data.node.id.substring(data.node.id.indexOf("_")+1));
+			$("#form_database_id").val(data.node.id.substring(data.node.id.indexOf("_")+1));
+			
 			
 			//恢复操作
 			if(getCookie("lastclick")=="database"&&reloadCount==0&&typeof(getCookie("restoretable"))!= "undefined"&&getCookie("restoretable")!=null){

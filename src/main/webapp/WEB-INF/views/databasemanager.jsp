@@ -290,19 +290,20 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-12">
-							<form class="form-horizontal" role="form" action="">
+							<form class="form-horizontal" role="form" action="dataresource/databaseoperation?operation=update">
 								<div class="form-body">
 									<div class="form-group">
 										<label class="col-md-2 control-label">名称</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
+											<input type="hidden" id="form_database_id">
+											<input type="text" class="form-control" id="form_database_name"
 												placeholder="输入数据库名称">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">备注</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
+											<input type="text" class="form-control" id="form_database_comments"
 												placeholder="输入数据库备注">
 										</div>
 									</div>

@@ -87,7 +87,7 @@ public class MetadataController {
 
 	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)
 	@ResponseBody
-	public String databaseOperation(@RequestParam(value = "operation", required = true) String operation,
+	public String databaseNodeOperation(@RequestParam(value = "operation", required = true) String operation,
 			@RequestParam(value = "id", required = false) String id,
 			@RequestParam(value = "parent", required = false) String parent,
 			@RequestParam(value = "position", required = false) String position,
@@ -137,6 +137,21 @@ public class MetadataController {
 			operationResult = "sucess";
 		}
 		return operationResult;
+	}
+	@RequestMapping(value = "/databaseoperation", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,String> databaseOperation(@RequestParam(value = "operation", required = true) String operation,
+			@RequestParam(value = "id", required = false) String id,
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "comments", required = false) String comments) {
+		Map<String,String> resultMap=null;
+		if(operation.equals("update")){
+			this.oracleSerive.changeDatabase(id, name, comments);
+		}
+		if(operation.equals("get")){
+			resultMap=this.oracleSerive.getDatabaseSummary(id);
+		}
+		return  resultMap;
 	}
 
 	@RequestMapping(value = "/fieldoperation", method = RequestMethod.GET)

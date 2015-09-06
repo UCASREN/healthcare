@@ -57,7 +57,7 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			ResultSet res = dbUtil.query("select * from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);
+			ResultSet res = dbUtil.query("select DATABASEID,NAME,COMMENTS from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);
 			while (res.next()) {
 				databaseSummary.put("name", res.getString(2));
 				databaseSummary.put("comments", res.getString(3));
