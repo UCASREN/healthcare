@@ -45,27 +45,10 @@ public class docConvertUtil {
 	private void ini(String fileString, String swfPath) {
 		this.fileString = fileString;
 		fileName = fileString.substring(fileString.lastIndexOf("\\"),fileString.lastIndexOf("."));
+		docFile = new File(swfPath + fileName + ".doc");
 		pdfFile = new File(swfPath + fileName + ".pdf");
 		swfFile = new File(swfPath + fileName + ".swf");
-		this.changeDocFormat();
 	}	
-	
-	/**
-	 * DOC  xml--->doc
-	 * 将freemarker生成的xml格式文档，转换为doc格式
-	 */
-	public void changeDocFormat() {
-		String swfPath = swfFile.getParent();
-		docFile = new File(swfPath + fileName + ".doc");
-		
-        MSWordManager ms = new MSWordManager(false);     
-        ms.openDocument(fileString);
-        ms.save(docFile.getPath());     
-        ms.close();     
-        ms.closeDocument();    
-//        System.out.println("doc 格式转换成功!");
-	}
-	
 	
 	/**
 	 * 转为PDF

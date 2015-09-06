@@ -216,7 +216,7 @@ public class MetadataController {
 		}
 		//分页
 		int totalRecords=list.size();
-		int displayLength=length<0?totalRecords:length;
+		int displayLength = length<0?totalRecords:length;
 		int displayStart=start;
 		int end=displayStart+displayLength;
 		end=end>totalRecords?totalRecords:end;
