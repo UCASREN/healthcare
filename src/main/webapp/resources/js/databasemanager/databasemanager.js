@@ -665,7 +665,7 @@ var AjaxTree = function() {
 			
 			
 			//恢复数据
-			if(getCookie("lastclick")=="table"&&reloadCount==0){
+			if(getCookie("lastclick")=="table"&&reloadCount==0&&typeof(getCookie("restoredatabase"))!= "undefined"&&getCookie("restoredatabase")!=null){
 				reloadCount++;
 				//reload tabletable data
 				oTable1.fnClearTable();

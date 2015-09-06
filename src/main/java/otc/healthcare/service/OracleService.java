@@ -39,6 +39,19 @@ public class OracleService implements IService {
 				dim.setDatabaseid(res.getString(1));
 				dim.setName(res.getString(2));
 				dim.setComments(res.getString(3));
+				dim.setIdentifier(res.getString(4));
+				dim.setLanguage(res.getString(5));
+				dim.setCharset(res.getString(6));
+				dim.setSubjectclassification(res.getString(7));
+				dim.setKeywords(res.getString(8));
+				dim.setCredibility(res.getString(9));
+				dim.setResinstitution(res.getString(10));
+				dim.setResname(res.getString(11));
+				dim.setResaddress(res.getString(12));
+				dim.setRespostalcode(res.getString(13));
+				dim.setResphone(res.getString(14));
+				dim.setResemail(res.getString(15));
+				dim.setResourceurl(res.getString(16));
 				resultList.add(dim);
 			}
 		} catch (Exception e) {

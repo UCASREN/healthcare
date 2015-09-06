@@ -169,6 +169,7 @@ var Layout = function () {
             } else if (hasSubMenu) {
             	$("#showtableinfo").hide();
             	$("#showdatabaseinfo").show();
+            	$("#showalldatabaseinfo").hide();
 				var databaseid=$(this).attr("id").substring($(this).attr("id").indexOf("_")+1);
 				database_grid.setAjaxParam("databaseid",databaseid);
 				database_grid.getDataTable().ajax.reload();

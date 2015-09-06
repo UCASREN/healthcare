@@ -68,6 +68,20 @@
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
+<!-- BEGIN DIV STYLES -->
+<style type="text/css">
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding: 2px;
+}
+.paging_bootstrap_extended{
+	font-size: 10px;
+}
+.btn-sm, .btn-xs {
+	font-size: 12px;
+}
+</style>
+
+<!-- END DIV STYLES -->
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->

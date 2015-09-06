@@ -41,19 +41,19 @@ var Datatable = function() {
                 resetGroupActionInputOnSuccess: true,
                 loadingMessage: 'Loading...',
                 dataTable: {
-                    "dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
+                    "dom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
                     "pageLength": 10, // default records per page
                     "language": { // language settings
                         // metronic spesific
-                        "metronicGroupActions": "_TOTAL_ records selected:  ",
-                        "metronicAjaxRequestGeneralError": "Could not complete request. Please check your internet connection",
+                        "metronicGroupActions": "选择了 _TOTAL_ 条记录:  ",
+                        "metronicAjaxRequestGeneralError": "无法完成请求，请检查您的网络连接",
 
                         // data tables spesific
-                        "lengthMenu": "<span class='seperator'>|</span>View _MENU_ records",
-                        "info": "<span class='seperator'>|</span>Found total _TOTAL_ records",
-                        "infoEmpty": "No records found to show",
-                        "emptyTable": "No data available in table",
-                        "zeroRecords": "No matching records found",
+                        "lengthMenu": "<span class='seperator'>|</span>每页显示 _MENU_ 条记录",
+                        "info": "<span class='seperator'>|</span>共  _TOTAL_ 条记录",
+                        "infoEmpty": "没有找到需要显示的数据",
+                        "emptyTable": "列表中没有可选的数据",
+                        "zeroRecords": "没有找到匹配的记录",
                         "paginate": {
                             "previous": "Prev",
                             "next": "Next",

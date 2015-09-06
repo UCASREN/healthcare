@@ -258,6 +258,53 @@ public class MetadataController {
 		resultMap.put("data", store);
 		return resultMap;
 	}
+	@RequestMapping(value = "/getalldatabasecssinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAllDatabaseCssInfo(@RequestParam(value = "length", required = false) Integer length,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "draw", required = false) Integer draw) {
+		System.out.println("get_all_database_css_info_list");
+		List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
+//		for (int i = 0; i < list.size(); i++) {
+//			System.out.println(list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
+//			list.get(i).setTablelist(this.oracleSerive.getDatabaseInfo(list.get(i).getDatabaseid()));
+//		}
+		
+		// 分页
+		int totalRecords = list.size();
+		int displayLength = length < 0 ? totalRecords : length;
+		int displayStart = start;
+		int end = displayStart + displayLength;
+		end = end > totalRecords ? totalRecords : end;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<ArrayList<String>> store = new ArrayList<ArrayList<String>>();
+		for (int i = start; i < end; i++) {
+			DatabaseInfo databaseInfo = list.get(i);
+			ArrayList<String> tempStore = new ArrayList<String>();
+			tempStore.add(databaseInfo.getDatabaseid());
+			tempStore.add(databaseInfo.getName());
+			tempStore.add(databaseInfo.getComments());
+			tempStore.add(databaseInfo.getIdentifier());
+			tempStore.add(databaseInfo.getLanguage());
+			tempStore.add(databaseInfo.getCharset());
+			tempStore.add(databaseInfo.getSubjectclassification());
+			tempStore.add(databaseInfo.getKeywords());
+			tempStore.add(databaseInfo.getCredibility());
+			tempStore.add(databaseInfo.getResinstitution());
+			tempStore.add(databaseInfo.getResname());
+			tempStore.add(databaseInfo.getResaddress());
+			tempStore.add(databaseInfo.getRespostalcode());
+			tempStore.add(databaseInfo.getResphone());
+			tempStore.add(databaseInfo.getResemail());
+			tempStore.add(databaseInfo.getResourceurl());
+			store.add(tempStore);
+		}
+		resultMap.put("draw", draw);
+		resultMap.put("recordsTotal", totalRecords);
+		resultMap.put("recordsFiltered", totalRecords);
+		resultMap.put("data", store);
+		return resultMap;
+	}
 	@RequestMapping(value = "/gettablesummary", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,String> getTableSummary(@RequestParam(value = "databaseid", required = true) String databaseid,

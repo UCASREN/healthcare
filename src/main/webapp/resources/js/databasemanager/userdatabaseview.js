@@ -1,6 +1,71 @@
 //显示数据库概述信息部分
+var alldatabase_grid;
 var database_grid;
 var table_grid;
+var TableAjax_alldatabase = function () {
+
+    var initPickers = function () {
+        //init date pickers
+        $('.date-picker').datepicker({
+            rtl: Metronic.isRTL(),
+            autoclose: true
+        });
+    }
+
+    var handleRecords = function () {
+
+        var grid = new Datatable();
+        alldatabase_grid=grid;
+        grid.init({
+            src: $("#datatable_ajax_alldatabase"),
+            onSuccess: function (grid) {
+            	console.log(alldatabase_grid.getDataTable().ajax.json().recordsTotal);
+            	$("#showalldatabaseinfo_number").text("数据库的数目："+alldatabase_grid.getDataTable().ajax.json().recordsTotal);
+            },
+            onError: function (grid) {
+                // execute some code on network or other general error  
+            },
+            onDataLoad: function(grid) {
+                // execute some code on ajax data load
+            },
+            loadingMessage: 'Loading...',
+            dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
+
+                // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
+                // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/scripts/datatable.js). 
+                // So when dropdowns used the scrollable div should be removed. 
+                //"dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>",
+                
+                "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
+
+                "lengthMenu": [
+                    [2,10, 20, 50, 100, 150, -1],
+                    [2,10, 20, 50, 100, 150, "All"] // change per page values here
+                ],
+                "pageLength": 10, // default record count per page
+                "ajax": {
+                    "url": "dataresource/getalldatabasecssinfo", // ajax source
+                },
+                "order": [
+                    [1, "asc"]
+                ]// set first column as a default sort by asc
+            }
+        });
+    }
+
+    return {
+
+        //main function to initiate the module
+        init: function () {
+
+            initPickers();
+            handleRecords();
+        }
+
+    };
+
+}();
+TableAjax_alldatabase.init();
 var TableAjax_database = function () {
 
     var initPickers = function () {
@@ -168,6 +233,7 @@ var TableAjax = function () {
         			$("a[id^=databasetable_"+databaseinfo.databaseid+"_]").click(function(){
         				$("#showtableinfo").show();
                     	$("#showdatabaseinfo").hide();
+                    	$("#showalldatabaseinfo").hide();
         				var thisidlist=$(this).attr("id").split("_");//databasetable_1_1
         				
         				var databaseid=thisidlist[1];
@@ -231,6 +297,7 @@ var TableAjax = function () {
                 		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
                 		$("#showtableinfo").hide();
                     	$("#showdatabaseinfo").show();
+                    	$("#showalldatabaseinfo").hide();
                 	}
                 });
         	}
@@ -258,6 +325,7 @@ var TableAjax = function () {
                 		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
                 		$("#showtableinfo").show();
                     	$("#showdatabaseinfo").hide();
+                    	$("#showalldatabaseinfo").hide();
                 	}
                 });
         	}
@@ -277,6 +345,8 @@ var TableAjax = function () {
 
 }();
 TableAjax.init();
-
-
-
+$("#refreshalldatabaseinfo").click(function(){
+	$("#showtableinfo").hide();
+	$("#showdatabaseinfo").hide();
+	$("#showalldatabaseinfo").show();
+});
