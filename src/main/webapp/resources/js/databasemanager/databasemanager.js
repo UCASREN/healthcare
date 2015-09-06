@@ -578,7 +578,23 @@ var AjaxTree = function() {
 	}).on('changed.jstree', function(e, data) {
 
 	}).on('select_node.jstree', function(e, data) {
+		
 		if (data.node.id.indexOf("alldatabase") != -1) {
+			//更新“更改数据库信息”模态框中表单内容
+			$("#setchangedatabasetitle").text("更改数据库"+data.node.text+"的信息");
+			$.ajax({
+				type : "get",//请求方式
+				url : "dataresource/databaseoperation",//发送请求地址
+				data:{
+					operation:"get",
+					id:data.node.id.substring(data.node.id.indexOf("_")+1)
+				},
+				dataType : "json",
+				success : function(data) {
+					$("#form_database_name").val(data.name);
+					$("#form_database_comments").val(data.comments);
+				}
+			});
 			oTable1.fnClearTable();
 			$(function() {
 				var url = "dataresource/getdatabaseinfo?databaseid="+data.node.id.substring(data.node.id.indexOf("_")+1);
@@ -594,14 +610,16 @@ var AjaxTree = function() {
 			});
 			$("#whichdatabase").text("数据库:"+data.node.text);
 			$("#whichdatabaseid").text(data.node.id.substring(data.node.id.indexOf("_")+1));
+			$("#form_database_id").val(data.node.id.substring(data.node.id.indexOf("_")+1));
+			
 			
 			//恢复操作
-			if(getCookie("lastclick")=="database"&&reloadCount==0){
+			if(getCookie("lastclick")=="database"&&reloadCount==0&&typeof(getCookie("restoretable"))!= "undefined"&&getCookie("restoretable")!=null){
 				reloadCount++;
 				//reload tabletable data
 				oTable2.fnClearTable();
 				$(function() {
-					var url = "dataresource/gettableinfo?databaseid="+getCookie("restoretable").split("_")[0]+"&tableid="+getCookie("restoretable").split("_")[1];
+					var url = "dataresource/gettableinfo?databaseid="+(getCookie("restoretable")+"").split("_")[0]+"&tableid="+getCookie("restoretable").split("_")[1];
 					$.getJSON(url, function(data) {
 						$.each(data, function(i, field) {
 							/* if (field.fieldid > maxId)
@@ -678,5 +696,14 @@ var AjaxTree = function() {
 	
 }
 AjaxTree();
-
+$.ajax({
+	type : "get",//请求方式
+	url : "dataresource/getalldatabaseinfo",//发送请求地址
+	dataType : "json",
+	success : function(data) {
+		$(data).each(function (i,databaseinfo) {
+			$("#database").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
+		});
+	}
+});
 

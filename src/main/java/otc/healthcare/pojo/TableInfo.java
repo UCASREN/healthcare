@@ -1,5 +1,7 @@
 package otc.healthcare.pojo;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -9,6 +11,7 @@ public class TableInfo {
 	private String databaseid;
 	private String name;
 	private String comments;
+	private List<FieldInfo> fieldlist;
 	@XmlElement(name = "tableid")
 	public String getTableid() {
 		return tableid;
@@ -43,5 +46,17 @@ public class TableInfo {
 	public String toString() {
 		return "TableInfoModel [tableid="+tableid+", databaseid=" + databaseid + ", name=" + name
 				+ ", comments=" + comments + "]";
+	}
+	/**
+	 * @return the fieldlist
+	 */
+	public List<FieldInfo> getFieldlist() {
+		return fieldlist;
+	}
+	/**
+	 * @param fieldlist the fieldlist to set
+	 */
+	public void setFieldlist(List<FieldInfo> fieldlist) {
+		this.fieldlist = fieldlist;
 	}
 }

@@ -1,5 +1,7 @@
 package otc.healthcare.pojo;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -8,7 +10,7 @@ public class DatabaseInfo {
 	private String databaseid;
 	private String name;
 	private String comments;
-	
+	private List<TableInfo> tablelist;
 	@XmlElement(name = "databaseid")
 	public String getDatabaseid() {
 		return databaseid;
@@ -36,6 +38,18 @@ public class DatabaseInfo {
 	public String toString() {
 		return "DatabaseInfoModel [databaseid=" + databaseid + ", name=" + name
 				+ ", comments=" + comments + "]";
+	}
+	/**
+	 * @return the tablelist
+	 */
+	public List<TableInfo> getTablelist() {
+		return tablelist;
+	}
+	/**
+	 * @param tablelist the tablelist to set
+	 */
+	public void setTablelist(List<TableInfo> tablelist) {
+		this.tablelist = tablelist;
 	}
 	
 }
