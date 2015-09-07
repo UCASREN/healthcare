@@ -50,7 +50,9 @@ public class DatabaseInfo {
 	@Override
 	public String toString() {
 		return "DatabaseInfoModel [databaseid=" + databaseid + ", name=" + name
-				+ ", comments=" + comments + "]";
+				+ ", comments=" + comments +",identifier=" +identifier+",language="
+						+language+",charset="+charset+",subjectclassification="
+				+subjectclassification+",keywords="+keywords+"]";
 	}
 	public String getIdentifier() {
 		return identifier;

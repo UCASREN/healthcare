@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -138,20 +140,17 @@ public class MetadataController {
 		}
 		return operationResult;
 	}
-	@RequestMapping(value = "/databaseoperation", method = RequestMethod.GET)
+	@RequestMapping(value = "/databaseupdate", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> databaseOperation(@RequestParam(value = "operation", required = true) String operation,
-			@RequestParam(value = "id", required = false) String id,
-			@RequestParam(value = "name", required = false) String name,
-			@RequestParam(value = "comments", required = false) String comments) {
-		Map<String,String> resultMap=null;
-		if(operation.equals("update")){
-			this.oracleSerive.changeDatabase(id, name, comments);
-		}
-		if(operation.equals("get")){
-			resultMap=this.oracleSerive.getDatabaseSummary(id);
-		}
-		return  resultMap;
+	public boolean databaseUpdate(@ModelAttribute DatabaseInfo databaseinfo) {
+		System.out.println("前台传过来的"+databaseinfo);
+		this.oracleSerive.changeDatabase(databaseinfo);
+		return  true;
+	}
+	@RequestMapping(value = "/getdatabaseInfo", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,String> databaseInfo(@RequestParam(value = "databaseid", required = true)String databaseid) {
+		return  this.oracleSerive.getDatabaseSummary(databaseid);
 	}
 
 	@RequestMapping(value = "/fieldoperation", method = RequestMethod.GET)
@@ -378,6 +377,7 @@ public class MetadataController {
 			String name = file.getName();
 			if (!file.isEmpty()) {
 				User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				System.out.println(user.getAuthorities());
 				System.out.println("用户：" + user);
 				System.out.println("文件长度: " + file.getSize());
 				System.out.println("文件类型: " + file.getContentType());

@@ -36,7 +36,7 @@
 	</beans:bean>
 		
 	<!-- div view-controller -->
-	<view-controller path="/databasemanager" view-name="databasemanager"/>
+	<!-- <view-controller path="/databasemanager" view-name="databasemanager"/> -->
 	<view-controller path="/userdatabaseview" view-name="userdatabaseview"/>
 	
 	<!-- fileupload -->

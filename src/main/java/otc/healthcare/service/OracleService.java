@@ -91,11 +91,24 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			ResultSet res = dbUtil.query("select DATABASEID,NAME,COMMENTS from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);
+			ResultSet res = dbUtil.query("select * from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);
 			while (res.next()) {
+				databaseSummary.put("databaseid", res.getString(1));
 				databaseSummary.put("name", res.getString(2));
 				databaseSummary.put("comments", res.getString(3));
-				databaseSummary.put("others", "still need to be filled");
+				databaseSummary.put("identifier", res.getString(4));
+				databaseSummary.put("language", res.getString(5));
+				databaseSummary.put("charset", res.getString(6));
+				databaseSummary.put("subjectclassification", res.getString(7));
+				databaseSummary.put("keywords", res.getString(8));
+				databaseSummary.put("credibility", res.getString(9));
+				databaseSummary.put("resinstitution", res.getString(10));
+				databaseSummary.put("resname", res.getString(11));
+				databaseSummary.put("resaddress", res.getString(12));
+				databaseSummary.put("respostalcode", res.getString(13));
+				databaseSummary.put("resphone", res.getString(14));
+				databaseSummary.put("resemail", res.getString(15));
+				databaseSummary.put("resourceurl", res.getString(16));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -539,6 +552,40 @@ public class OracleService implements IService {
 				sql = "update SYSTEM.HC_DATABASE set COMMENTS='" + newComments + "'  where DATABASEID=" + databaseid;
 				dbUtil.execute(sql);
 			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
+	public boolean changeDatabase(DatabaseInfo databaseinfo) {
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		String sql = "";
+		try {
+			sql = "update SYSTEM.HC_DATABASE set NAME='" + databaseinfo.getName() + "',"
+					+"COMMENTS='"+databaseinfo.getComments()+"',"
+					+"IDENTIFIER='"+databaseinfo.getIdentifier()+"',"
+					+"LANGUAGE='"+databaseinfo.getLanguage()+"',"
+					+"CHARSET='"+databaseinfo.getCharset()+"',"
+					+"SUBJECTCLASSIFICATION='"+databaseinfo.getSubjectclassification()+"',"
+					+"KEYWORDS='"+databaseinfo.getKeywords()+"',"
+					+"CREDIBILITY='"+databaseinfo.getResinstitution()+"',"
+					+"RESINSTITUTION='"+databaseinfo.getResinstitution()+"',"
+					+"RESNAME='"+databaseinfo.getResname()+"',"
+					+"RESADDRESS='"+databaseinfo.getResaddress()+"',"
+					+"RESPOSTALCODE='"+databaseinfo.getRespostalcode()+"',"
+					+"RESPHONE='"+databaseinfo.getResphone()+"',"
+					+"RESEMAIL='"+databaseinfo.getResemail()+"',"
+					+"RESOURCEURL='"+databaseinfo.getResourceurl()+"'"
+					+" where DATABASEID=" + databaseinfo.getDatabaseid();
+			dbUtil.execute(sql);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
