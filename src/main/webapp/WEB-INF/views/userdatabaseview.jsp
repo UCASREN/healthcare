@@ -241,12 +241,10 @@
 				</div>
 				<div id="showtableinfo" style="display: none;">
 					<div class="row">
-
 						<span id="showtableinfo_name"></span> <span
 							id="showtableinfo_comments"></span> <span
 							id="showtableinfo_others"></span> <span
 							id="showtableinfo_fieldnumber"></span>
-
 					</div>
 					<p></p>
 					<div class="row">
