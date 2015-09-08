@@ -207,10 +207,60 @@
 				<p></p>
 				<div id="showdatabaseinfo" style="display: none;">
 					<div class="row">
-						<span id="showdatabaseinfo_name"></span> <span
-							id="showdatabaseinfo_comments"></span> <span
-							id="showdatabaseinfo_others"></span> <span
-							id="showdatabaseinfo_tablenumber"></span>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_name"></span>
+						</div> 
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_comments"></span> 
+						</div> 
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_identifier"></span> 
+						</div> 
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_language"></span>
+						</div> 
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_charset"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_subjectclassification"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_keywords"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_credibility"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resinstitution"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resname"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resaddress"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_respostalcode"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resphone"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resemail"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resourceurl"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_tablenumber"></span>
+						</div>
 					</div>
 					<p></p>
 					<div class="row">

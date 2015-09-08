@@ -112,9 +112,9 @@
 				<div class="col-md-10">
 					<div class="row">
 						<div class="col-md-12">
-							<a class="btn default" data-toggle="modal"
-								href="#fileuploadmodal"> 上传文件</a> <a class="btn default"
-								data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
+							<a class="btn default" data-toggle="modal" href="#fileuploadmodal"> 上传文件</a> 
+							<a class="btn default" data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
+							<a class="btn default" data-toggle="modal" href="#changedatabaseinfo_remote" id="setdatabasefromremote">从远端导入数据库元信息</a>
 						</div>
 					</div>
 					<div class="row">
@@ -427,7 +427,55 @@
 			</div>
 		</div>
 	</div>
-
+	<div id="changedatabaseinfo_remote" class="modal fade" tabindex="-1"
+		data-width="400">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title" >从远端添加数据库元信息</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<form id="remote_database_form" class="form-horizontal" method="post"  role="form" action="dataresource/testremoteconnect">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="col-md-2 control-label">远端地址</label>
+										<div class="col-md-9">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											<input type="text" class="form-control" name="url" id="url"
+												placeholder="输入地址"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">用户名</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" name="username" id="username"
+												placeholder="输入用户名"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">密码</label>
+										<div class="col-md-9">
+											<input type="password" class="form-control" name="password" id="password"
+												placeholder="输入密码"/>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn">离开</button>
+					<button type="button" class="btn green" id="remote_test_connect">测试连接</button>
+					<button type="button" class="btn red" id="remote_connect">连接</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->

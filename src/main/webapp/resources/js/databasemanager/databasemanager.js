@@ -723,3 +723,8 @@ $("#savedatabaseinfo").click(function(){
     $.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
 	$('#changedatabaseinfo').modal('hide');
 });
+$("#remote_test_connect").click(function(){
+	 $.post("dataresource/testremoteconnect", $("#remote_database_form").serialize(), function (data) {
+		 alert(data.result) 
+		 },"json");
+});

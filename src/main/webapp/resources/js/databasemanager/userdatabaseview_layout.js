@@ -183,9 +183,21 @@ var Layout = function () {
 			    	},
 			    	success : function(data) {
 			    		$("#showdatabaseinfo_name").text("数据库名："+data.name);
-			    		$("#showdatabaseinfo_comments").text("备注："+data.comments);
-			    		$("#showdatabaseinfo_others").text("其它："+data.others);
-			    		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
+                		$("#showdatabaseinfo_comments").text("备注："+data.comments);
+                		$("#showdatabaseinfo_identifier").text("标识符："+(data.identifier==null?"空":data.identifier));
+                		$("#showdatabaseinfo_language").text("语种："+(data.language==null?"空":data.identifier));
+                		$("#showdatabaseinfo_charset").text("字符集："+(data.charset==null?"空":data.charset));
+                		$("#showdatabaseinfo_subjectclassification").text("学科分类："+(data.subjectclassification==null?"空":data.identifier));
+                		$("#showdatabaseinfo_keywords").text("关键词："+(data.keywords==null?"空":data.identifier));
+                		$("#showdatabaseinfo_credibility").text("可信度："+(data.credibility==null?"空":data.identifier));
+                		$("#showdatabaseinfo_resinstitution").text("负责单位："+(data.resinstitution==null?"空":data.identifier));
+                		$("#showdatabaseinfo_resname").text("负责人："+(data.resname==null?"空":data.identifier));
+                		$("#showdatabaseinfo_resaddress").text("通讯地址："+(data.resaddress==null?"空":data.identifier));
+                		$("#showdatabaseinfo_respostalcode").text("邮政编码："+(data.respostalcode==null?"空":data.identifier));
+                		$("#showdatabaseinfo_resphone").text("联系电话："+(data.resphone==null?"空":data.identifier));
+                		$("#showdatabaseinfo_resemail").text("电子邮件："+(data.resemail==null?"空":data.identifier));
+                		$("#showdatabaseinfo_resourceurl").text("资源链接："+(data.resourceurl==null?"空":data.identifier));
+                		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
 			    	}
 			    });
                 $('.arrow', $(this)).addClass("open");

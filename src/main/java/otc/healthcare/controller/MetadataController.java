@@ -86,7 +86,17 @@ public class MetadataController {
 		this.oracleSerive.createHcDB();
 		return "redirect:/";
 	}
-
+	@RequestMapping(value = "/testremoteconnect", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> TestRemoteConnect(@RequestParam(value = "url", required = true) String url,
+			@RequestParam(value = "username", required = true) String username,
+			@RequestParam(value = "password", required = true) String password) {
+		Map<String,String> result=new HashMap<String,String>();
+		if(this.oracleSerive.testConnection(url,username,password)){
+			result.put("result", "数据库可用");
+		}else result.put("result", "数据库不可用");
+		return result;
+	}
 	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)
 	@ResponseBody
 	public String databaseNodeOperation(@RequestParam(value = "operation", required = true) String operation,

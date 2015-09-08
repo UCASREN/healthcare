@@ -36,7 +36,12 @@ public class OracleService implements IService {
 	private HealthcareConfiguration hcConfiguration;
 	@Autowired
 	private HcApplydataDao hcApplydataDao;
-	
+	public boolean testConnection(String oracle_url,String oracle_username,String oracle_password){
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		if(connectionFactory.getInstance().getConnection()!=null) return true;
+		return false;
+	}
 	public List<DatabaseInfo> getALLDatabaseInfo() {
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
