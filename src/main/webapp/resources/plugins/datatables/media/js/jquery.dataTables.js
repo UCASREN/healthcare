@@ -10212,7 +10212,7 @@
 		 *    $(document).ready( function() {
 		 *      $('#example').dataTable( {
 		 *        "fheaderCallback": function( head, data, start, end, display ) {
-		 *          head.getElementsByTagName('th')[0].innerHTML = "Displaying "+(end-start)+" records";
+		 *          head.getElementsByTagName('th')[0].innerHTML = "显示 "+(end-start)+" 条记录";
 		 *        }
 		 *      } );
 		 *    } )
@@ -10864,7 +10864,7 @@
 			 * parameter - if it is not given, the value of `zeroRecords` will be used
 			 * instead (either the default or given value).
 			 *  @type string
-			 *  @default No data available in table
+			 *  @default 没有数据
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.emptyTable
@@ -10873,12 +10873,12 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "emptyTable": "No data available in table"
+			 *          "emptyTable": "没有数据"
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
+			"sEmptyTable": "没有数据",
 	
 	
 			/**
@@ -10896,7 +10896,7 @@
 			 * * `\_PAGES\_` - Total number of pages of data in the table
 			 *
 			 *  @type string
-			 *  @default Showing _START_ to _END_ of _TOTAL_ entries
+			 *  @default 显示第 _START_ 到第 _END_ 条，共  _TOTAL_ 条
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.info
@@ -10905,19 +10905,19 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "info": "Showing page _PAGE_ of _PAGES_"
+			 *          "info": " 第 _PAGE_ 页，共 _PAGES_ 页"
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": "显示第 _START_ 到第 _END_ 条，共  _TOTAL_ 条",
 	
 	
 			/**
 			 * Display information string for when the table is empty. Typically the
 			 * format of this string should match `info`.
 			 *  @type string
-			 *  @default Showing 0 to 0 of 0 entries
+			 *  @default 没有记录
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.infoEmpty
@@ -10926,12 +10926,12 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "infoEmpty": "No entries to show"
+			 *          "infoEmpty": "没有记录可以显示"
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "没有记录",
 	
 	
 			/**
@@ -11059,14 +11059,14 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "lengthMenu": 'Display <select>'+
+			 *          "lengthMenu": '显示 <select>'+
 			 *            '<option value="10">10</option>'+
 			 *            '<option value="20">20</option>'+
 			 *            '<option value="30">30</option>'+
 			 *            '<option value="40">40</option>'+
 			 *            '<option value="50">50</option>'+
 			 *            '<option value="-1">All</option>'+
-			 *            '</select> records'
+			 *            '</select> 记录'
 			 *        }
 			 *      } );
 			 *    } );
@@ -11126,7 +11126,7 @@
 			 * control over where it appears in the string. If "_INPUT_" is not given
 			 * then the input box is appended to the string automatically.
 			 *  @type string
-			 *  @default Search:
+			 *  @default 查找:
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.search
@@ -11151,7 +11151,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "查找:",
 	
 	
 			/**
@@ -11195,7 +11195,7 @@
 			 * displayed after filtering. `emptyTable` is shown when there is simply no
 			 * information in the table at all (regardless of filtering).
 			 *  @type string
-			 *  @default No matching records found
+			 *  @default 没有找到匹配的记录
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.zeroRecords
@@ -11204,12 +11204,12 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "zeroRecords": "No records to display"
+			 *          "zeroRecords": "没有记录可以显示"
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "No matching records found"
+			"sZeroRecords": "没有找到匹配的记录"
 		},
 	
 	

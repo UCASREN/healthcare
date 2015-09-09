@@ -37,8 +37,8 @@ var ajaxTable1 = function() {
 				+ aData[1] + '">';
 		jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="'
 				+ aData[2] + '">';
-		jqTds[3].innerHTML = '<a class="edit" href="">Save</a>';
-		jqTds[4].innerHTML = '<a class="cancel" href="">Cancel</a>';
+		jqTds[3].innerHTML = '<a class="edit" href="">保存</a>';
+		jqTds[4].innerHTML = '<a class="cancel" href="">取消</a>';
 		ComponentsPickers.init();
 	}
 
@@ -46,8 +46,8 @@ var ajaxTable1 = function() {
 		var jqInputs = $('input', nRow);
 		oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
-		oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 3, false);
-		oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 4, false);
+		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 3, false);
+		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 4, false);
 		oTable.fnDraw();
 		// 向后台更改数据逻辑
 		var aData = oTable.fnGetData(nRow);
@@ -100,7 +100,7 @@ var ajaxTable1 = function() {
 	var table = $('#editable_1');
 
 	var oTable = table.dataTable({
-		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "All" ] // change
+		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "所有" ] // change
 		// per
 		// page
 		// values
@@ -109,7 +109,7 @@ var ajaxTable1 = function() {
 		"pageLength" : 5,
 
 		"language" : {
-			"lengthMenu" : " _MENU_ records",
+			"lengthMenu" : "每页显示  _MENU_ 条记录",
 			"paging" : {
 				"previous" : "Prev",
 				"next" : "Next"
@@ -157,8 +157,8 @@ var ajaxTable1 = function() {
 				}
 
 				var aiNew = oTable.fnAddData([ "自动生成", "", "",
-						'<a class="edit" href="">Edit</a>',
-						'<a class="delete" href="">Delete</a>' ]);
+						'<a class="edit" href="">编辑</a>',
+						'<a class="delete" href="">删除</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
 				nEditing = nRow;
 				nNew = true;
@@ -233,7 +233,7 @@ var ajaxTable1 = function() {
 			restoreRow(oTable, nEditing);
 			editRow(oTable, nRow);
 			nEditing = nRow;
-		} else if (nEditing == nRow && this.innerHTML == "Save") {
+		} else if (nEditing == nRow && this.innerHTML == "保存") {
 			/* Editing this row and want to save it */
 			saveRow(oTable, nEditing);
 			nEditing = null;
@@ -272,8 +272,8 @@ var ajaxTable2 = function() {
 				+ aData[1] + '">';
 		jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="'
 				+ aData[2] + '">';
-		jqTds[3].innerHTML = '<a class="edit" href="">Save</a>';
-		jqTds[4].innerHTML = '<a class="cancel" href="">Cancel</a>';
+		jqTds[3].innerHTML = '<a class="edit" href="">保存</a>';
+		jqTds[4].innerHTML = '<a class="cancel" href="">取消</a>';
 		ComponentsPickers.init();
 	}
 
@@ -281,8 +281,8 @@ var ajaxTable2 = function() {
 		var jqInputs = $('input', nRow);
 		oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
-		oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 3, false);
-		oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 4, false);
+		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 3, false);
+		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 4, false);
 		oTable.fnDraw();
 		// 向后台更改数据逻辑
 		var aData = oTable.fnGetData(nRow);
@@ -337,7 +337,7 @@ var ajaxTable2 = function() {
 	var table = $('#editable_2');
 
 	var oTable = table.dataTable({
-		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "All" ] // change
+		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "所有" ] // change
 		// per
 		// page
 		// values
@@ -346,7 +346,7 @@ var ajaxTable2 = function() {
 		"pageLength" : 5,
 
 		"language" : {
-			"lengthMenu" : " _MENU_ records",
+			"lengthMenu" : "每页显示  _MENU_ 条记录",
 			"paging" : {
 				"previous" : "Prev",
 				"next" : "Next"
@@ -394,8 +394,8 @@ var ajaxTable2 = function() {
 				}
 
 				var aiNew = oTable.fnAddData([ "自动生成", "", "",
-						'<a class="edit" href="">Edit</a>',
-						'<a class="delete" href="">Delete</a>' ]);
+						'<a class="edit" href="">编辑</a>',
+						'<a class="delete" href="">删除</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
 				nEditing = nRow;
 				nNew = true;
@@ -471,7 +471,7 @@ var ajaxTable2 = function() {
 			restoreRow(oTable, nEditing);
 			editRow(oTable, nRow);
 			nEditing = nRow;
-		} else if (nEditing == nRow && this.innerHTML == "Save") {
+		} else if (nEditing == nRow && this.innerHTML == "保存") {
 			/* Editing this row and want to save it */
 			saveRow(oTable, nEditing);
 			nEditing = null;
@@ -537,7 +537,7 @@ var AjaxTree = function() {
 		});
 	}).on('create_node.jstree', function(e, data) {
 		if (data.node.parent.indexOf("alltable") != -1) {
-			alert("Can't create node under table node");
+			alert("不能在表节点下新建节点");
 			data.instance.refresh();
 		} else {
 			$.get('dataresource/nodeoperation?operation=create_node', {
@@ -565,7 +565,7 @@ var AjaxTree = function() {
 		 * data.parent, 'position' : data.position }) .fail(function () {
 		 * data.instance.refresh(); });
 		 */
-		alert("Move operation not supported");
+		alert("不支持移动动作");
 		data.instance.refresh();
 	}).on('copy_node.jstree', function(e, data) {
 		/*
@@ -573,7 +573,7 @@ var AjaxTree = function() {
 		 * data.parent, 'position' : data.position }) .always(function () {
 		 * data.instance.refresh(); });
 		 */
-		alert("Copy operation not supported");
+		alert("不支持拷贝动作");
 		data.instance.refresh();
 	}).on('changed.jstree', function(e, data) {
 
@@ -616,8 +616,8 @@ var AjaxTree = function() {
 						/* if (table.tableid > maxId)
 							maxId = table.tableid; */
 						oTable1.fnAddData([ table.tableid, table.name,
-						                   table.comments, '<a class="edit" href="">Edit</a>',
-								'<a class="delete" href="">Delete</a>' ]);
+						                   table.comments, '<a class="edit" href="">编辑</a>',
+								'<a class="delete" href="">删除</a>' ]);
 					});
 				});
 			});
@@ -638,8 +638,8 @@ var AjaxTree = function() {
 							/* if (field.fieldid > maxId)
 								maxId = field.fieldid; */
 							oTable2.fnAddData([ field.fieldid, field.name,
-							                   field.comments, '<a class="edit" href="">Edit</a>',
-									'<a class="delete" href="">Delete</a>' ]);
+							                   field.comments, '<a class="edit" href="">编辑</a>',
+									'<a class="delete" href="">删除</a>' ]);
 						});
 					});
 				});
@@ -665,8 +665,8 @@ var AjaxTree = function() {
 						/* if (field.fieldid > maxId)
 							maxId = field.fieldid; */
 						oTable2.fnAddData([ field.fieldid, field.name,
-						                   field.comments, '<a class="edit" href="">Edit</a>',
-								'<a class="delete" href="">Delete</a>' ]);
+						                   field.comments, '<a class="edit" href="">编辑</a>',
+								'<a class="delete" href="">删除</a>' ]);
 					});
 				});
 			});
@@ -689,8 +689,8 @@ var AjaxTree = function() {
 							/* if (table.tableid > maxId)
 								maxId = table.tableid; */
 							oTable1.fnAddData([ table.tableid, table.name,
-							                   table.comments, '<a class="edit" href="">Edit</a>',
-									'<a class="delete" href="">Delete</a>' ]);
+							                   table.comments, '<a class="edit" href="">编辑</a>',
+									'<a class="delete" href="">删除</a>' ]);
 						});
 					});
 				});
