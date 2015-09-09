@@ -1,4 +1,7 @@
 package otc.healthcare.dao;
+// default package
+// Generated 2015-9-6 17:38:46 by Hibernate Tools 4.0.0
+
 import java.util.List;
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
@@ -7,24 +10,28 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.hibernate.Query;
 import otc.healthcare.pojo.HcApplydata;
 
+/**
+ * Home object for domain model class HcApplydata.
+ * @see .HcApplydata
+ * @author Hibernate Tools
+ */
 @Transactional
-@Component
 public class HcApplydataDao {
 
 	private static final Log log = LogFactory.getLog(HcApplydataDao.class);
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
 	protected SessionFactory getSessionFactory() {
 		try {
 			return (SessionFactory) new InitialContext().lookup("SessionFactory");
@@ -90,10 +97,11 @@ public class HcApplydataDao {
 		}
 	}
 
-	public HcApplydata findById(java.lang.String id) {
+	//通过序列得到
+	public HcApplydata findById(java.math.BigDecimal id) {
 		log.debug("getting HcApplydata instance with id: " + id);
 		try {
-			HcApplydata instance = (HcApplydata) sessionFactory.getCurrentSession().get("otc.healthcare.pojo.HcApplydata", id);
+			HcApplydata instance = (HcApplydata) sessionFactory.getCurrentSession().get("HcApplydata", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -118,4 +126,44 @@ public class HcApplydataDao {
 			throw re;
 		}
 	}
+
+	//通过属性值得到
+	public List findByProperty(String propertyName, Object value) {
+		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
+		try {
+			String queryString = "from HcApplydata as model where model."
+					+ propertyName + "= ?";
+			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
+			queryObject.setParameter(0, value);
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	//获得整个表内容
+	public List findAll() {
+		log.debug("finding all HcApplydata instance");
+		try {
+			String queryString = "from HcApplydata as model";
+			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	//通过系统用户名得到对应申请内容---当前用户查看自己申请
+	public List findByHcUserName(String hcUserName){
+		List<HcApplydata> rs = findByProperty("hcUsername", hcUserName);
+		return rs;
+	}
+	
+	public HcApplydata findByDocName(String hcDocName){
+		List<HcApplydata> rs = findByProperty("docName", hcDocName);
+		return rs.get(0);
+	}
+	
 }

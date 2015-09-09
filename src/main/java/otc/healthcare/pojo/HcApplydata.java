@@ -1,5 +1,7 @@
 package otc.healthcare.pojo;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 
 /**
@@ -8,8 +10,9 @@ import javax.persistence.Entity;
 @Entity
 public class HcApplydata implements java.io.Serializable {
 
-	private String docName;
+	private BigDecimal idApplydata;
 	private String hcUsername;
+	private String docName;
 	private String name;
 	private String department;
 	private String address;
@@ -23,20 +26,25 @@ public class HcApplydata implements java.io.Serializable {
 	private String proUndertake;
 	private String proRemark;
 	private String proUsefield;
+	private String flagApplydata;
+	private String applyTime;
 
 	public HcApplydata() {
 	}
 
-	public HcApplydata(String docName, String hcUsername) {
-		this.docName = docName;
+	public HcApplydata(BigDecimal idApplydata, String hcUsername, String docName) {
+		this.idApplydata = idApplydata;
 		this.hcUsername = hcUsername;
+		this.docName = docName;
 	}
 
-	public HcApplydata(String docName, String hcUsername, String name, String department, String address, String tel,
-			String email, String demandtype, String demand, String proName, String proChair, String proSource,
-			String proUndertake, String proRemark, String proUsefield) {
-		this.docName = docName;
+	public HcApplydata(BigDecimal idApplydata, String hcUsername, String docName, String name, String department,
+			String address, String tel, String email, String demandtype, String demand, String proName, String proChair,
+			String proSource, String proUndertake, String proRemark, String proUsefield, String flagApplydata,
+			String applyTime) {
+		this.idApplydata = idApplydata;
 		this.hcUsername = hcUsername;
+		this.docName = docName;
 		this.name = name;
 		this.department = department;
 		this.address = address;
@@ -50,14 +58,16 @@ public class HcApplydata implements java.io.Serializable {
 		this.proUndertake = proUndertake;
 		this.proRemark = proRemark;
 		this.proUsefield = proUsefield;
+		this.flagApplydata = flagApplydata;
+		this.applyTime = applyTime;
 	}
 
-	public String getDocName() {
-		return this.docName;
+	public BigDecimal getIdApplydata() {
+		return this.idApplydata;
 	}
 
-	public void setDocName(String docName) {
-		this.docName = docName;
+	public void setIdApplydata(BigDecimal idApplydata) {
+		this.idApplydata = idApplydata;
 	}
 
 	public String getHcUsername() {
@@ -66,6 +76,14 @@ public class HcApplydata implements java.io.Serializable {
 
 	public void setHcUsername(String hcUsername) {
 		this.hcUsername = hcUsername;
+	}
+
+	public String getDocName() {
+		return this.docName;
+	}
+
+	public void setDocName(String docName) {
+		this.docName = docName;
 	}
 
 	public String getName() {
@@ -170,6 +188,22 @@ public class HcApplydata implements java.io.Serializable {
 
 	public void setProUsefield(String proUsefield) {
 		this.proUsefield = proUsefield;
+	}
+
+	public String getFlagApplydata() {
+		return this.flagApplydata;
+	}
+
+	public void setFlagApplydata(String flagApplydata) {
+		this.flagApplydata = flagApplydata;
+	}
+
+	public String getApplyTime() {
+		return this.applyTime;
+	}
+
+	public void setApplyTime(String applyTime) {
+		this.applyTime = applyTime;
 	}
 
 }

@@ -686,15 +686,15 @@ public class OracleService implements IService {
 		String hc_userTel = req.getParameter("userTel");
 		String hc_userEmail = req.getParameter("userEmail");
 		
-		String hc_userDemandType = req.getParameter("userDemandType");//
+		String hc_userDemandType = req.getParameter("userDemandType");
 		String hc_userDemand = req.getParameter("userDemand");
 		
-		String hc_useFields = req.getParameter("useFields[]");//
+		String hc_useFields = req.getParameter("allUseField");//
 		String hc_projectName = req.getParameter("projectName");
 		String hc_projectChairman = req.getParameter("projectChairman");
 		String hc_projectSource = req.getParameter("projectSource");
 		String hc_projectUndertaking = req.getParameter("projectUndertaking");
-		String hc_applyDate = req.getParameter("applyDate");//
+		String hc_applyDate = req.getParameter("applyDate");
 		String hc_projectRemarks = req.getParameter("projectRemarks");
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -708,25 +708,49 @@ public class OracleService implements IService {
 		hc_applydata.setTel(hc_userTel);
 		hc_applydata.setEmail(hc_userEmail);
 		
+		hc_applydata.setDemandtype(hc_userDemandType);
 		hc_applydata.setDemand(hc_userDemand);
 		
+		hc_applydata.setProUsefield(hc_useFields);
 		hc_applydata.setProName(hc_projectName);
 		hc_applydata.setProChair(hc_projectChairman);
 		hc_applydata.setProSource(hc_projectSource);
 		hc_applydata.setProUndertake(hc_projectUndertaking);
+		hc_applydata.setApplyTime(hc_applyDate);
 		hc_applydata.setProRemark(hc_projectRemarks);
+		
+		//提交后，apply标志为1
+		hc_applydata.setFlagApplydata("1");
 		
 		hcApplydataDao.attachDirty(hc_applydata);
 		System.out.println("insert hc_doc ok");
 	}
 	
 	/*
-	 * get the apply docdata from db
+	 * get the apply docdata from db by docName
 	 */
 	@Transactional
 	public HcApplydata getDocBydocID(String docid) {
-		HcApplydata docData = hcApplydataDao.findById(docid);
+		HcApplydata docData = hcApplydataDao.findByDocName(docid);
 		return docData;
+	}
+	
+	/*
+	 * get the apply docdata from db by hc_userName(系统用户)
+	 */
+	@Transactional
+	public List getDocByHcUserName(String hcUserName) {
+		List docDataList = hcApplydataDao.findByHcUserName(hcUserName);
+		return docDataList;
+	}
+	
+	/*
+	 * get all the apply docdata from db(ROLE_ADMIN管理员用)
+	 */
+	@Transactional
+	public List<HcApplydata> getAllDoc() {
+		List ALLdocDataList = hcApplydataDao.findAll();
+		return ALLdocDataList;
 	}
 
 }

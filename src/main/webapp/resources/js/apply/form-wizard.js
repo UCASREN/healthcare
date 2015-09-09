@@ -1,11 +1,23 @@
 var FormWizard = function () {
+	
+	  var initPickers = function () {
+	        //init date pickers
+	        $('.date-picker').datepicker({
+	            rtl: Metronic.isRTL(),
+	            autoclose: true
+	        });
+	    }
 
     return {
+    	
         //main function to initiate the module
         init: function () {
+        	
             if (!jQuery().bootstrapWizard) {
                 return;
             }
+
+        	initPickers();
             
             var form = $('#submit_form');
             var error = $('.alert-danger', form);
@@ -67,30 +79,30 @@ var FormWizard = function () {
                 rules: {
                     //用户信息
                 	userName: {
-                        required: true
+//                        required: true
                     },
                     userDepartment: {
-                        required: true
+//                        required: true
                     },
                     userAddress: {
-                        required: true,
+//                        required: true,
 //                        equalTo: "#submit_form_password"
                     },
                     userTel: {
 //                        digits: true,
-                    	required: true,
+//                    	required: true,
                     },
                     userEmail: {
-                    	required:true,
+//                    	required:true,
 //                    	email: true
                     },
                     
                     //数据需求
                     userDemandType:{
-                    	required: true,
+//                    	required: true,
                     },
                     userDemand: {
-                        required: true
+//                        required: true
                     },
                     
                     //数据使用目的--project
@@ -167,7 +179,6 @@ var FormWizard = function () {
                     success.show();
                     error.hide();
                     //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
-                    console.log('提交表单啦');
                     form.submit();
                 }
 
@@ -268,7 +279,8 @@ var FormWizard = function () {
                     });
                 }
             });
-
+            
+            $('#form_wizard_1 #others').hide();
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
                 alert('提交成功，我们会尽快进行审核，请耐心等待！');
@@ -280,6 +292,21 @@ var FormWizard = function () {
                 //window.open ("/healthcare/", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
             }).hide();
 
+            $('#form_wizard_1 input[type="checkbox"]').on('ifChecked', function(event){
+//            	alert(event.type + ' callback');
+            	var tmp = '';
+//            	console.log($('#form_wizard_1 div.icheckbox_flat-blue').attr('checked'));
+            	$('#form_wizard_1 input[type="checkbox"]').each(function(){
+//            		console.log('njz');
+//            		console.log($(this).attr('checked'));
+            		
+            		if($(this).attr("checked") == "checked"){
+            			tmp += $(this).val()+",";
+            			console.log(tmp);
+            		}
+            	});
+            	$('#allUseField').val(this.value+","+tmp);
+            });
         }
 
     };

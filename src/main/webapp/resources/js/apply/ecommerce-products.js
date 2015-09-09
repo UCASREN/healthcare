@@ -19,7 +19,7 @@ var EcommerceProducts = function () {
             onError: function (grid) {
                 // execute some code on network or other general error  
             },
-            loadingMessage: 'Loading...',
+            loadingMessage: '加载中...',
             dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
 
                 // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
@@ -31,9 +31,10 @@ var EcommerceProducts = function () {
                     [10, 20, 50, 100, 150],
                     [10, 20, 50, 100, 150] // change per page values here 
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 20, // default record count per page
+                
                 "ajax": {
-                    "url": "demo/ecommerce_products.php", // ajax source
+                    "url": "apply/getdocdatabydocid", // ajax source
                 },
                 "order": [
                     [1, "asc"]
