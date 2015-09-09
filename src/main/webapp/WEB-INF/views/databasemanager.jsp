@@ -2,7 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="false"%>
+<jsp:useBean id="databaseinfo"  class="otc.healthcare.pojo.DatabaseInfo" scope="request" ></jsp:useBean>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -68,6 +70,20 @@
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
+<!-- BEGIN DIV STYLES -->
+<style type="text/css">
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding: 2px;
+}
+.paging_bootstrap_extended{
+	font-size: 10px;
+}
+.btn-sm, .btn-xs {
+	font-size: 12px;
+}
+</style>
+
+<!-- END DIV STYLES -->
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -96,9 +112,9 @@
 				<div class="col-md-10">
 					<div class="row">
 						<div class="col-md-12">
-							<a class="btn default" data-toggle="modal"
-								href="#fileuploadmodal"> 上传文件</a> <a class="btn default"
-								data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
+							<a class="btn default" data-toggle="modal" href="#fileuploadmodal"> 上传文件</a> 
+							<a class="btn default" data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
+							<a class="btn default" data-toggle="modal" href="#changedatabaseinfo_remote" id="setdatabasefromremote">从远端导入数据库元信息</a>
 						</div>
 					</div>
 					<div class="row">
@@ -290,105 +306,161 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-12">
-							<form class="form-horizontal" role="form" action="dataresource/databaseoperation?operation=update">
+							<sf:form id="databaseinfo_form" class="form-horizontal" method="post" modelAttribute="databaseinfo" role="form" action="dataresource/databaseupdate">
 								<div class="form-body">
 									<div class="form-group">
 										<label class="col-md-2 control-label">名称</label>
 										<div class="col-md-9">
-											<input type="hidden" id="form_database_id">
-											<input type="text" class="form-control" id="form_database_name"
-												placeholder="输入数据库名称">
+											<sf:input type="hidden" id="form_database_id" path="databaseid"/>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											<sf:input type="text" class="form-control" id="form_database_name" path="name"
+												placeholder="输入数据库名称"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">备注</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="form_database_comments"
-												placeholder="输入数据库备注">
+											<sf:input type="text" class="form-control" id="form_database_comments" path="comments"
+												placeholder="输入数据库备注"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">标识符</label>
+										<div class="col-md-9">
+											<sf:input type="text" class="form-control" id="form_database_identifier" path="identifier"
+												placeholder="输入标识符"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">语种</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入语种">
+											<sf:input type="text" class="form-control" id="form_database_language" path="language"
+												placeholder="输入语种"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">字符集</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入字符集">
+											<sf:input type="text" class="form-control" id="form_database_charset" path="charset"
+												placeholder="输入字符集"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">学科分类</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入学科分类">
+											<sf:input type="text" class="form-control" id="form_database_subjectclassification" path="subjectclassification"
+												placeholder="输入学科分类"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">关键词</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入关键词">
+											<sf:input type="text" class="form-control"  id="form_database_keywords" path="keywords"
+												placeholder="输入关键词"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">可信度</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入可信度">
+											<sf:input type="text" class="form-control" id="form_database_credibility" path="credibility"
+												placeholder="输入可信度"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">负责单位名称</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入负责单位名称">
+											<sf:input type="text" class="form-control" id="form_database_resinstitution" path="resinstitution"
+												placeholder="输入负责单位名称"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">负责人姓名</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入负责人姓名">
+											<sf:input type="text" class="form-control" id="form_database_resname" path="resname"
+												placeholder="输入负责人姓名"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">通讯地址</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入通讯地址">
+											<sf:input type="text" class="form-control" id="form_database_resaddress" path="resaddress"
+												placeholder="输入通讯地址"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">邮政编码</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入邮政编码">
+											<sf:input type="text" class="form-control" id="form_database_respostalcode" path="respostalcode"
+												placeholder="输入邮政编码"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">联系电话</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入联系电话">
+											<sf:input type="text" class="form-control" id="form_database_resphone" path="resphone"
+												placeholder="输入联系电话"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">电子邮件</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入电子邮件地址">
+											<sf:input type="text" class="form-control" id="form_database_resemail" path="resemail"
+												placeholder="输入电子邮件地址"/>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">资源链接</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												placeholder="输入资源链接地址">
+											<sf:input type="text" class="form-control" id="form_database_resourceurl" path="resourceurl"
+												placeholder="输入资源链接地址"/>
+										</div>
+									</div>
+								</div>
+							</sf:form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn">离开</button>
+					<button type="button" class="btn red" id="savedatabaseinfo">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="changedatabaseinfo_remote" class="modal fade" tabindex="-1"
+		data-width="400">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title" >从远端添加数据库元信息</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<form id="remote_database_form" class="form-horizontal" method="post"  role="form" action="dataresource/testremoteconnect">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="col-md-2 control-label">远端地址</label>
+										<div class="col-md-9">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											<input type="text" class="form-control" name="url" id="url"
+												placeholder="输入地址"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">用户名</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" name="username" id="username"
+												placeholder="输入用户名"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">密码</label>
+										<div class="col-md-9">
+											<input type="password" class="form-control" name="password" id="password"
+												placeholder="输入密码"/>
 										</div>
 									</div>
 								</div>
@@ -397,13 +469,13 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" data-dismiss="modal" class="btn">Close</button>
-					<button type="button" class="btn red">Ok</button>
+					<button type="button" data-dismiss="modal" class="btn">离开</button>
+					<button type="button" class="btn green" id="remote_test_connect">测试连接</button>
+					<button type="button" class="btn red" id="remote_connect">连接</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
 
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->

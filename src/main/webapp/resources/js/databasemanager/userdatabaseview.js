@@ -1,6 +1,71 @@
 //显示数据库概述信息部分
+var alldatabase_grid;
 var database_grid;
 var table_grid;
+var TableAjax_alldatabase = function () {
+
+    var initPickers = function () {
+        //init date pickers
+        $('.date-picker').datepicker({
+            rtl: Metronic.isRTL(),
+            autoclose: true
+        });
+    }
+
+    var handleRecords = function () {
+
+        var grid = new Datatable();
+        alldatabase_grid=grid;
+        grid.init({
+            src: $("#datatable_ajax_alldatabase"),
+            onSuccess: function (grid) {
+            	console.log(alldatabase_grid.getDataTable().ajax.json().recordsTotal);
+            	$("#showalldatabaseinfo_number").text("数据库的数目："+alldatabase_grid.getDataTable().ajax.json().recordsTotal);
+            },
+            onError: function (grid) {
+                // execute some code on network or other general error  
+            },
+            onDataLoad: function(grid) {
+                // execute some code on ajax data load
+            },
+            loadingMessage: 'Loading...',
+            dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
+
+                // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
+                // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/scripts/datatable.js). 
+                // So when dropdowns used the scrollable div should be removed. 
+                //"dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>",
+                
+                "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
+
+                "lengthMenu": [
+                    [2,10, 20, 50, 100, 150, -1],
+                    [2,10, 20, 50, 100, 150, "All"] // change per page values here
+                ],
+                "pageLength": 10, // default record count per page
+                "ajax": {
+                    "url": "dataresource/getalldatabasecssinfo", // ajax source
+                },
+                "order": [
+                    [1, "asc"]
+                ]// set first column as a default sort by asc
+            }
+        });
+    }
+
+    return {
+
+        //main function to initiate the module
+        init: function () {
+
+            initPickers();
+            handleRecords();
+        }
+
+    };
+
+}();
+TableAjax_alldatabase.init();
 var TableAjax_database = function () {
 
     var initPickers = function () {
@@ -168,6 +233,7 @@ var TableAjax = function () {
         			$("a[id^=databasetable_"+databaseinfo.databaseid+"_]").click(function(){
         				$("#showtableinfo").show();
                     	$("#showdatabaseinfo").hide();
+                    	$("#showalldatabaseinfo").hide();
         				var thisidlist=$(this).attr("id").split("_");//databasetable_1_1
         				
         				var databaseid=thisidlist[1];
@@ -225,12 +291,26 @@ var TableAjax = function () {
                 		databaseid:$("#database").select2("val")
                 	},
                 	success : function(data) {
+                		console.log(data);
                 		$("#showdatabaseinfo_name").text("数据库名："+data.name);
                 		$("#showdatabaseinfo_comments").text("备注："+data.comments);
-                		$("#showdatabaseinfo_others").text("其它："+data.others);
+                		$("#showdatabaseinfo_identifier").text("标识符："+data.identifier==null?"空":data.identifier);
+                		$("#showdatabaseinfo_language").text("语种："+data.language==null?"空":data.identifier);
+                		$("#showdatabaseinfo_charset").text("字符集："+data.charset==null?"空":data.identifier);
+                		$("#showdatabaseinfo_subjectclassification").text("学科分类："+data.subjectclassification==null?"空":data.identifier);
+                		$("#showdatabaseinfo_keywords").text("关键词："+data.keywords==null?"空":data.identifier);
+                		$("#showdatabaseinfo_credibility").text("可信度："+data.credibility==null?"空":data.identifier);
+                		$("#showdatabaseinfo_resinstitution").text("负责单位："+data.resinstitution==null?"空":data.identifier);
+                		$("#showdatabaseinfo_resname").text("负责人："+data.resname==null?"空":data.identifier);
+                		$("#showdatabaseinfo_resaddress").text("通讯地址："+data.resaddress==null?"空":data.identifier);
+                		$("#showdatabaseinfo_respostalcode").text("邮政编码："+data.respostalcode==null?"空":data.identifier);
+                		$("#showdatabaseinfo_resphone").text("联系电话："+data.resphone==null?"空":data.identifier);
+                		$("#showdatabaseinfo_resemail").text("电子邮件："+data.resemail==null?"空":data.identifier);
+                		$("#showdatabaseinfo_resourceurl").text("资源链接："+data.resourceurl==null?"空":data.identifier);
                 		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
                 		$("#showtableinfo").hide();
                     	$("#showdatabaseinfo").show();
+                    	$("#showalldatabaseinfo").hide();
                 	}
                 });
         	}
@@ -258,6 +338,7 @@ var TableAjax = function () {
                 		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
                 		$("#showtableinfo").show();
                     	$("#showdatabaseinfo").hide();
+                    	$("#showalldatabaseinfo").hide();
                 	}
                 });
         	}
@@ -277,6 +358,8 @@ var TableAjax = function () {
 
 }();
 TableAjax.init();
-
-
-
+$("#refreshalldatabaseinfo").click(function(){
+	$("#showtableinfo").hide();
+	$("#showdatabaseinfo").hide();
+	$("#showalldatabaseinfo").show();
+});

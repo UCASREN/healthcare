@@ -63,6 +63,20 @@
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
+<!-- BEGIN DIV STYLES -->
+<style type="text/css">
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding: 2px;
+}
+.paging_bootstrap_extended{
+	font-size: 10px;
+}
+.btn-sm, .btn-xs {
+	font-size: 12px;
+}
+</style>
+
+<!-- END DIV STYLES -->
 </head>
 <!-- BEGIN BODY -->
 <body
@@ -73,7 +87,7 @@
 		<div class="page-header-inner">
 			<!-- BEGIN LOGO -->
 			<div class="page-logo">
-				<a href="index.html"> <img src="img/logo.png" alt="logo"
+				<a href="#" id="refreshalldatabaseinfo"> <img src="img/logo.png" alt="logo"
 					class="logo-default" />
 				</a>
 				<div class="menu-toggler sidebar-toggler"></div>
@@ -82,7 +96,8 @@
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="userdatabaseview"> 数据发布 </a></li>
+					<li class="classic-menu-dropdown "><a href="userdatabaseview">
+							数据发布 </a></li>
 					<li class="classic-menu-dropdown"><a href="#"> 数据申请 </a></li>
 					<li class="classic-menu-dropdown"><a href="#"> 虚拟环境申请 </a></li>
 					<li class="classic-menu-dropdown"><a href="#"> 数据分析 </a></li>
@@ -146,78 +161,169 @@
 				</select>
 				</label>
 				<p></p>
-				<div  id="showdatabaseinfo" style="display:none;">
+				<div id="showalldatabaseinfo" style="display: block;">
+					<p></p>
 					<div class="row">
-						<span id="showdatabaseinfo_name"></span>
-						<span id="showdatabaseinfo_comments"></span>
-						<span id="showdatabaseinfo_others"></span>
-						<span id="showdatabaseinfo_tablenumber"></span>
+						<span id="showalldatabaseinfo_number"></span>
 					</div>
 					<p></p>
 					<div class="row">
-						<div class="col-md-7">
-						<div class="table-container">
-							<div class="table-actions-wrapper">
-								<span> </span>
-							</div>
+						<div class="col-md-12">
+							<div class="table-container">
+								<div class="table-actions-wrapper">
+									<span> </span>
+								</div>
 
-							<table class="table table-striped table-bordered table-hover"
-								id="datatable_ajax_database">
-								<thead>
-									<tr role="row" class="heading">
-										<th width="2%"><input type="checkbox"
-											class="group-checkable"></th>
-										<th width="5%">编号</th>
-										<th width="15%">名称</th>
-										<th width="15%">备注</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
+								<table class="table table-striped table-bordered table-hover"
+									id="datatable_ajax_alldatabase">
+									<thead>
+										<tr role="row" class="heading">
+											<th>编号</th>
+											<th>名称</th>
+											<th>备注</th>
+											<th>标识符</th>
+											<th>语种</th>
+											<th>字符集</th>
+											<th>学科分类</th>
+											<th>关键词</th>
+											<th>可信度</th>
+											<th>负责单位</th>
+											<th>负责人</th>
+											<th>通讯地址</th>
+											<th>邮政编码</th>
+											<th>联系电话</th>
+											<th>电子邮件</th>
+											<th>资源链接</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
 						</div>
-						</div>
-						<div class="col-md-5">
-						</div>
+						<!-- <div class="col-md-5"></div> -->
 					</div>
 				</div>
-				<div  id="showtableinfo" style="display:none;">
+				<p></p>
+				<div id="showdatabaseinfo" style="display: none;">
 					<div class="row">
-
-						<span id="showtableinfo_name"></span>
-						<span id="showtableinfo_comments"></span>
-						<span id="showtableinfo_others"></span>
-						<span id="showtableinfo_fieldnumber"></span>
-
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_name"></span>
+						</div> 
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_comments"></span> 
+						</div> 
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_identifier"></span> 
+						</div> 
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_language"></span>
+						</div> 
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_charset"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_subjectclassification"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_keywords"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_credibility"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resinstitution"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resname"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resaddress"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_respostalcode"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resphone"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resemail"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_resourceurl"></span>
+						</div>
+						<div class="col-md-3">
+							<span id="showdatabaseinfo_tablenumber"></span>
+						</div>
 					</div>
 					<p></p>
-					<div class="row">'
-						<div class="col-md-7">
-						<div class="table-container">
-							<div class="table-actions-wrapper">
-								<span> </span>
-							</div>
+					<div class="row">
+						<div class="col-md-10">
+							<div class="table-container">
+								<div class="table-actions-wrapper">
+									<span> </span>
+								</div>
 
-							<table class="table table-striped table-bordered table-hover"
-								id="datatable_ajax">
-								<thead>
-									<tr role="row" class="heading">
-										<th width="2%"><input type="checkbox"
-											class="group-checkable"></th>
-										<th width="5%">编号</th>
-										<th width="15%">名称</th>
-										<th width="15%">备注</th>
-										<th width="10%">最小值</th>
-										<th width="10%">最大值</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
+								<table class="table table-striped table-bordered table-hover"
+									id="datatable_ajax_database">
+									<thead>
+										<tr role="row" class="heading">
+											<th width="2%"><input type="checkbox"
+												class="group-checkable"></th>
+											<th width="5%">编号</th>
+											<th width="15%">名称</th>
+											<th width="15%">备注</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
 						</div>
+						<div class="col-md-2"></div>
+					</div>
+				</div>
+				<div id="showtableinfo" style="display: none;">
+					<div class="row">
+						<span id="showtableinfo_name"></span> <span
+							id="showtableinfo_comments"></span> <span
+							id="showtableinfo_others"></span> <span
+							id="showtableinfo_fieldnumber"></span>
+					</div>
+					<p></p>
+					<div class="row">
+						'
+						<div class="col-md-10">
+							<div class="table-container">
+								<div class="table-actions-wrapper">
+									<span> </span>
+								</div>
+
+								<table class="table table-striped table-bordered table-hover"
+									id="datatable_ajax">
+									<thead>
+										<tr role="row" class="heading">
+											<th width="2%"><input type="checkbox"
+												class="group-checkable"></th>
+											<th width="5%">编号</th>
+											<th width="15%">名称</th>
+											<th width="15%">备注</th>
+											<th width="10%">最小值</th>
+											<th width="10%">最大值</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
 						</div>
-						<div class="col-md-5">
-						</div>
+						<div class="col-md-2"></div>
 					</div>
 				</div>
 				<!-- End: life time stats -->

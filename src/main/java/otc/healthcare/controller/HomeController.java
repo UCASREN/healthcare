@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import otc.healthcare.util.SpringWiredBean;
+import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.util.HealthcareConfiguration;
 
 
@@ -42,5 +43,11 @@ public class HomeController {
 		model.addAttribute("message", "helloworld");
 		return "home";
 	}
+//	@RequestMapping(value = "/databasemanager", method = RequestMethod.GET)
+//	public String home(Model model) {
+//		DatabaseInfo databaseinfo=new DatabaseInfo(); 
+//		model.addAttribute(databaseinfo);
+//		return "databasemanager";
+//	}
 	
 }

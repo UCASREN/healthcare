@@ -58,7 +58,7 @@ public class WordService implements IService{
 		return configuration;
 	}
 	
-	public void (HttpServletRequest req, HttpServletResponse resp, String f_path_name){
+	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp, String f_path_name){
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		getData(req , dataMap);
 	    createDoc(dataMap, "dataApply",f_path_name); 

@@ -584,15 +584,28 @@ var AjaxTree = function() {
 			$("#setchangedatabasetitle").text("更改数据库"+data.node.text+"的信息");
 			$.ajax({
 				type : "get",//请求方式
-				url : "dataresource/databaseoperation",//发送请求地址
+				url : "dataresource/getdatabaseInfo",//发送请求地址
 				data:{
-					operation:"get",
-					id:data.node.id.substring(data.node.id.indexOf("_")+1)
+					databaseid:data.node.id.substring(data.node.id.indexOf("_")+1)
 				},
 				dataType : "json",
 				success : function(data) {
+					$("#form_database_id").val(data.databaseid);
 					$("#form_database_name").val(data.name);
 					$("#form_database_comments").val(data.comments);
+					$("#form_database_identifier").val(data.identifier);
+					$("#form_database_language").val(data.language);
+					$("#form_database_charset").val(data.charset);
+					$("#form_database_subjectclassification").val(data.subjectclassification);
+					$("#form_database_keywords").val(data.keywords);
+					$("#form_database_credibility").val(data.credibility);
+					$("#form_database_resinstitution").val(data.resinstitution);
+					$("#form_database_resname").val(data.resname);
+					$("#form_database_resaddress").val(data.resaddress);
+					$("#form_database_respostalcode").val(data.respostalcode);
+					$("#form_database_resphone").val(data.resphone);
+					$("#form_database_resemail").val(data.resemail);
+					$("#form_database_resourceurl").val(data.resourceurl);
 				}
 			});
 			oTable1.fnClearTable();
@@ -665,7 +678,7 @@ var AjaxTree = function() {
 			
 			
 			//恢复数据
-			if(getCookie("lastclick")=="table"&&reloadCount==0){
+			if(getCookie("lastclick")=="table"&&reloadCount==0&&typeof(getCookie("restoredatabase"))!= "undefined"&&getCookie("restoredatabase")!=null){
 				reloadCount++;
 				//reload tabletable data
 				oTable1.fnClearTable();
@@ -706,4 +719,12 @@ $.ajax({
 		});
 	}
 });
-
+$("#savedatabaseinfo").click(function(){
+    $.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
+	$('#changedatabaseinfo').modal('hide');
+});
+$("#remote_test_connect").click(function(){
+	 $.post("dataresource/testremoteconnect", $("#remote_database_form").serialize(), function (data) {
+		 alert(data.result) 
+		 },"json");
+});

@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,7 +86,17 @@ public class MetadataController {
 		this.oracleSerive.createHcDB();
 		return "redirect:/";
 	}
-
+	@RequestMapping(value = "/testremoteconnect", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> TestRemoteConnect(@RequestParam(value = "url", required = true) String url,
+			@RequestParam(value = "username", required = true) String username,
+			@RequestParam(value = "password", required = true) String password) {
+		Map<String,String> result=new HashMap<String,String>();
+		if(this.oracleSerive.testConnection(url,username,password)){
+			result.put("result", "数据库可用");
+		}else result.put("result", "数据库不可用");
+		return result;
+	}
 	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)
 	@ResponseBody
 	public String databaseNodeOperation(@RequestParam(value = "operation", required = true) String operation,
@@ -138,20 +150,17 @@ public class MetadataController {
 		}
 		return operationResult;
 	}
-	@RequestMapping(value = "/databaseoperation", method = RequestMethod.GET)
+	@RequestMapping(value = "/databaseupdate", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> databaseOperation(@RequestParam(value = "operation", required = true) String operation,
-			@RequestParam(value = "id", required = false) String id,
-			@RequestParam(value = "name", required = false) String name,
-			@RequestParam(value = "comments", required = false) String comments) {
-		Map<String,String> resultMap=null;
-		if(operation.equals("update")){
-			this.oracleSerive.changeDatabase(id, name, comments);
-		}
-		if(operation.equals("get")){
-			resultMap=this.oracleSerive.getDatabaseSummary(id);
-		}
-		return  resultMap;
+	public boolean databaseUpdate(@ModelAttribute DatabaseInfo databaseinfo) {
+		System.out.println("前台传过来的"+databaseinfo);
+		this.oracleSerive.changeDatabase(databaseinfo);
+		return  true;
+	}
+	@RequestMapping(value = "/getdatabaseInfo", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,String> databaseInfo(@RequestParam(value = "databaseid", required = true)String databaseid) {
+		return  this.oracleSerive.getDatabaseSummary(databaseid);
 	}
 
 	@RequestMapping(value = "/fieldoperation", method = RequestMethod.GET)
@@ -258,6 +267,53 @@ public class MetadataController {
 		resultMap.put("data", store);
 		return resultMap;
 	}
+	@RequestMapping(value = "/getalldatabasecssinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAllDatabaseCssInfo(@RequestParam(value = "length", required = false) Integer length,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "draw", required = false) Integer draw) {
+		System.out.println("get_all_database_css_info_list");
+		List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
+//		for (int i = 0; i < list.size(); i++) {
+//			System.out.println(list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
+//			list.get(i).setTablelist(this.oracleSerive.getDatabaseInfo(list.get(i).getDatabaseid()));
+//		}
+		
+		// 分页
+		int totalRecords = list.size();
+		int displayLength = length < 0 ? totalRecords : length;
+		int displayStart = start;
+		int end = displayStart + displayLength;
+		end = end > totalRecords ? totalRecords : end;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<ArrayList<String>> store = new ArrayList<ArrayList<String>>();
+		for (int i = start; i < end; i++) {
+			DatabaseInfo databaseInfo = list.get(i);
+			ArrayList<String> tempStore = new ArrayList<String>();
+			tempStore.add(databaseInfo.getDatabaseid());
+			tempStore.add(databaseInfo.getName());
+			tempStore.add(databaseInfo.getComments());
+			tempStore.add(databaseInfo.getIdentifier());
+			tempStore.add(databaseInfo.getLanguage());
+			tempStore.add(databaseInfo.getCharset());
+			tempStore.add(databaseInfo.getSubjectclassification());
+			tempStore.add(databaseInfo.getKeywords());
+			tempStore.add(databaseInfo.getCredibility());
+			tempStore.add(databaseInfo.getResinstitution());
+			tempStore.add(databaseInfo.getResname());
+			tempStore.add(databaseInfo.getResaddress());
+			tempStore.add(databaseInfo.getRespostalcode());
+			tempStore.add(databaseInfo.getResphone());
+			tempStore.add(databaseInfo.getResemail());
+			tempStore.add(databaseInfo.getResourceurl());
+			store.add(tempStore);
+		}
+		resultMap.put("draw", draw);
+		resultMap.put("recordsTotal", totalRecords);
+		resultMap.put("recordsFiltered", totalRecords);
+		resultMap.put("data", store);
+		return resultMap;
+	}
 	@RequestMapping(value = "/gettablesummary", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,String> getTableSummary(@RequestParam(value = "databaseid", required = true) String databaseid,
@@ -331,6 +387,7 @@ public class MetadataController {
 			String name = file.getName();
 			if (!file.isEmpty()) {
 				User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				System.out.println(user.getAuthorities());
 				System.out.println("用户：" + user);
 				System.out.println("文件长度: " + file.getSize());
 				System.out.println("文件类型: " + file.getContentType());
