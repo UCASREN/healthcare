@@ -60,7 +60,7 @@ public class ApplyController {
 			
 			HttpSession session = req.getSession();
 			session.setAttribute("docName", f_name);
-			this.oracleService.insertApplyData(req, f_name);
+//			this.oracleService.insertApplyData(req, f_name);
 			this.WordService.createWordFromFtl(req, resp, f_path_name);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
