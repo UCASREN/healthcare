@@ -3,7 +3,7 @@
 "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory name="hibernateSessionFactory">
+    <session-factory>
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
         <property name="hibernate.connection.password">123456</property>
@@ -11,8 +11,6 @@
         <property name="hibernate.connection.username">system</property>
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
-        
-        
         <mapping resource="otc/healthcare/pojo/HcApplydata.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

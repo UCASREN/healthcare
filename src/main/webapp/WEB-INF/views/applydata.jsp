@@ -18,11 +18,13 @@ request.setCharacterEncoding("UTF-8");
 <link href="../resources/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
-<link href="../resources/plugins/icheck/skins/flat/_all.css" rel="stylesheet" type="text/css"/>
+<link href="../resources/plugins/icheck/skins/flat/_all.css" rel="stylesheet" type="text/css"/
+<link href="../resources/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>>
 <!-- END GLOBAL MANDATORY STYLES -->
 
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="../resources/plugins/select2/select2.css"/>
+<link rel="stylesheet" type="text/css" href="../resources/plugins/bootstrap-datepicker/css/datepicker.css"/>
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <!-- BEGIN THEME STYLES -->
@@ -31,7 +33,6 @@ request.setCharacterEncoding("UTF-8");
 <link href="../resources/css/layout.css" rel="stylesheet" type="text/css"/>
 <link id="style_color" href="../resources/css/themes/darkblue.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/custom.css" rel="stylesheet" type="text/css"/>
-
 </head>
 
 <body>
@@ -275,6 +276,7 @@ request.setCharacterEncoding("UTF-8");
 											</div>
 											<div class="tab-pane active" id="tab1">
 												<h3 class="block">请提供你的详细信息</h3>
+												
 												<div class="form-group">
 													<label class="control-label col-md-3">用户姓名 <span class="required">
 													* </span>
@@ -285,6 +287,7 @@ request.setCharacterEncoding("UTF-8");
 														请提供您的姓名 </span>
 													</div>
 												</div>
+												
 												<div class="form-group">
 													<label class="control-label col-md-3">所在单位 <span class="required">
 													* </span>
@@ -367,11 +370,11 @@ request.setCharacterEncoding("UTF-8");
 													<label class="control-label col-md-3">应用领域 <span class="required">
 													* </span>
 													</label>
-													<div class="col-md-5">
+													<div class="col-md-9">
 														<!-- <div class="icheck-inline checkbox-list"> -->
 														<div>
 															<label>
-															<input type="checkbox" class="icheck" checked data-checkbox="icheckbox_flat-blue"
+															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
 															name="useFields" value="政府决策" data-title="政府决策"> 政府决策 </label>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
@@ -391,8 +394,13 @@ request.setCharacterEncoding("UTF-8");
 															name="useFields" value="商业应用" data-title="商业应用 "> 商业应用 </label>
 															<label>
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
-															name="useFields" value="其他" data-title="其他"> 其他 </label>
+															name="useFields" value="其他" data-title="其他"> 其他 
+															<input type="text" style="width:100px;" name="others" id="others" placeholder="请填写其他应用"/>
+															</label>
+															<!-- <div class=" col-md-3 pull-right">
+															</div> -->
 														</div>
+														<input type="hidden" name="allUseField" id="allUseField" value="">
 														<div id="form_useFields_error">
 														</div>
 													</div>
@@ -438,13 +446,18 @@ request.setCharacterEncoding("UTF-8");
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="control-label col-md-3">申请时间(MM/YYYY) <span class="required">
+													<label class="control-label col-md-3">申请时间(DD/MM/YYYY) <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<input type="text" placeholder="MM/YYYY" maxlength="7" class="form-control" name="applyDate" id="submit_form_applyDate"/>
+														<div class="input-group input-medium date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+															<input type="text" class="form-control" readonly name="applyDate" id="submit_form_applyDate">
+															<span class="input-group-btn">
+																<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+															</span>
+														</div>
 														<span class="help-block">
-														例 ：  11/2020 </span>
+														例 ：  11/11/2020 </span>
 													</div>
 												</div>
 												<div class="form-group">
@@ -632,6 +645,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="../resources/plugins/select2/select2.min.js"></script>
 <script type="text/javascript" src="../resources/plugins/icheck/icheck.min.js"></script>
+<script type="text/javascript" src="../resources/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../resources/js/apply/apply_metronic.js" type="text/javascript"></script>

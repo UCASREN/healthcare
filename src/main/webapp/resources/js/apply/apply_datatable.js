@@ -12,15 +12,6 @@ var Datatable = function() {
     var ajaxParams = {}; // set filter mode
     var the;
 
-    var countSelectedRecords = function() {
-        var selected = $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).size();
-        var text = tableOptions.dataTable.language.metronicGroupActions;
-        if (selected > 0) {
-            $('.table-group-actions > span', tableWrapper).text(text.replace("_TOTAL_", selected));
-        } else {
-            $('.table-group-actions > span', tableWrapper).text("");
-        }
-    };
 
     return {
 
@@ -41,8 +32,8 @@ var Datatable = function() {
                 resetGroupActionInputOnSuccess: true,
                 loadingMessage: 'Loading...',
                 dataTable: {
-                    "dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
-                    "pageLength": 10, // default records per page
+                    "dom": "<'row'<'col-md-12 col-sm-12'<'table-group-actions pull-right'>>r><'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
+                    "pageLength": 20, // default records per page
                     "language": { // language settings
                         // metronic spesific
                         "metronicGroupActions": "_TOTAL_ records selected:  ",
@@ -183,6 +174,7 @@ var Datatable = function() {
                 $('.table-group-actions', tableWrapper).html($('.table-actions-wrapper', tableContainer).html()); // place the panel inside the wrapper
                 $('.table-actions-wrapper', tableContainer).remove(); // remove the template container
             }
+            
             // handle group checkboxes check/uncheck
             $('.group-checkable', table).change(function() {
                 var set = $('tbody > tr > td:nth-child(1) input[type="checkbox"]', table);
