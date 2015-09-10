@@ -775,11 +775,15 @@ $("#remote_test_connect").click(function(){
 $("#leave_remote_connect").click(function(){
 	$("#remote_database_form").show();
 	$("#remote_database_tree").hide();
+	$("#remote_test_connect").show();
+	$("#remote_connect").show();
+	$("#import_remote_database").hide();
 	$('#changedatabaseinfo_remote').modal('hide');
 });
 $("#remote_connect").click(function(){
 	$("#remote_database_form").hide();
 	$("#remote_database_tree").show();
+	$("#remote_database_tree").jstree().refresh();
 	$("#remote_test_connect").hide();
 	$("#remote_connect").hide();
 	$("#import_remote_database").show();
@@ -794,7 +798,7 @@ $("#import_remote_database").click(function(){
 	if(confirm("您选中的表有："+ids+"，是否导入？")){
 		$("#selectedtables").val(ids);
 		 $.post("dataresource/addremotedatabase", $("#remote_database_form").serialize()+"&selectedtables="+nodes, function (data) {
-			 
+			 location.reload(true);
 			 },"json");
 		//addremotedatabase
 		//$.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
