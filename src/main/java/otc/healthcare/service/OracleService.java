@@ -36,12 +36,15 @@ public class OracleService implements IService {
 	private HealthcareConfiguration hcConfiguration;
 	@Autowired
 	private HcApplydataDao hcApplydataDao;
-	public boolean testConnection(String oracle_url,String oracle_username,String oracle_password){
+
+	public boolean testConnection(String oracle_url, String oracle_username, String oracle_password) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
 				oracle_password);
-		if(connectionFactory.getInstance().getConnection()!=null) return true;
+		if (connectionFactory.getInstance().getConnection() != null)
+			return true;
 		return false;
 	}
+
 	public List<DatabaseInfo> getALLDatabaseInfo() {
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -87,8 +90,9 @@ public class OracleService implements IService {
 	public void setHcApplydataDao(HcApplydataDao hcApplydataDao) {
 		this.hcApplydataDao = hcApplydataDao;
 	}
-	public Map<String,String> getDatabaseSummary(String databaseid){
-		Map<String,String> databaseSummary=new HashMap<String,String>();
+
+	public Map<String, String> getDatabaseSummary(String databaseid) {
+		Map<String, String> databaseSummary = new HashMap<String, String>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -122,6 +126,7 @@ public class OracleService implements IService {
 		}
 		return databaseSummary;
 	}
+
 	public List<TableInfo> getDatabaseInfo(String databaseid) {
 		List<TableInfo> resultList = new ArrayList<TableInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -148,8 +153,41 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
-	public Map<String,String> getTableSummary(String databaseid,String tableid) {
-		Map<String,String> tableSummary=new HashMap<String,String>();
+
+	//
+	public List<TableInfo> getDatabaseInfo(String oracle_url, String oracle_username, String oracle_password,
+			String databaseid) {
+		List<TableInfo> resultList = new ArrayList<TableInfo>();
+		// String oracle_url =
+		// hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		// String oracle_username =
+		// hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		// String oracle_password =
+		// hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil.query("select * from SYSTEM.HC_TABLE where DATABASEID=" + databaseid);
+			while (res.next()) {
+
+				TableInfo tim = new TableInfo();
+				tim.setTableid(res.getString(1));
+				tim.setDatabaseid(res.getString(2));
+				tim.setName(res.getString(3));
+				tim.setComments(res.getString(4));
+				resultList.add(tim);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return resultList;
+	}
+
+	public Map<String, String> getTableSummary(String databaseid, String tableid) {
+		Map<String, String> tableSummary = new HashMap<String, String>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -157,7 +195,8 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			ResultSet res = dbUtil.query("select * from SYSTEM.HC_TABLE where DATABASEID=" + databaseid+" AND TABLEID="+tableid);
+			ResultSet res = dbUtil
+					.query("select * from SYSTEM.HC_TABLE where DATABASEID=" + databaseid + " AND TABLEID=" + tableid);
 			while (res.next()) {
 				tableSummary.put("name", res.getString(3));
 				tableSummary.put("comments", res.getString(4));
@@ -170,7 +209,7 @@ public class OracleService implements IService {
 		}
 		return tableSummary;
 	}
-	
+
 	public List<FieldInfo> getTableInfo(String databaseid, String tableid) {
 		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -200,6 +239,7 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
+
 	public List<FieldInfo> getAllTableInfo() {
 		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -209,8 +249,7 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			ResultSet res = dbUtil
-					.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS from SYSTEM.HC_FIELD");
+			ResultSet res = dbUtil.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS from SYSTEM.HC_FIELD");
 			while (res.next()) {
 
 				FieldInfo fim = new FieldInfo();
@@ -262,6 +301,70 @@ public class OracleService implements IService {
 		}
 	}
 
+	public boolean insertRemoteDB(String oracle_url, String oracle_username, String oracle_password,
+			String selectedtables) {
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		ConnectionFactory connectionFactoryNative = new ConnectionFactory("oracle",
+				hcConfiguration.getProperty(HealthcareConfiguration.DB_URL),
+				hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME),
+				hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD));
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtilNative = new DBUtil(connectionFactoryNative.getInstance().getConnection());
+		String[] tableList = selectedtables.split(",");
+		Map<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+		for (String temp : tableList) {
+			String databaseName = temp.split(";")[0];
+			String tableName = temp.split(";")[1];
+			if (map.get(databaseName) == null) {
+				map.put(databaseName, new ArrayList<String>());
+			} 
+			map.get(databaseName).add(tableName);
+			
+		}
+		for (String databaseName : map.keySet()) {
+			dbUtilNative.query("select DATABASE_DATABASEID.nextval from dual");
+			String databaseId = dbUtilNative.showListResults("select DATABASE_DATABASEID.currval from dual").get(0);
+			dbUtilNative.execute("insert into SYSTEM.HC_DATABASE (DATABASEID,NAME) values(" + databaseId + ",'"
+					+ databaseName + "')");
+			List<String> tempList = map.get(databaseName);
+			for (String tableName : tempList) {
+				String talbeifno_query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='"
+						+ databaseName + "' AND table_type='TABLE' AND TABLE_NAME='" + tableName + "'";
+				ResultSet rs = dbUtil.query(talbeifno_query_sql);
+				try {
+					while (rs.next()) {
+						dbUtilNative.query("select TABLE_TABLEID.nextval from dual");
+						String tableId = dbUtilNative.showListResults("select TABLE_TABLEID.currval from dual").get(0);
+						dbUtilNative.execute("insert into HC_TABLE(TABLEID,NAME,COMMENTS,DATABASEID) values(" + tableId
+								+ ",'" + tableName + "','" + rs.getString(2) + "'," + databaseId + ")");
+						//
+						String fieldinfo_query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
+								+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
+								+ "and t1.OWNER = '" + databaseName + "' and t1.TABLE_NAME='" + tableName + "'";
+						ResultSet field_rs = dbUtil.query(fieldinfo_query_sql);
+						while (field_rs.next()) {
+							dbUtilNative.query("select FIELD_FIELDID.nextval from dual");
+							String fieldId = dbUtilNative.showListResults("select FIELD_FIELDID.currval from dual")
+									.get(0);
+							dbUtilNative.execute("insert into HC_FIELD( "
+									+ "FIELDID,NAME,DATATYPE,DATALENGTH,COMMENTS,NOTNULL,TABLEID,DATABASEID) "
+									+ "values(" + fieldId + ",'" + field_rs.getString(1) + "','" + field_rs.getString(2) + "','"
+									+ field_rs.getString(3) + "','" + field_rs.getString(4) + "','" + field_rs.getString(5) + "',"
+									+ tableId + "," + databaseId + ")");
+						}
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		dbUtil.close();
+		dbUtilNative.close();
+		return true;
+	}
+
 	// 信息初始化
 	private static void InitOracle(DBUtil dbUtil) {
 		dbUtil.execute("delete from SYSTEM.HC_DATABASE");
@@ -271,7 +374,7 @@ public class OracleService implements IService {
 	}
 
 	// 获取列相关信息
-	private static Map<String, List<FieldInfo>> getFieldMap(DBUtil dbUtil, Map<String, List<TableInfo>> tableMap) {
+	public static Map<String, List<FieldInfo>> getFieldMap(DBUtil dbUtil, Map<String, List<TableInfo>> tableMap) {
 		Map<String, List<FieldInfo>> fieldMap = new HashMap<String, List<FieldInfo>>();
 
 		try {
@@ -302,8 +405,42 @@ public class OracleService implements IService {
 		return fieldMap;
 	}
 
+	public Map<String, List<FieldInfo>> getFieldMap(String oracle_url, String oracle_username, String oracle_password,
+			Map<String, List<TableInfo>> tableMap) {
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		Map<String, List<FieldInfo>> fieldMap = new HashMap<String, List<FieldInfo>>();
+		try {
+			for (String dbName : tableMap.keySet()) {
+				for (TableInfo table : tableMap.get(dbName)) {
+					String tableName = table.getName();
+					List<FieldInfo> fieldList = new ArrayList<FieldInfo>();
+					String query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
+							+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
+							+ "and t1.OWNER = '" + dbName + "' and t1.TABLE_NAME='" + tableName + "'";
+					ResultSet rs = dbUtil.query(query_sql);
+					while (rs.next()) {
+						FieldInfo field = new FieldInfo();
+						field.setName(rs.getString(1));
+						field.setDatatype(rs.getString(2));
+						field.setDatalength(rs.getString(3));
+						field.setNullable(rs.getString(4));
+						field.setComments(rs.getString(5));
+						fieldList.add(field);
+					}
+					rs.close();
+					fieldMap.put(dbName + "," + tableName, fieldList);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fieldMap;
+	}
+
 	// 获取表相关信息
-	private static Map<String, List<TableInfo>> getTableMap(DBUtil dbUtil, List<String> dbList) {
+	public static Map<String, List<TableInfo>> getTableMap(DBUtil dbUtil, List<String> dbList) {
 		Map<String, List<TableInfo>> TableMap = new HashMap<String, List<TableInfo>>();
 		try {
 			for (String dbName : dbList) {
@@ -326,8 +463,82 @@ public class OracleService implements IService {
 		return TableMap;
 	}
 
+	// 获取表相关信息
+	public Map<String, List<TableInfo>> getTableMap(String oracle_url, String oracle_username, String oracle_password,
+			List<String> dbList) {
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		Map<String, List<TableInfo>> TableMap = new HashMap<String, List<TableInfo>>();
+		try {
+			for (String dbName : dbList) {
+				List<TableInfo> tableList = new ArrayList<TableInfo>();
+				String query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='" + dbName
+						+ "' AND table_type='TABLE'";
+				ResultSet rs = dbUtil.query(query_sql);
+				while (rs.next()) {
+					TableInfo tableInfo = new TableInfo();
+					tableInfo.setName(rs.getString(1));
+					tableInfo.setComments(rs.getString(2));
+					tableList.add(tableInfo);
+				}
+				TableMap.put(dbName, tableList);
+				rs.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return TableMap;
+	}
+
+	// 获取表相关信息
+	public List<TableInfo> getTargetTableMap(String oracle_url, String oracle_username, String oracle_password,
+			String dbName) {
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		List<TableInfo> tableList = new ArrayList<TableInfo>();
+		try {
+			String query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='" + dbName
+					+ "' AND table_type='TABLE'";
+			ResultSet rs = dbUtil.query(query_sql);
+			while (rs.next()) {
+				TableInfo tableInfo = new TableInfo();
+				tableInfo.setName(rs.getString(1));
+				tableInfo.setComments(rs.getString(2));
+				tableList.add(tableInfo);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tableList;
+	}
+
 	// 获取数据库相关信息（用户信息）
-	private static List<String> getDataBaseList(DBUtil dbUtil) {
+	public static List<String> getDataBaseList(DBUtil dbUtil) {
+		List<String> dataBaseList = new ArrayList<String>();
+		try {
+			/*
+			 * SELECT * from ALL_TABLES where OWNER = 'SYSTEM' AND
+			 * INSTR(TABLE_NAME,'SQLPLUS')=0 AND INSTR(TABLE_NAME，'$')=0 AND
+			 * INSTR(TABLE_NAME，'HELP')=0 AND INSTR(TABLE_NAME,'LOGMNR')=0;
+			 */
+			ResultSet res = dbUtil.query("select * from all_users where username='HR'");
+			while (res.next()) {
+				dataBaseList.add(res.getString(1));
+			}
+			res.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dataBaseList;
+	}
+
+	public List<String> getDataBaseList(String oracle_url, String oracle_username, String oracle_password) {
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		List<String> dataBaseList = new ArrayList<String>();
 		try {
 			/*
@@ -437,9 +648,9 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			dbUtil.execute("delete from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);//删除HC_DATABASE表
-			dbUtil.execute("delete from SYSTEM.HC_TABLE where DATABASEID=" + databaseid);//删除HC_TABLE表
-			dbUtil.execute("delete from SYSTEM.HC_FIELD where DATABASEID=" + databaseid);//删除HC_FIELD表
+			dbUtil.execute("delete from SYSTEM.HC_DATABASE where DATABASEID=" + databaseid);// 删除HC_DATABASE表
+			dbUtil.execute("delete from SYSTEM.HC_TABLE where DATABASEID=" + databaseid);// 删除HC_TABLE表
+			dbUtil.execute("delete from SYSTEM.HC_FIELD where DATABASEID=" + databaseid);// 删除HC_FIELD表
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -466,7 +677,8 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
-	public boolean deleteField(String databaseid, String tableid,String fieldid) {
+
+	public boolean deleteField(String databaseid, String tableid, String fieldid) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -474,8 +686,8 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			return dbUtil.execute(
-					"delete from SYSTEM.HC_FIELD where DATABASEID=" + databaseid + " and " + "TABLEID=" + tableid+" and "+"FIELDID="+fieldid);
+			return dbUtil.execute("delete from SYSTEM.HC_FIELD where DATABASEID=" + databaseid + " and " + "TABLEID="
+					+ tableid + " and " + "FIELDID=" + fieldid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -483,7 +695,12 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
-	public Integer createDatabase(String databasename, String comments) {// insert into database table row
+
+	public Integer createDatabase(String databasename, String comments) {// insert
+																			// into
+																			// database
+																			// table
+																			// row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -493,7 +710,8 @@ public class OracleService implements IService {
 		try {
 			String vsql = "insert into SYSTEM.HC_DATABASE (DATABASEID,NAME,COMMENTS) values(DATABASE_DATABASEID.nextval,"
 					+ "'" + databasename + "','" + comments + "')";
-			return dbUtil.insertDataReturnKeyByReturnInto(vsql,"select DATABASE_DATABASEID.currval as id from SYSTEM.HC_DATABASE");
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
+					"select DATABASE_DATABASEID.currval as id from SYSTEM.HC_DATABASE");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -501,7 +719,12 @@ public class OracleService implements IService {
 		}
 		return null;
 	}
-	public Integer createTable(String databaseid, String tablename, String comments) {// insert into database table row
+
+	public Integer createTable(String databaseid, String tablename, String comments) {// insert
+																						// into
+																						// database
+																						// table
+																						// row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -511,7 +734,8 @@ public class OracleService implements IService {
 		try {
 			String vsql = "insert into SYSTEM.HC_TABLE (TABLEID,DATABASEID,NAME,COMMENTS) values(TABLE_TABLEID.nextval,"
 					+ databaseid + ",'" + tablename + "','" + comments + "')";
-			return dbUtil.insertDataReturnKeyByReturnInto(vsql,"select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE");
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
+					"select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -520,7 +744,7 @@ public class OracleService implements IService {
 		return null;
 	}
 
-	public Integer createField(String databaseid, String tableid, String fieldname,String comments) {// insert
+	public Integer createField(String databaseid, String tableid, String fieldname, String comments) {// insert
 		// into database table one row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
@@ -530,8 +754,9 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			String vsql = "insert into SYSTEM.HC_FIELD (FIELDID,TABLEID,DATABASEID,NAME,COMMENTS) values(FIELD_FIELDID.nextval,"
-					+ tableid + ","+ databaseid + ",'" + fieldname + "','" + comments + "')";
-			return dbUtil.insertDataReturnKeyByReturnInto(vsql,"select FIELD_FIELDID.currval as id from SYSTEM.HC_FIELD");
+					+ tableid + "," + databaseid + ",'" + fieldname + "','" + comments + "')";
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
+					"select FIELD_FIELDID.currval as id from SYSTEM.HC_FIELD");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -565,6 +790,7 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
+
 	public boolean changeDatabase(DatabaseInfo databaseinfo) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
@@ -574,22 +800,17 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		String sql = "";
 		try {
-			sql = "update SYSTEM.HC_DATABASE set NAME='" + databaseinfo.getName() + "',"
-					+"COMMENTS='"+databaseinfo.getComments()+"',"
-					+"IDENTIFIER='"+databaseinfo.getIdentifier()+"',"
-					+"LANGUAGE='"+databaseinfo.getLanguage()+"',"
-					+"CHARSET='"+databaseinfo.getCharset()+"',"
-					+"SUBJECTCLASSIFICATION='"+databaseinfo.getSubjectclassification()+"',"
-					+"KEYWORDS='"+databaseinfo.getKeywords()+"',"
-					+"CREDIBILITY='"+databaseinfo.getResinstitution()+"',"
-					+"RESINSTITUTION='"+databaseinfo.getResinstitution()+"',"
-					+"RESNAME='"+databaseinfo.getResname()+"',"
-					+"RESADDRESS='"+databaseinfo.getResaddress()+"',"
-					+"RESPOSTALCODE='"+databaseinfo.getRespostalcode()+"',"
-					+"RESPHONE='"+databaseinfo.getResphone()+"',"
-					+"RESEMAIL='"+databaseinfo.getResemail()+"',"
-					+"RESOURCEURL='"+databaseinfo.getResourceurl()+"'"
-					+" where DATABASEID=" + databaseinfo.getDatabaseid();
+			sql = "update SYSTEM.HC_DATABASE set NAME='" + databaseinfo.getName() + "'," + "COMMENTS='"
+					+ databaseinfo.getComments() + "'," + "IDENTIFIER='" + databaseinfo.getIdentifier() + "',"
+					+ "LANGUAGE='" + databaseinfo.getLanguage() + "'," + "CHARSET='" + databaseinfo.getCharset() + "',"
+					+ "SUBJECTCLASSIFICATION='" + databaseinfo.getSubjectclassification() + "'," + "KEYWORDS='"
+					+ databaseinfo.getKeywords() + "'," + "CREDIBILITY='" + databaseinfo.getResinstitution() + "',"
+					+ "RESINSTITUTION='" + databaseinfo.getResinstitution() + "'," + "RESNAME='"
+					+ databaseinfo.getResname() + "'," + "RESADDRESS='" + databaseinfo.getResaddress() + "',"
+					+ "RESPOSTALCODE='" + databaseinfo.getRespostalcode() + "'," + "RESPHONE='"
+					+ databaseinfo.getResphone() + "'," + "RESEMAIL='" + databaseinfo.getResemail() + "',"
+					+ "RESOURCEURL='" + databaseinfo.getResourceurl() + "'" + " where DATABASEID="
+					+ databaseinfo.getDatabaseid();
 			dbUtil.execute(sql);
 			return true;
 		} catch (Exception e) {
@@ -627,7 +848,8 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
-	public boolean changeField(String fieldid,String databaseid, String tableid, String newName, String newComments) {
+
+	public boolean changeField(String fieldid, String databaseid, String tableid, String newName, String newComments) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -638,12 +860,12 @@ public class OracleService implements IService {
 		try {
 			if (newName != null) {
 				sql = "update SYSTEM.HC_FIELD set NAME='" + newName + "'  where DATABASEID=" + databaseid
-						+ " and TABLEID=" + tableid+ " and FIELDID=" + fieldid;
+						+ " and TABLEID=" + tableid + " and FIELDID=" + fieldid;
 				dbUtil.execute(sql);
 			}
 			if (newComments != null) {
 				sql = "update SYSTEM.HC_FIELD set COMMENTS='" + newComments + "'   where DATABASEID=" + databaseid
-						+ " and TABLEID=" + tableid+ " and FIELDID=" + fieldid;
+						+ " and TABLEID=" + tableid + " and FIELDID=" + fieldid;
 				dbUtil.execute(sql);
 			}
 			return true;
@@ -654,6 +876,7 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
+
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -677,18 +900,18 @@ public class OracleService implements IService {
 	 */
 	@Transactional
 	public void insertApplyData(HttpServletRequest req, String f_path_name) {
-		
+
 		HcApplydata hc_applydata = new HcApplydata();
-		
+
 		String hc_userName = req.getParameter("userName");
-		String hc_userDepartment  = req.getParameter("userDepartment");
+		String hc_userDepartment = req.getParameter("userDepartment");
 		String hc_userAddress = req.getParameter("userAddress");
 		String hc_userTel = req.getParameter("userTel");
 		String hc_userEmail = req.getParameter("userEmail");
-		
+
 		String hc_userDemandType = req.getParameter("userDemandType");
 		String hc_userDemand = req.getParameter("userDemand");
-		
+
 		String hc_useFields = req.getParameter("allUseField");//
 		String hc_projectName = req.getParameter("projectName");
 		String hc_projectChairman = req.getParameter("projectChairman");
@@ -696,21 +919,21 @@ public class OracleService implements IService {
 		String hc_projectUndertaking = req.getParameter("projectUndertaking");
 		String hc_applyDate = req.getParameter("applyDate");
 		String hc_projectRemarks = req.getParameter("projectRemarks");
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		hc_applydata.setHcUsername(user.getUsername());//hc系统用户名
-		hc_applydata.setDocName(f_path_name);//主键
-		
-		hc_applydata.setName(hc_userName);//申请表填写用户
+
+		hc_applydata.setHcUsername(user.getUsername());// hc系统用户名
+		hc_applydata.setDocName(f_path_name);// 主键
+
+		hc_applydata.setName(hc_userName);// 申请表填写用户
 		hc_applydata.setDepartment(hc_userDepartment);
 		hc_applydata.setAddress(hc_userAddress);
 		hc_applydata.setTel(hc_userTel);
 		hc_applydata.setEmail(hc_userEmail);
-		
+
 		hc_applydata.setDemandtype(hc_userDemandType);
 		hc_applydata.setDemand(hc_userDemand);
-		
+
 		hc_applydata.setProUsefield(hc_useFields);
 		hc_applydata.setProName(hc_projectName);
 		hc_applydata.setProChair(hc_projectChairman);
@@ -718,14 +941,14 @@ public class OracleService implements IService {
 		hc_applydata.setProUndertake(hc_projectUndertaking);
 		hc_applydata.setApplyTime(hc_applyDate);
 		hc_applydata.setProRemark(hc_projectRemarks);
-		
-		//提交后，apply标志为1
+
+		// 提交后，apply标志为1
 		hc_applydata.setFlagApplydata("1");
-		
+
 		hcApplydataDao.attachDirty(hc_applydata);
 		System.out.println("insert hc_doc ok");
 	}
-	
+
 	/*
 	 * get the apply docdata from db by docName
 	 */
@@ -734,7 +957,7 @@ public class OracleService implements IService {
 		HcApplydata docData = hcApplydataDao.findByDocName(docid);
 		return docData;
 	}
-	
+
 	/*
 	 * get the apply docdata from db by hc_userName(系统用户)
 	 */
@@ -743,7 +966,7 @@ public class OracleService implements IService {
 		List docDataList = hcApplydataDao.findByHcUserName(hcUserName);
 		return docDataList;
 	}
-	
+
 	/*
 	 * get all the apply docdata from db(ROLE_ADMIN管理员用)
 	 */

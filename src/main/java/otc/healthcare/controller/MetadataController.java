@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -96,6 +97,59 @@ public class MetadataController {
 			result.put("result", "数据库可用");
 		}else result.put("result", "数据库不可用");
 		return result;
+	}
+	@RequestMapping(value = "/getremotedatabasetreeinfo", method = RequestMethod.GET)
+	@ResponseBody
+	public List<TreeJson> getRemoteDatabaseTreeInfo(@RequestParam(value = "parent", required = true) String parent,
+			@RequestParam(value = "url", required = false) String url,
+			@RequestParam(value = "username", required = false) String username,
+			@RequestParam(value = "password", required = false) String password) {
+		System.out.println(parent);
+		List<TreeJson> returnList = new ArrayList<TreeJson>();
+		if (parent.equals("#")) {
+			TreeJson tm = new TreeJson();
+			tm.setId("all_" + 1);
+			tm.setText("所有数据库");
+			tm.setChildren(true);
+			tm.setIcon("fa fa-folder icon-lg icon-state-success");
+			tm.setType("root");
+			returnList.add(tm);
+		}
+		if (parent.indexOf("all_") != -1) {
+			List<String> list = this.oracleSerive.getDataBaseList(url,username,password);
+			for (int i = 0; i < list.size(); i++) {
+				TreeJson tm = new TreeJson();
+				tm.setId("alldatabase_" + list.get(i));
+				tm.setText(list.get(i));
+				tm.setChildren(true);
+				tm.setIcon("fa fa-folder icon-lg icon-state-success");
+				tm.setType("root");
+				returnList.add(tm);
+			}
+		}
+		if (parent.indexOf("alldatabase_") != -1) {
+			String databaseid = parent.substring(parent.indexOf("_") + 1);
+			List<TableInfo> list = this.oracleSerive.getTargetTableMap(url,username,password,databaseid);
+			for (int i = 0; i < list.size(); i++) {
+				TreeJson tm = new TreeJson();
+				tm.setId(databaseid+";" + list.get(i).getName());//防止数据名字中有下划线，所以换成了";"
+				tm.setText(list.get(i).getName());
+				tm.setChildren(false);
+				tm.setIcon("fa fa-folder icon-lg icon-state-danger");
+				tm.setType("default");
+				returnList.add(tm);
+			}
+		}
+		return returnList;
+	}
+	@RequestMapping(value = "/addremotedatabase", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> addRemoteDatabase(@RequestParam(value = "url", required = false) String url,
+			@RequestParam(value = "username", required = false) String username,
+			@RequestParam(value = "password", required = false) String password,String selectedtables) {
+		System.out.println("传过来的数据"+selectedtables);
+		this.oracleSerive.insertRemoteDB(url,username,password,selectedtables);
+		return null;
 	}
 	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)
 	@ResponseBody

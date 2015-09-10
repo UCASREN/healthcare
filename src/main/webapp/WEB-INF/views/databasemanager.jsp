@@ -465,13 +465,15 @@
 									</div>
 								</div>
 							</form>
+							<div id="remote_database_tree" class="tree-demo" style="display:none;"></div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" data-dismiss="modal" class="btn">离开</button>
+					<button type="button" class="btn" id="leave_remote_connect">离开</button>
 					<button type="button" class="btn green" id="remote_test_connect">测试连接</button>
 					<button type="button" class="btn red" id="remote_connect">连接</button>
+					<button type="button" class="btn red" style="display:none;" id="import_remote_database">导入</button>
 				</div>
 			</div>
 		</div>

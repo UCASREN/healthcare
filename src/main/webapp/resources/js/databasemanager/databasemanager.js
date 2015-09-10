@@ -490,7 +490,7 @@ ajaxTable2();
 var oTable2=$('#editable_2').dataTable();
 
 /*
- * This file is responsible for database tree
+ * This part is responsible for database tree
  *  @author xingkong
  * */
 var AjaxTree = function() {
@@ -709,6 +709,50 @@ var AjaxTree = function() {
 	
 }
 AjaxTree();
+/*
+ * This part is responsible for database tree
+ *  @author xingkong
+ * */
+var RemoteDatabaseAjaxTree = function() {
+
+	$("#remote_database_tree").jstree({
+		"core" : {
+			"themes" : {
+				"responsive" : false
+			},
+			// so that create works
+			"check_callback" : true,
+			'data' : {
+				'url' : function(node) {
+					return 'dataresource/getremotedatabasetreeinfo';
+				},
+				'data' : function(node) {
+					return {
+						'parent' : node.id,
+						'url':$("#url").val(),
+						'username':$("#username").val(),
+						'password':$("#password").val()
+					};
+				}
+			}
+		},
+		"types" : {
+			"default" : {
+				"icon" : "fa fa-folder icon-state-warning icon-lg"
+			},
+			"file" : {
+				"icon" : "fa fa-file icon-state-warning icon-lg"
+			}
+		},
+		
+		"plugins" : [ "checkbox", "unique",  "types"]
+	}).on("check_node.jstree", function(e, data) {
+		console.log("checked!");
+		
+	});
+	
+}
+RemoteDatabaseAjaxTree();
 $.ajax({
 	type : "get",//请求方式
 	url : "dataresource/getalldatabaseinfo",//发送请求地址
@@ -727,4 +771,32 @@ $("#remote_test_connect").click(function(){
 	 $.post("dataresource/testremoteconnect", $("#remote_database_form").serialize(), function (data) {
 		 alert(data.result) 
 		 },"json");
+});
+$("#leave_remote_connect").click(function(){
+	$("#remote_database_form").show();
+	$("#remote_database_tree").hide();
+	$('#changedatabaseinfo_remote').modal('hide');
+});
+$("#remote_connect").click(function(){
+	$("#remote_database_form").hide();
+	$("#remote_database_tree").show();
+	$("#remote_test_connect").hide();
+	$("#remote_connect").hide();
+	$("#import_remote_database").show();
+});
+$("#import_remote_database").click(function(){
+	var ids=new Array();
+	//var temp=$("#remote_database_tree").jstree();
+	var nodes=$("#remote_database_tree").jstree().get_bottom_checked();
+	$.each(nodes, function(i, n) { 
+		ids[i]=n.substring(n.indexOf(";")+1);
+	});
+	if(confirm("您选中的表有："+ids+"，是否导入？")){
+		$("#selectedtables").val(ids);
+		 $.post("dataresource/addremotedatabase", $("#remote_database_form").serialize()+"&selectedtables="+nodes, function (data) {
+			 
+			 },"json");
+		//addremotedatabase
+		//$.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
+	}
 });

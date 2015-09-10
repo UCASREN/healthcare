@@ -108,7 +108,7 @@ public class DBUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			this.close();
+			//this.close();
 		}
 		return results;
 	}
