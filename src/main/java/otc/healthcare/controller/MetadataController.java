@@ -29,6 +29,7 @@ import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.pojo.TreeJson;
 import otc.healthcare.service.OracleService;
+import otc.healthcare.util.ExcelUtil;
 
 /**
  * @author xingkong
@@ -435,6 +436,7 @@ public class MetadataController {
 	@RequestMapping(value = "/batchupload", method = RequestMethod.POST)
 	@ResponseBody
 	public String handleFileUpload(HttpServletRequest request) {
+		System.out.println("database:"+request.getParameter("database"));
 		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
 		for (int i = 0; i < files.size(); ++i) {
 			MultipartFile file = files.get(i);
@@ -461,6 +463,9 @@ public class MetadataController {
 				try {
 					FileUtils.copyInputStreamToFile(file.getInputStream(),
 							new File(realPath + File.separator+ user.getUsername(), file.getOriginalFilename()));
+					//进行新建操作
+					this.oracleSerive.insertTableToDatabase(request.getParameter("database"), ExcelUtil.read(file.getInputStream(),
+							file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".")+1)));
 				} catch (IOException e) {
 					e.printStackTrace();
 					return "You failed to upload " + name + " because internal error.";

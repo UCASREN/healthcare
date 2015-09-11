@@ -1,18 +1,14 @@
 package otc.healthcare.service;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -595,7 +591,30 @@ public class OracleService implements IService {
 			}
 		}
 	}
-
+	public void insertTableToDatabase(String databaseId,List<TableInfo> tableInfoList){
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle",
+				hcConfiguration.getProperty(HealthcareConfiguration.DB_URL),
+				hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME),
+				hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD));
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		for(TableInfo tableInfo:tableInfoList){
+			dbUtil.query("select TABLE_TABLEID.nextval from dual");
+			String tableId = dbUtil.showListResults("select TABLE_TABLEID.currval from dual").get(0);
+			dbUtil.execute("insert into HC_TABLE(TABLEID,NAME,COMMENTS,DATABASEID) values(" + tableId
+					+ ",'" + tableInfo.getName() + "','" + tableInfo.getComments() + "'," + databaseId + ")");
+			List<FieldInfo>	fieldInfoList=tableInfo.getFieldlist();
+			for(FieldInfo fieldInfo:fieldInfoList){
+				dbUtil.query("select FIELD_FIELDID.nextval from dual");
+				String fieldId = dbUtil.showListResults("select FIELD_FIELDID.currval from dual")
+						.get(0);
+				dbUtil.execute("insert into HC_FIELD( "
+						+ "FIELDID,NAME,DATATYPE,DATALENGTH,COMMENTS,NOTNULL,TABLEID,DATABASEID) "
+						+ "values(" + fieldId + ",'" + fieldInfo.getName() + "','" + fieldInfo.getDatatype() + "','"
+						+ fieldInfo.getDatalength() + "','" + fieldInfo.getComments() + "','" + fieldInfo.getNullable()+ "',"
+						+ tableId + "," + databaseId + ")");
+			}
+		}
+	}
 	private static List<String> toList(String[] data) {
 		List<String> rs = new ArrayList<String>();
 		for (int i = 0; i < data.length; i++)

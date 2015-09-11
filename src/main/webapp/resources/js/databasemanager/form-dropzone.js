@@ -9,7 +9,7 @@ var FormDropzone = function() {
 				//关闭自动上传功能，默认会true会自动上传
 				//也就是添加一个文件向服务器发送一次请求
 				autoProcessQueue : false,
-				acceptedFiles:".csv",
+				acceptedFiles:".xls,.xlsx",
 				/*
 				//允许上传多个文件
 				uploadMultiple : true,

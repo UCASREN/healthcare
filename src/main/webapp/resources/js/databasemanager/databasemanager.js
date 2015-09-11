@@ -759,7 +759,7 @@ $.ajax({
 	dataType : "json",
 	success : function(data) {
 		$(data).each(function (i,databaseinfo) {
-			$("#database").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
+			$("#currentdatabase").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
 		});
 	}
 });
@@ -803,4 +803,7 @@ $("#import_remote_database").click(function(){
 		//addremotedatabase
 		//$.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
 	}
+});
+$("#currentdatabase").change(function(){
+	$("#database").val($("#currentdatabase").val());
 });

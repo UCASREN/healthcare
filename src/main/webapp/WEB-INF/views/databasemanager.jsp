@@ -267,7 +267,7 @@
 						<label class="checkbox-inline" style="padding-left: 0px;">
 							<i class="fa fa-database"></i> 数据库
 						</label><label class="checkbox-inline" style="padding-left: 5px;">
-							<select id="database" class="form-control select2me"
+							<select id="currentdatabase" class="form-control select2me"
 							data-placeholder="Select..." style="min-width: 100px;">
 								<option value="">请选择一个数据库...</option>
 						</select>
@@ -280,6 +280,7 @@
 						action="dataresource/batchupload?${_csrf.parameterName}=${_csrf.token}"
 						class="dropzone" id="myDropzone" enctype="multipart/form-data"
 						method="post">
+						<input type="hidden" name="database" id="database"/>
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 					</form>
