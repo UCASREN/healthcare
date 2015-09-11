@@ -3,17 +3,18 @@
  *  @author xingkong
  * */
 var reloadCount=0;//控制恢复数据的次数，一次页面只有一次
-function getCookie(objName){//获取指定名称的cookie的值 
-	var arrStr = document.cookie.split(";");
-	var returnvalue;
-	for(var i = 0;i < arrStr.length;i ++){ 
-		var temp = arrStr[i].split("="); 
-		if($.trim(temp[0]) == $.trim(objName)) {
-			returnvalue=unescape(temp[1]);
-			return returnvalue; 
-		}
-	} 
-} 
+//function $.cookie(objName){//获取指定名称的cookie的值 
+//	var arrStr = document.cookie.split(";");
+//	var returnvalue;
+//	for(var i = 0;i < arrStr.length;i ++){ 
+//		var temp = arrStr[i].split("="); 
+//		if($.trim(temp[0]) == $.trim(objName)) {
+//			returnvalue=UrlDecode(unescape(temp[1]),Encoding.GetEncoding("UTF-8"));
+//			//returnvalue=unescape(temp[1]);
+//			return returnvalue; 
+//		}
+//	} 
+//} 
 var ajaxTable1 = function() {
 
 	function restoreRow(oTable, nRow) {
@@ -627,12 +628,12 @@ var AjaxTree = function() {
 			
 			
 			//恢复操作
-			if(getCookie("lastclick")=="database"&&reloadCount==0&&typeof(getCookie("restoretable"))!= "undefined"&&getCookie("restoretable")!=null){
+			if($.cookie("lastclick")=="database"&&reloadCount==0&&typeof($.cookie("restoretable"))!= "undefined"&&$.cookie("restoretable")!=null){
 				reloadCount++;
 				//reload tabletable data
 				oTable2.fnClearTable();
 				$(function() {
-					var url = "dataresource/gettableinfo?databaseid="+(getCookie("restoretable")+"").split("_")[0]+"&tableid="+getCookie("restoretable").split("_")[1];
+					var url = "dataresource/gettableinfo?databaseid="+($.cookie("restoretable")+"").split("_")[0]+"&tableid="+$.cookie("restoretable").split("_")[1];
 					$.getJSON(url, function(data) {
 						$.each(data, function(i, field) {
 							/* if (field.fieldid > maxId)
@@ -643,11 +644,11 @@ var AjaxTree = function() {
 						});
 					});
 				});
-				$("#whichtable").text("表:"+getCookie("restoretable").split("_")[2]);
-				console.log(getCookie("restoretable").split("_")[1]);
-				$("#whichtableid").text(getCookie("restoretable").split("_")[1]);
-				console.log(getCookie("restoretable").split("_")[0]);
-				$("#whichtableid_belong").text(getCookie("restoretable").split("_")[0]);
+				$("#whichtable").text("表:"+$.cookie("restoretable").split("_")[2]);
+				console.log($.cookie("restoretable").split("_")[1]);
+				$("#whichtableid").text($.cookie("restoretable").split("_")[1]);
+				console.log($.cookie("restoretable").split("_")[0]);
+				$("#whichtableid_belong").text($.cookie("restoretable").split("_")[0]);
 			}
 			//end恢复操作
 			//记录上次点击的是哪种元素
@@ -678,12 +679,12 @@ var AjaxTree = function() {
 			
 			
 			//恢复数据
-			if(getCookie("lastclick")=="table"&&reloadCount==0&&typeof(getCookie("restoredatabase"))!= "undefined"&&getCookie("restoredatabase")!=null){
+			if($.cookie("lastclick")=="table"&&reloadCount==0&&typeof($.cookie("restoredatabase"))!= "undefined"&&$.cookie("restoredatabase")!=null){
 				reloadCount++;
 				//reload tabletable data
 				oTable1.fnClearTable();
 				$(function() {
-					var url = "dataresource/getdatabaseinfo?databaseid="+getCookie("restoredatabase").split("_")[0];
+					var url = "dataresource/getdatabaseinfo?databaseid="+$.cookie("restoredatabase").split("_")[0];
 					$.getJSON(url, function(data) {
 						$.each(data, function(i, table) {
 							/* if (table.tableid > maxId)
@@ -694,13 +695,13 @@ var AjaxTree = function() {
 						});
 					});
 				});
-				$("#whichdatabase").text("数据库:"+getCookie("restoredatabase").split("_")[1]);
-				$("#whichdatabaseid").text(getCookie("restoredatabase").split("_")[0]);
+				$("#whichdatabase").text("数据库:"+$.cookie("restoredatabase").split("_")[1]);
+				$("#whichdatabaseid").text($.cookie("restoredatabase").split("_")[0]);
 			}
 			
-			//记录上次点击的是哪种元素
-			document.cookie="restoretable="+data.node.parent.substring(data.node.parent.indexOf("_")+1)+"_"
-							+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+data.node.text;
+			//记录上次点击的是哪种元素 HttpUtility.UrlEncode(,Encoding.GetEncoding("UTF=8"))
+			$.cookie("restoretable",data.node.parent.substring(data.node.parent.indexOf("_")+1)+"_"
+					+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+data.node.text);
 			//记录上次带年纪的是哪种
 			document.cookie="lastclick="+"table";
 			
