@@ -28,6 +28,15 @@ public class HcApplydata implements java.io.Serializable {
 	private String proUsefield;
 	private String flagApplydata;
 	private String applyTime;
+	private String applyRejectReason;
+
+	public String getApplyRejectReason() {
+		return applyRejectReason;
+	}
+
+	public void setApplyRejectReason(String applyRejectReason) {
+		this.applyRejectReason = applyRejectReason;
+	}
 
 	public HcApplydata() {
 	}
@@ -41,7 +50,7 @@ public class HcApplydata implements java.io.Serializable {
 	public HcApplydata(BigDecimal idApplydata, String hcUsername, String docName, String name, String department,
 			String address, String tel, String email, String demandtype, String demand, String proName, String proChair,
 			String proSource, String proUndertake, String proRemark, String proUsefield, String flagApplydata,
-			String applyTime) {
+			String applyTime,String applyRejectReason) {
 		this.idApplydata = idApplydata;
 		this.hcUsername = hcUsername;
 		this.docName = docName;
@@ -60,6 +69,7 @@ public class HcApplydata implements java.io.Serializable {
 		this.proUsefield = proUsefield;
 		this.flagApplydata = flagApplydata;
 		this.applyTime = applyTime;
+		this.applyRejectReason = applyRejectReason;
 	}
 
 	public BigDecimal getIdApplydata() {

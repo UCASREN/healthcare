@@ -277,55 +277,65 @@ request.setCharacterEncoding("UTF-8");
 											<div class="tab-pane active" id="tab1">
 												<h3 class="block">请提供你的详细信息</h3>
 												
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">用户姓名 <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-4">
 														<input type="text" class="form-control" name="userName" id="submit_form_userName"/>
+														<!-- <span class="help-block">
+														请提供您的姓名 </span> -->
 														<span class="help-block">
-														请提供您的姓名 </span>
+														</span>
 													</div>
 												</div>
 												
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">所在单位 <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-4">
 														<input type="text" class="form-control" name=userDepartment id="submit_form_userDepartment"/>
+														<!-- <span class="help-block">
+														请提供您的所在单位 </span> -->
 														<span class="help-block">
-														请提供您的所在单位 </span>
+														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">地址 <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-4">
 														<input type="text" class="form-control" name=userAddress id="submit_form_userAddress"/>
+														<!-- <span class="help-block">
+														请提供您的地址 </span> -->
 														<span class="help-block">
-														请提供您的地址 </span>
+														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">联系电话 <span class="required">
 													* </span>
 													</label>
-													<div class="col-md-4">
+													<div class="col-md-4" style="margin-bottom:0px">
 														<input type="text" class="form-control" name=userTel id="submit_form_userTel"/>
+														<!-- <span class="help-block">
+														请提供您的联系方式 </span> -->
 														<span class="help-block">
-														请提供您的联系方式 </span>
+														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">Email <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-4">
 														<input type="text" class="form-control" name="userEmail" id="submit_form_userEmail"/>
+														<!-- <span class="help-block">
+														请提供您的Email </span> -->
 														<span class="help-block">
-														请提供您的Email </span>
+														</span>
 													</div>
 												</div>
 											</div>
@@ -353,8 +363,7 @@ request.setCharacterEncoding("UTF-8");
 														</div>
 													</div>
 												</div>
-												</br>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">需求说明<span class="required">
 													* </span>
 													</label>
@@ -366,7 +375,7 @@ request.setCharacterEncoding("UTF-8");
 											
 											<div class="tab-pane" id="tab3"> 
 												<h3 class="block">请填写数据使用目的</h3>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">应用领域 <span class="required">
 													* </span>
 													</label>
@@ -393,10 +402,10 @@ request.setCharacterEncoding("UTF-8");
 															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
 															name="useFields" value="商业应用" data-title="商业应用 "> 商业应用 </label>
 															<label>
-															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue"
+															<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue" id="checkbox_other"
 															name="useFields" value="其他" data-title="其他"> 其他 
-															<input type="text" style="width:100px;" name="others" id="others" placeholder="请填写其他应用"/>
 															</label>
+															<input type="text" style="width:100px;" name="others" id="others" placeholder="请填写其他应用"/>
 															<!-- <div class=" col-md-3 pull-right">
 															</div> -->
 														</div>
@@ -405,7 +414,7 @@ request.setCharacterEncoding("UTF-8");
 														</div>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题名称 <span class="required">
 													* </span>
 													</label>
@@ -415,7 +424,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">首席科学家(首要负责人)<span class="required">
 													* </span>
 													</label>
@@ -425,7 +434,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题来源<span class="required">
 													* </span>
 													</label>
@@ -435,7 +444,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">承担单位<span class="required">
 													* </span>
 													</label>
@@ -445,7 +454,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">申请时间(DD/MM/YYYY) <span class="required">
 													* </span>
 													</label>
@@ -456,11 +465,13 @@ request.setCharacterEncoding("UTF-8");
 																<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
 														</div>
+													<!-- 	<span class="help-block">
+														例 ：  11/11/2020 </span> -->
 														<span class="help-block">
-														例 ：  11/11/2020 </span>
+														</span>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">应用说明 <span class="required">
 													* </span>
 													</label>
@@ -473,37 +484,38 @@ request.setCharacterEncoding("UTF-8");
 											</div>
 											
 											<div class="tab-pane" id="tab4">
+												<input type="hidden" id="applydataid" name="applydataid" value="">
 												<h3 class="block">请确认您填写的信息</h3>
 												<h4 class="form-section">用户信息</h4>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">用户姓名：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="userName">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">所在单位：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="userDepartment">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">地址：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="userAddress">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">联系电话：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display=userTel>
 														</p>
 													</div>
 												</div>
-													<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">Email：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="userEmail">
@@ -512,14 +524,14 @@ request.setCharacterEncoding("UTF-8");
 												</div>
 												
 												<h4 class="form-section">数据需求</h4>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">需求类别：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="userDemandType">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">需求说明：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="userDemand">
@@ -528,49 +540,49 @@ request.setCharacterEncoding("UTF-8");
 												</div>
 												
 												<h4 class="form-section">使用目的</h4>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">应用领域：</label>
 													<div class="col-md-4">
-														<p class="form-control-static" data-display="useFields">
+														<p class="form-control-static" data-display="useFields" id="useFields_display">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题名称：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectName">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">首席科学家(首要负责人)：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectChairman">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题来源：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectSource">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">承担单位：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectUndertaking">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">申请时间(MM/YYYY)：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="applyDate">
 														</p>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">应用说明：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectRemarks">

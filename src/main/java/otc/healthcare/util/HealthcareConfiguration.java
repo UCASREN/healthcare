@@ -14,6 +14,7 @@ public class HealthcareConfiguration {
 	public static final String DB_USERNAME = "db_username";
 	public static final String DB_PASSWORD = "db_password";
 	public static final String SWFTOOLS_PATH = "SWFToolsPath";
+	public static final String HC_DOCPATH = "hc_docpath";
 	private Properties properties;
 
 	public HealthcareConfiguration() {

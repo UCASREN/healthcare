@@ -2,9 +2,22 @@ var FormWizard = function () {
 	
 	  var initPickers = function () {
 	        //init date pickers
+		  	var myDate = new Date();
+		  	var dataArray = myDate.toLocaleDateString().split('/');
+		  	var month = dataArray[1];
+		  	var day = dataArray[2];
+		  	if (month >= 1 && month <= 9) {
+		  		  month = "0" + month;
+		  	 }
+		  	if (day >= 0 && day <= 9) {
+		  		day = "0" + day;
+		  	}
+		  	var date_default = day+"/"+month+"/"+dataArray[0];
+		  	$('#submit_form_applyDate').val(date_default);
 	        $('.date-picker').datepicker({
+//	        	defaultDate: +0,
 	            rtl: Metronic.isRTL(),
-	            autoclose: true
+	            autoclose: true,
 	        });
 	    }
 
@@ -25,29 +38,65 @@ var FormWizard = function () {
             
             var fillForm = function (hc_doc){
             	console.log("begin fill the form---");
-            	$.each(hc_doc,function(key,val){
-            		console.log(key+" : "+val);
-            	});
+//            	$.each(hc_doc,function(key,val){
+//            		console.log(key+" : "+val);
+//            	});
             	
             	$('#submit_form_userName').val(hc_doc.name);
             	$('#submit_form_userDepartment').val(hc_doc.department);
             	$('#submit_form_userAddress').val(hc_doc.address);
             	$('#submit_form_userTel').val(hc_doc.tel);
-                
+            	$('#submit_form_userEmail').val(hc_doc.email);
             	
+            	if(hc_doc.demandtype == '数据分析需求')
+            		$('#form_wizard_1 input[data-title="数据分析需求"]').iCheck('check');
+            	else if(hc_doc.demandtype == '数据使用需求')
+            		$('#form_wizard_1 input[data-title="数据使用需求"]').iCheck('check');
             	$('#submit_form_userDemand').val(hc_doc.demand);
             	
+            	arr = hc_doc.proUsefield.split(",");
+            	console.log(arr)
+            	for(var i=0; i<arr.length; i++){
+            		var tmp = arr[i];
+            		switch(tmp){
+            			case "政府决策":
+            				$('#form_wizard_1 input[data-title="政府决策"]').iCheck('check');break;
+            			case "科学研究":
+            				$('#form_wizard_1 input[data-title="科学研究"]').iCheck('check');break;
+            			case "教学":
+            				$('#form_wizard_1 input[data-title="教学"]').iCheck('check');break;
+            			case "博士论文":
+            				$('#form_wizard_1 input[data-title="博士论文"]').iCheck('check');break;
+            			case "硕士论文":
+            				$('#form_wizard_1 input[data-title="硕士论文"]').iCheck('check');break;
+            			case "商业应用":
+            				$('#form_wizard_1 input[data-title="商业应用"]').iCheck('check');break;
+            			default:
+            				if(tmp.indexOf('其他') == -1) break;
+            				$('#form_wizard_1 input[data-title="其他"]').iCheck('check');
+            				var tmp1 = tmp.substring(2);
+            				if(tmp1 != ""){
+            					$('#form_wizard_1 #others').val(tmp1)
+            					$('#form_wizard_1 #others').show();
+            				}
+            		}
+            	}
             	$('#submit_form_projectName').val(hc_doc.proName);
             	$('#submit_form_projectChairman').val(hc_doc.proChair);
             	$('#submit_form_projectSource').val(hc_doc.proSource);
             	$('#submit_form_projectUndertaking').val(hc_doc.proUndertake);
-            	$('#submit_form_applyDate').val('暂无');
+            	$('#submit_form_applyDate').val(hc_doc.applyTime);
             	$('#submit_form_projectRemarks').val(hc_doc.proRemark);
 
             }
             
             //获取文档id
             var param = $.query.get('docid');
+            var applydataid = $.query.get('applydataid');
+            if(applydataid != ""){
+            	$('#applydataid').val(applydataid);
+            }
+            	
             if(param != ""){
             	   console.log('参数:'+param);
             	   options={ 
@@ -79,30 +128,30 @@ var FormWizard = function () {
                 rules: {
                     //用户信息
                 	userName: {
-//                        required: true
+                        required: true
                     },
                     userDepartment: {
-//                        required: true
+                        required: true
                     },
                     userAddress: {
-//                        required: true,
+                        required: true,
 //                        equalTo: "#submit_form_password"
                     },
                     userTel: {
 //                        digits: true,
-//                    	required: true,
+                    	required: true,
                     },
                     userEmail: {
-//                    	required:true,
+                    	required:true,
 //                    	email: true
                     },
                     
                     //数据需求
                     userDemandType:{
-//                    	required: true,
+                    	required: true,
                     },
                     userDemand: {
-//                        required: true
+                        required: true
                     },
                     
                     //数据使用目的--project
@@ -227,7 +276,7 @@ var FormWizard = function () {
                 if (current >= total) {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
-                    $('#form_wizard_1').find('.button-wordPreview').show();
+                    $('#form_wizard_1').find('.button-wordPreview').hide();
                     displayConfirm();
                 } else {
                     $('#form_wizard_1').find('.button-next').show();
@@ -284,6 +333,11 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
                 alert('提交成功，我们会尽快进行审核，请耐心等待！');
+            	if($('#others').val() != ""){
+            		var allUseField_tmp = $('#allUseField').val();
+               	 	$('#allUseField').val(allUseField_tmp.substring(0,allUseField_tmp.length-1)+""+$('#others').val());
+            	}
+           	 	
                 $('#submit_form').submit(); 
             }).hide();
             
@@ -292,21 +346,28 @@ var FormWizard = function () {
                 //window.open ("/healthcare/", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
             }).hide();
 
-            $('#form_wizard_1 input[type="checkbox"]').on('ifChecked', function(event){
+            $("#checkbox_other").on('ifChecked', function(event){
+           	 	$('#form_wizard_1 #others').show();
+            });
+            $("#checkbox_other").on('ifUnchecked', function(event){
+           	 	$('#form_wizard_1 #others').hide();
+            });
+            
+            $('#form_wizard_1 input[type="checkbox"]').on('ifChanged', function(event){
 //            	alert(event.type + ' callback');
             	var tmp = '';
 //            	console.log($('#form_wizard_1 div.icheckbox_flat-blue').attr('checked'));
             	$('#form_wizard_1 input[type="checkbox"]').each(function(){
-//            		console.log('njz');
 //            		console.log($(this).attr('checked'));
-            		
             		if($(this).attr("checked") == "checked"){
-            			tmp += $(this).val()+",";
-            			console.log(tmp);
+            				tmp += $(this).val()+",";
+//            			console.log(tmp);
             		}
             	});
-            	$('#allUseField').val(this.value+","+tmp);
+            	$('#allUseField').val(tmp);
             });
+            
+            
         }
 
     };

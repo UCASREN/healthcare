@@ -213,124 +213,84 @@ request.setCharacterEncoding("UTF-8");
 						<div class="portlet-body">
 							<div class="table-container">
 								<div class="table-actions-wrapper">
-									<span>
-									</span>
-									<select class="table-group-action-input form-control input-inline input-small input-sm">
-										<option value="">Select...</option>
-										<option value="publish">Publish</option>
-										<option value="unpublished">Un-publish</option>
-										<option value="delete">Delete</option>
-									</select>
-									<button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-plus"></i> 新建申请</button>
+									<button  class="btn btn-sm red table-group-action-submit"><i class="fa fa-minus"></i> 删除记录</button>
+									<button  class="btn btn-sm yellow" onclick="window.open('/healthcare/apply/applydata')" ><i class="fa fa-plus"></i> 新建申请</button>
 								</div>
 								<table class="table table-striped table-bordered table-hover" id="datatable_products">
-								<thead>
-								<tr role="row" class="heading">
-									<th width="2%">
-										<input type="checkbox" class="group-checkable">
-									</th>
-									<th width="10%">
-										 序号
-									</th>
-									<th width="15%">
-										 Product&nbsp;Name
-									</th>
-									<th width="15%">
-										 Category
-									</th>
-									<th width="10%">
-										 Price
-									</th>
-									<th width="10%">
-										 Quantity
-									</th>
-									<th width="15%">
-										 Date&nbsp;Created
-									</th>
-									<th width="10%">
-										 Status
-									</th>
-									<th width="10%">
-										 Actions
-									</th>
-								</tr>
-								<tr role="row" class="filter">
-									<td>
-									</td>
-									<td>
-										<input type="text" class="form-control form-filter input-sm" name="product_id">
-									</td>
-									<td>
-										<input type="text" class="form-control form-filter input-sm" name="product_id">
-									</td>
-									<td>
-										<input type="text" class="form-control form-filter input-sm" name="product_name">
-									</td>
-									<td>
-										<select name="product_category" class="form-control form-filter input-sm">
-											<option value="">Select...</option>
-											<option value="1">Mens</option>
-											<option value="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Footwear</option>
-											<option value="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clothing</option>
-											<option value="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Accessories</option>
-											<option value="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fashion Outlet</option>
-											<option value="6">Football Shirts</option>
-											<option value="7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premier League</option>
-											<option value="8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Football League</option>
-											<option value="9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serie A</option>
-											<option value="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bundesliga</option>
-											<option value="11">Brands</option>
-											<option value="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adidas</option>
-											<option value="13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nike</option>
-											<option value="14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Airwalk</option>
-											<option value="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USA Pro</option>
-											<option value="16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kangol</option>
-										</select>
-									</td>
-									<td>
-										<div class="margin-bottom-5">
-											<input type="text" class="form-control form-filter input-sm" name="product_price_from" placeholder="From"/>
-										</div>
-										<input type="text" class="form-control form-filter input-sm" name="product_price_to" placeholder="To"/>
-									</td>
-									<td>
-										<div class="margin-bottom-5">
-											<input type="text" class="form-control form-filter input-sm" name="product_quantity_from" placeholder="From"/>
-										</div>
-										<input type="text" class="form-control form-filter input-sm" name="product_quantity_to" placeholder="To"/>
-									</td>
-									<td>
-										<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-											<input type="text" class="form-control form-filter input-sm" readonly name="product_created_from" placeholder="From">
-											<span class="input-group-btn">
-											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-											</span>
-										</div>
-										<div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-											<input type="text" class="form-control form-filter input-sm" readonly name="product_created_to " placeholder="To">
-											<span class="input-group-btn">
-											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-											</span>
-										</div>
-									</td>
-									<td>
-										<select name="product_status" class="form-control form-filter input-sm">
-											<option value="">Select...</option>
-											<option value="published">Published</option>
-											<option value="notpublished">Not Published</option>
-											<option value="deleted">Deleted</option>
-										</select>
-									</td>
-									<td>
-										<div class="margin-bottom-5">
-											<button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> Search</button>
-										</div>
-										<button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> Reset</button>
-									</td>
-								</tr>
-								</thead>
-								<tbody>
-								</tbody>
+									<thead>
+									<tr role="row" class="heading">
+										<th width="2%">
+											<input type="checkbox" class="group-checkable">
+										</th>
+										<th width="5%">
+											 序号
+										</th>
+										<th width="10%">
+											申请者
+										</th>
+										<th width="15%">
+											 项目名称
+										</th>
+										<th width="20%">
+											  数据需求
+										</th>
+										<th width="15%">
+											申请时间
+										</th>
+										<th width="10%">
+											 申请状态
+										</th>
+										<th width="20%">
+											 操作
+										</th>
+									</tr>
+									<tr role="row" class="filter">
+										<td>
+										</td>
+										<td>
+											<input type="text" class="form-control form-filter input-sm" name="applyData_id">
+										</td>
+										<td>
+											<input type="text" class="form-control form-filter input-sm" name="applyData_userName">
+										</td>
+										<td>
+											<input type="text" class="form-control form-filter input-sm" name="applyData_projectName">
+										</td>
+										<td>
+											<input type="text" class="form-control form-filter input-sm" name="applyData_dataDemand"/>
+										</td>
+										<td>
+											<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+												<input type="text" class="form-control form-filter input-sm" readonly name="product_created_from" placeholder="From">
+												<span class="input-group-btn">
+												<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+												</span>
+											</div>
+											<div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+												<input type="text" class="form-control form-filter input-sm" readonly name="product_created_to " placeholder="To">
+												<span class="input-group-btn">
+												<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+												</span>
+											</div>
+										</td>
+										<td>
+											<select name="product_status" class="form-control form-filter input-sm">
+												<option value="">状态过滤</option>
+												<option value="notCheck">待审核</option>
+												<option value="Checked">审核通过</option>
+												<option value="unChecked">审核未通过</option>
+											</select>
+										</td>
+										<td>
+											<div class="margin-bottom-5">
+												<button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索</button>
+											</div>
+											<button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+										</td>
+									</tr>
+									</thead>
+									<tbody>
+									</tbody>
 								</table>
 							</div>
 						</div>
@@ -385,14 +345,14 @@ request.setCharacterEncoding("UTF-8");
 <script src="../resources/js/quick-sidebar.js" type="text/javascript"></script>
 <script src="../resources/js/demo.js" type="text/javascript"></script>
 <script src="../resources/js/apply/apply_datatable.js"></script>
-<script src="../resources/js/apply/ecommerce-products.js"></script>
+<script src="../resources/js/apply/applyDatatable_user.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
         jQuery(document).ready(function() {    
            	Metronic.init(); // init metronic core components
 			Layout.init(); // init current layout
 			QuickSidebar.init(); // init quick sidebar
-         	EcommerceProducts.init();
+			applyDatatable.init();
         });
     </script>
 <!-- END JAVASCRIPTS -->

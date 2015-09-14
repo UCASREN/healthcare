@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.mchange.v2.async.StrandedTaskReporting;
+
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.MalformedTemplateNameException;
@@ -42,7 +44,16 @@ public class WordService implements IService{
 	private Configuration configuration;
 	@Autowired
 	private HealthcareConfiguration hcConfiguration;
+	
+	@Autowired
+	OracleService oracleService;
+	public OracleService getOracleService() {
+		return oracleService;
+	}
 
+	public void setOracleService(OracleService oracleService) {
+		this.oracleService = oracleService;
+	}
 /*	private HealthcareConfiguration getHealthcareConfiguration() {
 		if (hcConfiguration == null)
 			hcConfiguration = SpringWiredBean.getInstance().getBeanByClass(HealthcareConfiguration.class);
@@ -141,38 +152,58 @@ public class WordService implements IService{
 	}
 
 	private void getData(HttpServletRequest req, Map<String, Object> dataMap) {
-		String hc_userName = req.getParameter("userName");
-		String hc_userEmail = req.getParameter("userEmail");
-		System.out.println("test : " + hc_userName);
 		
-		//user info(6)
+		String hc_userName = req.getParameter("userName");
+		String hc_userDepartment  = req.getParameter("userDepartment");
+		String hc_userAddress = req.getParameter("userAddress");
+		String hc_userTel = req.getParameter("userTel");
+		String hc_userEmail = req.getParameter("userEmail");
+		
+		String hc_userDemandType = req.getParameter("userDemandType");
+		String hc_userDemand = req.getParameter("userDemand");
+		
+		String hc_useFields = req.getParameter("allUseField");
+		String hc_projectName = req.getParameter("projectName");
+		String hc_projectChairman = req.getParameter("projectChairman");
+		String hc_projectSource = req.getParameter("projectSource");
+		String hc_projectUndertaking = req.getParameter("projectUndertaking");
+		String hc_applyDate = req.getParameter("applyDate");
+		String hc_projectRemarks = req.getParameter("projectRemarks");
+		
+		//user info(5)
 		dataMap.put("hc_UserName", hc_userName);
-		dataMap.put("hc_UserDepartment", hc_userName);
-		dataMap.put("hc_UserAddress", hc_userName);
-		dataMap.put("hc_UserTel", hc_userEmail);
+		dataMap.put("hc_UserDepartment", hc_userDepartment);
+		dataMap.put("hc_UserAddress", hc_userAddress);
+		dataMap.put("hc_UserTel", hc_userTel);
 		dataMap.put("hc_UserEmail",hc_userEmail);
-		dataMap.put("hc_UserDemand",hc_userEmail);
+		
+		//data demand(2)
+		dataMap.put("hc_UserDemand",hc_userDemand);
 		
 		//project info(5)
-		dataMap.put("hc_ProName", hc_userName);
-		dataMap.put("hc_ProChair", hc_userName);
-		dataMap.put("hc_ProSource", hc_userName);
-		dataMap.put("hc_ProUndertaking", hc_userName);
-		dataMap.put("hc_ProRemarks", hc_userName);
+		dataMap.put("hc_ProName", hc_projectName);
+		dataMap.put("hc_ProChair", hc_projectChairman);
+		dataMap.put("hc_ProSource", hc_projectSource);
+		dataMap.put("hc_ProUndertaking", hc_projectUndertaking);
+		dataMap.put("hc_ProRemarks", hc_projectRemarks);
 		
 	}
 	
 	/*
 	 * word在线预览
 	 */
-	public void docConvert(HttpServletRequest req, HttpServletResponse resp) {
+	public void docConvert(HttpServletRequest req,String name) {
 		String swftoolPath = hcConfiguration.getProperty(HealthcareConfiguration.SWFTOOLS_PATH);
 	    ServletContext servletContext = req.getServletContext(); 
 		String swfPath = servletContext.getRealPath("/resources/swf");
-		HttpSession session = req.getSession();
-		String name = (String) session.getAttribute("docName");
 		String docName = swfPath +"\\" + name;
+		File tmpFile = new File(docName);
 		
+		if(!tmpFile.exists()){
+			String hc_docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
+			File openFile = new File(hc_docPath + "\\" + name);
+			changeDocFormat( openFile,  servletContext);
+		}
 		//开始转换
 		docConvertUtil docUtil = new docConvertUtil(docName,swfPath);
 		String swfFilePath = docUtil.conver(swftoolPath);
@@ -184,8 +215,49 @@ public class WordService implements IService{
 		}
 		else
 			System.out.println("****swf生成操作失败****");
-		
 	}	
+	
+	
+	/*
+	 * 删除word文档
+	 */
+	public boolean deleteDoc(String[] applydataidList) {
+		boolean swf_flag;
+		boolean open_flag;
+		for(String applydataid : applydataidList){
+			String doc_name = oracleService.getDocByApplyDataID(applydataid).getDocName();
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
+		    ServletContext servletContext = webApplicationContext.getServletContext(); 
+			String swfPath = servletContext.getRealPath("/resources/swf");
+			File swfFile = new File(swfPath + "\\" + doc_name);
+			File swfFile1 = new File(swfPath + "\\" + doc_name);
+			if(swfFile.exists()){
+				swfFile.delete();
+				swfFile1.delete();
+				swf_flag = true;
+			}else{
+				swf_flag = false;
+			}
+			
+			String hc_docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
+			File openFile = new File(hc_docPath + "\\" +  doc_name);
+			if(openFile.exists()){
+				openFile.delete();
+				open_flag = true;
+			}else{
+				open_flag = false;
+			}
+			
+			if(!open_flag)
+				System.out.println("hc_doc not exists");
+			if(!swf_flag)
+				System.out.println("swf_doc not exists");
+			if(open_flag && swf_flag)
+				System.out.println("delete doc<2处doc> success ---> " + applydataid);
+		}
+		return true;
+	}
+	
 	
 	@Override
 	public String getName() {

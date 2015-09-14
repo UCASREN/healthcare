@@ -2,6 +2,7 @@ package otc.healthcare.dao;
 // default package
 // Generated 2015-9-6 17:38:46 by Hibernate Tools 4.0.0
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
+
 import otc.healthcare.pojo.HcApplydata;
 
 /**
@@ -97,7 +100,7 @@ public class HcApplydataDao {
 		}
 	}
 
-	//通过序列得到
+	//通过序列得到---不用这个
 	public HcApplydata findById(java.math.BigDecimal id) {
 		log.debug("getting HcApplydata instance with id: " + id);
 		try {
@@ -127,6 +130,23 @@ public class HcApplydataDao {
 		}
 	}
 
+	//通过属性值得到--这个
+	public HcApplydata findByApplyID(Object value) {
+		String propertyName = "idApplydata";
+		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
+		try {
+			String queryString = "from HcApplydata as model where model."
+					+ propertyName + "= ?";
+			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
+			queryObject.setParameter(0, value);
+			List<HcApplydata> rs =  queryObject.list();
+			return rs.get(0);
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
 	//通过属性值得到
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
@@ -164,6 +184,40 @@ public class HcApplydataDao {
 	public HcApplydata findByDocName(String hcDocName){
 		List<HcApplydata> rs = findByProperty("docName", hcDocName);
 		return rs.get(0);
+	}
+
+	//缺少status参数
+	public void changeApplyStatus(BigDecimal applyID, String status) {
+		String propertyName = "flagApplydata";
+		log.debug("update HcApplydata instance with property: " + propertyName + ", id: " + applyID);
+		try {
+			String updateString = "update HcApplydata as h set h.flagApplydata=? where h.idApplydata=?";
+			Session session = sessionFactory.getCurrentSession();
+			Query queryObject = session.createQuery(updateString);
+			queryObject.setParameter(0, status);
+			queryObject.setParameter(1, applyID);
+			queryObject.executeUpdate();
+//			session.getTransaction().commit();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+
+	public void setApplyFailReason(BigDecimal applyID, String rejectReason) {
+		String propertyName = "applyRejectReason";
+		log.debug("update HcApplydata instance with property: " + propertyName + ", id: " + applyID);
+		try {
+			String updateString = "update HcApplydata as h set h.applyRejectReason=? where h.idApplydata=?";
+			Session session = sessionFactory.getCurrentSession();
+			Query queryObject = session.createQuery(updateString);
+			queryObject.setParameter(0, rejectReason);
+			queryObject.setParameter(1, applyID);
+			queryObject.executeUpdate();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
 	}
 	
 }

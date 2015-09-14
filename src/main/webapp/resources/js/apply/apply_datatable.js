@@ -11,7 +11,15 @@ var Datatable = function() {
     var tableInitialized = false;
     var ajaxParams = {}; // set filter mode
     var the;
-
+    var countSelectedRecords = function() {
+        var selected = $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).size();
+        var text = tableOptions.dataTable.language.metronicGroupActions;
+        if (selected > 0) {
+            $('.table-group-actions > span', tableWrapper).text(text.replace("_TOTAL_", selected));
+        } else {
+            $('.table-group-actions > span', tableWrapper).text("");
+        }
+    };
 
     return {
 
@@ -36,15 +44,15 @@ var Datatable = function() {
                     "pageLength": 20, // default records per page
                     "language": { // language settings
                         // metronic spesific
-                        "metronicGroupActions": "_TOTAL_ records selected:  ",
-                        "metronicAjaxRequestGeneralError": "提示：数据库链接失败，请检查您的数据库配置信息！",
+                        "metronicGroupActions": "选择了 _TOTAL_ 条记录:  ",
+                        "metronicAjaxRequestGeneralError": "无法完成请求，请检查您的网络连接",
 
                         // data tables spesific
-                        "lengthMenu": "<span class='seperator'>|</span>View _MENU_ records",
-                        "info": "<span class='seperator'>|</span>Found total _TOTAL_ records",
-                        "infoEmpty": "No records found to show",
-                        "emptyTable": "No data available in table",
-                        "zeroRecords": "No matching records found",
+                        "lengthMenu": "<span class='seperator'>|</span>每页显示 _MENU_ 条记录",
+                        "info": "<span class='seperator'>|</span>共  _TOTAL_ 条记录",
+                        "infoEmpty": "没有找到需要显示的数据",
+                        "emptyTable": "列表中没有可选的数据",
+                        "zeroRecords": "没有找到匹配的记录",
                         "paginate": {
                             "previous": "Prev",
                             "next": "Next",
@@ -68,7 +76,7 @@ var Datatable = function() {
 
                     "ajax": { // define ajax settings
                         "url": "", // ajax URL
-                        "type": "POST", // request type
+                        "type": "GET", // request type
                         "timeout": 20000,
                         "data": function(data) { // add request parameters before submit
                             $.each(ajaxParams, function(key, value) {
@@ -204,10 +212,12 @@ var Datatable = function() {
             });
         },
 
+        //判断filter条件
         submitFilter: function() {
             the.setAjaxParam("action", tableOptions.filterApplyAction);
 
             // get all typeable inputs
+            console.log($('textarea.form-filter, select.form-filter, input.form-filter:not([type="radio"],[type="checkbox"])', table));
             $('textarea.form-filter, select.form-filter, input.form-filter:not([type="radio"],[type="checkbox"])', table).each(function() {
                 the.setAjaxParam($(this).attr("name"), $(this).val());
             });
@@ -225,10 +235,13 @@ var Datatable = function() {
             dataTable.ajax.reload();
         },
 
+        //取消filter条件
         resetFilter: function() {
+        	
             $('textarea.form-filter, select.form-filter, input.form-filter', table).each(function() {
                 $(this).val("");
             });
+            
             $('input.form-filter[type="checkbox"]', table).each(function() {
                 $(this).attr("checked", false);
             });

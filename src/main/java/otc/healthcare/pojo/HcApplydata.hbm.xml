@@ -91,5 +91,8 @@
         <property name="applyTime" type="string">
             <column name="APPLY_TIME" length="255" />
         </property>
+        <property name="applyRejectReason" type="string">
+            <column name="APPLY_REJECT_REASON" length="255" />
+        </property>
     </class>
 </hibernate-mapping>

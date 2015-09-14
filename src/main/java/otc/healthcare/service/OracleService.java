@@ -679,6 +679,10 @@ public class OracleService implements IService {
 	public void insertApplyData(HttpServletRequest req, String f_path_name) {
 		
 		HcApplydata hc_applydata = new HcApplydata();
+		if(!req.getParameter("applydataid").equals("")){
+			BigDecimal bd = new BigDecimal(req.getParameter("applydataid"));
+			hc_applydata.setIdApplydata(bd);
+		}
 		
 		String hc_userName = req.getParameter("userName");
 		String hc_userDepartment  = req.getParameter("userDepartment");
@@ -735,6 +739,13 @@ public class OracleService implements IService {
 		return docData;
 	}
 	
+	@Transactional
+	public HcApplydata getDocByApplyDataID(String applydataId) {
+		BigDecimal bd = new BigDecimal(applydataId);
+		HcApplydata docData = hcApplydataDao.findByApplyID(bd);
+		return docData;
+	}
+	
 	/*
 	 * get the apply docdata from db by hc_userName(系统用户)
 	 */
@@ -751,6 +762,36 @@ public class OracleService implements IService {
 	public List<HcApplydata> getAllDoc() {
 		List ALLdocDataList = hcApplydataDao.findAll();
 		return ALLdocDataList;
+	}
+	
+	/*
+	 * 删除applydata信息
+	 */
+	@Transactional
+	public boolean deleteApplyData(String[] applydataid) {
+		try {
+			for(int i=0; i<applydataid.length; i++){
+				BigDecimal bd = new BigDecimal(applydataid[i]);  
+				HcApplydata tmp = hcApplydataDao.findByApplyID(bd);
+				hcApplydataDao.delete(tmp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	@Transactional
+	public void changeApplyStatus(String applyid, String status) {
+		BigDecimal bd = new BigDecimal(applyid);
+		hcApplydataDao.changeApplyStatus(bd,status);
+	}
+	
+	@Transactional
+	public void insertApplyFailReason(String applyid, String rejectReason) {
+		BigDecimal bd = new BigDecimal(applyid);
+		hcApplydataDao.setApplyFailReason(bd,rejectReason);
 	}
 
 }
