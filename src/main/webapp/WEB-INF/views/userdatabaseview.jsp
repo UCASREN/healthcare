@@ -133,10 +133,10 @@
 						</span> <i class="fa fa-angle-down"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-default">
-							<li><a href="javascript:;"> <i class="icon-user"></i>
+							<li><a href="userpanel" target="_blank"> <i class="icon-user"></i>
 									我的账户
 							</a></li>
-							<li><a href="javascript:;"> <i
+							<li><a href="apply/applytable" target="_blank"> <i
 									class="icon-envelope-open"></i> 数据申请 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>

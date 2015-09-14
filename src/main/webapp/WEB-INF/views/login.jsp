@@ -121,15 +121,15 @@
 		</p>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">用户名</label>
-			<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
+			<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="username"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">密码</label>
-			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Password" name="password"/>
+			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="密码" name="password"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">重新输入密码</label>
-			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Re-type Your Password" name="rpassword"/>
+			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="再输入一遍密码" name="rpassword"/>
 		</div>
 		<div class="form-group margin-top-20 margin-bottom-20">
 			<label class="check">
@@ -142,7 +142,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<button type="button" id="register-back-btn" class="btn btn-default">B返回</button>
+			<button type="button" id="register-back-btn" class="btn btn-default">返回</button>
 			<button type="submit" id="register-submit-btn" class="btn btn-success uppercase pull-right">提交</button>
 		</div>
 	</form>

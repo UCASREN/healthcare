@@ -9,11 +9,14 @@
 		<remember-me key="healthcare" remember-me-parameter="remember-me" />
 		<intercept-url pattern="/login" access="permitAll"/>
 		<!-- <intercept-url pattern="/*" access="permitAll"/> -->
-		<intercept-url pattern="/*" access="hasRole('USER')"/>
-		<form-login login-page="/login"/>
+		<intercept-url pattern="/admin" access="hasRole('ADMIN')"/>
+		<intercept-url pattern="/databasemanager" access="hasRole('ADMIN')"/>
+		<intercept-url pattern="/*" access="hasAnyRole('ADMIN', 'USER')"/>
+		<form-login login-page="/login" authentication-success-handler-ref="healthcareAuthenticationSuccessHandler"/>
 		<logout logout-success-url="/"  logout-url="/logout"  />
 	</http>
-	
+	<b:bean id="healthcareAuthenticationSuccessHandler"  
+        class="otc.healthcare.controller.handler.SimpleSavedRequestAwareAuthenticationSuccessHandler" />  
 	<jdbc-user-service id="userService" data-source-ref="dataSource" 
 		users-by-username-query="select username,password,true from users where username=?"
 		authorities-by-username-query="select username,role from users where username=?"
