@@ -65,12 +65,15 @@
 <!-- END THEME STYLES -->
 <!-- BEGIN DIV STYLES -->
 <style type="text/css">
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th,
+	.table>thead>tr>td, .table>thead>tr>th {
 	padding: 2px;
 }
-.paging_bootstrap_extended{
+
+.paging_bootstrap_extended {
 	font-size: 10px;
 }
+
 .btn-sm, .btn-xs {
 	font-size: 12px;
 }
@@ -87,8 +90,8 @@
 		<div class="page-header-inner">
 			<!-- BEGIN LOGO -->
 			<div class="page-logo">
-				<a href="#" id="refreshalldatabaseinfo"> <img src="img/logo.png" alt="logo"
-					class="logo-default" />
+				<a href="#" id="refreshalldatabaseinfo"> <img src="img/logo.png"
+					alt="logo" class="logo-default" />
 				</a>
 				<div class="menu-toggler sidebar-toggler"></div>
 			</div>
@@ -119,7 +122,44 @@
 			<a href="javascript:;" class="menu-toggler responsive-toggler"
 				data-toggle="collapse" data-target=".navbar-collapse"> </a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
+			<div class="top-menu">
+				<ul class="nav navbar-nav pull-right">
+					<li class="dropdown dropdown-user"><a href="javascript:;"
+						class="dropdown-toggle" data-toggle="dropdown"
+						data-hover="dropdown" data-close-others="true"> <img alt=""
+							class="img-circle" src="img/avatar3_small.jpg" /> <span
+							class="username username-hide-on-mobile"> <sec:authentication
+									property="name" />
+						</span> <i class="fa fa-angle-down"></i>
+					</a>
+						<ul class="dropdown-menu dropdown-menu-default">
+							<li><a href="javascript:;"> <i class="icon-user"></i>
+									我的账户
+							</a></li>
+							<li><a href="javascript:;"> <i
+									class="icon-envelope-open"></i> 数据申请 <span
+									class="badge badge-danger"> 3 </span>
+							</a></li>
+							<li><a href="javascript:;"> <i class="icon-rocket"></i>
+									虚拟环境申请<span class="badge badge-success"> 7 </span>
+							</a></li>
+							<li class="divider"></li>
+							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
+							</a></li>
+							<c:url value="/logout" var="logoutUrl" />
+							<li>
+								<a href="#" id="logoutbutton">
+								<i class="icon-key"></i> 登出 </a>
+								<form action="${logoutUrl}" method="post" style="display:none;" id="logoutform">
+									<input  name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> 
+								</form> 
+							</li>
+						</ul></li>
+					<!-- END USER LOGIN DROPDOWN -->
 
+				</ul>
+			</div>
 		</div>
 		<!-- END HEADER INNER -->
 	</div>
@@ -209,16 +249,16 @@
 					<div class="row">
 						<div class="col-md-3">
 							<span id="showdatabaseinfo_name"></span>
-						</div> 
+						</div>
 						<div class="col-md-3">
-							<span id="showdatabaseinfo_comments"></span> 
-						</div> 
+							<span id="showdatabaseinfo_comments"></span>
+						</div>
 						<div class="col-md-3">
-							<span id="showdatabaseinfo_identifier"></span> 
-						</div> 
+							<span id="showdatabaseinfo_identifier"></span>
+						</div>
 						<div class="col-md-3">
 							<span id="showdatabaseinfo_language"></span>
-						</div> 
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-3">

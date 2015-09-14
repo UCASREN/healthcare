@@ -363,3 +363,6 @@ $("#refreshalldatabaseinfo").click(function(){
 	$("#showdatabaseinfo").hide();
 	$("#showalldatabaseinfo").show();
 });
+$("#logoutbutton").click(function(){
+	$("#logoutform").submit();
+});

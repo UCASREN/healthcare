@@ -11,7 +11,7 @@
 		<!-- <intercept-url pattern="/*" access="permitAll"/> -->
 		<intercept-url pattern="/*" access="hasRole('USER')"/>
 		<form-login login-page="/login"/>
-		<logout logout-success-url="/"/>
+		<logout logout-success-url="/"  logout-url="/logout"  />
 	</http>
 	
 	<jdbc-user-service id="userService" data-source-ref="dataSource" 
