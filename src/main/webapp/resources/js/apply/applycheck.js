@@ -116,7 +116,7 @@ var applyCheck = function () {
             		return;
             	$.ajax({ 
       					type : "get",//请求方式 
-      					url : "/healthcare/adminpanel/applycheck_success",//发送请求地址
+      					url : "applycheck_success",//发送请求地址
       					data:{ 
       						applyid : applydataid
       					},
@@ -132,7 +132,7 @@ var applyCheck = function () {
             	console.log('njz : '+rejectReason);
             	$.ajax({ 
   					type : "get",//请求方式 
-  					url : "/healthcare/adminpanel/applycheck_reject",//发送请求地址
+  					url : "applycheck_reject",//发送请求地址
   					data:{ 
   						applyid : applydataid,
   						rejectReason : rejectReason
@@ -146,5 +146,4 @@ var applyCheck = function () {
         }
 
     };
-
 }();

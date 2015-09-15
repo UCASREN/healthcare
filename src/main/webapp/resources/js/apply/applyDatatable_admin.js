@@ -121,14 +121,14 @@ var applyDatatable = function () {
             
         });
         
-        $('#filter_panel').hide();
+        
     }
 
     return {
 
         //main function to initiate the module
         init: function () {
-        	
+
             handleProducts();
             initPickers();
             
