@@ -101,7 +101,7 @@
 				<ul class="nav navbar-nav">
 					<li class="classic-menu-dropdown "><a href="userdatabaseview">
 							数据发布 </a></li>
-					<li class="classic-menu-dropdown"><a href="#"> 数据申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="apply/applytable" target="_blank"> 数据申请 </a></li>
 					<li class="classic-menu-dropdown"><a href="#"> 虚拟环境申请 </a></li>
 					<li class="classic-menu-dropdown"><a href="#"> 数据分析 </a></li>
 				</ul>

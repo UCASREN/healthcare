@@ -113,7 +113,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<a class="btn default" data-toggle="modal" href="#fileuploadmodal"> 上传文件</a> 
-							<a class="btn default" data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
+							<a class="btn default disabled" data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
 							<a class="btn default" data-toggle="modal" href="#changedatabaseinfo_remote" id="setdatabasefromremote">从远端导入数据库元信息</a>
 						</div>
 					</div>

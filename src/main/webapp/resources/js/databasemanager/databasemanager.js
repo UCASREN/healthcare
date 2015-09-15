@@ -582,6 +582,7 @@ var AjaxTree = function() {
 		
 		if (data.node.id.indexOf("alldatabase") != -1) {
 			//更新“更改数据库信息”模态框中表单内容
+			$("#setchangedatabasetitle").removeClass("disabled");
 			$("#setchangedatabasetitle").text("更改数据库"+data.node.text+"的信息");
 			$.ajax({
 				type : "get",//请求方式
@@ -801,6 +802,7 @@ $("#import_remote_database").click(function(){
 		 $.post("dataresource/addremotedatabase", $("#remote_database_form").serialize()+"&selectedtables="+nodes, function (data) {
 			 location.reload(true);
 			 },"json");
+		 location.reload(true);
 		//addremotedatabase
 		//$.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
 	}

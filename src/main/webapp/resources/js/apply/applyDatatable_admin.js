@@ -38,7 +38,7 @@ var applyDatatable = function () {
                 "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
 
                 "ajax": {
-                    "url": "/healthcare/apply/getdocdata_admin", // ajax source
+                    "url": "/healthcare/adminpanel/getdocdata_admin", // ajax source
                 },
                 "order": [
                     [1, "asc"]

@@ -137,72 +137,7 @@ function FileManagerClass(){
   <div class="dot-list"></div>
 </div>
 
-<div class="wrap relative">
-  <div class="form-box">
-    <div class="form-title">
-      <span data-kind="0">求职者 &#8250;</span>
- <!--      <a href="/user/regh/?default=2" data-kind="2" target="_blank">猎头顾问 &#8250;</a>
-      <a href="/user/lpt/?user_login=" data-kind="1" target="_blank">企业HR &#8250;</a> -->
-    </div>
-    <div class="form-content">
-      <div class="candidate"> 
-      
-     <!--  注册-->
-        <form action="/user/regc/reguserc/?validrandflag=1" method="post" class="register-box">
-        <input type="hidden" name="layer_from" value="wwwindex_rightbox_new"/>
-        <input type="hidden" name="regc_new_log" value="regc_new_log"/>
-          <div class="control relative">
-            <input autocomplete="off" type="text" name="web_user.user_login" value="" placeholder="邮箱/手机号" class="text input-xlarge" data-selector="checkEmail" validate-title="邮箱/手机号" validate-rules="[['required','请输入$'],['dynrule','checkPhoneEmail']]" />
-          </div>
-          <div class="control relative">
-            <input autocomplete="off" type="password" name="web_user.user_pwd" value="" placeholder="密码(6-16字母、数字、无空格)" class="text input-xlarge" validate-title="密码" validate-rules="[['required','请输入$'],['length',{min:6,max:16},'$1长度不能$2$3个字符'],['pattern',/^[a-zA-Z0-9]+$/ig,'$只能数字或字母']]"/>
-          </div>
-          <div class="control relative" data-selector="email-code-wrap">
-            <input autocomplete="off" type="text" name="rand" value="" placeholder="验证码" class="text input-xlarge span2" validate-title="验证码" validate-rules="[['required','请输入$']]"/>
-            <img src="/image/randomcode/" alt="验证码,看不清楚?请点击刷新验证码" class="validcode">
-            <a href="javascript:;" data-selector="changeValidCode" class="changecode">换一张</a>
-          </div>
-          <div class="control relative hide" data-selector="phone-code-wrap">
-            <input autocomplete="off" disabled="disabled" type="text" name="rand" value="" placeholder="验证码" class="text input-xlarge span2" validate-title="验证码" validate-rules="[['required','请输入$']]"/><a data-selector="phone-code-btn" href="javascript:;" class="btn btn-primary btn-phone-code">获取验证码</a>
-          </div>
-          <input type="submit" value="免费注册" class="btn btn-register"/>
-          <div class="clearfix controls" validate-group="checkbox" validate-title="用户服务协议" validate-rules="[['required','您必须接受“$1”才能注册']]">
-            <label ><input type="checkbox" class="input-checkbox" checked="checked"/>&nbsp;接受</label><a href="http://www.liepin.com/user/agreement.shtml" class="xieyi" target="_blank">用户服务协议</a>
-            <p>已有帐号,&nbsp;&nbsp;<a href="javascript:;" title="登录猎聘网" data-selector="switchLogin">马上登录</a></p> 
-          </div>
-        </form> 
-        
-      	<!-- 登录  -->
-        <form action="" method="post" class="login-box" >
-        	<input type="hidden" name="isMd5" value="1"/>
-        	<input type="hidden" name="layer_from" value="wwwindex_rightbox_new"/>
-          <div class="control relative">
-            <input type="text" name="user_login" value="" class="text input-xlarge" placeholder="邮箱/手机号" validate-title="邮箱/手机号" validate-rules="[['required','请输入$']]" />
-          </div>
-          <div class="control relative">
-            <input type="password" name="user_pwd" value="" class="text input-xlarge"  placeholder="密码" validate-title="密码" validate-rules="[['required','请输入$']]"/>
-          </div>
-          <input type="submit" value="登 录" class="btn btn-login"/>
-          <div class="controls clearfix">
-            <label><input type="checkbox" name="chk_remember_pwd" checked="checked" />&nbsp;下次自动登录</label>
-            <a class="regbtn" href="javascript:;" title="注册猎聘网" data-selector="switchRegister">立即注册</a>
-            <a href="/passport/forgetPwd?user_kind=0" target="_blank">忘记密码？</a>
-          </div>
-          <!-- <p class="info-box">还没有求职者帐号？<a href="javascript:;" title="注册猎聘网" data-selector="switchRegister">立即注册</a></p> -->
-          <div class="connect-login">
-            使用其他方式登录
-            <a class="icon-24 icon-24-account-qq" href="http://www.liepin.com/connect/?open_account=3&user_kind=0" target="_blank"></a>
-            <a class="icon-24 icon-24-account-weixin" href="http://www.liepin.com/connect/?open_account=4&user_kind=0" target="_blank"></a>
-            <a class="icon-24 icon-24-account-weibo" href="http://www.liepin.com/connect/?open_account=1&user_kind=0" target="_blank"></a>
-          </div>
-        </form>
-        
-   
-      </div>
-      
-    </div> 
-  </div>
-</div>
+
 
 
 <!-- 四个功能 -->
@@ -213,7 +148,7 @@ function FileManagerClass(){
 	    <span class="icons48 icons48-it"></span>
 	    <b>数据发布</b>
 	  </a>
-	  <a href="apply/applytable">
+	  <a href="apply/applytable" target="_blank">
 	    <span class="icons48 icons48-estate"></span>
 	    <b>数据申请</b>
 	  </a>
