@@ -159,7 +159,7 @@ request.setCharacterEncoding("UTF-8");
 			
 			<!-- BEGIN PAGE HEADER -->
 			<h3 class="page-title">
-			数据审批 <small>医疗大数据分析平台</small>
+			数据申请 <small>医疗大数据分析平台</small>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -169,11 +169,11 @@ request.setCharacterEncoding("UTF-8");
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="#">审批</a>
+						<a href="#">申请</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="#">数据审批</a>
+						<a href="#">数据申请</a>
 					</li>
 				</ul>
 				<div class="page-toolbar">
@@ -208,7 +208,7 @@ request.setCharacterEncoding("UTF-8");
 					<div class="portlet box blue" id="form_wizard_1">
 						<div class="portlet-title">
 							<div class="caption">
-								<i class="fa fa-gift"></i> 审批流程  <span class="step-title">
+								<i class="fa fa-gift"></i> 填写流程  <span class="step-title">
 								 1 / 4 </span>
 							</div>
 							<div class="tools hidden-xs">
@@ -223,7 +223,7 @@ request.setCharacterEncoding("UTF-8");
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="/healthcare/apply/createdataword" class="form-horizontal" id="submit_form" method="POST" accept-charset="UTF-8">
+							<form action="/healthcare/applydata/createdataword" class="form-horizontal" id="submit_form" method="POST" accept-charset="UTF-8">
 							 	<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 								<div class="form-wizard">
 									<div class="form-body">

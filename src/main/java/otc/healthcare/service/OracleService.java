@@ -18,10 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import otc.healthcare.dao.ConnectionFactory;
 import otc.healthcare.dao.HcApplydataDao;
+import otc.healthcare.dao.HcApplyenvDao;
 import otc.healthcare.dao.OracleDBUtil;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.HcApplydata;
+import otc.healthcare.pojo.HcApplyenv;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
@@ -33,7 +35,26 @@ public class OracleService implements IService {
 	private HealthcareConfiguration hcConfiguration;
 	@Autowired
 	private HcApplydataDao hcApplydataDao;
+	@Autowired
+	private HcApplyenvDao hcApplyenvDao;
 
+	public HcApplydataDao getHcApplydataDao() {
+		return hcApplydataDao;
+	}
+
+	public void setHcApplydataDao(HcApplydataDao hcApplydataDao) {
+		this.hcApplydataDao = hcApplydataDao;
+	}
+
+	public HcApplyenvDao getHcApplyenvDao() {
+		return hcApplyenvDao;
+	}
+
+	public void setHcApplyenvDao(HcApplyenvDao hcApplyenvDao) {
+		this.hcApplyenvDao = hcApplyenvDao;
+	}
+	
+	
 	public boolean testConnection(String oracle_url, String oracle_username, String oracle_password) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
 				oracle_password);
@@ -80,14 +101,7 @@ public class OracleService implements IService {
 		return resultList;
 	}
 
-	public HcApplydataDao getHcApplydataDao() {
-		return hcApplydataDao;
-	}
-
-	public void setHcApplydataDao(HcApplydataDao hcApplydataDao) {
-		this.hcApplydataDao = hcApplydataDao;
-	}
-
+	
 	public Map<String, String> getDatabaseSummary(String databaseid) {
 		Map<String, String> databaseSummary = new HashMap<String, String>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -916,7 +930,7 @@ public class OracleService implements IService {
 	}
 
 	/*
-	 * insert the ApplyData into db
+	 * 数据申请
 	 */
 	@Transactional
 	public void insertApplyData(HttpServletRequest req, String f_path_name) {
@@ -966,7 +980,7 @@ public class OracleService implements IService {
 		hc_applydata.setFlagApplydata("1");
 
 		hcApplydataDao.attachDirty(hc_applydata);
-		System.out.println("insert hc_doc ok");
+		System.out.println("insert hc_applydata ok");
 	}
 
 	/*
@@ -1023,16 +1037,117 @@ public class OracleService implements IService {
 	}
 	
 	@Transactional
-	public void changeApplyStatus(String applyid, String status) {
+	public void changeApplyDataStatus(String applyid, String status) {
 		BigDecimal bd = new BigDecimal(applyid);
 		hcApplydataDao.changeApplyStatus(bd,status);
 	}
 	
 	@Transactional
-	public void insertApplyFailReason(String applyid, String rejectReason) {
+	public void insertApplyDataFailReason(String applyid, String rejectReason) {
 		BigDecimal bd = new BigDecimal(applyid);
 		hcApplydataDao.setApplyFailReason(bd,rejectReason);
 	}
 
+	/*
+	 * 虚拟环境申请
+	 */
+	@Transactional
+	public boolean deleteApplyEnv(String[] applydataid) {
+		try {
+			for(int i=0; i<applydataid.length; i++){
+				BigDecimal bd = new BigDecimal(applydataid[i]);  
+				HcApplyenv tmp = hcApplyenvDao.findByApplyID(bd);
+				hcApplyenvDao.delete(tmp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;	
+	}
+	
+	@Transactional
+	public void insertApplyEnv(HttpServletRequest req, String f_path_name) {
+		HcApplyenv hc_applyenv = new HcApplyenv();
+
+		String hc_userName = req.getParameter("userName");
+		String hc_userDepartment = req.getParameter("userDepartment");
+		String hc_userAddress = req.getParameter("userAddress");
+		String hc_userTel = req.getParameter("userTel");
+		String hc_userEmail = req.getParameter("userEmail");
+
+		String hc_userDemandType = req.getParameter("userDemandType");
+		String hc_userDemand = req.getParameter("userDemand");
+
+		String hc_useFields = req.getParameter("allUseField");//
+		String hc_projectName = req.getParameter("projectName");
+		String hc_projectChairman = req.getParameter("projectChairman");
+		String hc_projectSource = req.getParameter("projectSource");
+		String hc_projectUndertaking = req.getParameter("projectUndertaking");
+		String hc_applyDate = req.getParameter("applyDate");
+		String hc_projectRemarks = req.getParameter("projectRemarks");
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		hc_applyenv.setHcUsername(user.getUsername());// hc系统用户名
+		hc_applyenv.setDocName(f_path_name);// 主键
+
+		hc_applyenv.setName(hc_userName);// 申请表填写用户
+		hc_applyenv.setDepartment(hc_userDepartment);
+		hc_applyenv.setAddress(hc_userAddress);
+		hc_applyenv.setTel(hc_userTel);
+		hc_applyenv.setEmail(hc_userEmail);
+
+		hc_applyenv.setDemandtype(hc_userDemandType);
+		hc_applyenv.setDemand(hc_userDemand);
+
+		hc_applyenv.setProUsefield(hc_useFields);
+		hc_applyenv.setProName(hc_projectName);
+		hc_applyenv.setProChair(hc_projectChairman);
+		hc_applyenv.setProSource(hc_projectSource);
+		hc_applyenv.setProUndertake(hc_projectUndertaking);
+		hc_applyenv.setApplyTime(hc_applyDate);
+		hc_applyenv.setProRemark(hc_projectRemarks);
+
+		// 提交后，apply标志为1
+		hc_applyenv.setFlagApplydata("1");
+
+		hcApplyenvDao.attachDirty(hc_applyenv);
+		System.out.println("insert hc_applyenv ok");
+	}
+
+	public HcApplyenv getEnvDocBydocID(String docid) {
+		HcApplyenv docData = hcApplyenvDao.findByDocName(docid);
+		return docData;	}
+
+
+	public HcApplyenv getDocEnvByApplyDataID(String applyid) {
+		BigDecimal bd = new BigDecimal(applyid);
+		HcApplyenv docEnv = hcApplyenvDao.findByApplyID(bd);
+		return docEnv;	
+	}
+
+	public List<HcApplyenv> getEnvDocByHcUserName(String hcUserName) {
+		List docEnvDataList = hcApplyenvDao.findByHcUserName(hcUserName);
+		return docEnvDataList;	
+	}
+
+	public List<HcApplyenv> getAllDocEnv() {
+		List ALLdocEnvList = hcApplyenvDao.findAll();
+		return ALLdocEnvList;
+	}
+
+	@Transactional
+	public void changeApplyEnvStatus(String applyid, String status) {
+		BigDecimal bd = new BigDecimal(applyid);
+		hcApplyenvDao.changeApplyStatus(bd,status);
+	}
+	
+	@Transactional
+	public void insertApplyEnvFailReason(String applyid, String rejectReason) {
+		BigDecimal bd = new BigDecimal(applyid);
+		hcApplyenvDao.setApplyFailReason(bd,rejectReason);
+	}
+	
 
 }

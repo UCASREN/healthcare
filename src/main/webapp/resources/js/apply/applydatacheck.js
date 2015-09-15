@@ -1,4 +1,4 @@
-var applyCheck = function () {
+var applydataCheck = function () {
 	
     return {
     	
@@ -116,12 +116,12 @@ var applyCheck = function () {
             		return;
             	$.ajax({ 
       					type : "get",//请求方式 
-      					url : "applycheck_success",//发送请求地址
+      					url : "applydatacheck_success",//发送请求地址
       					data:{ 
       						applyid : applydataid
       					},
       					success :function() {
-      					  window.open ("/healthcare/adminpanel/applytable", target="_self");
+      					  window.open ("/healthcare/adminpanel/applydatatable", target="_self");
        					} 
           			});
             })
@@ -132,13 +132,13 @@ var applyCheck = function () {
             	console.log('njz : '+rejectReason);
             	$.ajax({ 
   					type : "get",//请求方式 
-  					url : "applycheck_reject",//发送请求地址
+  					url : "applydatacheck_reject",//发送请求地址
   					data:{ 
   						applyid : applydataid,
   						rejectReason : rejectReason
   					},
   					success :function() {
-  					  window.open ("/healthcare/adminpanel/applytable", target="_self");
+  					  window.open ("/healthcare/adminpanel/applydatatable", target="_self");
    					} 
   				});
             })

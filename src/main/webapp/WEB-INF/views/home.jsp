@@ -97,18 +97,16 @@ function FileManagerClass(){
   <div class="header">
     <div class="wrap">
       <div class="logo">
-        <a href="http://www.liepin.com/"><img alt="猎聘网logo" class="pngfix" src="home/images/home/logo_7012c4a4.png" width="110" height="40" /><em><i class="icons16 icons16-home-white" title="首页"></i></em></a>
+        <a href=""><img alt="图标" class="pngfix" src="" width="110" height="40" /><em><i class="icons16 icons16-home-white" title="首页"></i></em></a>
       </div>
       <nav>
         <ul>
-          <li data-name="home"><a href="http://www.liepin.com/">首页</a></li>
-          <li data-name="job"><a href="http://www.liepin.com/zhaopin/">职位</a></li>
-          <li data-name="article"><a href="http://article.liepin.com/">社区</a></li>
+          <li data-name="home"><a href="">首页</a></li>
+          <li data-name="article"><a href="">帮助</a></li>
         </ul>
       </nav>
       
       <!-- 右上角 -->
-      <div class="quick-menu"></div>
     </div>
   </div>
 </header>
@@ -124,11 +122,11 @@ function FileManagerClass(){
   <div class="slider-list">
   	  
   	<div style="background:url(home/images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #4d3722;">
-    	<a href="http://company.liepin.com/1663745#sfrom=click-pc_homepage-front_admap-new_32_0"  target="_blank"></a>
+    	<a href=""  target="_blank"></a>
     </div>
     
   	<div style="background:url(home/images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #0e5164;">
-    	<a href="http://event.liepin.com/t/1438679695603/#sfrom=click-pc_homepage-front_admap-new_33_1"  target="_blank"></a>
+    	<a href=""  target="_blank"></a>
     </div>
     
   </div>
@@ -148,11 +146,11 @@ function FileManagerClass(){
 	    <span class="icons48 icons48-it"></span>
 	    <b>数据发布</b>
 	  </a>
-	  <a href="apply/applytable" target="_blank">
+	  <a href="applydata/applytable" target="_blank">
 	    <span class="icons48 icons48-estate"></span>
 	    <b>数据申请</b>
 	  </a>
-	  <a class="finance" href="">
+	  <a href="applyenv/applytable" target="_blank">
 	    <span class="icons48 icons48-financial"></span>
 	    <b>虚拟环境申请</b>
 	  </a>

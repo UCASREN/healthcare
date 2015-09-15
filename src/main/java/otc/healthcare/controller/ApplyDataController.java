@@ -38,8 +38,8 @@ import otc.healthcare.util.HealthcareConfiguration;
  *
  */
 @Controller
-@RequestMapping("/apply")
-public class ApplyController {
+@RequestMapping("/applydata")
+public class ApplyDataController {
 
 	private static final String DELETE_APPLYDATA_ERROR = "0";
 	private static final String DELETE_APPLYDATA_SUCCESS = "1";
@@ -83,7 +83,7 @@ public class ApplyController {
 //		if( "ROLE_ADMIN".equals(userAuthory[0].toString()) )
 //			return "applytable_admin";
 //		else if( "ROLE_USER".equals((String)userAuthory[0].toString()) )
-		return "applytable_user";
+		return "applytable_data_user";
 		
 	}
 	
@@ -221,5 +221,6 @@ public class ApplyController {
 		}
 		return "documentView";
 	}
+	
 	
 }

@@ -68,7 +68,14 @@
 		<beans:property name="sessionFactory" ref="sessionFactory" />
 	</beans:bean>
 	<tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="true"/>  
+	
 	<beans:bean id="HcApplydataDao" class="otc.healthcare.dao.HcApplydataDao">
+		<beans:property name="sessionFactory">
+			<beans:ref bean="sessionFactory" />
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="HcApplyenvDao" class="otc.healthcare.dao.HcApplyenvDao">
 		<beans:property name="sessionFactory">
 			<beans:ref bean="sessionFactory" />
 		</beans:property>

@@ -108,12 +108,12 @@
 			<!-- END RESPONSIVE MENU TOGGLER -->
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
-					<li class="dropdown dropdown-user"><a href="javascript:;"
+					<li class="dropdown dropdown-user">
+					<a href="javascript:;"
 						class="dropdown-toggle" data-toggle="dropdown"
 						data-hover="dropdown" data-close-others="true"> <img alt=""
 							class="img-circle" src="img/avatar3_small.jpg" /> <span
-							class="username username-hide-on-mobile"> <sec:authentication
-									property="name" />
+							class="username username-hide-on-mobile"> <sec:authentication property="name" />
 						</span> <i class="fa fa-angle-down"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-default">
@@ -135,8 +135,7 @@
 								<a href="#" id="logoutbutton">
 								<i class="icon-key"></i> 登出 </a>
 								<form action="${logoutUrl}" method="post" style="display:none;" id="logoutform">
-									<input  name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> 
+									<input  name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								</form> 
 							</li>
 						</ul></li>

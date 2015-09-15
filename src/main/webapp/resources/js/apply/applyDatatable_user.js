@@ -38,7 +38,7 @@ var applyDatatable = function () {
                 "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
 
                 "ajax": {
-                    "url": "/healthcare/apply/getdocdata_user", // ajax source
+                    "url": "/healthcare/applydata/getdocdata_user", // ajax source
                 },
                 "order": [
                     [1, "asc"]
@@ -63,7 +63,7 @@ var applyDatatable = function () {
             }else{
             	$.ajax(delete_options={ 
     					type : "get",//请求方式 
-    					url : "/healthcare/apply/deleteapplydata",//发送请求地址
+    					url : "/healthcare/applydata/deleteapplydata",//发送请求地址
     					dataType : "json", 
     					data:{ 
     						id: applyDataGrid.getSelectedRows(),

@@ -29,6 +29,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 import otc.healthcare.pojo.HcApplydata;
+import otc.healthcare.pojo.HcApplyenv;
 import otc.healthcare.service.OracleService;
 import otc.healthcare.service.WordService;
 import otc.healthcare.util.HealthcareConfiguration;
@@ -64,45 +65,89 @@ public class AdminController {
 		this.oracleService = oracleService;
 	}
 
-	@RequestMapping(value = "/applycheck", method = RequestMethod.GET)
-	public String applyCheck(@RequestParam(value = "docid", required = false) String docid,
+	@RequestMapping(value = "/applydatacheck", method = RequestMethod.GET)
+	public String applyDataCheck(@RequestParam(value = "docid", required = false) String docid,
 			@RequestParam(value = "applydataid", required = false) String applydataid) {
-		return "applycheck";
+		return "applydatacheck";
 	}
 	
-	@RequestMapping(value = "/applycheck_success", method = RequestMethod.GET)
-	public String applyCheck_success(@RequestParam(value = "applyid", required = false) String applydataid) {
+	@RequestMapping(value = "/applydatacheck_success", method = RequestMethod.GET)
+	public String applyDataCheck_success(@RequestParam(value = "applyid", required = false) String applydataid) {
 		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
 		String status = "3";
-		this.oracleService.changeApplyStatus(applydataid,status);
-		return "applycheck";
+		this.oracleService.changeApplyDataStatus(applydataid,status);
+		return "applydatacheck";
 	}
 	
-	@RequestMapping(value = "/applycheck_reject", method = RequestMethod.GET)
-	public String applyCheck_reject(@RequestParam(value = "applyid", required = false) String applydataid
+	@RequestMapping(value = "/applydatacheck_reject", method = RequestMethod.GET)
+	public String applyDataCheck_reject(@RequestParam(value = "applyid", required = false) String applydataid
 			,@RequestParam(value = "rejectReason", required = false) String rejectReason) {
 		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
 		String status = "4";
-		this.oracleService.changeApplyStatus(applydataid,status);
+		this.oracleService.changeApplyDataStatus(applydataid,status);
 		if(!rejectReason.equals("")){
 			try {
 				String reason = URLDecoder.decode(URLDecoder.decode(rejectReason,"UTF-8"),"UTF-8");
-				this.oracleService.insertApplyFailReason(applydataid,reason);
+				this.oracleService.insertApplyDataFailReason(applydataid,reason);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} 
 		}
-		return "applycheck";
+		return "applydatacheck";
+	}
+	
+	@RequestMapping(value = "/applyenvcheck", method = RequestMethod.GET)
+	public String applyEnvCheck(@RequestParam(value = "docid", required = false) String docid,
+			@RequestParam(value = "applydataid", required = false) String applydataid) {
+		return "applyenvcheck";
+	}
+	
+	@RequestMapping(value = "/applyenvcheck_success", method = RequestMethod.GET)
+	public String applyEnvCheck_success(@RequestParam(value = "applyid", required = false) String applydataid) {
+		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
+		String status = "3";
+		this.oracleService.changeApplyEnvStatus(applydataid,status);
+		return "applyenvcheck";
+	}
+	
+	@RequestMapping(value = "/applyenvcheck_reject", method = RequestMethod.GET)
+	public String applyEnvCheck_reject(@RequestParam(value = "applyid", required = false) String applydataid
+			,@RequestParam(value = "rejectReason", required = false) String rejectReason) {
+		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
+		String status = "4";
+		this.oracleService.changeApplyEnvStatus(applydataid,status);
+		if(!rejectReason.equals("")){
+			try {
+				String reason = URLDecoder.decode(URLDecoder.decode(rejectReason,"UTF-8"),"UTF-8");
+				this.oracleService.insertApplyEnvFailReason(applydataid,reason);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} 
+		}
+		return "applyenvcheck";
 	}
 	
 	
-	@RequestMapping(value = "/applytable", method = RequestMethod.GET)
-	public String getApplyTable() {
+	
+	
+	
+	@RequestMapping(value = "/applydatatable", method = RequestMethod.GET)
+	public String getApplyDataTable() {
 //		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		Object[] userAuthory = user.getAuthorities().toArray();
 //		String currentUserName = user.getUsername();
 //		if( "ROLE_ADMIN".equals(userAuthory[0].toString()) )
-		return "applytable_admin";
+		return "applytable_data_admin";
+		
+	}
+	
+	@RequestMapping(value = "/applyenvtable", method = RequestMethod.GET)
+	public String getApplyEnvTable() {
+//		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		Object[] userAuthory = user.getAuthorities().toArray();
+//		String currentUserName = user.getUsername();
+//		if( "ROLE_ADMIN".equals(userAuthory[0].toString()) )
+		return "applytable_env_admin";
 		
 	}
 	
@@ -112,6 +157,67 @@ public class AdminController {
 	public HcApplydata getDocDataByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
 		HcApplydata docData = this.oracleService.getDocByApplyDataID(applyid);
 		return docData;
+	}
+	
+	@RequestMapping(value = "/getdocenvbyapplyid", method = RequestMethod.GET)
+	@ResponseBody
+	public HcApplyenv getDocEnvByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
+		HcApplyenv docEnv = this.oracleService.getDocEnvByApplyDataID(applyid);
+		return docEnv;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/getdocenv_admin", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getDocEnv_admin(@RequestParam(value = "hcUser", required = false) String hcUser,
+			@RequestParam(value = "length", required = false) Integer length,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "draw", required = false) Integer draw){
+		List<HcApplyenv> docEnvList = new ArrayList<>();
+		//check the authority
+//		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		Object[] userAuthory = user.getAuthorities().toArray();
+//		String currentUserName = user.getUsername();
+	
+		docEnvList = this.oracleService.getAllDocEnv();
+//		docEnvList = this.oracleService.getDocByHcUserName(hcUser);
+		
+		// 分页
+		int totalRecords = docEnvList.size();
+		int displayLength = (length<0)? totalRecords : length;
+		int displayStart = start;
+		int end = displayStart + displayLength;
+		end = end > totalRecords ? totalRecords : end;
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<ArrayList<String>> store = new ArrayList<ArrayList<String>>();
+		
+		for (int i=start; i<end; i++) {
+			HcApplyenv docEnv = docEnvList.get(i);
+			ArrayList<String> tempStore = new ArrayList<String>();
+			tempStore.add("<input type='checkbox' name='id" + docEnv.getIdApplydata() + "' value='"
+					+ docEnv.getIdApplydata() + "'>");
+			tempStore.add(String.valueOf(docEnv.getIdApplydata()));
+			tempStore.add(docEnv.getName());
+			tempStore.add(docEnv.getDepartment());
+			tempStore.add(docEnv.getProName());
+			tempStore.add(docEnv.getDemand());
+			tempStore.add(docEnv.getApplyTime());
+			
+			String applyStatus = getApplyStatus(docEnv.getFlagApplydata());
+			tempStore.add(applyStatus);
+			
+			String docID = docEnv.getDocName();
+			tempStore.add("<a href=\"/healthcare/applyenv/wordonline?docid="+docID+"\" id=\""+docEnv.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
+					+"<a href=\"/healthcare/adminpanel/applyenvcheck?applydataid="+docEnv.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>");
+			store.add(tempStore);
+		}
+		
+		resultMap.put("draw", draw);
+		resultMap.put("recordsTotal", totalRecords);
+		resultMap.put("recordsFiltered", totalRecords);
+		resultMap.put("data", store);
+		return resultMap;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -158,8 +264,8 @@ public class AdminController {
 			tempStore.add(applyStatus);
 			
 			String docID = docData.getDocName();
-			tempStore.add("<a href=\"/healthcare/apply/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
-					+"<a href=\"/healthcare/adminpanel/applycheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>");
+			tempStore.add("<a href=\"/healthcare/applydata/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
+					+"<a href=\"/healthcare/adminpanel/applydatacheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>");
 			store.add(tempStore);
 		}
 		
