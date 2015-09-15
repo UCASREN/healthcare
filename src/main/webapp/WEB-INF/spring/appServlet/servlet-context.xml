@@ -53,7 +53,7 @@
 		p:driverClass="oracle.jdbc.OracleDriver"
 		p:jdbcUrl="jdbc:oracle:thin:@localhost:1521:XE"
 		p:user="system"
-		p:password="123456"
+		p:password="cuiguangfan"
 		p:maxPoolSize="20"
 		p:minPoolSize="2"
 		p:initialPoolSize="2"

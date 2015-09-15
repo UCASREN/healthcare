@@ -7,7 +7,7 @@
         <id name="idApplydata" type="big_decimal">
             <column name="ID_APPLYDATA" precision="22" scale="0" />
              <generator class="sequence">
-    			<param name="sequence">ALLPYDATA_ID</param>    
+    			<param name="sequence">APPLYDATA_ID</param>    
    			</generator>
         </id>
         <property name="hcUsername" type="string">

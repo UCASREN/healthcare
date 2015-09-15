@@ -154,7 +154,7 @@ function FileManagerClass(){
 	    <span class="icons48 icons48-financial"></span>
 	    <b>虚拟环境申请</b>
 	  </a>
-	  <a href="">
+	  <a href="datasetanalysis">
 	    <span class="icons48 icons48-medicine"></span>
 	    <b>数据分析</b>
 	  </a>

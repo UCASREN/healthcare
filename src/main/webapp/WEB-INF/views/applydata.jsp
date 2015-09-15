@@ -605,7 +605,7 @@ request.setCharacterEncoding("UTF-8");
 												<a href="javascript:;" class="btn green button-submit">
 												提交 <i class="m-icon-swapright m-icon-white"></i>
 												</a>
-												<a href="/healthcare/apply/wordonline" target="_blank" class="btn purple button-wordPreview">Word预览 </a>
+												<a href="/healthcare/applydata/wordonline" target="_blank" class="btn purple button-wordPreview">Word预览 </a>
 											</div>
 										</div>
 									</div>
