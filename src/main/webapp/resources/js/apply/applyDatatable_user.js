@@ -107,7 +107,7 @@ var applyDatatable = function () {
             
         });
         
-        
+        $('#filter_panel').hide();
     }
 
     return {
@@ -121,5 +121,5 @@ var applyDatatable = function () {
         }
 
     };
-
+    
 }();

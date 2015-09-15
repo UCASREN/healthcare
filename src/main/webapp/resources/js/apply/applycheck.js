@@ -116,12 +116,12 @@ var applyCheck = function () {
             		return;
             	$.ajax({ 
       					type : "get",//请求方式 
-      					url : "/healthcare/apply/applycheck_success",//发送请求地址
+      					url : "/healthcare/adminpanel/applycheck_success",//发送请求地址
       					data:{ 
       						applyid : applydataid
       					},
       					success :function() {
-      					  window.open ("/healthcare/apply/applytable", target="_self");
+      					  window.open ("/healthcare/adminpanel/applytable", target="_self");
        					} 
           			});
             })
@@ -132,13 +132,13 @@ var applyCheck = function () {
             	console.log('njz : '+rejectReason);
             	$.ajax({ 
   					type : "get",//请求方式 
-  					url : "/healthcare/apply/applycheck_reject",//发送请求地址
+  					url : "/healthcare/adminpanel/applycheck_reject",//发送请求地址
   					data:{ 
   						applyid : applydataid,
   						rejectReason : rejectReason
   					},
   					success :function() {
-  					  window.open ("/healthcare/apply/applytable", target="_self");
+  					  window.open ("/healthcare/adminpanel/applytable", target="_self");
    					} 
   				});
             })

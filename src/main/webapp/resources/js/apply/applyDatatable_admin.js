@@ -38,7 +38,7 @@ var applyDatatable = function () {
                 "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
 
                 "ajax": {
-                    "url": "/healthcare/apply/getdocdata_admin", // ajax source
+                    "url": "/healthcare/adminpanel/getdocdata_admin", // ajax source
                 },
                 "order": [
                     [1, "asc"]
@@ -121,14 +121,14 @@ var applyDatatable = function () {
             
         });
         
-        
+        $('#filter_panel').hide();
     }
 
     return {
 
         //main function to initiate the module
         init: function () {
-
+        	
             handleProducts();
             initPickers();
             

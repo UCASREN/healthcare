@@ -106,6 +106,12 @@ public class AdminController {
 		
 	}
 	
+	@RequestMapping(value = "/getdocdatabydocid", method = RequestMethod.GET)
+	@ResponseBody
+	public HcApplydata getDocDataByDocId(@RequestParam(value = "docid", required = false) String docid){
+		HcApplydata docData = this.oracleService.getDocBydocID(docid);
+		return docData;
+	}
 	
 	@RequestMapping(value = "/getdocdatabyapplyid", method = RequestMethod.GET)
 	@ResponseBody
@@ -117,7 +123,15 @@ public class AdminController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/getdocdata_admin", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getDocData_admin(@RequestParam(value = "hcUser", required = false) String hcUser,
+	public Map<String, Object> getDocData_admin(@RequestParam(value = "applyData_id", required = false) String applyData_id,
+			@RequestParam(value = "applyData_userName", required = false) String applyData_userName,
+			@RequestParam(value = "applyData_userDepartment", required = false) String applyData_userDepartment,
+			@RequestParam(value = "applyData_projectName", required = false) String applyData_projectName,
+			@RequestParam(value = "applyData_dataDemand", required = false) String applyData_dataDemand,
+			@RequestParam(value = "product_created_from", required = false) String product_created_from,
+			@RequestParam(value = "product_created_to", required = false) String product_created_to,
+			@RequestParam(value = "product_status", required = false) String product_status,
+			
 			@RequestParam(value = "length", required = false) Integer length,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "draw", required = false) Integer draw){
@@ -127,10 +141,8 @@ public class AdminController {
 //		Object[] userAuthory = user.getAuthorities().toArray();
 //		String currentUserName = user.getUsername();
 	
-		if(hcUser==null || hcUser.equals(""))
-			docDataList = this.oracleService.getAllDoc();
-		else
-			docDataList = this.oracleService.getDocByHcUserName(hcUser);
+		docDataList = this.oracleService.getAllDoc();
+		//docDataList = this.oracleService.getDocByHcUserName(hcUser);
 		
 		// 分页
 		int totalRecords = docDataList.size();
@@ -159,7 +171,7 @@ public class AdminController {
 			
 			String docID = docData.getDocName();
 			tempStore.add("<a href=\"/healthcare/apply/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
-					+"<a href=\"/healthcare/apply/applycheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>");
+					+"<a href=\"/healthcare/adminpanel/applycheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>");
 			store.add(tempStore);
 		}
 		
