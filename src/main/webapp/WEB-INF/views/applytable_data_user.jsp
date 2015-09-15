@@ -214,7 +214,7 @@ request.setCharacterEncoding("UTF-8");
 							<div class="table-container">
 								<div class="table-actions-wrapper">
 									<button  class="btn btn-sm red table-group-action-submit"><i class="fa fa-minus"></i> 删除记录</button>
-									<button  class="btn btn-sm yellow" onclick="window.open('/healthcare/apply/applydata')" ><i class="fa fa-plus"></i> 新建申请</button>
+									<button  class="btn btn-sm yellow" onclick="window.open('/healthcare/applydata/applydata')" ><i class="fa fa-plus"></i> 新建申请</button>
 								</div>
 								<table class="table table-striped table-bordered table-hover" id="datatable_products">
 									<thead>

@@ -117,7 +117,7 @@ public class ApplyDataController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/apply/applytable";
+		return "redirect:/applydata/applytable";
 	}
 	
 	@RequestMapping(value = "/getdocdatabydocid", method = RequestMethod.GET)
