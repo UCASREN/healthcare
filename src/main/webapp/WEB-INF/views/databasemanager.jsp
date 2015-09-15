@@ -288,7 +288,7 @@
 				<div class="modal-footer" style="text-align: left;">
 					<button type="button" class="btn blue" id="submit-all"
 						disabled="disabled">上传</button>
-					<button type="button" class="btn default" data-dismiss="modal">返回主界面</button>
+					<button type="button" class="btn default" id="backtomainpage" data-dismiss="modal">返回主界面</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->

@@ -810,3 +810,6 @@ $("#import_remote_database").click(function(){
 $("#currentdatabase").change(function(){
 	$("#database").val($("#currentdatabase").val());
 });
+$("#backtomainpage").click(function(){
+	location.reload(true);
+});
