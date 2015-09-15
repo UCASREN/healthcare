@@ -3,17 +3,18 @@
  *  @author xingkong
  * */
 var reloadCount=0;//控制恢复数据的次数，一次页面只有一次
-function getCookie(objName){//获取指定名称的cookie的值 
-	var arrStr = document.cookie.split(";");
-	var returnvalue;
-	for(var i = 0;i < arrStr.length;i ++){ 
-		var temp = arrStr[i].split("="); 
-		if($.trim(temp[0]) == $.trim(objName)) {
-			returnvalue=unescape(temp[1]);
-			return returnvalue; 
-		}
-	} 
-} 
+//function $.cookie(objName){//获取指定名称的cookie的值 
+//	var arrStr = document.cookie.split(";");
+//	var returnvalue;
+//	for(var i = 0;i < arrStr.length;i ++){ 
+//		var temp = arrStr[i].split("="); 
+//		if($.trim(temp[0]) == $.trim(objName)) {
+//			returnvalue=UrlDecode(unescape(temp[1]),Encoding.GetEncoding("UTF-8"));
+//			//returnvalue=unescape(temp[1]);
+//			return returnvalue; 
+//		}
+//	} 
+//} 
 var ajaxTable1 = function() {
 
 	function restoreRow(oTable, nRow) {
@@ -37,8 +38,8 @@ var ajaxTable1 = function() {
 				+ aData[1] + '">';
 		jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="'
 				+ aData[2] + '">';
-		jqTds[3].innerHTML = '<a class="edit" href="">Save</a>';
-		jqTds[4].innerHTML = '<a class="cancel" href="">Cancel</a>';
+		jqTds[3].innerHTML = '<a class="edit" href="">保存</a>';
+		jqTds[4].innerHTML = '<a class="cancel" href="">取消</a>';
 		ComponentsPickers.init();
 	}
 
@@ -46,8 +47,8 @@ var ajaxTable1 = function() {
 		var jqInputs = $('input', nRow);
 		oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
-		oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 3, false);
-		oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 4, false);
+		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 3, false);
+		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 4, false);
 		oTable.fnDraw();
 		// 向后台更改数据逻辑
 		var aData = oTable.fnGetData(nRow);
@@ -100,7 +101,7 @@ var ajaxTable1 = function() {
 	var table = $('#editable_1');
 
 	var oTable = table.dataTable({
-		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "All" ] // change
+		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "所有" ] // change
 		// per
 		// page
 		// values
@@ -109,7 +110,7 @@ var ajaxTable1 = function() {
 		"pageLength" : 5,
 
 		"language" : {
-			"lengthMenu" : " _MENU_ records",
+			"lengthMenu" : "每页显示  _MENU_ 条记录",
 			"paging" : {
 				"previous" : "Prev",
 				"next" : "Next"
@@ -157,8 +158,8 @@ var ajaxTable1 = function() {
 				}
 
 				var aiNew = oTable.fnAddData([ "自动生成", "", "",
-						'<a class="edit" href="">Edit</a>',
-						'<a class="delete" href="">Delete</a>' ]);
+						'<a class="edit" href="">编辑</a>',
+						'<a class="delete" href="">删除</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
 				nEditing = nRow;
 				nNew = true;
@@ -233,7 +234,7 @@ var ajaxTable1 = function() {
 			restoreRow(oTable, nEditing);
 			editRow(oTable, nRow);
 			nEditing = nRow;
-		} else if (nEditing == nRow && this.innerHTML == "Save") {
+		} else if (nEditing == nRow && this.innerHTML == "保存") {
 			/* Editing this row and want to save it */
 			saveRow(oTable, nEditing);
 			nEditing = null;
@@ -272,8 +273,8 @@ var ajaxTable2 = function() {
 				+ aData[1] + '">';
 		jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="'
 				+ aData[2] + '">';
-		jqTds[3].innerHTML = '<a class="edit" href="">Save</a>';
-		jqTds[4].innerHTML = '<a class="cancel" href="">Cancel</a>';
+		jqTds[3].innerHTML = '<a class="edit" href="">保存</a>';
+		jqTds[4].innerHTML = '<a class="cancel" href="">取消</a>';
 		ComponentsPickers.init();
 	}
 
@@ -281,8 +282,8 @@ var ajaxTable2 = function() {
 		var jqInputs = $('input', nRow);
 		oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
-		oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 3, false);
-		oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 4, false);
+		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 3, false);
+		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 4, false);
 		oTable.fnDraw();
 		// 向后台更改数据逻辑
 		var aData = oTable.fnGetData(nRow);
@@ -337,7 +338,7 @@ var ajaxTable2 = function() {
 	var table = $('#editable_2');
 
 	var oTable = table.dataTable({
-		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "All" ] // change
+		"lengthMenu" : [ [ 5, 15, 20, -1 ], [ 5, 15, 20, "所有" ] // change
 		// per
 		// page
 		// values
@@ -346,7 +347,7 @@ var ajaxTable2 = function() {
 		"pageLength" : 5,
 
 		"language" : {
-			"lengthMenu" : " _MENU_ records",
+			"lengthMenu" : "每页显示  _MENU_ 条记录",
 			"paging" : {
 				"previous" : "Prev",
 				"next" : "Next"
@@ -394,8 +395,8 @@ var ajaxTable2 = function() {
 				}
 
 				var aiNew = oTable.fnAddData([ "自动生成", "", "",
-						'<a class="edit" href="">Edit</a>',
-						'<a class="delete" href="">Delete</a>' ]);
+						'<a class="edit" href="">编辑</a>',
+						'<a class="delete" href="">删除</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
 				nEditing = nRow;
 				nNew = true;
@@ -471,7 +472,7 @@ var ajaxTable2 = function() {
 			restoreRow(oTable, nEditing);
 			editRow(oTable, nRow);
 			nEditing = nRow;
-		} else if (nEditing == nRow && this.innerHTML == "Save") {
+		} else if (nEditing == nRow && this.innerHTML == "保存") {
 			/* Editing this row and want to save it */
 			saveRow(oTable, nEditing);
 			nEditing = null;
@@ -490,7 +491,7 @@ ajaxTable2();
 var oTable2=$('#editable_2').dataTable();
 
 /*
- * This file is responsible for database tree
+ * This part is responsible for database tree
  *  @author xingkong
  * */
 var AjaxTree = function() {
@@ -537,7 +538,7 @@ var AjaxTree = function() {
 		});
 	}).on('create_node.jstree', function(e, data) {
 		if (data.node.parent.indexOf("alltable") != -1) {
-			alert("Can't create node under table node");
+			alert("不能在表节点下新建节点");
 			data.instance.refresh();
 		} else {
 			$.get('dataresource/nodeoperation?operation=create_node', {
@@ -565,7 +566,7 @@ var AjaxTree = function() {
 		 * data.parent, 'position' : data.position }) .fail(function () {
 		 * data.instance.refresh(); });
 		 */
-		alert("Move operation not supported");
+		alert("不支持移动动作");
 		data.instance.refresh();
 	}).on('copy_node.jstree', function(e, data) {
 		/*
@@ -573,7 +574,7 @@ var AjaxTree = function() {
 		 * data.parent, 'position' : data.position }) .always(function () {
 		 * data.instance.refresh(); });
 		 */
-		alert("Copy operation not supported");
+		alert("不支持拷贝动作");
 		data.instance.refresh();
 	}).on('changed.jstree', function(e, data) {
 
@@ -616,8 +617,8 @@ var AjaxTree = function() {
 						/* if (table.tableid > maxId)
 							maxId = table.tableid; */
 						oTable1.fnAddData([ table.tableid, table.name,
-						                   table.comments, '<a class="edit" href="">Edit</a>',
-								'<a class="delete" href="">Delete</a>' ]);
+						                   table.comments, '<a class="edit" href="">编辑</a>',
+								'<a class="delete" href="">删除</a>' ]);
 					});
 				});
 			});
@@ -627,27 +628,27 @@ var AjaxTree = function() {
 			
 			
 			//恢复操作
-			if(getCookie("lastclick")=="database"&&reloadCount==0&&typeof(getCookie("restoretable"))!= "undefined"&&getCookie("restoretable")!=null){
+			if($.cookie("lastclick")=="database"&&reloadCount==0&&typeof($.cookie("restoretable"))!= "undefined"&&$.cookie("restoretable")!=null){
 				reloadCount++;
 				//reload tabletable data
 				oTable2.fnClearTable();
 				$(function() {
-					var url = "dataresource/gettableinfo?databaseid="+(getCookie("restoretable")+"").split("_")[0]+"&tableid="+getCookie("restoretable").split("_")[1];
+					var url = "dataresource/gettableinfo?databaseid="+($.cookie("restoretable")+"").split("_")[0]+"&tableid="+$.cookie("restoretable").split("_")[1];
 					$.getJSON(url, function(data) {
 						$.each(data, function(i, field) {
 							/* if (field.fieldid > maxId)
 								maxId = field.fieldid; */
 							oTable2.fnAddData([ field.fieldid, field.name,
-							                   field.comments, '<a class="edit" href="">Edit</a>',
-									'<a class="delete" href="">Delete</a>' ]);
+							                   field.comments, '<a class="edit" href="">编辑</a>',
+									'<a class="delete" href="">删除</a>' ]);
 						});
 					});
 				});
-				$("#whichtable").text("表:"+getCookie("restoretable").split("_")[2]);
-				console.log(getCookie("restoretable").split("_")[1]);
-				$("#whichtableid").text(getCookie("restoretable").split("_")[1]);
-				console.log(getCookie("restoretable").split("_")[0]);
-				$("#whichtableid_belong").text(getCookie("restoretable").split("_")[0]);
+				$("#whichtable").text("表:"+$.cookie("restoretable").split("_")[2]);
+				console.log($.cookie("restoretable").split("_")[1]);
+				$("#whichtableid").text($.cookie("restoretable").split("_")[1]);
+				console.log($.cookie("restoretable").split("_")[0]);
+				$("#whichtableid_belong").text($.cookie("restoretable").split("_")[0]);
 			}
 			//end恢复操作
 			//记录上次点击的是哪种元素
@@ -665,8 +666,8 @@ var AjaxTree = function() {
 						/* if (field.fieldid > maxId)
 							maxId = field.fieldid; */
 						oTable2.fnAddData([ field.fieldid, field.name,
-						                   field.comments, '<a class="edit" href="">Edit</a>',
-								'<a class="delete" href="">Delete</a>' ]);
+						                   field.comments, '<a class="edit" href="">编辑</a>',
+								'<a class="delete" href="">删除</a>' ]);
 					});
 				});
 			});
@@ -678,29 +679,29 @@ var AjaxTree = function() {
 			
 			
 			//恢复数据
-			if(getCookie("lastclick")=="table"&&reloadCount==0&&typeof(getCookie("restoredatabase"))!= "undefined"&&getCookie("restoredatabase")!=null){
+			if($.cookie("lastclick")=="table"&&reloadCount==0&&typeof($.cookie("restoredatabase"))!= "undefined"&&$.cookie("restoredatabase")!=null){
 				reloadCount++;
 				//reload tabletable data
 				oTable1.fnClearTable();
 				$(function() {
-					var url = "dataresource/getdatabaseinfo?databaseid="+getCookie("restoredatabase").split("_")[0];
+					var url = "dataresource/getdatabaseinfo?databaseid="+$.cookie("restoredatabase").split("_")[0];
 					$.getJSON(url, function(data) {
 						$.each(data, function(i, table) {
 							/* if (table.tableid > maxId)
 								maxId = table.tableid; */
 							oTable1.fnAddData([ table.tableid, table.name,
-							                   table.comments, '<a class="edit" href="">Edit</a>',
-									'<a class="delete" href="">Delete</a>' ]);
+							                   table.comments, '<a class="edit" href="">编辑</a>',
+									'<a class="delete" href="">删除</a>' ]);
 						});
 					});
 				});
-				$("#whichdatabase").text("数据库:"+getCookie("restoredatabase").split("_")[1]);
-				$("#whichdatabaseid").text(getCookie("restoredatabase").split("_")[0]);
+				$("#whichdatabase").text("数据库:"+$.cookie("restoredatabase").split("_")[1]);
+				$("#whichdatabaseid").text($.cookie("restoredatabase").split("_")[0]);
 			}
 			
-			//记录上次点击的是哪种元素
-			document.cookie="restoretable="+data.node.parent.substring(data.node.parent.indexOf("_")+1)+"_"
-							+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+data.node.text;
+			//记录上次点击的是哪种元素 HttpUtility.UrlEncode(,Encoding.GetEncoding("UTF=8"))
+			$.cookie("restoretable",data.node.parent.substring(data.node.parent.indexOf("_")+1)+"_"
+					+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+data.node.text);
 			//记录上次带年纪的是哪种
 			document.cookie="lastclick="+"table";
 			
@@ -709,13 +710,57 @@ var AjaxTree = function() {
 	
 }
 AjaxTree();
+/*
+ * This part is responsible for database tree
+ *  @author xingkong
+ * */
+var RemoteDatabaseAjaxTree = function() {
+
+	$("#remote_database_tree").jstree({
+		"core" : {
+			"themes" : {
+				"responsive" : false
+			},
+			// so that create works
+			"check_callback" : true,
+			'data' : {
+				'url' : function(node) {
+					return 'dataresource/getremotedatabasetreeinfo';
+				},
+				'data' : function(node) {
+					return {
+						'parent' : node.id,
+						'url':$("#url").val(),
+						'username':$("#username").val(),
+						'password':$("#password").val()
+					};
+				}
+			}
+		},
+		"types" : {
+			"default" : {
+				"icon" : "fa fa-folder icon-state-warning icon-lg"
+			},
+			"file" : {
+				"icon" : "fa fa-file icon-state-warning icon-lg"
+			}
+		},
+		
+		"plugins" : [ "checkbox", "unique",  "types"]
+	}).on("check_node.jstree", function(e, data) {
+		console.log("checked!");
+		
+	});
+	
+}
+RemoteDatabaseAjaxTree();
 $.ajax({
 	type : "get",//请求方式
 	url : "dataresource/getalldatabaseinfo",//发送请求地址
 	dataType : "json",
 	success : function(data) {
 		$(data).each(function (i,databaseinfo) {
-			$("#database").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
+			$("#currentdatabase").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
 		});
 	}
 });
@@ -727,4 +772,39 @@ $("#remote_test_connect").click(function(){
 	 $.post("dataresource/testremoteconnect", $("#remote_database_form").serialize(), function (data) {
 		 alert(data.result) 
 		 },"json");
+});
+$("#leave_remote_connect").click(function(){
+	$("#remote_database_form").show();
+	$("#remote_database_tree").hide();
+	$("#remote_test_connect").show();
+	$("#remote_connect").show();
+	$("#import_remote_database").hide();
+	$('#changedatabaseinfo_remote').modal('hide');
+});
+$("#remote_connect").click(function(){
+	$("#remote_database_form").hide();
+	$("#remote_database_tree").show();
+	$("#remote_database_tree").jstree().refresh();
+	$("#remote_test_connect").hide();
+	$("#remote_connect").hide();
+	$("#import_remote_database").show();
+});
+$("#import_remote_database").click(function(){
+	var ids=new Array();
+	//var temp=$("#remote_database_tree").jstree();
+	var nodes=$("#remote_database_tree").jstree().get_bottom_checked();
+	$.each(nodes, function(i, n) { 
+		ids[i]=n.substring(n.indexOf(";")+1);
+	});
+	if(confirm("您选中的表有："+ids+"，是否导入？")){
+		$("#selectedtables").val(ids);
+		 $.post("dataresource/addremotedatabase", $("#remote_database_form").serialize()+"&selectedtables="+nodes, function (data) {
+			 location.reload(true);
+			 },"json");
+		//addremotedatabase
+		//$.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
+	}
+});
+$("#currentdatabase").change(function(){
+	$("#database").val($("#currentdatabase").val());
 });

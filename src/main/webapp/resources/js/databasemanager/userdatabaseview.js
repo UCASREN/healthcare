@@ -40,7 +40,7 @@ var TableAjax_alldatabase = function () {
 
                 "lengthMenu": [
                     [2,10, 20, 50, 100, 150, -1],
-                    [2,10, 20, 50, 100, 150, "All"] // change per page values here
+                    [2,10, 20, 50, 100, 150, "所有"] // change per page values here
                 ],
                 "pageLength": 10, // default record count per page
                 "ajax": {
@@ -103,9 +103,9 @@ var TableAjax_database = function () {
 
                 "lengthMenu": [
                     [2,10, 20, 50, 100, 150, -1],
-                    [2,10, 20, 50, 100, 150, "All"] // change per page values here
+                    [2,10, 20, 50, 100, 150, "所有"] // change per page values here
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 20, // default record count per page
                 "ajax": {
                     "url": "dataresource/getdatabasecssinfo", // ajax source
                 },
@@ -168,7 +168,7 @@ var TableAjax = function () {
                     [2,10, 20, 50, 100, 150, -1],
                     [2,10, 20, 50, 100, 150, "All"] // change per page values here
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 20, // default record count per page
                 "ajax": {
                     "url": "dataresource/gettablecssinfo", // ajax source
                 },
@@ -362,4 +362,7 @@ $("#refreshalldatabaseinfo").click(function(){
 	$("#showtableinfo").hide();
 	$("#showdatabaseinfo").hide();
 	$("#showalldatabaseinfo").show();
+});
+$("#logoutbutton").click(function(){
+	$("#logoutform").submit();
 });

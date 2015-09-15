@@ -45,7 +45,7 @@ public class TableInfo {
 	@Override
 	public String toString() {
 		return "TableInfoModel [tableid="+tableid+", databaseid=" + databaseid + ", name=" + name
-				+ ", comments=" + comments + "]";
+				+ ", comments=" + comments +fieldlist.toString()+ "]";
 	}
 	/**
 	 * @return the fieldlist

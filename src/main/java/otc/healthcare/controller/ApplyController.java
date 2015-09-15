@@ -143,7 +143,6 @@ public class ApplyController {
 			String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 			String f_name = UUID.randomUUID() + ".doc";
 			String f_path_name = docPath + "/" + f_name;
-			
 			this.oracleService.insertApplyData(req, f_name);
 			this.WordService.createWordFromFtl(req, resp, f_path_name);
 		} catch (UnsupportedEncodingException e) {

@@ -59,8 +59,8 @@ var Datatable = function() {
                             "next": "Next",
                             "last": "Last",
                             "first": "First",
-                            "page": "Page",
-                            "pageOf": "of"
+                            "page": "页码",
+                            "pageOf": "总页数"
                         }
                     },
 

@@ -38,6 +38,8 @@
 	<!-- div view-controller -->
 	<view-controller path="/databasemanager" view-name="databasemanager"/>
 	<view-controller path="/userdatabaseview" view-name="userdatabaseview"/>
+	<view-controller path="/adminpanel" view-name="adminpanel"/>
+	<view-controller path="/userpanel" view-name="userpanel"/>
 	
 	<!-- fileupload -->
 	 <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"  

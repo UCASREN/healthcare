@@ -91,7 +91,7 @@ public class WordService implements IService{
         ms.save(saveFileName);     
         ms.close();     
         ms.closeDocument();    
-//        System.out.println("doc 格式转换成功!");
+        System.out.println("doc 格式转换成功!");
 	}
 	
 	/**
