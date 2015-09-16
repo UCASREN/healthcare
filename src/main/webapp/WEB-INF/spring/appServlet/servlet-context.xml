@@ -47,38 +47,6 @@
     p:maxUploadSize="-1"  
     ></beans:bean>  
     
-     <!-- hibernate -->
-     
-     <beans:bean id="dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		p:driverClass="oracle.jdbc.OracleDriver"
-		p:jdbcUrl="jdbc:oracle:thin:@localhost:1521:XE"
-		p:user="system"
-		p:password="cuiguangfan"
-		p:maxPoolSize="20"
-		p:minPoolSize="2"
-		p:initialPoolSize="2"
-		p:maxIdleTime="2000"
-		destroy-method="close"/>
-     
-	<beans:bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" p:dataSource-ref="dataSource1">
-		<beans:property name="configLocation" value="classpath:hibernate.cfg.xml">
-		</beans:property>
-	</beans:bean>
-	<beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<beans:property name="sessionFactory" ref="sessionFactory" />
-	</beans:bean>
-	<tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="true"/>  
-	
-	<beans:bean id="HcApplydataDao" class="otc.healthcare.dao.HcApplydataDao">
-		<beans:property name="sessionFactory">
-			<beans:ref bean="sessionFactory" />
-		</beans:property>
-	</beans:bean>
-	
-	<beans:bean id="HcApplyenvDao" class="otc.healthcare.dao.HcApplyenvDao">
-		<beans:property name="sessionFactory">
-			<beans:ref bean="sessionFactory" />
-		</beans:property>
-	</beans:bean>
+    
 
 </beans:beans>

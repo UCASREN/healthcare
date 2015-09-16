@@ -17,9 +17,13 @@
 	</http>
 	<b:bean id="healthcareAuthenticationSuccessHandler"  
         class="otc.healthcare.controller.handler.SimpleSavedRequestAwareAuthenticationSuccessHandler" />  
-	<jdbc-user-service id="userService" data-source-ref="dataSource" 
+	<!-- <jdbc-user-service id="userService" data-source-ref="dataSource" 
 		users-by-username-query="select username,password,true from users where username=?"
 		authorities-by-username-query="select username,role from users where username=?"
+	/> -->
+	<jdbc-user-service id="userService" data-source-ref="dataSource1" 
+		users-by-username-query="select USERNAME,PASSWORD,ENABLED from SYSTEM.HC_USER where USERNAME=?"
+		authorities-by-username-query="select username,role from SYSTEM.HC_USER where USERNAME=?"
 	/>
 	<authentication-manager >
 		<authentication-provider user-service-ref="userService"/>
