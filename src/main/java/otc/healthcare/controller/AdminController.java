@@ -30,6 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
+import otc.healthcare.service.FilterService;
 import otc.healthcare.service.OracleService;
 import otc.healthcare.service.WordService;
 import otc.healthcare.util.HealthcareConfiguration;
@@ -64,6 +65,17 @@ public class AdminController {
 	public void setOracleService(OracleService oracleService) {
 		this.oracleService = oracleService;
 	}
+
+	@Autowired
+	FilterService filterService;
+	public FilterService getFilterService() {
+		return filterService;
+	}
+
+	public void setFilterService(FilterService filterService) {
+		this.filterService = filterService;
+	}
+	
 
 	@RequestMapping(value = "/applydatacheck", method = RequestMethod.GET)
 	public String applyDataCheck(@RequestParam(value = "docid", required = false) String docid,
@@ -127,10 +139,6 @@ public class AdminController {
 		return "applyenvcheck";
 	}
 	
-	
-	
-	
-	
 	@RequestMapping(value = "/applydatatable", method = RequestMethod.GET)
 	public String getApplyDataTable() {
 //		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -151,7 +159,6 @@ public class AdminController {
 		
 	}
 	
-	
 	@RequestMapping(value = "/getdocdatabyapplyid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplydata getDocDataByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
@@ -169,18 +176,34 @@ public class AdminController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/getdocenv_admin", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getDocEnv_admin(@RequestParam(value = "hcUser", required = false) String hcUser,
+	public Map<String, Object> getDocEnv_admin(@RequestParam(value = "action", required = false) String action,
+			@RequestParam(value = "applyData_id", required = false) String applyData_id,
+			@RequestParam(value = "applyData_userName", required = false) String applyData_userName,
+			@RequestParam(value = "applyData_userDepartment", required = false) String applyData_userDepartment,
+			@RequestParam(value = "applyData_projectName", required = false) String applyData_projectName,
+			@RequestParam(value = "applyData_dataDemand", required = false) String applyData_dataDemand,
+			@RequestParam(value = "product_created_from", required = false) String product_created_from,
+			@RequestParam(value = "product_created_to", required = false) String product_created_to,
+			@RequestParam(value = "product_status", required = false) String product_status,
+			
 			@RequestParam(value = "length", required = false) Integer length,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "draw", required = false) Integer draw){
-		List<HcApplyenv> docEnvList = new ArrayList<>();
+		
 		//check the authority
 //		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		Object[] userAuthory = user.getAuthorities().toArray();
 //		String currentUserName = user.getUsername();
-	
-		docEnvList = this.oracleService.getAllDocEnv();
-//		docEnvList = this.oracleService.getDocByHcUserName(hcUser);
+		
+		List<HcApplyenv> docEnvList = new ArrayList<>();
+		List<HcApplyenv> ALLEnvList = this.oracleService.getAllDocEnv();
+		
+		//处理过滤逻辑
+		if(action!=null && action.equals("filter"))
+			docEnvList = this.filterService.getFinalEnvList(ALLEnvList,applyData_id,applyData_userName,applyData_userDepartment
+					,applyData_projectName,applyData_dataDemand,product_created_from,product_created_to,product_status);
+		else
+			docEnvList = ALLEnvList;
 		
 		// 分页
 		int totalRecords = docEnvList.size();
@@ -223,21 +246,35 @@ public class AdminController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/getdocdata_admin", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getDocData_admin(@RequestParam(value = "hcUser", required = false) String hcUser,
+	public Map<String, Object> getDocData_admin(@RequestParam(value = "action", required = false) String action,
+			@RequestParam(value = "applyData_id", required = false) String applyData_id,
+			@RequestParam(value = "applyData_userName", required = false) String applyData_userName,
+			@RequestParam(value = "applyData_userDepartment", required = false) String applyData_userDepartment,
+			@RequestParam(value = "applyData_projectName", required = false) String applyData_projectName,
+			@RequestParam(value = "applyData_dataDemand", required = false) String applyData_dataDemand,
+			@RequestParam(value = "product_created_from", required = false) String product_created_from,
+			@RequestParam(value = "product_created_to", required = false) String product_created_to,
+			@RequestParam(value = "product_status", required = false) String product_status,
+			
 			@RequestParam(value = "length", required = false) Integer length,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "draw", required = false) Integer draw){
-		List<HcApplydata> docDataList = new ArrayList<>();
+		
 		//check the authority
 //		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		Object[] userAuthory = user.getAuthorities().toArray();
 //		String currentUserName = user.getUsername();
-	
-		if(hcUser==null || hcUser.equals(""))
-			docDataList = this.oracleService.getAllDoc();
-		else
-			docDataList = this.oracleService.getDocByHcUserName(hcUser);
 		
+		List<HcApplydata> docDataList = new ArrayList<>();
+		List<HcApplydata> ALLDataList = this.oracleService.getAllDocData();
+		
+		//处理过滤逻辑
+		if(action!=null && action.equals("filter"))
+			docDataList = this.filterService.getFinalDataList(ALLDataList,applyData_id,applyData_userName,applyData_userDepartment
+					,applyData_projectName,applyData_dataDemand,product_created_from,product_created_to,product_status);
+		else
+			docDataList = ALLDataList;
+			
 		// 分页
 		int totalRecords = docDataList.size();
 		int displayLength = (length<0)? totalRecords : length;
@@ -290,7 +327,7 @@ public class AdminController {
 			status= "<span class=\"label label-sm label-success\">审核通过</span>";
 			break;
 		case "4":
-			status= "<span class=\"label label-sm label-danger\">审核失败</span>";
+			status= "<span class=\"label label-sm label-danger\">审核未通过</span>";
 			break;
 		default:
 			System.out.println("申请标志位"+flag_Apply);

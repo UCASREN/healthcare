@@ -12,7 +12,7 @@ var FormWizard = function () {
 		  	if (day >= 0 && day <= 9) {
 		  		day = "0" + day;
 		  	}
-		  	var date_default = day+"/"+month+"/"+dataArray[0];
+		  	var date_default = dataArray[0]+"/"+month+"/"+day;
 		  	$('#submit_form_applyDate').val(date_default);
 	        $('.date-picker').datepicker({
 //	        	defaultDate: +0,

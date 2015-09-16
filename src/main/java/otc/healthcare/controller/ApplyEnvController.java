@@ -30,6 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
+import otc.healthcare.service.FilterService;
 import otc.healthcare.service.OracleService;
 import otc.healthcare.service.WordService;
 import otc.healthcare.util.HealthcareConfiguration;
@@ -66,7 +67,17 @@ public class ApplyEnvController {
 	public void setOracleService(OracleService oracleService) {
 		this.oracleService = oracleService;
 	}
+	
+	@Autowired
+	FilterService filterService;
+	public FilterService getFilterService() {
+		return filterService;
+	}
 
+	public void setFilterService(FilterService filterService) {
+		this.filterService = filterService;
+	}
+	
 	
 	@RequestMapping(value = "/applyenv", method = RequestMethod.GET)
 	public String getApplyData(@RequestParam(value = "docid", required = false) String docid,
@@ -138,20 +149,35 @@ public class ApplyEnvController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/getdocenv_user", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getDocEnv_user(@RequestParam(value = "hcUser", required = false) String hcUser,
+	public Map<String, Object> getDocEnv_user(@RequestParam(value = "action", required = false) String action,
+			@RequestParam(value = "applyData_id", required = false) String applyData_id,
+			@RequestParam(value = "applyData_userName", required = false) String applyData_userName,
+			@RequestParam(value = "applyData_projectName", required = false) String applyData_projectName,
+			@RequestParam(value = "applyData_dataDemand", required = false) String applyData_dataDemand,
+			@RequestParam(value = "product_created_from", required = false) String product_created_from,
+			@RequestParam(value = "product_created_to", required = false) String product_created_to,
+			@RequestParam(value = "product_status", required = false) String product_status,
+			
 			@RequestParam(value = "length", required = false) Integer length,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "draw", required = false) Integer draw){
+		String applyData_userDepartment = "";
 		
 		//check the authority
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String currentUserName = user.getUsername();
 		
-		List<HcApplyenv> docEnvDataList = new ArrayList<>();
-		docEnvDataList = this.oracleService.getEnvDocByHcUserName(currentUserName);
+		List<HcApplyenv> docEnvList = new ArrayList<>();
+		List<HcApplyenv> userEnvList = this.oracleService.getEnvDocByHcUserName(currentUserName);
 		
+		//处理过滤逻辑
+		if(action!=null && action.equals("filter"))
+			docEnvList = this.filterService.getFinalEnvList(userEnvList, applyData_id,applyData_userName,applyData_userDepartment
+					,applyData_projectName,applyData_dataDemand,product_created_from,product_created_to,product_status);
+		else
+			docEnvList = userEnvList;
 		// 分页
-		int totalRecords = docEnvDataList.size();
+		int totalRecords = docEnvList.size();
 		int displayLength = (length<0)? totalRecords : length;
 		int displayStart = start;
 		int end = displayStart + displayLength;
@@ -161,7 +187,7 @@ public class ApplyEnvController {
 		List<ArrayList<String>> store = new ArrayList<ArrayList<String>>();
 		
 		for (int i=start; i<end; i++) {
-			HcApplyenv docEnvData = docEnvDataList.get(i);
+			HcApplyenv docEnvData = docEnvList.get(i);
 			ArrayList<String> tempStore = new ArrayList<String>();
 			tempStore.add("<input type='checkbox' name='id" + docEnvData.getIdApplydata() + "' value='"
 					+ docEnvData.getIdApplydata() + "'>");
@@ -202,7 +228,7 @@ public class ApplyEnvController {
 			status= "<span class=\"label label-sm label-success\">审核通过</span>";
 			break;
 		case "4":
-			status= "<span class=\"label label-sm label-danger\">审核失败</span>";
+			status= "<span class=\"label label-sm label-danger\">审核未通过</span>";
 			break;
 		default:
 			System.out.println("申请标志位"+flag_Apply);

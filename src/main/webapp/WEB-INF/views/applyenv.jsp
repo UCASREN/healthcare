@@ -459,7 +459,7 @@ request.setCharacterEncoding("UTF-8");
 													* </span>
 													</label>
 													<div class="col-md-4">
-														<div class="input-group input-medium date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+														<div class="input-group input-medium date date-picker" data-date-format="yyyy/mm/dd" data-date-start-date="+0d">
 															<input type="text" class="form-control" readonly name="applyDate" id="submit_form_applyDate">
 															<span class="input-group-btn">
 																<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>

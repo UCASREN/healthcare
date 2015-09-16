@@ -1012,7 +1012,7 @@ public class OracleService implements IService {
 	 * get all the apply docdata from db(ROLE_ADMIN管理员用)
 	 */
 	@Transactional
-	public List<HcApplydata> getAllDoc() {
+	public List<HcApplydata> getAllDocData() {
 		List ALLdocDataList = hcApplydataDao.findAll();
 		return ALLdocDataList;
 	}

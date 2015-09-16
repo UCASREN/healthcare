@@ -40,7 +40,7 @@ var Datatable = function() {
                 resetGroupActionInputOnSuccess: true,
                 loadingMessage: 'Loading...',
                 dataTable: {
-                    "dom": "<'row'<'col-md-12 col-sm-12'<'table-group-actions pull-right'>>r><'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
+                    "dom": "<'row'<'col-md-8 col-sm-12'<'table-group-actions1'>><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
                     "pageLength": 20, // default records per page
                     "language": { // language settings
                         // metronic spesific
@@ -58,8 +58,8 @@ var Datatable = function() {
                             "next": "Next",
                             "last": "Last",
                             "first": "First",
-                            "page": "Page",
-                            "pageOf": "of"
+                            "page": "",
+                            "pageOf": "》"
                         }
                     },
 
@@ -77,7 +77,7 @@ var Datatable = function() {
                     "ajax": { // define ajax settings
                         "url": "", // ajax URL
                         "type": "GET", // request type
-                        "timeout": 20000,
+                        "timeout": 80000,
                         "data": function(data) { // add request parameters before submit
                             $.each(ajaxParams, function(key, value) {
                                 data[key] = value;
@@ -181,6 +181,12 @@ var Datatable = function() {
             if ($('.table-actions-wrapper', tableContainer).size() === 1) {
                 $('.table-group-actions', tableWrapper).html($('.table-actions-wrapper', tableContainer).html()); // place the panel inside the wrapper
                 $('.table-actions-wrapper', tableContainer).remove(); // remove the template container
+            }
+            
+            // build table group actions panel---1
+            if ($('.table-actions-wrapper1', tableContainer).size() === 1) {
+                $('.table-group-actions1', tableWrapper).html($('.table-actions-wrapper1', tableContainer).html()); // place the panel inside the wrapper
+                $('.table-actions-wrapper1', tableContainer).remove(); // remove the template container
             }
             
             // handle group checkboxes check/uncheck

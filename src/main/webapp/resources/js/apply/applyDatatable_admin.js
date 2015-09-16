@@ -46,19 +46,20 @@ var applyDatatable = function () {
             }
         });
         
-       /* //word预览
-        $(".fa-search").click(function(){
-        	var applyID = $(this).attr("id");
-        	$.ajax({
-				"type":"GET",
-				"url":"", 
-				"success":function(rel){
-					if(rel.isSuccess){ 
-						window.open(rel.url,"_blank");
-					}
-				}
-			});
-        });*/
+        //table-advanced-search button click --- 高级搜索工具
+        applyDataGrid.getTableWrapper().on('click', '.table-advanced-search', function (e) { 
+        	//是否隐藏
+        	if( $('#filter_panel').is(":hidden")){
+        		applyDataGrid.resetFilter();
+        		$('#filter_panel').show();
+        		$('.table-advanced-search').html('收起 <i class="fa fa-arrow-up"></i>');
+        	}else{
+        		$('#filter_panel').hide();
+        		$('.table-advanced-search').html('<i class="fa fa-search"></i> 高级搜索 <i class="fa fa-arrow-down"></i>');
+        		applyDataGrid.resetFilter();
+        	}
+        		
+        });
         
         
         // handle group actionsubmit button click ---- 删除功能

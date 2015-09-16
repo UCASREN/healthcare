@@ -212,9 +212,10 @@ request.setCharacterEncoding("UTF-8");
 					<div class="portlet">
 						<div class="portlet-body">
 							<div class="table-container">
-								<div class="table-actions-wrapper">
-									<button  class="btn btn-sm red table-group-action-submit"><i class="fa fa-minus"></i> 删除记录</button>
-									<button  class="btn btn-sm yellow" onclick="window.open('/healthcare/applydata/applydata')" ><i class="fa fa-plus"></i> 新建申请</button>
+								<div class="table-actions-wrapper1">
+							<!-- 	<button  class="btn btn-sm red table-group-action-submit"><i class="fa fa-minus"></i> 删除记录</button>
+									<button  class="btn btn-sm yellow" onclick="window.open('/healthcare/applyenv/applyenv')" ><i class="fa fa-plus"></i> 新建申请</button> -->
+									<button  class="btn btn-sm blue table-advanced-search"><i class="fa fa-search"></i> 高级搜索 <i class="fa fa-arrow-down"></i></button>
 								</div>
 								<table class="table table-striped table-bordered table-hover" id="datatable_products">
 									<thead>
@@ -266,13 +267,13 @@ request.setCharacterEncoding("UTF-8");
 											<input type="text" class="form-control form-filter input-sm" name="applyData_dataDemand"/>
 										</td>
 										<td>
-											<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+											<div class="input-group date date-picker margin-bottom-5" data-date-format="yyyy/mm/dd">
 												<input type="text" class="form-control form-filter input-sm" readonly name="product_created_from" placeholder="From">
 												<span class="input-group-btn">
 												<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 												</span>
 											</div>
-											<div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+											<div class="input-group date date-picker" data-date-format="yyyy/mm/dd">
 												<input type="text" class="form-control form-filter input-sm" readonly name="product_created_to" placeholder="To">
 												<span class="input-group-btn">
 												<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
@@ -283,6 +284,7 @@ request.setCharacterEncoding("UTF-8");
 											<select name="product_status" class="form-control form-filter input-sm">
 												<option value="">状态过滤</option>
 												<option value="notCheck">待审核</option>
+												<option value="Checking">审核中</option>
 												<option value="Checked">审核通过</option>
 												<option value="unChecked">审核未通过</option>
 											</select>
