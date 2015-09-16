@@ -50,7 +50,6 @@
 <!-- BEGIN LOGIN -->
 <div class="content">
 	<!-- BEGIN LOGIN FORM -->
-	${loginUrl}
 	<form class="login-form" action="${loginUrl}" method="post">
 		<h3 class="form-title">登录</h3>
 		<div class="alert alert-danger display-hide">
