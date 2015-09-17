@@ -1,7 +1,9 @@
 
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -97,7 +99,7 @@ function FileManagerClass(){
 		<div class="header">
 			<div class="wrap">
 				<div class="logo">
-					<a href=""><img alt="图标" class="pngfix" src="img/logo.png"
+					<a href=""><img alt="图标" class="pngfix" src="img/home.png"
 						width="110" height="40" /><em><i
 							class="icons16 icons16-home-white" title="首页"></i></em></a>
 				</div>
@@ -107,12 +109,35 @@ function FileManagerClass(){
 						<li data-name="article"><a href="">帮助</a></li>
 					</ul>
 				</nav>
-
-				<!-- 右上角 -->
+				<sec:authorize access="hasAnyRole('USER','ADMIN')">
+				<div class="quick-menu">
+					<div class="quick-menu-unlogined">
+						<div id="NTGUID__1">
+							<div class="link-menu-list">
+								<span class="drop-menu-group"> 
+								<a class="link-drop-menu"
+									title="账户" target="_blank" href="javascript:;"><i
+										data-icon="icons16-mobile-gray"
+										data-icon-hover="icons16-mobile-white"
+										class="icons16 icons16-mobile-gray"></i> <sec:authentication
+											property="name" /></a>
+								<a href="#" id="logoutbutton">退出</a>
+								<c:url value="/logout" var="logoutUrl" />
+								
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				</sec:authorize>
 			</div>
 		</div>
 	</header>
-
+	<!-- 用来退出登录的 -->
+	<form action="${logoutUrl}" method="post" style="display:none;" id="logoutform">
+									<input  name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> 
+								</form> 
 	<!--
  <script type="text/javascript">FileManager.get('http://core.pc.lietou-static.com/revs/js/common/header_126a5e4a.js');</script> 
  -->
@@ -140,59 +165,83 @@ function FileManagerClass(){
 		<!-- js 追加 -->
 		<div class="dot-list"></div>
 	</div>
-	<div class="wrap relative">
-  <div class="form-box">
-    <div class="form-title">
-      
-      
-      
-    </div>
-    <div class="form-content" data-flag="0">
-      <div class="candidate" style="left: 0px;"> 
-      	<!-- 经理人登录  -->
-        <form action="" method="post" class="login-box" lt-plugins-valid="0.7450230794493109" style="left: -292px; display: none;">
-        	<input type="hidden" name="isMd5" value="1">
-        	<input type="hidden" name="layer_from" value="wwwindex_rightbox_new">
-          <div class="control relative">
-            <input type="text" id="username" name="username" value="" class="text input-xlarge" placeholder="邮箱/手机号" validate-title="邮箱/手机号" validate-rules="[['required']]">
-          </div>
-          <div class="control relative">
-            <input type="password" id="password" name="password" value="" class="text input-xlarge" placeholder="密码" validate-title="密码" validate-rules="[['required','请输入$']]">
-          </div>
-          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-          <input type="submit" value="登 录" class="btn btn-login">
-          <div class="controls clearfix">
-            <label><input type="checkbox" id="remember-me" name="remember-me"  checked="checked" autocomplete="off" style="display: none;">&nbsp;下次自动登录</label>
-            <a class="regbtn" href="javascript:;" title="注册" data-selector="switchRegister">立即注册</a>
-            <a href="javascript:;" target="_blank">忘记密码？</a>
-          </div>
-          <div class="connect-login">
-            使用其他方式登录
-            <a class="icon-24 icon-24-account-qq" href="#" target="_blank"></a>
-            <a class="icon-24 icon-24-account-weixin" href="#" target="_blank"></a>
-            <a class="icon-24 icon-24-account-weibo" href="#" target="_blank"></a>
-          </div>
-        </form>
-        <!-- 经理人注册 -->
-        <form action="javascript:;" method="post" class="register-box" lt-plugins-valid="0.698662273818627" style="left: 0px;">
-        <input type="hidden" name="layer_from" value="wwwindex_rightbox_new">
-        <input type="hidden" name="regc_new_log" value="regc_new_log">
-          <div class="control relative">
-            <input autocomplete="off" type="text" name="username" value="" placeholder="邮箱/手机号" class="text input-xlarge" data-selector="checkEmail" validate-title="邮箱/手机号" validate-rules="[['required','请输入$'],['dynrule','checkPhoneEmail']]">
-          </div>
-          <div class="control relative">
-            <input autocomplete="off" type="password" name="password" value="" placeholder="密码(6-16字母、数字、无空格)" class="text input-xlarge" validate-title="密码" validate-rules="[['required','请输入$'],['length',{min:6,max:16},'$1长度不能$2$3个字符'],['pattern',/^[a-zA-Z0-9]+$/ig,'$只能数字或字母']]">
-          </div>
-          <input type="submit" value="免费注册" class="btn btn-register">
-          <div class="clearfix controls" validate-group="checkbox" validate-title="用户服务协议" validate-rules="[['required','您必须接受“$1”才能注册']]">
-            <label><input type="checkbox" class="input-checkbox" checked="checked" autocomplete="off" style="display: none;">&nbsp;接受</label><a href="http://www.liepin.com/user/agreement.shtml" class="xieyi" target="_blank">用户服务协议</a>
-            <p>已有帐号,&nbsp;&nbsp;<a href="javascript:;" title="登录" data-selector="switchLogin">马上登录</a></p> 
-          </div>
-        </form>
-      </div>
-      
-    </div> 
-</div>
+	<sec:authorize access="!hasAnyRole('USER','ADMIN')">
+		<div class="wrap relative">
+			<div class="form-box">
+				<div class="form-title"></div>
+				<div class="form-content" data-flag="0">
+					<div class="candidate" style="left: 0px;">
+						<!-- 经理人登录  -->
+						<form action="" method="post" class="login-box"
+							lt-plugins-valid="0.7450230794493109"
+							style="left: -292px; display: none;">
+							<input type="hidden" name="isMd5" value="1"> <input
+								type="hidden" name="layer_from" value="wwwindex_rightbox_new">
+							<div class="control relative">
+								<input type="text" id="username" name="username" value=""
+									class="text input-xlarge" placeholder="邮箱/手机号"
+									validate-title="邮箱/手机号" validate-rules="[['required']]">
+							</div>
+							<div class="control relative">
+								<input type="password" id="password" name="password" value=""
+									class="text input-xlarge" placeholder="密码" validate-title="密码"
+									validate-rules="[['required','请输入$']]">
+							</div>
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" /> <input type="submit" value="登 录"
+								class="btn btn-login">
+							<div class="controls clearfix">
+								<label><input type="checkbox" id="remember-me"
+									name="remember-me" checked="checked" autocomplete="off"
+									style="display: none;">&nbsp;下次自动登录</label> <a class="regbtn"
+									href="javascript:;" title="注册" data-selector="switchRegister">立即注册</a>
+								<a href="javascript:;" target="_blank">忘记密码？</a>
+							</div>
+							<div class="connect-login">
+								使用其他方式登录 <a class="icon-24 icon-24-account-qq" href="#"
+									target="_blank"></a> <a class="icon-24 icon-24-account-weixin"
+									href="#" target="_blank"></a> <a
+									class="icon-24 icon-24-account-weibo" href="#" target="_blank"></a>
+							</div>
+						</form>
+						<!-- 经理人注册 -->
+						<form action="javascript:;" method="post" class="register-box"
+							lt-plugins-valid="0.698662273818627" style="left: 0px;">
+							<input type="hidden" name="layer_from"
+								value="wwwindex_rightbox_new"> <input type="hidden"
+								name="regc_new_log" value="regc_new_log">
+							<div class="control relative">
+								<input autocomplete="off" type="text" name="username" value=""
+									placeholder="邮箱/手机号" class="text input-xlarge"
+									data-selector="checkEmail" validate-title="邮箱/手机号"
+									validate-rules="[['required','请输入$'],['dynrule','checkPhoneEmail']]">
+							</div>
+							<div class="control relative">
+								<input autocomplete="off" type="password" name="password"
+									value="" placeholder="密码(6-16字母、数字、无空格)"
+									class="text input-xlarge" validate-title="密码"
+									validate-rules="[['required','请输入$'],['length',{min:6,max:16},'$1长度不能$2$3个字符'],['pattern',/^[a-zA-Z0-9]+$/ig,'$只能数字或字母']]">
+							</div>
+							<input type="submit" value="免费注册" class="btn btn-register">
+							<div class="clearfix controls" validate-group="checkbox"
+								validate-title="用户服务协议"
+								validate-rules="[['required','您必须接受“$1”才能注册']]">
+								<label><input type="checkbox" class="input-checkbox"
+									checked="checked" autocomplete="off" style="display: none;">&nbsp;接受</label><a
+									href="http://www.liepin.com/user/agreement.shtml" class="xieyi"
+									target="_blank">用户服务协议</a>
+								<p>
+									已有帐号,&nbsp;&nbsp;<a href="javascript:;" title="登录"
+										data-selector="switchLogin">马上登录</a>
+								</p>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</sec:authorize>
 	<!-- 四个功能 -->
 	<div class="box">
 		<div class="wrap">
@@ -203,7 +252,7 @@ function FileManagerClass(){
 					class="icons48 icons48-estate"></span> <b>数据申请</b>
 				</a> <a href="applyenv/applytable" target="_blank"> <span
 					class="icons48 icons48-financial"></span> <b>虚拟环境申请</b>
-				</a> <a href="datasetanalysis"> <span
+				</a> <a href="datasetanalysis" target="_blank"> <span
 					class="icons48 icons48-medicine"></span> <b>数据分析</b>
 				</a>
 
@@ -309,7 +358,7 @@ function FileManagerClass(){
 	<!-- <script type="text/javascript">window.FileManager&&FileManager.get('http://core.pc.lietou-static.com/revs/js/common/stat_f37a07ef.js');</script>
  -->
 
-
+<script type="text/javascript" src="home/script/home/home.js"></script>
 </body>
 
 </html>
