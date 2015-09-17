@@ -73,7 +73,7 @@ public class WordService implements IService{
 	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp, String f_path_name){
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		getData(req , dataMap);
-	    createDoc(dataMap, "dataApply",f_path_name); 
+	    createDoc(dataMap, "apply",f_path_name); 
         System.out.println("加载word模版成功，生成word文件！");
 	}
 
@@ -171,7 +171,7 @@ public class WordService implements IService{
 		String hc_applyDate = req.getParameter("applyDate");
 		String hc_projectRemarks = req.getParameter("projectRemarks");
 		
-		//user info(5)
+		//user info(5)□√
 		dataMap.put("hc_UserName", hc_userName);
 		dataMap.put("hc_UserDepartment", hc_userDepartment);
 		dataMap.put("hc_UserAddress", hc_userAddress);
@@ -179,17 +179,70 @@ public class WordService implements IService{
 		dataMap.put("hc_UserEmail",hc_userEmail);
 		
 		//data demand(2)
+		if("数据使用需求".equals(hc_userDemandType)){
+			dataMap.put("t1","√");
+			dataMap.put("t2","□");
+		}else{
+			dataMap.put("t2","√");
+			dataMap.put("t1","□");
+		}
 		dataMap.put("hc_UserDemand",hc_userDemand);
 		
 		//project info(5)
+		String[] useFields = hc_useFields.split(",");
+		for(int i=0; i<useFields.length; i++){
+			switch (useFields[i]) {
+			case "政府决策":
+				dataMap.put("f1","√");
+				break;
+			case "科学研究":
+				dataMap.put("f2","√");
+				break;
+			case "教学":
+				dataMap.put("f3","√");
+				break;
+			case "博士论文":
+				dataMap.put("f4","√");
+				break;
+			case "硕士论文":
+				dataMap.put("f5","√");
+				break;
+			case "商业应用":
+				dataMap.put("f6","√");
+				break;
+			default:
+				if(useFields[i].contains("其他")){
+					String other = useFields[i].substring(0, 2);
+					dataMap.put("f7","√");
+					dataMap.put("other", other);
+				}
+				break;
+			}
+		}
+		for(int i=1; i<8; i++){
+			String key = "f" + String.valueOf(i);
+			if(!dataMap.containsKey(key)){
+				dataMap.put(key, "□");
+				if(key.equals("f7"))
+					dataMap.put("other", "");
+			}
+		}
+		
 		dataMap.put("hc_ProName", hc_projectName);
 		dataMap.put("hc_ProChair", hc_projectChairman);
 		dataMap.put("hc_ProSource", hc_projectSource);
 		dataMap.put("hc_ProUndertaking", hc_projectUndertaking);
 		dataMap.put("hc_ProRemarks", hc_projectRemarks);
 		
+		//date
+		String[] date = hc_applyDate.split("/");
+		dataMap.put("y", date[0]);
+		dataMap.put("m", date[1]);
+		dataMap.put("d", date[2]);
+
 	}
 	
+
 	/*
 	 * word在线预览
 	 */

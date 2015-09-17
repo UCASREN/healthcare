@@ -202,8 +202,8 @@ public class ApplyDataController {
 			tempStore.add(applyStatus);
 			
 			String docID = docData.getDocName();
-			tempStore.add("<a href=\"/healthcare/apply/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
-					+"&nbsp;&nbsp;&nbsp;"+ "<a href=\"/healthcare/apply/applydata?docid="+docID+"&applydataid="+String.valueOf(docData.getIdApplydata())+"\" class=\"btn btn-xs default btn-editable\"><i class=\"fa fa-pencil\"></i> 编辑申请</a>");
+			tempStore.add("<a href=\"/healthcare/applydata/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
+					+"&nbsp;&nbsp;&nbsp;"+ "<a href=\"/healthcare/applydata/applydata?docid="+docID+"&applydataid="+String.valueOf(docData.getIdApplydata())+"\" class=\"btn btn-xs default btn-editable\"><i class=\"fa fa-pencil\"></i> 编辑申请</a>");
 			
 			store.add(tempStore);
 		}
