@@ -1,3 +1,6 @@
+$("#logoutbutton").click(function(){
+	$("#logoutform").submit();
+});
 $("#people_feature").click(function(){
 	$('#main').attr('src', 'http://133.133.133.73:8080/haflow/' + "people_features");
 });
