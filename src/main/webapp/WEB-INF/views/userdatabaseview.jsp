@@ -101,9 +101,9 @@
 				<ul class="nav navbar-nav">
 					<li class="classic-menu-dropdown "><a href="userdatabaseview">
 							数据发布 </a></li>
-					<li class="classic-menu-dropdown"><a href="apply/applytable" target="_blank"> 数据申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="#"> 虚拟环境申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="#"> 数据分析 </a></li>
+					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟环境申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 数据分析 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
@@ -137,11 +137,11 @@
 							<li><a href="userpanel" target="_blank"> <i class="icon-user"></i>
 									我的账户
 							</a></li>
-							<li><a href="apply/applytable" target="_blank"> <i
+							<li><a href="applydata/applytable" target="_blank"> <i
 									class="icon-envelope-open"></i> 数据申请 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>
-							<li><a href="javascript:;"> <i class="icon-rocket"></i>
+							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
 									虚拟环境申请<span class="badge badge-success"> 7 </span>
 							</a></li>
 							<li class="divider"></li>
@@ -248,6 +248,7 @@
 				</div>
 				<p></p>
 				<div id="showdatabaseinfo" style="display: none;">
+					<div class="alert alert-success">
 					<div class="row">
 						<div class="col-md-3">
 							<span id="showdatabaseinfo_name"></span>
@@ -304,7 +305,9 @@
 							<span id="showdatabaseinfo_tablenumber"></span>
 						</div>
 					</div>
+					</div>
 					<p></p>
+					<div class="alert alert-info">
 					<div class="row">
 						<div class="col-md-10">
 							<div class="table-container">
@@ -330,15 +333,19 @@
 						</div>
 						<div class="col-md-2"></div>
 					</div>
+					</div>
 				</div>
 				<div id="showtableinfo" style="display: none;">
+				<div class="alert alert-success">
 					<div class="row">
 						<span id="showtableinfo_name"></span> <span
 							id="showtableinfo_comments"></span> <span
 							id="showtableinfo_others"></span> <span
 							id="showtableinfo_fieldnumber"></span>
 					</div>
+				</div>
 					<p></p>
+					<div class="alert alert-info">
 					<div class="row">
 						'
 						<div class="col-md-10">
@@ -366,6 +373,7 @@
 							</div>
 						</div>
 						<div class="col-md-2"></div>
+					</div>
 					</div>
 				</div>
 				<!-- End: life time stats -->

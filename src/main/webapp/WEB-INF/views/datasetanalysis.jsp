@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>用户界面</title>
+<title>数据分析</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -137,11 +137,11 @@
 							<li><a href="userpanel" target="_blank"> <i
 									class="icon-user"></i> 我的账户
 							</a></li>
-							<li><a href="apply/applytable" target="_blank"> <i
+							<li><a href="applydata/applytable" target="_blank"> <i
 									class="icon-envelope-open"></i> 数据申请 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>
-							<li><a href="javascript:;"> <i class="icon-rocket"></i>
+							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
 									虚拟环境申请<span class="badge badge-success"> 7 </span>
 							</a></li>
 							<li class="divider"></li>

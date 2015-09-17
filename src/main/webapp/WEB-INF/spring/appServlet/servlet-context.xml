@@ -16,7 +16,7 @@
 	<context:component-scan base-package="otc.healthcare" />
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<annotation-driven />
+	<annotation-driven  />
 	<!-- <context:annotation-config /> -->
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
@@ -41,6 +41,7 @@
 	<view-controller path="/adminpanel" view-name="adminpanel"/>
 	<view-controller path="/userpanel" view-name="userpanel"/>
 	<view-controller path="/datasetanalysis" view-name="datasetanalysis"/>
+	<view-controller path="/adminpanel_welcome" view-name="adminpanel_welcome"/>
 	<!-- fileupload -->
 	 <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"  
     p:defaultEncoding="utf-8"  

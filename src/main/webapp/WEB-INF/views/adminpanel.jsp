@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>管理员面板</title>
+<title>管理员界面</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -63,7 +63,23 @@
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
+<!-- BEGIN DIV STYLES -->
+<style type="text/css">
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th,
+	.table>thead>tr>td, .table>thead>tr>th {
+	padding: 2px;
+}
 
+.paging_bootstrap_extended {
+	font-size: 10px;
+}
+
+.btn-sm, .btn-xs {
+	font-size: 12px;
+}
+</style>
+
+<!-- END DIV STYLES -->
 </head>
 <!-- BEGIN BODY -->
 <body
@@ -83,11 +99,11 @@
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="databasemanager">
+					<li class="classic-menu-dropdown "><a href="userdatabaseview">
 							数据发布 </a></li>
-					<li class="classic-menu-dropdown"><a href="apply/applytable" target="_blank"> 数据申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="#"> 虚拟环境申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="#"> 数据分析 </a></li>
+					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟环境申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 数据分析 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
@@ -108,36 +124,36 @@
 			<!-- END RESPONSIVE MENU TOGGLER -->
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
-					<li class="dropdown dropdown-user">
-					<a href="javascript:;"
+					<li class="dropdown dropdown-user"><a href="javascript:;"
 						class="dropdown-toggle" data-toggle="dropdown"
 						data-hover="dropdown" data-close-others="true"> <img alt=""
 							class="img-circle" src="img/avatar3_small.jpg" /> <span
-							class="username username-hide-on-mobile"> <sec:authentication property="name" />
+							class="username username-hide-on-mobile"> <sec:authentication
+									property="name" />
 						</span> <i class="fa fa-angle-down"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-default">
-							<li><a href="userpanel" target="_blank"> <i class="icon-user"></i>
-									我的账户
+							<li><a href="userpanel" target="_blank"> <i
+									class="icon-user"></i> 我的账户
 							</a></li>
-							<li><a href="apply/applytable" target="_blank"> <i
+							<li><a href="applydata/applytable" target="_blank"> <i
 									class="icon-envelope-open"></i> 数据申请 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>
-							<li><a href="javascript:;"> <i class="icon-rocket"></i>
+							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
 									虚拟环境申请<span class="badge badge-success"> 7 </span>
 							</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
 							</a></li>
 							<c:url value="/logout" var="logoutUrl" />
-							<li>
-								<a href="#" id="logoutbutton">
-								<i class="icon-key"></i> 登出 </a>
-								<form action="${logoutUrl}" method="post" style="display:none;" id="logoutform">
-									<input  name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-								</form> 
-							</li>
+							<li><a href="#" id="logoutbutton"> <i class="icon-key"></i>
+									登出
+							</a>
+								<form action="${logoutUrl}" method="post" style="display: none;"
+									id="logoutform">
+									<input name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form></li>
 						</ul></li>
 					<!-- END USER LOGIN DROPDOWN -->
 
@@ -148,8 +164,91 @@
 	</div>
 	<!-- END HEADER -->
 	<div class="clearfix"></div>
-	<button type="button" class="btn green" id="databasemanager">管理员工具-数据库管理</button>
-	<a href="databasemanager" target="_blank">管理员工具-数据库管理</a>
+	<!-- BEGIN CONTAINER -->
+	<div class="page-container">
+		
+		<!-- BEGIN CONTENT -->
+			<div class="page-content">
+				<h3 class="page-title">
+			管理员面板 <small>数据操作 & 统计分析</small>
+			</h3>
+			<div class="page-bar">
+				<ul class="page-breadcrumb">
+					<li>
+						<i class="fa fa-home"></i>
+						<a href="/">主页</a>
+						<i class="fa fa-angle-right"></i>
+					</li>
+					<li>
+						<a href="javascript:;">管理员控制面板</a>
+					</li>
+				</ul>
+			</div>
+
+				<div class="row">
+				<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 margin-bottom-10">
+					<div class="dashboard-stat blue-madison">
+						<div class="visual">
+							<i class="fa fa-briefcase fa-icon-medium"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 数据库管理
+							</div>
+							<div class="desc">
+								 深度管理
+							</div>
+						</div>
+						<a class="more" href="databasemanager" target="_blank">
+						查看更多 <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+					<div class="dashboard-stat red-intense">
+						<div class="visual">
+							<i class="fa fa-shopping-cart"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 数据申请
+							</div>
+							<div class="desc">
+								数据分析操作
+							</div>
+						</div>
+						<a class="more" href="applydata/applytable" target="_blank">
+						查看更多 <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+					<div class="dashboard-stat green-haze">
+						<div class="visual">
+							<i class="fa fa-group fa-icon-medium"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 虚拟环境申请
+							</div>
+							<div class="desc">
+								 Docker技术
+							</div>
+						</div>
+						<a class="more" href="applyenv/applytable" target="_blank">
+						查看更多 <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+				
+			</div>
+		<!-- END CONTENT -->
+
+	</div>
+	<!-- END CONTAINER -->
+
+
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->
 	<!--[if lt IE 9]>
@@ -201,18 +300,21 @@
 		src="resources/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript"
 		src="resources/plugins/jstree/dist/jstree.min.js"></script>
-	<!-- <script src="resources/js/databasemanager/databasemanager_metronic.js"
+	<script src="resources/js/databasemanager/databasemanager_metronic.js"
 		type="text/javascript"></script>
-	<script src="resources/js/databasemanager/userdatabaseview_layout.js"
-		type="text/javascript"></script>
+	<script src="resources/js/layout.js" type="text/javascript"></script>
 	<script src="resources/js/quick-sidebar.js" type="text/javascript"></script>
 	<script src="resources/js/demo.js" type="text/javascript"></script>
 	<script src="resources/js/components-pickers.js" type="text/javascript"></script>
-	<script src="resources/js/databasemanager/datatable.js"
-		type="text/javascript"></script> -->
+	<script src="resources/js/admin/adminpanel.js"
+		type="text/javascript"></script>
 	<script>
 		jQuery(document).ready(function() {
-			
+			Metronic.init(); // init metronic core components
+			Layout.init(); // init current layout
+			QuickSidebar.init(); // init quick sidebar
+			Demo.init(); // init demo features
+			ComponentsPickers.init();
 		});
 	</script>
 	<!-- END JAVASCRIPTS -->

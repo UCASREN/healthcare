@@ -252,7 +252,7 @@ function FileManagerClass(){
 					class="icons48 icons48-estate"></span> <b>数据申请</b>
 				</a> <a href="applyenv/applytable" target="_blank"> <span
 					class="icons48 icons48-financial"></span> <b>虚拟环境申请</b>
-				</a> <a href="datasetanalysis"> <span
+				</a> <a href="datasetanalysis" target="_blank"> <span
 					class="icons48 icons48-medicine"></span> <b>数据分析</b>
 				</a>
 

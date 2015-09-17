@@ -625,7 +625,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
 	<div class="page-footer-inner">
-		 2014 &copy; Metronic by keenthemes.
+		2015 &copy; 医疗大数据分析平台 --- 中国科学院软件研究所
 	</div>
 	<div class="scroll-to-top">
 		<i class="icon-arrow-up"></i>

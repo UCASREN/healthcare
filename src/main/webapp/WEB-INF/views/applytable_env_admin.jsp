@@ -34,7 +34,6 @@ request.setCharacterEncoding("UTF-8");
 <link id="style_color" href="../resources/css/darkblue.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES 图标-->
-<link rel="shortcut icon" href="favicon.ico"/>
 </head>
 <!-- END HEAD -->
 
