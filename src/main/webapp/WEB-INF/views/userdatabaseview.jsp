@@ -122,6 +122,7 @@
 			<a href="javascript:;" class="menu-toggler responsive-toggler"
 				data-toggle="collapse" data-target=".navbar-collapse"> </a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
+			<sec:authorize access="hasAnyRole('USER','ADMIN')">
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown dropdown-user"><a href="javascript:;"
@@ -160,6 +161,7 @@
 
 				</ul>
 			</div>
+			</sec:authorize>
 		</div>
 		<!-- END HEADER INNER -->
 	</div>
