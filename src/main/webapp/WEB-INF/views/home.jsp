@@ -99,7 +99,7 @@ function FileManagerClass(){
 		<div class="header">
 			<div class="wrap">
 				<div class="logo">
-					<a href=""><img alt="图标" class="pngfix" src="img/logo.png"
+					<a href=""><img alt="图标" class="pngfix" src="img/home.png"
 						width="110" height="40" /><em><i
 							class="icons16 icons16-home-white" title="首页"></i></em></a>
 				</div>
