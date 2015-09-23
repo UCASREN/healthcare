@@ -114,6 +114,62 @@ var TableAjax_database = function () {
                 ]// set first column as a default sort by asc
             }
         });
+        // handle group actionsubmit button click
+        /*
+        grid.getTableWrapper().on('click', '.table-group-action-submit', function (e) {
+        	console.log("hello");
+            e.preventDefault();
+            var action = $(".table-group-action-input", grid.getTableWrapper());
+            if (action.val() != "" && grid.getSelectedRowsCount() > 0) {
+                grid.setAjaxParam("customActionType", "group_action");
+                grid.setAjaxParam("customActionName", action.val());
+                grid.setAjaxParam("id", grid.getSelectedRows());
+                grid.getDataTable().ajax.reload();
+                grid.clearAjaxParams();
+            } else if (action.val() == "") {
+                Metronic.alert({
+                    type: 'danger',
+                    icon: 'warning',
+                    message: 'Please select an action',
+                    container: grid.getTableWrapper(),
+                    place: 'prepend'
+                });
+            } else if (grid.getSelectedRowsCount() === 0) {
+                Metronic.alert({
+                    type: 'danger',
+                    icon: 'warning',
+                    message: 'No record selected',
+                    container: grid.getTableWrapper(),
+                    place: 'prepend'
+                });
+            }
+        });
+        */
+        $(".table-group-action-submit").click(function(){
+        	console.log("选中数量:"+grid.getSelectedRowsCount());
+        	console.log("选中的数据:"+grid.getSelectedRows());
+        	console.log("未选中的数据:"+grid.getUnSelectedRows());
+        	//更新session中的信息
+			$.ajax({
+		    	type : "get",//请求方式
+		    	url : "updateshoppingcart",//发送请求地址
+		    	dataType : "json",
+		    	data:{
+		    		addinfolist:grid.getSelectedRows()+"",
+		    		deleteinfolist:grid.getUnSelectedRows()+""
+		    	},
+		    	success : function(data) {
+		    		//console.log(data);
+		    		console.log("当前购物车信息:");
+		    		$.each(data,function(key,values){     
+		    		    console.log("数据库"+key+"包含:");     
+		    		    $(values).each(function(){     
+		    		        console.log(this+"");     
+		    		    });     
+		    		 });
+		    	}
+		    });
+        });
     }
 
     return {
@@ -365,4 +421,26 @@ $("#refreshalldatabaseinfo").click(function(){
 });
 $("#logoutbutton").click(function(){
 	$("#logoutform").submit();
+});
+$("#showshoppingcart").click(function(){
+	$.ajax({
+    	type : "get",//请求方式
+    	url : "getshoppingcart",//发送请求地址
+    	dataType : "json",
+    	success : function(data) {
+    		console.log("当前购物车信息:");
+    		var shoppingcart="";
+    		$.each(data,function(key,values){     
+    		    console.log("数据库"+key+"包含:");
+    		    shoppingcart+="数据库"+key+"下:"
+    		    $(values).each(function(){     
+    		        console.log(this+"");
+    		        shoppingcart+=this+" ";
+    		    });
+    		    shoppingcart+="<p></p>"
+    		 });
+    		$("#selectedtableinfo").html(shoppingcart);
+    	}
+    });
+	$("#showshoppingcart_model").modal('show');
 });

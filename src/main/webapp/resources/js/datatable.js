@@ -257,7 +257,6 @@ var Datatable = function() {
 
             return rows;
         },
-
         setAjaxParam: function(name, value) {
             ajaxParams[name] = value;
         },

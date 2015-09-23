@@ -257,7 +257,14 @@ var Datatable = function() {
 
             return rows;
         },
+        getUnSelectedRows: function() {
+            var rows = [];
+            $('tbody > tr > td:nth-child(1) input[type="checkbox"]', table).not("input:checked").each(function() {
+                rows.push($(this).val());
+            });
 
+            return rows;
+        },
         setAjaxParam: function(name, value) {
             ajaxParams[name] = value;
         },

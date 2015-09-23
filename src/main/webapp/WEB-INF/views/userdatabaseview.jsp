@@ -313,6 +313,7 @@
 							<div class="table-container">
 								<div class="table-actions-wrapper">
 									<span> </span>
+									
 								</div>
 
 								<table class="table table-striped table-bordered table-hover"
@@ -331,7 +332,15 @@
 								</table>
 							</div>
 						</div>
-						<div class="col-md-2"></div>
+						<div class="col-md-2">
+							<div class="row">
+								<button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-check"></i> 添加/更新购物车</button>
+							</div>
+							<p></p>
+							<div class="row">
+								<a class="btn green" data-toggle="modal" href="#" id="showshoppingcart">当前购物车</a>
+							</div>
+						</div>
 					</div>
 					</div>
 				</div>
@@ -386,7 +395,28 @@
 
 	</div>
 	<!-- END CONTAINER -->
-
+	<div id="showshoppingcart_model" class="modal fade" tabindex="-1"
+		data-width="400">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title" >购物车信息</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12" id="selectedtableinfo">
+							
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->
 	<!--[if lt IE 9]>

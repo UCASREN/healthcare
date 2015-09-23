@@ -4,19 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -289,7 +289,7 @@ public class MetadataController {
 	public Map<String, Object> getDatabaseCssInfo(@RequestParam(value = "databaseid", required = false) String databaseid,
 			@RequestParam(value = "length", required = false) Integer length,
 			@RequestParam(value = "start", required = false) Integer start,
-			@RequestParam(value = "draw", required = false) Integer draw) {
+			@RequestParam(value = "draw", required = false) Integer draw,HttpSession httpSession) {
 		System.out.println("get_database_css_info_list");
 		List<TableInfo> list = null;
 		if (databaseid == null) {
@@ -310,8 +310,9 @@ public class MetadataController {
 			TableInfo tableInfo = list.get(i);
 			ArrayList<String> tempStore = new ArrayList<String>();
 			tempStore.add("<input type='checkbox' name='id" + tableInfo.getTableid() + "' value='"
-					+ tableInfo.getDatabaseid() + "'>");
-			tempStore.add(tableInfo.getDatabaseid());
+					+ tableInfo.getDatabaseid()+"_"+tableInfo.getTableid() + "' "+(getCheckedState(httpSession,
+							tableInfo.getDatabaseid(),tableInfo.getTableid())?"checked":"")+">");
+			tempStore.add(tableInfo.getTableid());
 			tempStore.add(tableInfo.getName());
 			tempStore.add(tableInfo.getComments());
 			store.add(tempStore);
@@ -321,6 +322,14 @@ public class MetadataController {
 		resultMap.put("recordsFiltered", totalRecords);
 		resultMap.put("data", store);
 		return resultMap;
+	}
+	private boolean getCheckedState(HttpSession httpSession,String database,String table){
+		if(httpSession.getAttribute("shoppingcart")!=null){
+			Map<String,HashSet<String>> shoppingcartMap=(Map<String, HashSet<String>>) httpSession.getAttribute("shoppingcart");
+			if(shoppingcartMap.containsKey(database)&&shoppingcartMap.get(database).contains(table)) 
+				return true;
+		}
+		return false;
 	}
 	@RequestMapping(value = "/getalldatabasecssinfo", method = RequestMethod.GET)
 	@ResponseBody
