@@ -167,6 +167,7 @@ var TableAjax_database = function () {
 		    		        console.log(this+"");     
 		    		    });     
 		    		 });
+		    		alert("成功添加！");
 		    	}
 		    });
         });
