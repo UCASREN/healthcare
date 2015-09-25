@@ -268,7 +268,151 @@ var Datatable = function() {
 
             return rows;
         },
-
+        
+        setMotalClickEvent: function() {
+//        	alert('setMotalClickEvent here');
+//        	var test=$('tbody > tr > td:nth-child(7)', table);
+//        	console.log($('tbody > tr > td:nth-child(7)', table)+"");
+        	var url = window.location.href;
+        	
+        	if(url.indexOf('admin') != -1){
+        		if(url.indexOf('env') != -1){
+        			the.adminStatusModal("getdocenvbyapplyid");
+        		}else{
+        			the.adminStatusModal("getdocdatabyapplyid");
+        		}
+        	}else{
+        		the.userStatusModal();
+        	}
+        },
+        
+        fillStatusModal : function (hc_doc){
+        	$('#modal_applyid').html(hc_doc.idApplydata);
+        	$('#modal_username').html(hc_doc.name);
+        	$('#modal_projectname').html(hc_doc.proName);
+        },
+        
+        adminStatusModal : function (query_url){
+            $('tbody > tr > td:nth-child(8) span', table).each(function() {
+                $(this).on('click',function(){
+                	
+                	var applyID = $(this).attr('id');
+//                	console.log(applyID);
+                	applyID = applyID.substring(1);
+                	
+                	$.ajax({ 
+     					type : "get",//请求方式
+     					url : query_url,//发送请求地址    getdocenvbyapplyid   getdocdatabyapplyid
+     					dataType : "json", 
+     					data:{ 
+     						applyid : applyID
+     					}, 
+     					success :function(data) {
+     						//alert(data); 
+//     						console.log(applyID+" : "+data);
+     						the.fillStatusModal(data);
+     						var applyStatus = data.flagApplydata;
+     						
+     					  	switch(applyStatus){
+	                    		case '1' ://待审核
+	                    			the.screeningSelect($('.screening-select.select-2'), 130);
+	                    			break;
+	                    		case '2' ://卒中数据中心ed---//卒中防治委员会ing
+	                    			the.screeningSelect($('.screening-select.select-4'), 260);
+	                    			break;
+	                    		case '3' ://审核成功
+	                    			the.screeningSelect($('.screening-select.select-5'), 520);
+	                    			break;
+	                    		case '4' ://审核失败
+	                    			var applyRejectReason = data.applyRejectReason;
+	                    			$('#rejectReason').html(applyRejectReason);
+	                    			$('#failPanel').show();
+	                    			$('#status_final > a').html('审核失败');
+	                    			the.screeningSelect($('.screening-select.select-5'), 520);
+	                    			break;
+	                    		default :
+	                    			$('#rejectReason').html('无法提交申请，请联系系统管理员！');
+	                    			$('#failPanel > h5').html('<b>系统提示</b>');
+                    				$('#failPanel').show();
+	                    			the.screeningSelect($('.screening-select.select-1'), 0);
+	                    			break;
+     					  	}
+     						
+     					} 
+             		});
+                	
+                	$('#ajax').modal('show');
+                
+                });
+            });
+        },
+        
+        userStatusModal : function (){
+            $('tbody > tr > td:nth-child(7) span', table).each(function() {
+                $(this).on('click',function(){
+                	
+                	var applyID = $(this).attr('id');
+//                	console.log(applyID);
+                	applyID = applyID.substring(1);
+                	
+                	$.ajax({ 
+     					type : "get",//请求方式 
+     					url : "getdocdatabyapplyid",//发送请求地址
+     					dataType : "json", 
+     					data:{ 
+     						applyid : applyID
+     					}, 
+     					success :function(data) {
+     						//alert(data); 
+//     						console.log(applyID+" : "+data);
+     						the.fillStatusModal(data);
+     						var applyStatus = data.flagApplydata;
+     						
+     					  	switch(applyStatus){
+	                    		case '1' ://待审核
+	                    			the.screeningSelect($('.screening-select.select-2'), 130);
+	                    			break;
+	                    		case '2' ://卒中数据中心ed---//卒中防治委员会ing
+	                    			the.screeningSelect($('.screening-select.select-4'), 260);
+	                    			break;
+	                    		case '3' ://审核成功
+	                    			the.screeningSelect($('.screening-select.select-5'), 520);
+	                    			break;
+	                    		case '4' ://审核失败
+	                    			var applyRejectReason = data.applyRejectReason;
+	                    			$('#rejectReason').html(applyRejectReason);
+	                    			$('#failPanel').show();
+	                    			$('#status_final > a').html('审核失败');
+	                    			the.screeningSelect($('.screening-select.select-5'), 520);
+	                    			break;
+	                    		default :
+	                    			$('#rejectReason').html('无法提交申请，请联系系统管理员！');
+	                    			$('#failPanel > h5').html('<b>系统提示</b>');
+                    				$('#failPanel').show();
+	                    			the.screeningSelect($('.screening-select.select-1'), 0);
+	                    			break;
+     					  	}
+     						
+     					} 
+             		});
+                	
+                	$('#ajax').modal('show');
+                
+                });
+            });
+        },
+        
+        screeningSelect : function (_parent, _postX){
+//    		var _postX = _parent.position().left;
+//        	var _postX=130;
+    		_parent.siblings(".screening-select").removeClass("current");
+    		_parent.addClass("current");
+    		_parent.siblings(".project-screening-yellow").animate({ width: _postX }, 300);
+    		_parent.siblings(".select-1-yellow").animate({ left: _postX - 5 }, 300);
+    		_parent.prevAll(".screening-select").css("background", "none");
+    		_parent.nextAll().removeAttr("style");
+        },
+        
         setAjaxParam: function(name, value) {
             ajaxParams[name] = value;
         },

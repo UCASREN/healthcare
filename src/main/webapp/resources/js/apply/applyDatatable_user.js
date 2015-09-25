@@ -16,7 +16,8 @@ var applyDatatable = function () {
             src: $("#datatable_products"),
             onSuccess: function (applyDataGrid) {
                 // execute some code after table records loaded
-            	
+//            	console.log(applyDataGrid);
+            	//applyDataGrid.setMotalClickEvent();
             },
             onError: function (applyDataGrid) {
                 // execute some code on network or other general error  
@@ -46,6 +47,13 @@ var applyDatatable = function () {
             }
         });
         
+        applyDataGrid.getDataTable().on( 'draw.dt', function (e, settings, data) {
+        	//console.log(data);
+//            console.log("hello");
+//            console.log(data);
+            applyDataGrid.setMotalClickEvent();
+        } );
+        
         //table-advanced-search button click --- 高级搜索工具
         applyDataGrid.getTableWrapper().on('click', '.table-advanced-search', function (e) { 
         	//是否隐藏
@@ -60,6 +68,7 @@ var applyDatatable = function () {
         	}
         		
         });
+        
         
         // handle group actionsubmit button click ---- 删除功能
         applyDataGrid.getTableWrapper().on('click', '.table-group-action-submit', function (e) {
@@ -92,7 +101,7 @@ var applyDatatable = function () {
             	//$.ajax(delete_options);
     		}
     		
-    		
+//            applyDataGrid.setMotalClickEvent();
             
       /*      var action = $(".table-group-action-input", applyDataGrid.getTableWrapper());
             if (action.val() != "" && applyDataGrid.getSelectedRowsCount() > 0) {
@@ -122,6 +131,8 @@ var applyDatatable = function () {
         });
         
         $('#filter_panel').hide();
+        
+     
     }
 
     return {
@@ -131,6 +142,7 @@ var applyDatatable = function () {
 
             handleProducts();
             initPickers();
+            
             
         }
 

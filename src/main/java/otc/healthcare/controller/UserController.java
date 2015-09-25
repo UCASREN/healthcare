@@ -48,10 +48,12 @@ public class UserController {
 		Map<String,HashSet<String>> shoppingcartMap=(Map<String, HashSet<String>>) httpSession.getAttribute("shoppingcart");
 		String[] infoArray=infolist.split(",");
 		for(String info:infoArray){
-			String database=info.split("_")[0];
-			String table=info.split("_")[1];
-			if(shoppingcartMap.get(database)==null) shoppingcartMap.put(database, new HashSet<String>());
-			shoppingcartMap.get(database).add(table);
+			if(info!=null&&!info.equals("")){
+				String database=info.split("_")[0];
+				String table=info.split("_")[1];
+				if(shoppingcartMap.get(database)==null) shoppingcartMap.put(database, new HashSet<String>());
+				shoppingcartMap.get(database).add(table);
+			}
 		}
 		return shoppingcartMap;
 	}
@@ -69,10 +71,12 @@ public class UserController {
 		Map<String,HashSet<String>> shoppingcartMap=(Map<String, HashSet<String>>) httpSession.getAttribute("shoppingcart");
 		String[] infoArray=infolist.split(",");
 		for(String info:infoArray){
-			String database=info.split("_")[0];
-			String table=info.split("_")[1];
-			if(shoppingcartMap.containsKey(database)&&shoppingcartMap.get(database).contains(table)) 
-					shoppingcartMap.get(database).remove(table);
+			if(info!=null&&!info.equals("")){
+				String database=info.split("_")[0];
+				String table=info.split("_")[1];
+				if(shoppingcartMap.containsKey(database)&&shoppingcartMap.get(database).contains(table)) 
+						shoppingcartMap.get(database).remove(table);
+			}
 		}
 		return shoppingcartMap;
 	}

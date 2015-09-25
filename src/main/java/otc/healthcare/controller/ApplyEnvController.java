@@ -197,7 +197,7 @@ public class ApplyEnvController {
 			tempStore.add(docEnvData.getDemand());
 			tempStore.add(docEnvData.getApplyTime());
 			
-			String applyStatus = getApplyStatus(docEnvData.getFlagApplydata());
+			String applyStatus = getApplyStatus(docEnvData.getFlagApplydata(), String.valueOf(docEnvData.getIdApplydata()), docEnvData.getProName(),docEnvData.getName());
 			tempStore.add(applyStatus);
 			
 			String docID = docEnvData.getDocName();
@@ -214,21 +214,21 @@ public class ApplyEnvController {
 		return resultMap;
 	}
 	
-	private String getApplyStatus(String flag_Apply) {
+	private String getApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
 		// TODO Auto-generated method stub
-		String status = "<span class=\"label label-sm label-warning\">出错了</span>";
+		String status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-warning\">出错了</span>";
 		switch (flag_Apply) {
 		case "1":
-			status = "<span class=\"label label-sm label-primary\">待审核</span>";
+			status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-primary\">待审核</span>";
 			break;
 		case "2":
-			status= "<span class=\"label label-sm label-default\">审核中</span>";
+			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-default\">审核中</span>";
 			break;
 		case "3":
-			status= "<span class=\"label label-sm label-success\">审核通过</span>";
+			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-success\">审核通过</span>";
 			break;
 		case "4":
-			status= "<span class=\"label label-sm label-danger\">审核未通过</span>";
+			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-danger\">审核失败</span>";
 			break;
 		default:
 			System.out.println("申请标志位"+flag_Apply);

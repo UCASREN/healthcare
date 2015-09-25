@@ -33,6 +33,7 @@ request.setCharacterEncoding("UTF-8");
 <link href="../resources/css/layout.css" rel="stylesheet" type="text/css"/>
 <link id="style_color" href="../resources/css/darkblue.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/custom.css" rel="stylesheet" type="text/css"/>
+<link href="../resources/css/slider/style.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES 图标-->
 </head>
 <!-- END HEAD -->
@@ -90,6 +91,61 @@ request.setCharacterEncoding("UTF-8");
 	<!-- BEGIN CONTENT -->
 	<div class="page-content-wrapper">
 		<div class="page-content">
+		
+			<!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
+			<div class="modal fade draggable-modal" id="ajax" tabindex="-1" role="basic" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+							<h4 class="modal-title">
+								申请状态查询 ---
+								<label id="modal_applyid">序号null</label>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div>
+										<label class="col-md-3 control-label">申请者 ：</label>
+										<label id="modal_username" class="col-md-8 control-label">null</label>
+									</div>
+									<div>
+										<label class="col-md-3 control-label">项目名称 ：</label>
+										<label id="modal_projectname" class="col-md-8 control-label">null</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="project-screening">
+										<div class="project-screening-yellow"></div>
+										<div class="select-1-yellow"></div>
+										<div class="screening-select select-1 current"><a href="javascript:;">已提交</a></div>
+										<div class="screening-select select-2" selval="4,6"><a href="javascript:;" selval="4,6">待审核</a></div>
+										<div class="screening-select select-3" selval="6,7"><a href="javascript:;" selval="6,7">卒中数据中心</a></div>
+										<div class="screening-select select-4" selval="7,10"><a href="javascript:;" selval="7,10">卒中防治委员会</a></div>
+										<div id="status_final" class="screening-select select-5" selval="10,-1"><a href="javascript:;" selval="10,-1">审核成功</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id='failPanel' class="modal-body" style="display:none">
+							<h5><b>系统提示---申请失败原因</b></h5>
+							<div class="row">
+								<div class="col-md-12">
+									<textarea class="form-control" name="rejectReason" id="rejectReason"></textarea>
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn default" data-dismiss="modal">确定</button>
+							<!-- 	<button type="button" class="btn blue">Save changes</button>-->
+						</div>
+					</div>
+				</div>
+			</div>
 		
 			<!-- BEGIN STYLE CUSTOMIZER -->
 			<div class="theme-panel hidden-xs hidden-sm">

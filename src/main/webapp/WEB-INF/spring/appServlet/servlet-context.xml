@@ -42,6 +42,7 @@
 	<view-controller path="/userpanel" view-name="userpanel"/>
 	<view-controller path="/datasetanalysis" view-name="datasetanalysis"/>
 	<view-controller path="/adminpanel_welcome" view-name="adminpanel_welcome"/>
+	
 	<!-- fileupload -->
 	 <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"  
     p:defaultEncoding="utf-8"  

@@ -198,7 +198,7 @@ public class ApplyDataController {
 			tempStore.add(docData.getDemand());
 			tempStore.add(docData.getApplyTime());
 			
-			String applyStatus = getApplyStatus(docData.getFlagApplydata());
+			String applyStatus = getApplyStatus(docData.getFlagApplydata(), String.valueOf(docData.getIdApplydata()), docData.getProName(),docData.getName());
 			tempStore.add(applyStatus);
 			
 			String docID = docData.getDocName();
@@ -215,21 +215,21 @@ public class ApplyDataController {
 		return resultMap;
 	}
 	
-	private String getApplyStatus(String flag_Apply) {
+	private String getApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
 		// TODO Auto-generated method stub
-		String status = "<span class=\"label label-sm label-warning\">出错了</span>";
+		String status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-warning\">出错了</span>";
 		switch (flag_Apply) {
 		case "1":
-			status = "<span class=\"label label-sm label-primary\">待审核</span>";
+			status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-primary\">待审核</span>";
 			break;
 		case "2":
-			status= "<span class=\"label label-sm label-default\">审核中</span>";
+			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-default\">审核中</span>";
 			break;
 		case "3":
-			status= "<span class=\"label label-sm label-success\">审核通过</span>";
+			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-success\">审核通过</span>";
 			break;
 		case "4":
-			status= "<span class=\"label label-sm label-danger\">审核未通过</span>";
+			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-danger\">审核失败</span>";
 			break;
 		default:
 			System.out.println("申请标志位"+flag_Apply);
@@ -238,6 +238,7 @@ public class ApplyDataController {
 		return status;
 	}
 
+	
 	@RequestMapping(value = "/wordonline", method = RequestMethod.GET)
 	public String showDocWordOnline(HttpServletRequest req, HttpServletResponse resp,
 			@RequestParam(value = "docid", required = false) String docid) {
@@ -250,5 +251,5 @@ public class ApplyDataController {
 		return "documentView";
 	}
 	
-	
+
 }

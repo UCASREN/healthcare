@@ -46,6 +46,12 @@ var applyDatatable = function () {
             }
         });
         
+        applyDataGrid.getDataTable().on( 'draw.dt', function (e, settings, data) {
+        	//console.log(data);
+//            console.log("hello");
+//            console.log(data);
+            applyDataGrid.setMotalClickEvent();
+        } );
         
         //table-advanced-search button click --- 高级搜索工具
         applyDataGrid.getTableWrapper().on('click', '.table-advanced-search', function (e) { 

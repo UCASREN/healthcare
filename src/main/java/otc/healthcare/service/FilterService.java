@@ -135,8 +135,9 @@ public class FilterService implements IService {
 				}
 			}
 		}
-		if(rsList.size()==0)
-			return aLLDataList;
+		
+//		if(rsList.size()==0)
+//			return aLLDataList;
 		return rsList;
 	}
 	
@@ -203,8 +204,8 @@ public class FilterService implements IService {
 			}
 		}
 		
-		if(rsList.size()==0)
-			return aLLEnvList;
+//		if(rsList.size()==0)
+//			return aLLEnvList;
 		return rsList;
 	}
 	

@@ -101,8 +101,8 @@
 				<ul class="nav navbar-nav">
 					<li class="classic-menu-dropdown "><a href="userdatabaseview">
 							数据发布 </a></li>
-					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟环境申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="adminpanel/applydatatable" target="_blank"> 数据申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="adminpanel/applyenvtable" target="_blank"> 虚拟环境申请 </a></li>
 					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 数据分析 </a></li>
 				</ul>
 			</div>
@@ -217,7 +217,7 @@
 								数据分析操作
 							</div>
 						</div>
-						<a class="more" href="applydata/applytable" target="_blank">
+						<a class="more" href="adminpanel/applydatatable" target="_blank">
 						查看更多 <i class="m-icon-swapright m-icon-white"></i>
 						</a>
 					</div>
@@ -235,7 +235,7 @@
 								 Docker技术
 							</div>
 						</div>
-						<a class="more" href="applyenv/applytable" target="_blank">
+						<a class="more" href="adminpanel/applyenvtable" target="_blank">
 						查看更多 <i class="m-icon-swapright m-icon-white"></i>
 						</a>
 					</div>
