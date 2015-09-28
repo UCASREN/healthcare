@@ -208,7 +208,11 @@
 						<option value="">请选择数据库下的表...</option>
 				</select>
 				</label>
-
+				<label class="checkbox-inline" style="padding-left: 20px;">
+					<a class="btn green" data-toggle="modal" href="#"
+										id="showshoppingcart">当前购物车</a>
+				</label>
+				
 				<p></p>
 				<div id="showalldatabaseinfo" style="display: block;">
 					<p></p>
@@ -347,18 +351,7 @@
 								</div>
 								<p></p>
 								<div class="row">
-									<a class="btn green" data-toggle="modal" href="#"
-										id="showshoppingcart">当前购物车</a>
-									<!-- <div class="top-cart-block">
-										<div class="top-cart-info">
-											<a href="javascript:void(0);" class="top-cart-info-count">3
-												items</a> <a href="javascript:void(0);"
-												class="top-cart-info-value">$1260</a>
-										</div>
-										<div class="top-cart-content-wrapper">
-											<div class="top-cart-content" id="selectedtableinfo"></div>
-										</div>
-									</div> -->
+									
 								</div>
 							</div>
 						</div>
