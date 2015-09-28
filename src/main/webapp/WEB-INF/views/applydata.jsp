@@ -371,6 +371,19 @@ request.setCharacterEncoding("UTF-8");
 														<textarea class="form-control" cols="15" rows="4" name="userDemand" id="submit_form_userDemand"></textarea>
 													</div>
 												</div>
+												
+												<div class="form-group" style="margin-top:3px">
+													<hr class="col-md-12"/>
+													<label class="control-label col-md-3">选择数据</label>
+													<div class="col-md-4">
+														<button id="db_select" class="btn red" >
+															<i class="fa fa-database"></i>&nbsp;点击进入
+														</button>
+														<button id="shoppingCart" class="btn green" >
+															<i class="fa fa-shopping-cart"></i>&nbsp;加载购物车
+														</button>
+													</div>
+												</div>
 											</div>
 											
 											<div class="tab-pane" id="tab3"> 

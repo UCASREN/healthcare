@@ -31,7 +31,7 @@ var FormWizard = function () {
             }
 
         	initPickers();
-            
+        	
             var form = $('#submit_form');
             var error = $('.alert-danger', form);
             var success = $('.alert-success', form);
@@ -127,24 +127,24 @@ var FormWizard = function () {
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
                     //用户信息
-                	userName: {
-                        required: true
-                    },
-                    userDepartment: {
-                        required: true
-                    },
-                    userAddress: {
-                        required: true,
-//                        equalTo: "#submit_form_password"
-                    },
-                    userTel: {
-//                        digits: true,
-                    	required: true,
-                    },
-                    userEmail: {
-                    	required:true,
-//                    	email: true
-                    },
+//                	userName: {
+//                        required: true
+//                    },
+//                    userDepartment: {
+//                        required: true
+//                    },
+//                    userAddress: {
+//                        required: true,
+////                        equalTo: "#submit_form_password"
+//                    },
+//                    userTel: {
+////                        digits: true,
+//                    	required: true,
+//                    },
+//                    userEmail: {
+//                    	required:true,
+////                    	email: true
+//                    },
                     
                     //数据需求
                     userDemandType:{
@@ -223,13 +223,13 @@ var FormWizard = function () {
                     }
                 },
 
-                //处理提交信息
+              /*  //处理提交信息
                 submitHandler: function (form) {
-                    success.show();
-                    error.hide();
+                    //success.show();
+                    //error.hide();
                     //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
-                    form.submit();
-                }
+                	//form.submit();
+                }*/
 
             });
 
@@ -331,21 +331,45 @@ var FormWizard = function () {
             
             $('#form_wizard_1 #others').hide();
             $('#form_wizard_1').find('.button-previous').hide();
+            
             $('#form_wizard_1 .button-submit').click(function () {
                 alert('提交成功，我们会尽快进行审核，请耐心等待！');
             	if($('#others').val() != ""){
             		var allUseField_tmp = $('#allUseField').val();
                	 	$('#allUseField').val(allUseField_tmp.substring(0,allUseField_tmp.length-1)+""+$('#others').val());
             	}
-           	 	
-                $('#submit_form').submit(); 
+            	form.submit();
+//              $('#submit_form').submit(); 
             }).hide();
             
             $('#form_wizard_1 .button-wordPreview').click(function () {
                 alert('word文档预览');
                 //window.open ("/healthcare/", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
             }).hide();
-
+            
+            $('#db_select').click(function(){
+            	//确认按钮
+            	if(!confirm('选择数据加入购物车后，回到本界面加载购物车！'))
+            		return;
+                window.open ("/healthcare/userdatabaseview");
+            	return false;
+            });
+            
+            $('#shoppingCart').click(function(){
+            	$.ajax({ 
+  					type : "get",//请求方式 
+  					url : "/healthcare/getshoppingcart",//发送请求地址
+  					dataType : "json", 
+  					data:{ 
+  					}, 
+  					success :function(data) {
+  						//alert(data); 
+  						console.log("param : "+data);
+  					} 
+          		});
+            	return false;
+            });
+            
             $("#checkbox_other").on('ifChecked', function(event){
            	 	$('#form_wizard_1 #others').show();
             });

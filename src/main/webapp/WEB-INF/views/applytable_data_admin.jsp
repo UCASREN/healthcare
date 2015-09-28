@@ -409,7 +409,7 @@ request.setCharacterEncoding("UTF-8");
 <script src="../resources/js/layout.js" type="text/javascript"></script>
 <script src="../resources/js/quick-sidebar.js" type="text/javascript"></script>
 <script src="../resources/js/demo.js" type="text/javascript"></script>
-<script src="../resources/js/apply/apply_datatable.js"></script>
+<script src="../resources/js/apply/apply_datatable_admin.js"></script>
 <script src="../resources/js/apply/applyDatatable_admin.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>

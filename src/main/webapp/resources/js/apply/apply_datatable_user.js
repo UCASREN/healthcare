@@ -273,17 +273,7 @@ var Datatable = function() {
 //        	alert('setMotalClickEvent here');
 //        	var test=$('tbody > tr > td:nth-child(7)', table);
 //        	console.log($('tbody > tr > td:nth-child(7)', table)+"");
-        	var url = window.location.href;
-        	
-        	if(url.indexOf('admin') != -1){
-        		if(url.indexOf('env') != -1){
-        			the.adminStatusModal("getdocenvbyapplyid");
-        		}else{
-        			the.adminStatusModal("getdocdatabyapplyid");
-        		}
-        	}else{
-        		the.userStatusModal();
-        	}
+        	the.userStatusModal();
         },
         
         fillStatusModal : function (hc_doc){

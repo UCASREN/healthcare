@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class UserController {
+	
 	@RequestMapping("/login")
 	public String login() {
 		return "home";
 	}
+	
 	@RequestMapping("/updateshoppingcart")
 	@ResponseBody
 	public Map<String,HashSet<String>> updateShoppingCart(@RequestParam(value = "addinfolist", required = true) String addInfolist,
@@ -41,6 +43,7 @@ public class UserController {
 		Map<String,HashSet<String>> shoppingcartMap=(Map<String, HashSet<String>>) httpSession.getAttribute("shoppingcart");
 		return shoppingcartMap;
 	}
+	
 	@RequestMapping("/addtoshoppingcart")
 	@ResponseBody
 	public Map<String,HashSet<String>> addToShoppingCart(@RequestParam(value = "infolist", required = true) String infolist,HttpSession httpSession){
@@ -57,6 +60,7 @@ public class UserController {
 		}
 		return shoppingcartMap;
 	}
+	
 	@RequestMapping("/getshoppingcart")
 	@ResponseBody
 	public Map<String,HashSet<String>> getShoppingCart(HttpSession httpSession){
