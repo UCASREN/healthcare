@@ -424,23 +424,58 @@ $("#logoutbutton").click(function(){
 	$("#logoutform").submit();
 });
 $("#showshoppingcart").click(function(){
+	$("#selectedtableinfo").empty();
 	$.ajax({
     	type : "get",//请求方式
-    	url : "getshoppingcart",//发送请求地址
+    	url : "getcssshoppingcartdetail",//发送请求地址
     	dataType : "json",
     	success : function(data) {
     		console.log("当前购物车信息:");
-    		var shoppingcart="";
+    		var shoppingcart=$("<ul></ul>");
     		$.each(data,function(key,values){     
-    		    console.log("数据库"+key+"包含:");
-    		    shoppingcart+="数据库"+key+"下:"
+    		    console.log(key+"包含:");
+    		    var tempdatabase=$("<li><label class='checkbox-inline' style='padding-left: 0px;'><i class='fa fa-database'></i>"+key.substring(key.indexOf("_")+1)+"<a href='#' id='cart_database_"+key.substring(0,key.indexOf("_"))+"' class='del-goods'>&nbsp;</a></label></li>");
+    		    var tablelist=$("<ul></ul>");
     		    $(values).each(function(){     
     		        console.log(this+"");
-    		        shoppingcart+=this+" ";
+    		        tablelist.append($("<li><label class='checkbox-inline' style='padding-left: 0px;'><i class='fa fa-table'></i>"+this.substring(this.indexOf("_",this.indexOf("_")+1)+1)+"<a href='#' id='cart_table_"+this.substring(0,this.indexOf("_",this.indexOf("_")+1))+"' class='del-goods'>&nbsp;</a></label></li>"));
     		    });
-    		    shoppingcart+="<p></p>"
+    		    tempdatabase.append(tablelist);
+    		    shoppingcart.append(tempdatabase);
     		 });
-    		$("#selectedtableinfo").html(shoppingcart);
+    		
+    		$("#selectedtableinfo").append(shoppingcart);
+    		$("a[id^=cart_database_]").click(function(){
+    			console.log("id:"+$(this).attr("id").substring($(this).attr("id")));
+    			console.log($(this).attr("id").substring($(this).attr("id").indexOf("cart_database_")+14));
+		    	$.ajax({
+			    	type : "get",//请求方式
+			    	url : "deletedatabaseshoppingcart",//发送请求地址
+			    	dataType : "json",
+			    	data:{
+			    		database:$(this).attr("id").substring($(this).attr("id").indexOf("cart_database_")+14)
+			    	},
+			    	success : function(data) {
+			    		location.reload(true);
+			    	}
+			    });
+			});
+    		$("a[id^=cart_table_]").click(function(){
+    			var temp=$(this).attr("id").substring($(this).attr("id").indexOf("cart_table_")+11).split("_");
+    			console.log("temp:"+temp);
+    			$.ajax({
+			    	type : "get",//请求方式
+			    	url : "deletedatabasetableshoppingcart",//发送请求地址
+			    	dataType : "json",
+			    	data:{
+			    		database:temp[0],
+			    		table:temp[1]
+			    	},
+			    	success : function(data) {
+			    		location.reload(true);
+			    	}
+			    });
+			});
     	}
     });
 	$("#showshoppingcart_model").modal('show');

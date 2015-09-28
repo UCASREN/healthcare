@@ -62,6 +62,8 @@
 <link id="style_color" href="resources/css/darkblue.css"
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/style-shop.css" rel="stylesheet"
+	type="text/css" />
 <!-- END THEME STYLES -->
 <!-- BEGIN DIV STYLES -->
 <style type="text/css">
@@ -101,9 +103,12 @@
 				<ul class="nav navbar-nav">
 					<li class="classic-menu-dropdown "><a href="userdatabaseview">
 							数据发布 </a></li>
-					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟环境申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 数据分析 </a></li>
+					<li class="classic-menu-dropdown"><a
+						href="applydata/applytable" target="_blank"> 数据申请 </a></li>
+					<li class="classic-menu-dropdown"><a
+						href="applyenv/applytable" target="_blank"> 虚拟环境申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="datasetanalysis"
+						target="_blank"> 数据分析 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
@@ -123,44 +128,45 @@
 				data-toggle="collapse" data-target=".navbar-collapse"> </a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
 			<sec:authorize access="hasAnyRole('USER','ADMIN')">
-			<div class="top-menu">
-				<ul class="nav navbar-nav pull-right">
-					<li class="dropdown dropdown-user"><a href="javascript:;"
-						class="dropdown-toggle" data-toggle="dropdown"
-						data-hover="dropdown" data-close-others="true"> <img alt=""
-							class="img-circle" src="img/avatar3_small.jpg" /> <span
-							class="username username-hide-on-mobile"> <sec:authentication
-									property="name" />
-						</span> <i class="fa fa-angle-down"></i>
-					</a>
-						<ul class="dropdown-menu dropdown-menu-default">
-							<li><a href="userpanel" target="_blank"> <i class="icon-user"></i>
-									我的账户
-							</a></li>
-							<li><a href="applydata/applytable" target="_blank"> <i
-									class="icon-envelope-open"></i> 数据申请 <span
-									class="badge badge-danger"> 3 </span>
-							</a></li>
-							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
-									虚拟环境申请<span class="badge badge-success"> 7 </span>
-							</a></li>
-							<li class="divider"></li>
-							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
-							</a></li>
-							<c:url value="/logout" var="logoutUrl" />
-							<li>
-								<a href="#" id="logoutbutton">
-								<i class="icon-key"></i> 登出 </a>
-								<form action="${logoutUrl}" method="post" style="display:none;" id="logoutform">
-									<input  name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> 
-								</form> 
-							</li>
-						</ul></li>
-					<!-- END USER LOGIN DROPDOWN -->
+				<div class="top-menu">
+					<ul class="nav navbar-nav pull-right">
+						<li class="dropdown dropdown-user"><a href="javascript:;"
+							class="dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-close-others="true"> <img alt=""
+								class="img-circle" src="img/avatar3_small.jpg" /> <span
+								class="username username-hide-on-mobile"> <sec:authentication
+										property="name" />
+							</span> <i class="fa fa-angle-down"></i>
+						</a>
+							<ul class="dropdown-menu dropdown-menu-default">
+								<li><a href="userpanel" target="_blank"> <i
+										class="icon-user"></i> 我的账户
+								</a></li>
+								<li><a href="applydata/applytable" target="_blank"> <i
+										class="icon-envelope-open"></i> 数据申请 <span
+										class="badge badge-danger"> 3 </span>
+								</a></li>
+								<li><a href="applyenv/applytable"> <i
+										class="icon-rocket"></i> 虚拟环境申请<span
+										class="badge badge-success"> 7 </span>
+								</a></li>
+								<li class="divider"></li>
+								<li><a href="javascript:;"> <i class="icon-lock"></i>
+										锁屏
+								</a></li>
+								<c:url value="/logout" var="logoutUrl" />
+								<li><a href="#" id="logoutbutton"> <i class="icon-key"></i>
+										登出
+								</a>
+									<form action="${logoutUrl}" method="post"
+										style="display: none;" id="logoutform">
+										<input name="${_csrf.parameterName}" value="${_csrf.token}" />
+									</form></li>
+							</ul></li>
+						<!-- END USER LOGIN DROPDOWN -->
 
-				</ul>
-			</div>
+					</ul>
+				</div>
 			</sec:authorize>
 		</div>
 		<!-- END HEADER INNER -->
@@ -202,6 +208,11 @@
 						<option value="">请选择数据库下的表...</option>
 				</select>
 				</label>
+				<label class="checkbox-inline" style="padding-left: 20px;">
+					<a class="btn green" data-toggle="modal" href="#"
+										id="showshoppingcart">当前购物车</a>
+				</label>
+				
 				<p></p>
 				<div id="showalldatabaseinfo" style="display: block;">
 					<p></p>
@@ -249,140 +260,142 @@
 				<p></p>
 				<div id="showdatabaseinfo" style="display: none;">
 					<div class="alert alert-success">
-					<div class="row">
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_name"></span>
+						<div class="row">
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_name"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_comments"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_identifier"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_language"></span>
+							</div>
 						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_comments"></span>
+						<div class="row">
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_charset"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_subjectclassification"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_keywords"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_credibility"></span>
+							</div>
 						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_identifier"></span>
+						<div class="row">
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_resinstitution"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_resname"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_resaddress"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_respostalcode"></span>
+							</div>
 						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_language"></span>
+						<div class="row">
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_resphone"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_resemail"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_resourceurl"></span>
+							</div>
+							<div class="col-md-3">
+								<span id="showdatabaseinfo_tablenumber"></span>
+							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_charset"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_subjectclassification"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_keywords"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_credibility"></span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_resinstitution"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_resname"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_resaddress"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_respostalcode"></span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_resphone"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_resemail"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_resourceurl"></span>
-						</div>
-						<div class="col-md-3">
-							<span id="showdatabaseinfo_tablenumber"></span>
-						</div>
-					</div>
 					</div>
 					<p></p>
 					<div class="alert alert-info">
-					<div class="row">
-						<div class="col-md-10">
-							<div class="table-container">
-								<div class="table-actions-wrapper">
-									<span> </span>
+						<div class="row">
+							<div class="col-md-10">
+								<div class="table-container">
+									<div class="table-actions-wrapper">
+										<span> </span>
+
+									</div>
+
+									<table class="table table-striped table-bordered table-hover"
+										id="datatable_ajax_database">
+										<thead>
+											<tr role="row" class="heading">
+												<th width="2%"><input type="checkbox"
+													class="group-checkable"></th>
+												<th width="5%">编号</th>
+												<th width="15%">名称</th>
+												<th width="15%">备注</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="row">
+									<button class="btn btn-sm yellow table-group-action-submit">
+										<i class="fa fa-check"></i> 添加/更新购物车
+									</button>
+								</div>
+								<p></p>
+								<div class="row">
 									
 								</div>
-
-								<table class="table table-striped table-bordered table-hover"
-									id="datatable_ajax_database">
-									<thead>
-										<tr role="row" class="heading">
-											<th width="2%"><input type="checkbox"
-												class="group-checkable"></th>
-											<th width="5%">编号</th>
-											<th width="15%">名称</th>
-											<th width="15%">备注</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
 							</div>
 						</div>
-						<div class="col-md-2">
-							<div class="row">
-								<button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-check"></i> 添加/更新购物车</button>
-							</div>
-							<p></p>
-							<div class="row">
-								<a class="btn green" data-toggle="modal" href="#" id="showshoppingcart">当前购物车</a>
-							</div>
-						</div>
-					</div>
 					</div>
 				</div>
 				<div id="showtableinfo" style="display: none;">
-				<div class="alert alert-success">
-					<div class="row">
-						<span id="showtableinfo_name"></span> <span
-							id="showtableinfo_comments"></span> <span
-							id="showtableinfo_others"></span> <span
-							id="showtableinfo_fieldnumber"></span>
+					<div class="alert alert-success">
+						<div class="row">
+							<span id="showtableinfo_name"></span> <span
+								id="showtableinfo_comments"></span> <span
+								id="showtableinfo_others"></span> <span
+								id="showtableinfo_fieldnumber"></span>
+						</div>
 					</div>
-				</div>
 					<p></p>
 					<div class="alert alert-info">
-					<div class="row">
-						'
-						<div class="col-md-10">
-							<div class="table-container">
-								<div class="table-actions-wrapper">
-									<span> </span>
-								</div>
+						<div class="row">
+							'
+							<div class="col-md-10">
+								<div class="table-container">
+									<div class="table-actions-wrapper">
+										<span> </span>
+									</div>
 
-								<table class="table table-striped table-bordered table-hover"
-									id="datatable_ajax">
-									<thead>
-										<tr role="row" class="heading">
-											<th width="2%"><input type="checkbox"
-												class="group-checkable"></th>
-											<th width="5%">编号</th>
-											<th width="15%">名称</th>
-											<th width="15%">备注</th>
-											<th width="10%">最小值</th>
-											<th width="10%">最大值</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
+									<table class="table table-striped table-bordered table-hover"
+										id="datatable_ajax">
+										<thead>
+											<tr role="row" class="heading">
+												<th width="2%"><input type="checkbox"
+													class="group-checkable"></th>
+												<th width="5%">编号</th>
+												<th width="15%">名称</th>
+												<th width="15%">备注</th>
+												<th width="10%">最小值</th>
+												<th width="10%">最大值</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
 							</div>
+							<div class="col-md-2"></div>
 						</div>
-						<div class="col-md-2"></div>
-					</div>
 					</div>
 				</div>
 				<!-- End: life time stats -->
@@ -402,13 +415,11 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true"></button>
-					<h4 class="modal-title" >购物车信息</h4>
+					<h4 class="modal-title">购物车信息</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-md-12" id="selectedtableinfo">
-							
-						</div>
+							<div class="col-md-12" id="selectedtableinfo"></div>
 					</div>
 				</div>
 				<div class="modal-footer">
