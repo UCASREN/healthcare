@@ -351,6 +351,16 @@ var FormWizard = function () {
             	//确认按钮
             	if(!confirm('选择数据加入购物车后，回到本界面加载购物车！'))
             		return;
+            	$.ajax({ 
+  					type : "get",//请求方式 
+  					url : "/healthcare/deleteallshoppingcart",//发送请求地址
+  					dataType : "json", 
+  					data:{ 
+  					}, 
+  					success :function(data) {
+//  						alert("购物车内容全部清空 : "+data); 
+  					} 
+          		});
                 window.open ("/healthcare/userdatabaseview");
             	return false;
             });
@@ -358,17 +368,43 @@ var FormWizard = function () {
             $('#shoppingCart').click(function(){
             	$.ajax({ 
   					type : "get",//请求方式 
-  					url : "/healthcare/getshoppingcart",//发送请求地址
+  					url : "/healthcare/getcssshoppingcartdetail",//发送请求地址
   					dataType : "json", 
   					data:{ 
   					}, 
   					success :function(data) {
-  						//alert(data); 
-  						console.log("param : "+data);
+//  						alert("购物车内容 : "+data); 
+//  						console.log("购物车内容 : "+data);
+  						fillShoppingCart(data);
   					} 
           		});
             	return false;
             });
+            
+            function fillShoppingCart(shopdata){
+            	var flag = true;
+            	var emptyshop = $('#emptyshoppingcart');
+            	var shoptable = $('#shoptable');
+            	var shoppanel = $("#shoppanel");
+            	$.each(shopdata, function(key,values){
+            		if(flag){
+            			shoppanel.empty();
+                    	flag = false;
+            		}
+            		$("#shoppanel").append(shoptable);
+        		    console.log(key+"包含:");
+        		});
+            	
+            	if(flag){
+            		shoppanel.empty();
+            		shoppanel.append(emptyshop);
+            		emptyshop.show();
+            		shoppanel.show();
+            	}else{
+            		shoptable.show();
+            		shoppanel.show();
+            	}
+            };
             
             $("#checkbox_other").on('ifChecked', function(event){
            	 	$('#form_wizard_1 #others').show();

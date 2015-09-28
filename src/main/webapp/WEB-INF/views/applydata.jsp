@@ -384,6 +384,29 @@ request.setCharacterEncoding("UTF-8");
 														</button>
 													</div>
 												</div>
+												
+												<div style="margin-top:3px">
+													<div id="shoppanel" class="alert alert-success">
+													</div>
+												</div>
+												
+												<div id="emptyshoppingcart" class="row" style="display:none;">
+													<div class="col-md-7">
+														<ul>
+															<span>当前购物车为空！</span>
+														</ul>
+													</div>
+												</div>
+												
+												<table id="shoptable" border="1" align="center" style="display:none;">
+    												<caption align="top">购物车</caption>
+											    	<tr>
+											  		  <th width="12%"align="center">id</th>
+											  		  <th width="12%"align="center">表名</th>
+											  		  <th width="12%"align="center">相关说明</th>
+											  		</tr>
+											  	</table>
+												
 											</div>
 											
 											<div class="tab-pane" id="tab3"> 

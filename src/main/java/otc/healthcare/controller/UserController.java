@@ -101,6 +101,12 @@ public class UserController {
 		}
 		return shoppingcartDetail;
 	}
+	@RequestMapping("/deleteallshoppingcart")
+	@ResponseBody
+	public void deleteAllShoppingCart(HttpSession httpSession){
+		httpSession.removeAttribute("shoppingcart");
+	}
+	
 	@RequestMapping("/deleteshoppingcart")
 	@ResponseBody
 	public Map<String,HashSet<String>> deleteShoppingCart(@RequestParam(value = "infolist", required = true) String infolist,HttpSession httpSession){
