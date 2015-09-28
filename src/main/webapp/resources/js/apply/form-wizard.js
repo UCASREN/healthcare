@@ -127,24 +127,24 @@ var FormWizard = function () {
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
                     //用户信息
-//                	userName: {
-//                        required: true
-//                    },
-//                    userDepartment: {
-//                        required: true
-//                    },
-//                    userAddress: {
-//                        required: true,
-////                        equalTo: "#submit_form_password"
-//                    },
-//                    userTel: {
-////                        digits: true,
-//                    	required: true,
-//                    },
-//                    userEmail: {
-//                    	required:true,
-////                    	email: true
-//                    },
+                	userName: {
+                        required: true
+                    },
+                    userDepartment: {
+                        required: true
+                    },
+                    userAddress: {
+                        required: true,
+//                        equalTo: "#submit_form_password"
+                    },
+                    userTel: {
+//                        digits: true,
+                    	required: true,
+                    },
+                    userEmail: {
+                    	required:true,
+//                    	email: true
+                    },
                     
                     //数据需求
                     userDemandType:{
@@ -368,7 +368,7 @@ var FormWizard = function () {
             $('#shoppingCart').click(function(){
             	$.ajax({ 
   					type : "get",//请求方式 
-  					url : "/healthcare/getcssshoppingcartdetail",//发送请求地址
+  					url : "/healthcare/getshoppingcartAlldetail",//发送请求地址
   					dataType : "json", 
   					data:{ 
   					}, 
@@ -382,25 +382,39 @@ var FormWizard = function () {
             });
             
             function fillShoppingCart(shopdata){
+            	
             	var flag = true;
             	var emptyshop = $('#emptyshoppingcart');
             	var shoptable = $('#shoptable');
             	var shoppanel = $("#shoppanel");
+            	
             	$.each(shopdata, function(key,values){
             		if(flag){
-            			shoppanel.empty();
+            			$("tr").remove(".append");
                     	flag = false;
             		}
-            		$("#shoppanel").append(shoptable);
-        		    console.log(key+"包含:");
+            		var db_name = key.split('_')[1];
+            		for(var i=0; i<values.length; i++){
+            			var tr = $("<tr class='append'></tr>");
+            			var t_name = values[i].split('_')[3];
+            			var t_comment = values[i].split('_')[4];
+            			console.log(db_name+" : "+t_name+" : "+t_comment);
+            			tr.append('<td style="width:10%;text-align:center;">'+db_name+'</td>');
+            			tr.append('<td style="width:10%;text-align:center;">'+t_name+'</td>');
+            			tr.append('<td style="width:10%;text-align:center;">'+t_comment+'</td>');
+            			shoptable.append(tr);
+            		}
+            		shoppanel.append(shoptable);
+//        		    console.log(key+"包含:"+values);
         		});
             	
             	if(flag){
-            		shoppanel.empty();
+            		shoptable.hide();
             		shoppanel.append(emptyshop);
             		emptyshop.show();
             		shoppanel.show();
             	}else{
+            		emptyshop.hide();
             		shoptable.show();
             		shoppanel.show();
             	}

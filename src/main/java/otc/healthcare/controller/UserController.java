@@ -73,6 +73,8 @@ public class UserController {
 		Map<String,HashSet<String>> shoppingcartMap=(Map<String, HashSet<String>>) httpSession.getAttribute("shoppingcart");
 		return shoppingcartMap;
 	}
+	
+	
 	@RequestMapping("/getshoppingcartdetail")
 	@ResponseBody
 	public Map<String,ArrayList<String>> getShoppingCartDetail(HttpSession httpSession){
@@ -87,6 +89,26 @@ public class UserController {
 		}
 		return shoppingcartDetail;
 	}
+	
+	@RequestMapping("/getshoppingcartAlldetail")
+	@ResponseBody
+	public Map<String,ArrayList<String>> getShoppingCartAllDetail(HttpSession httpSession){
+		Map<String,HashSet<String>> shoppingcartMap = getShoppingCart(httpSession);
+		Map<String,ArrayList<String>> AllShoppingcartDetail = new HashMap<String,ArrayList<String>>();
+		
+		for(String databaseid : shoppingcartMap.keySet()){
+			ArrayList<String> tableinfoList = new ArrayList<String>();
+			String dbName = this.oracleSerive.getDatabaseSummary(databaseid).get("name");
+			for(String tableid : shoppingcartMap.get(databaseid)){
+				tableinfoList.add(databaseid+"_"+dbName+"_"+tableid+"_"+this.oracleSerive.getTableSummary(databaseid, tableid).get("name")
+						+"_"+this.oracleSerive.getTableSummary(databaseid, tableid).get("comments"));
+			}
+			AllShoppingcartDetail.put(databaseid+"_"+dbName, tableinfoList);
+		}
+		return AllShoppingcartDetail;
+	}
+	
+	
 	@RequestMapping("/getcssshoppingcartdetail")
 	@ResponseBody
 	public Map<String,ArrayList<String>> getCssShoppingCartDetail(HttpSession httpSession){

@@ -386,7 +386,7 @@ request.setCharacterEncoding("UTF-8");
 												</div>
 												
 												<div style="margin-top:3px">
-													<div id="shoppanel" class="alert alert-success">
+													<div id="shoppanel" class="alert alert-success" style="margin-left:180px;margin-right:180px">
 													</div>
 												</div>
 												
@@ -401,9 +401,9 @@ request.setCharacterEncoding("UTF-8");
 												<table id="shoptable" border="1" align="center" style="display:none;">
     												<caption align="top">购物车</caption>
 											    	<tr>
-											  		  <th width="12%"align="center">id</th>
-											  		  <th width="12%"align="center">表名</th>
-											  		  <th width="12%"align="center">相关说明</th>
+											  		  <th style="width:10%;text-align:center;">数据集名称</th>
+											  		  <th style="width:10%;text-align:center;">数据表名称</th>
+											  		  <th style="width:20%;text-align:center;">相关说明</th>
 											  		</tr>
 											  	</table>
 												
