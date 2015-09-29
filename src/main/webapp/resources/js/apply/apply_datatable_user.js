@@ -276,6 +276,14 @@ var Datatable = function() {
         	the.userStatusModal();
         },
         
+        setEditApplyDisable: function(){
+        	 $('tbody > tr > td:nth-child(7)', table).each(function() {
+        		if( $(this).text()!='待审核' ){
+        			$(this).next().find('.btn-editable').hide();
+        		}
+        	 });
+        },
+        
         fillStatusModal : function (hc_doc){
         	$('#modal_applyid').html(hc_doc.idApplydata);
         	$('#modal_username').html(hc_doc.name);

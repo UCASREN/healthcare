@@ -42,12 +42,32 @@ var FormWizard = function () {
 //            		console.log(key+" : "+val);
 //            	});
             	
+            	var shopdata = hc_doc.applyData.split(',');
+            	
+            	var shoptable = $('#shoptable');
+            	var shoppanel = $("#shoppanel");
+            	
+            	for(var i=1; i<shopdata.length; i++){
+//            		alert(shopdata[i]);
+        			var tr = $("<tr class='append'></tr>");
+        			var db_name = shopdata[i].split('_')[1];
+        			var t_name = shopdata[i].split('_')[3];
+        			var t_comment = shopdata[i].split('_')[4];
+//        			console.log(db_name+" : "+t_name+" : "+t_comment);
+        			tr.append('<td style="width:10%;text-align:center;">'+db_name+'</td>');
+        			tr.append('<td style="width:10%;text-align:center;">'+t_name+'</td>');
+        			tr.append('<td style="width:10%;text-align:center;">'+t_comment+'</td>');
+            		shoptable.append(tr);
+            	}
+            	shoptable.show();
+            	
+            	
             	$('#submit_form_userName').val(hc_doc.name);
             	$('#submit_form_userDepartment').val(hc_doc.department);
             	$('#submit_form_userAddress').val(hc_doc.address);
             	$('#submit_form_userTel').val(hc_doc.tel);
             	$('#submit_form_userEmail').val(hc_doc.email);
-            	
+            
             	if(hc_doc.demandtype == '数据分析需求')
             		$('#form_wizard_1 input[data-title="数据分析需求"]').iCheck('check');
             	else if(hc_doc.demandtype == '数据使用需求')
@@ -88,33 +108,64 @@ var FormWizard = function () {
             	$('#submit_form_applyDate').val(hc_doc.applyTime);
             	$('#submit_form_projectRemarks').val(hc_doc.proRemark);
 
-            }
+            }//end fillForm function
             
             //获取文档id
-            var param = $.query.get('docid');
+            var docid = $.query.get('docid');
             var applydataid = $.query.get('applydataid');
             if(applydataid != ""){
             	$('#applydataid').val(applydataid);
             }
             	
-            if(param != ""){
-            	   console.log('参数:'+param);
-            	   options={ 
-       					type : "get",//请求方式 
-       					url : "getdocdatabydocid",//发送请求地址
-       					dataType : "json", 
-       					data:{ 
-       						docid : param
-       					}, 
-       					success :function(data) {
-       						//alert(data); 
-       						console.log(param+" : "+data);
-       						fillForm(data);
-       					} 
-       				}
-       			$.ajax(options);
+            if(docid != ""){
+            	$('#docid').val(docid);
+            	console.log('参数:'+docid);
+            	
+            	options1={ 
+   					type : "get",//请求方式 
+   					url : "getdocdatabydocid",//发送请求地址
+   					dataType : "json", 
+   					data:{ 
+   						docid : docid
+   					}, 
+   					success :function(data) {
+   						//alert(data); 
+   						console.log(docid+" : "+data);
+   						options2={ 
+   		       					type : "get",//请求方式 
+   		       					url : "/healthcare/putshopdetailIntoSessionfromdb",//发送请求地址
+   		       					dataType : "json", 
+   		       					data:{ 
+   		       						docid : docid
+   		       					}, 
+   		       					success :function(data) {
+   		       						//alert(data); 
+   		       						console.log("keep session synchronization!");
+   		       						console.log(docid+" : "+data);
+   		       					} 
+   		       				}
+   		           		$.ajax(options2);
+   						fillForm(data);
+   					} 
+   				}
+       			$.ajax(options1);
+            	
             }else{
-            	console.log('参数为空:'+param)
+            	console.log('参数为空:'+docid)
+            	var emptyshop = $('#emptyshoppingcart');
+            	options2={ 
+   					type : "get",//请求方式 
+   					url : "/healthcare/deleteallshoppingcart",//发送请求地址
+   					dataType : "json", 
+   					data:{ 
+   					}, 
+   					success :function(data) {
+   						console.log("shopping is emptying!"); 
+   						emptyshop.show();
+   					} 
+   				}
+       			$.ajax(options2);
+            	
             };
             
          
@@ -279,6 +330,7 @@ var FormWizard = function () {
                     $('#form_wizard_1').find('.button-wordPreview').hide();
                     displayConfirm();
                 } else {
+                	$('#shoppanel').show();
                     $('#form_wizard_1').find('.button-next').show();
                     $('#form_wizard_1').find('.button-submit').hide();
                     $('#form_wizard_1').find('.button-wordPreview').hide();
@@ -351,16 +403,16 @@ var FormWizard = function () {
             	//确认按钮
             	if(!confirm('选择数据加入购物车后，回到本界面加载购物车！'))
             		return;
-            	$.ajax({ 
-  					type : "get",//请求方式 
-  					url : "/healthcare/deleteallshoppingcart",//发送请求地址
-  					dataType : "json", 
-  					data:{ 
-  					}, 
-  					success :function(data) {
-//  						alert("购物车内容全部清空 : "+data); 
-  					} 
-          		});
+//            	$.ajax({ 
+//  					type : "get",//请求方式 
+//  					url : "/healthcare/deleteallshoppingcart",//发送请求地址
+//  					dataType : "json", 
+//  					data:{ 
+//  					}, 
+//  					success :function(data) {
+////  						alert("购物车内容全部清空 : "+data); 
+//  					} 
+//          		});
                 window.open ("/healthcare/userdatabaseview");
             	return false;
             });
@@ -390,11 +442,15 @@ var FormWizard = function () {
             	
             	$.each(shopdata, function(key,values){
             		if(flag){
+            			$('#applydata').val("");
             			$("tr").remove(".append");
                     	flag = false;
             		}
+            		$('#applydata').val($('#applydata').val()+','+values);
+//            		alert($('#applydata').val());
             		var db_name = key.split('_')[1];
             		for(var i=0; i<values.length; i++){
+//            			alert("倪嘉志test"+values);
             			var tr = $("<tr class='append'></tr>");
             			var t_name = values[i].split('_')[3];
             			var t_comment = values[i].split('_')[4];
@@ -404,13 +460,11 @@ var FormWizard = function () {
             			tr.append('<td style="width:10%;text-align:center;">'+t_comment+'</td>');
             			shoptable.append(tr);
             		}
-            		shoppanel.append(shoptable);
 //        		    console.log(key+"包含:"+values);
         		});
             	
             	if(flag){
             		shoptable.hide();
-            		shoppanel.append(emptyshop);
             		emptyshop.show();
             		shoppanel.show();
             	}else{

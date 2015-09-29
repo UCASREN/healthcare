@@ -336,7 +336,7 @@ public class AdminController {
 		return status;
 	}
 
-	@RequestMapping(value = "/startwordOnlinetools", method = RequestMethod.GET)
+	@RequestMapping(value = "/starttool", method = RequestMethod.GET)
 	public void startWordOnlineTools(HttpServletRequest req, HttpServletResponse resp) {
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
 			ServletContext servletContext = webApplicationContext.getServletContext(); 

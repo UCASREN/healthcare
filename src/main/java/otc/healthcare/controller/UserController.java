@@ -11,8 +11,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.sun.star.awt.Key;
 
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.service.OracleService;
@@ -69,8 +72,8 @@ public class UserController {
 	@RequestMapping("/getshoppingcart")
 	@ResponseBody
 	public Map<String,HashSet<String>> getShoppingCart(HttpSession httpSession){
-		if(httpSession.getAttribute("shoppingcart")==null) httpSession.setAttribute("shoppingcart", new HashMap<String,HashSet<String>>());
-		Map<String,HashSet<String>> shoppingcartMap=(Map<String, HashSet<String>>) httpSession.getAttribute("shoppingcart");
+		if(httpSession.getAttribute("shoppingcart")==null)httpSession.setAttribute("shoppingcart", new HashMap<String,HashSet<String>>());
+		Map<String,HashSet<String>> shoppingcartMap = (Map<String, HashSet<String>>) httpSession.getAttribute("shoppingcart");
 		return shoppingcartMap;
 	}
 	
@@ -106,6 +109,35 @@ public class UserController {
 			AllShoppingcartDetail.put(databaseid+"_"+dbName, tableinfoList);
 		}
 		return AllShoppingcartDetail;
+	}
+	
+	
+	@RequestMapping(value = "/putshopdetailIntoSessionfromdb", method = RequestMethod.GET)
+	@ResponseBody
+	public boolean putShopDetailIntoSessionfromdb(HttpSession httpSession,
+			@RequestParam(value = "docid", required = false) String docid){
+		
+		this.deleteAllShoppingCart(httpSession);
+		Map<String,HashSet<String>> shoppingcartMap = getShoppingCart(httpSession);
+		
+		String shopInfo = this.oracleSerive.getApplyDataByDocId(docid);
+		if(shopInfo==null || shopInfo.equals(""))
+			return false;
+		
+		String[] shops = shopInfo.split(",");
+		for(int i=1; i<shops.length; i++){
+			String db_id = shops[i].split("_")[0];
+			String t_id = shops[i].split("_")[2];
+			if(shoppingcartMap.containsKey(db_id)){
+				shoppingcartMap.get(db_id).add(t_id);
+			}else{
+				HashSet<String> set = new HashSet<>();
+				set.add(t_id);
+				shoppingcartMap.put(db_id, set);
+			}
+		}
+		httpSession.setAttribute("shoppingcart", shoppingcartMap);
+		return true;
 	}
 	
 	

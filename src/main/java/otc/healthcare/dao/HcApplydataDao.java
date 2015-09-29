@@ -130,7 +130,7 @@ public class HcApplydataDao {
 		}
 	}
 
-	//通过属性值得到--这个
+	//通过applyid得到--hql
 	public HcApplydata findByApplyID(Object value) {
 		String propertyName = "idApplydata";
 		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);

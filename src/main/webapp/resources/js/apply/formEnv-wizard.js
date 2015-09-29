@@ -91,30 +91,31 @@ var FormWizard = function () {
             }
             
             //获取文档id
-            var param = $.query.get('docid');
+            var docid = $.query.get('docid');
             var applydataid = $.query.get('applydataid');
             if(applydataid != ""){
             	$('#applydataid').val(applydataid);
             }
             	
-            if(param != ""){
-            	   console.log('参数:'+param);
+            if(docid != ""){
+            	   $('#docid').val(docid);
+            	   console.log('参数:'+docid);
             	   options={ 
        					type : "get",//请求方式 
        					url : "getdocdatabydocid",//发送请求地址
        					dataType : "json", 
        					data:{ 
-       						docid : param
+       						docid : docid
        					}, 
        					success :function(data) {
        						//alert(data); 
-       						console.log(param+" : "+data);
+       						console.log(docid+" : "+data);
        						fillForm(data);
        					} 
        				}
        			$.ajax(options);
             }else{
-            	console.log('参数为空:'+param)
+            	console.log('参数为空:'+docid)
             };
             
          

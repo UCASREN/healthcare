@@ -387,25 +387,29 @@ request.setCharacterEncoding("UTF-8");
 												
 												<div style="margin-top:3px">
 													<div id="shoppanel" class="alert alert-success" style="margin-left:180px;margin-right:180px">
+														<input type="hidden" id="applydata" name="applydata" value=""></input>
+														
+														<div id="emptyshoppingcart" class="row" style="display:none;">
+															<div class="col-md-7">
+																<ul>
+																	<span>当前购物车为空！</span>
+																</ul>
+															</div>
+														</div>
+														
+														<table id="shoptable" border="1" align="center" style="display:none;">
+		    												<caption align="top">购物车</caption>
+													    	<tr>
+													  		  <th style="width:10%;text-align:center;">数据集名称</th>
+													  		  <th style="width:10%;text-align:center;">数据表名称</th>
+													  		  <th style="width:20%;text-align:center;">相关说明</th>
+													  		</tr>
+											  			</table>
+														
 													</div>
 												</div>
 												
-												<div id="emptyshoppingcart" class="row" style="display:none;">
-													<div class="col-md-7">
-														<ul>
-															<span>当前购物车为空！</span>
-														</ul>
-													</div>
-												</div>
 												
-												<table id="shoptable" border="1" align="center" style="display:none;">
-    												<caption align="top">购物车</caption>
-											    	<tr>
-											  		  <th style="width:10%;text-align:center;">数据集名称</th>
-											  		  <th style="width:10%;text-align:center;">数据表名称</th>
-											  		  <th style="width:20%;text-align:center;">相关说明</th>
-											  		</tr>
-											  	</table>
 												
 											</div>
 											
@@ -521,6 +525,7 @@ request.setCharacterEncoding("UTF-8");
 											
 											<div class="tab-pane" id="tab4">
 												<input type="hidden" id="applydataid" name="applydataid" value="">
+												<input type="hidden" id="docid" name="docid" value="">
 												<h3 class="block">请确认您填写的信息</h3>
 												<h4 class="form-section">用户信息</h4>
 												<div class="form-group" style="margin-bottom:0px">

@@ -933,8 +933,64 @@ public class OracleService implements IService {
 	 * 数据申请
 	 */
 	@Transactional
-	public void insertApplyData(HttpServletRequest req, String f_path_name) {
+	public void insertApplyData(HttpServletRequest req, String f_name, boolean update) {
+		
+		if(update){
+			//begin updata
+			HcApplydata hc_applydata = hcApplydataDao.findByDocName(f_name);
+			
+			String hc_userName = req.getParameter("userName");
+			String hc_userDepartment = req.getParameter("userDepartment");
+			String hc_userAddress = req.getParameter("userAddress");
+			String hc_userTel = req.getParameter("userTel");
+			String hc_userEmail = req.getParameter("userEmail");
 
+			String hc_userDemandType = req.getParameter("userDemandType");
+			String hc_userDemand = req.getParameter("userDemand");
+
+			String hc_useFields = req.getParameter("allUseField");//
+			String hc_projectName = req.getParameter("projectName");
+			String hc_projectChairman = req.getParameter("projectChairman");
+			String hc_projectSource = req.getParameter("projectSource");
+			String hc_projectUndertaking = req.getParameter("projectUndertaking");
+			String hc_applyDate = req.getParameter("applyDate");
+			String hc_projectRemarks = req.getParameter("projectRemarks");
+			
+			String applydata = req.getParameter("applydata");
+			
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			hc_applydata.setHcUsername(user.getUsername());// hc系统用户名
+//			hc_applydata.setDocName(f_name);// 主键
+
+			hc_applydata.setName(hc_userName);// 申请表填写用户
+			hc_applydata.setDepartment(hc_userDepartment);
+			hc_applydata.setAddress(hc_userAddress);
+			hc_applydata.setTel(hc_userTel);
+			hc_applydata.setEmail(hc_userEmail);
+
+			hc_applydata.setDemandtype(hc_userDemandType);
+			hc_applydata.setDemand(hc_userDemand);
+
+			hc_applydata.setProUsefield(hc_useFields);
+			hc_applydata.setProName(hc_projectName);
+			hc_applydata.setProChair(hc_projectChairman);
+			hc_applydata.setProSource(hc_projectSource);
+			hc_applydata.setProUndertake(hc_projectUndertaking);
+			hc_applydata.setApplyTime(hc_applyDate);
+			hc_applydata.setProRemark(hc_projectRemarks);
+			
+			hc_applydata.setApplyData(applydata);
+			
+			// 提交后，apply标志为1
+			hc_applydata.setFlagApplydata("1");
+
+			hcApplydataDao.attachDirty(hc_applydata);
+			System.out.println("update hc_applydata ok");
+			return;
+		}
+
+		//begin insert
 		HcApplydata hc_applydata = new HcApplydata();
 
 		String hc_userName = req.getParameter("userName");
@@ -953,11 +1009,13 @@ public class OracleService implements IService {
 		String hc_projectUndertaking = req.getParameter("projectUndertaking");
 		String hc_applyDate = req.getParameter("applyDate");
 		String hc_projectRemarks = req.getParameter("projectRemarks");
+		
+		String applydata = req.getParameter("applydata");
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		hc_applydata.setHcUsername(user.getUsername());// hc系统用户名
-		hc_applydata.setDocName(f_path_name);// 主键
+		hc_applydata.setDocName(f_name);// 主键
 
 		hc_applydata.setName(hc_userName);// 申请表填写用户
 		hc_applydata.setDepartment(hc_userDepartment);
@@ -975,11 +1033,13 @@ public class OracleService implements IService {
 		hc_applydata.setProUndertake(hc_projectUndertaking);
 		hc_applydata.setApplyTime(hc_applyDate);
 		hc_applydata.setProRemark(hc_projectRemarks);
-
+		hc_applydata.setApplyData(applydata);
+		
 		// 提交后，apply标志为1
 		hc_applydata.setFlagApplydata("1");
 
 		hcApplydataDao.attachDirty(hc_applydata);
+		
 		System.out.println("insert hc_applydata ok");
 	}
 
@@ -1017,6 +1077,11 @@ public class OracleService implements IService {
 		return ALLdocDataList;
 	}
 	
+	@Transactional
+	public String getApplyDataByDocId(String docid) {
+		HcApplydata hcapplydata = hcApplydataDao.findByDocName(docid);
+		return hcapplydata.getApplyData();	
+	}
 
 	/*
 	 * 删除applydata信息
@@ -1148,6 +1213,5 @@ public class OracleService implements IService {
 		BigDecimal bd = new BigDecimal(applyid);
 		hcApplyenvDao.setApplyFailReason(bd,rejectReason);
 	}
-	
 
 }

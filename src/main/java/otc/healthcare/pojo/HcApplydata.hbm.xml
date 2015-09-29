@@ -94,5 +94,8 @@
         <property name="applyRejectReason" type="string">
             <column name="APPLY_REJECT_REASON" length="255" />
         </property>
+         <property name="applyData" type="string">
+            <column name="APPLY_DATA" length="4000" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -52,6 +52,7 @@ var applyDatatable = function () {
 //            console.log("hello");
 //            console.log(data);
             applyDataGrid.setMotalClickEvent();
+            applyDataGrid.setEditApplyDisable();
         } );
         
         //table-advanced-search button click --- 高级搜索工具

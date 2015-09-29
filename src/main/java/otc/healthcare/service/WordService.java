@@ -108,6 +108,7 @@ public class WordService implements IService{
 		    ServletContext servletContext = webApplicationContext.getServletContext(); 
 	        getConfiguration();
 	        Template t = getTemplates(servletContext,typeName);  
+	        //重复的文件会覆盖
 	        File f = new File(f_path_name);
 	        try {  
 	        	

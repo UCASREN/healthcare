@@ -121,11 +121,20 @@ public class ApplyEnvController {
 	public String createDataApplyWordFromFtl(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			req. setCharacterEncoding("UTF-8");
-			String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
-			String f_name = UUID.randomUUID() + ".doc";
-			String f_path_name = docPath + "/" + f_name;
-			this.oracleService.insertApplyEnv(req, f_name);
-			this.WordService.createWordFromFtl(req, resp, f_path_name);
+			String docid = req.getParameter("docid");
+			if(docid==null || docid.equals("")){
+				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
+				String f_name = UUID.randomUUID() + ".doc";
+				String f_path_name = docPath + "/" + f_name;
+				this.oracleService.insertApplyData(req, f_name, false);
+				this.WordService.createWordFromFtl(req, resp, f_path_name);
+			}else{
+				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
+				String f_path_name = docPath + "/" + docid;
+				this.oracleService.insertApplyData(req, docid, true);
+				this.WordService.createWordFromFtl(req, resp, f_path_name);
+			}
+			
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
