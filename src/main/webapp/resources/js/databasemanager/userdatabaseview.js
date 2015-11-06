@@ -21,6 +21,7 @@ var TableAjax_alldatabase = function () {
             onSuccess: function (grid) {
             	console.log(alldatabase_grid.getDataTable().ajax.json().recordsTotal);
             	$("#showalldatabaseinfo_number").text("数据库的数目："+alldatabase_grid.getDataTable().ajax.json().recordsTotal);
+            	
             },
             onError: function (grid) {
                 // execute some code on network or other general error  
@@ -51,6 +52,7 @@ var TableAjax_alldatabase = function () {
                 ]// set first column as a default sort by asc
             }
         });
+       
     }
 
     return {
@@ -66,6 +68,7 @@ var TableAjax_alldatabase = function () {
 
 }();
 TableAjax_alldatabase.init();
+
 var TableAjax_database = function () {
 
     var initPickers = function () {
@@ -111,9 +114,21 @@ var TableAjax_database = function () {
                 },
                 "order": [
                     [1, "asc"]
-                ]// set first column as a default sort by asc
+                ],// set first column as a default sort by asc
+                "columnDefs": [ {
+                    "targets": [ 1 ],
+                    "visible": false
+                }]
             }
         });
+//        grid.getDataTable().on( 'draw.dt', function (e, settings, data) {
+//        	// Get the column API object
+//        	var tempd=grid.getDataTable();
+//            var column = grid.getDataTable().column( 1 );
+//
+//            // Toggle the visibility
+//            column.visible( false );
+//        } );
         // handle group actionsubmit button click
         /*
         grid.getTableWrapper().on('click', '.table-group-action-submit', function (e) {
@@ -231,7 +246,11 @@ var TableAjax = function () {
                 },
                 "order": [
                     [1, "asc"]
-                ]// set first column as a default sort by asc
+                ],// set first column as a default sort by asc
+                "columnDefs": [ {
+                    "targets": [ 1 ],
+                    "visible": false
+                }]
             }
         });
         
@@ -313,6 +332,7 @@ var TableAjax = function () {
         			    		$("#showtableinfo_comments").text("描述："+data.comments);
 //        			    		$("#showtableinfo_others").text("其它："+data.others);
         			    		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
+        			    		$("#showtableinfo_numrows").text("数据量："+data.numrows);
         			    	}
         			    });
         			});

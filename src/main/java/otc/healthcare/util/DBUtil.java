@@ -105,11 +105,13 @@ public class DBUtil {
 			while (res.next()) {
 				results.add(res.getString(1));
 			}
+			res.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			//this.close();
 		}
+		
 		return results;
 	}
 

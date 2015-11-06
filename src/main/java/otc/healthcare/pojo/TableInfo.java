@@ -11,6 +11,7 @@ public class TableInfo {
 	private String databaseid;
 	private String name;
 	private String comments;
+	private String numrows;
 	private List<FieldInfo> fieldlist;
 	@XmlElement(name = "tableid")
 	public String getTableid() {
@@ -58,5 +59,18 @@ public class TableInfo {
 	 */
 	public void setFieldlist(List<FieldInfo> fieldlist) {
 		this.fieldlist = fieldlist;
+	}
+	/**
+	 * @return the numrows
+	 */
+	@XmlElement(name = "numrows")
+	public String getNumrows() {
+		return numrows;
+	}
+	/**
+	 * @param numrows the numrows to set
+	 */
+	public void setNumrows(String numrows) {
+		this.numrows = numrows;
 	}
 }

@@ -155,6 +155,7 @@ public class OracleService implements IService {
 				tim.setDatabaseid(res.getString(2));
 				tim.setName(res.getString(3));
 				tim.setComments(res.getString(4));
+				tim.setNumrows(res.getString(5)==null?"0":res.getString(5));
 				resultList.add(tim);
 			}
 		} catch (Exception e) {
@@ -187,6 +188,7 @@ public class OracleService implements IService {
 				tim.setDatabaseid(res.getString(2));
 				tim.setName(res.getString(3));
 				tim.setComments(res.getString(4));
+				tim.setNumrows(res.getString(5)==null?"0":res.getString(5));
 				resultList.add(tim);
 			}
 		} catch (Exception e) {
@@ -212,6 +214,7 @@ public class OracleService implements IService {
 				tableSummary.put("name", res.getString(3));
 				tableSummary.put("comments", res.getString(4));
 				tableSummary.put("others", "still need to be filled");
+				tableSummary.put("numrows", res.getString(5)==null?"0":res.getString(5));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -343,13 +346,15 @@ public class OracleService implements IService {
 			for (String tableName : tempList) {
 				String talbeifno_query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='"
 						+ databaseName + "' AND table_type='TABLE' AND TABLE_NAME='" + tableName + "'";
+				String talbeifno_query_sql_num_rows="select NUM_ROWS from SYS.ALL_TABLES where TABLE_NAME='"+tableName+"'";
+				String  numRows= dbUtil.showListResults(talbeifno_query_sql_num_rows).get(0);
 				ResultSet rs = dbUtil.query(talbeifno_query_sql);
 				try {
 					while (rs.next()) {
 						dbUtilNative.query("select TABLE_TABLEID.nextval from dual");
 						String tableId = dbUtilNative.showListResults("select TABLE_TABLEID.currval from dual").get(0);
-						dbUtilNative.execute("insert into HC_TABLE(TABLEID,NAME,COMMENTS,DATABASEID) values(" + tableId
-								+ ",'" + tableName + "','" + rs.getString(2) + "'," + databaseId + ")");
+						dbUtilNative.execute("insert into HC_TABLE(TABLEID,NAME,COMMENTS,NUMROWS,DATABASEID) values(" + tableId
+								+ ",'" + tableName + "','" + rs.getString(2)+"',"+numRows+ "," + databaseId + ")");
 						//
 						String fieldinfo_query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
 								+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
@@ -755,7 +760,7 @@ public class OracleService implements IService {
 		return null;
 	}
 
-	public Integer createTable(String databaseid, String tablename, String comments) {// insert
+	public Integer createTable(String databaseid, String tablename, String comments,String numRows) {// insert
 																						// into
 																						// database
 																						// table
@@ -767,8 +772,8 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			String vsql = "insert into SYSTEM.HC_TABLE (TABLEID,DATABASEID,NAME,COMMENTS) values(TABLE_TABLEID.nextval,"
-					+ databaseid + ",'" + tablename + "','" + comments + "')";
+			String vsql = "insert into SYSTEM.HC_TABLE (TABLEID,DATABASEID,NAME,COMMENTS,NUMROWS) values(TABLE_TABLEID.nextval,"
+					+ databaseid + ",'" + tablename + "','" + comments+ "','" +numRows+ "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
 					"select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE");
 		} catch (Exception e) {
@@ -856,7 +861,7 @@ public class OracleService implements IService {
 		return false;
 	}
 
-	public boolean changeTable(String databaseid, String tableid, String newName, String newComments) {
+	public boolean changeTable(String databaseid, String tableid, String newName, String newComments,String newNumRows) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -872,6 +877,11 @@ public class OracleService implements IService {
 			}
 			if (newComments != null) {
 				sql = "update SYSTEM.HC_TABLE set COMMENTS='" + newComments + "'   where DATABASEID=" + databaseid
+						+ " and TABLEID=" + tableid;
+				dbUtil.execute(sql);
+			}
+			if (newNumRows != null) {
+				sql = "update SYSTEM.HC_TABLE set NUMROWS='" + newNumRows + "'   where DATABASEID=" + databaseid
 						+ " and TABLEID=" + tableid;
 				dbUtil.execute(sql);
 			}

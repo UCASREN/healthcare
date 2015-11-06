@@ -309,10 +309,20 @@
 				<div id="showtableinfo" style="display: none;">
 					<div class="alert alert-success">
 						<div class="row">
-							<span id="showtableinfo_name"></span> <span
-								id="showtableinfo_comments"></span><!--  <span
-								id="showtableinfo_others"></span>  --><span
+							<span id="showtableinfo_name"></span> 
+								
+						</div>
+						<div class="row">
+							<span
+								id="showtableinfo_comments"></span>
+						</div>
+						<div class="row">
+							<span
 								id="showtableinfo_fieldnumber"></span>
+						</div>
+						<div class="row">
+							<span
+								id="showtableinfo_numrows"></span>
 						</div>
 					</div>
 					<p></p>
