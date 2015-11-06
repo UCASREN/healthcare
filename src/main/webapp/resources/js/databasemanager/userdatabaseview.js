@@ -49,7 +49,11 @@ var TableAjax_alldatabase = function () {
                 },
                 "order": [
                     [1, "asc"]
-                ]// set first column as a default sort by asc
+                ],// set first column as a default sort by asc
+                "columnDefs": [ {
+                    "targets": [ 1 ],
+                    "visible": false
+                }]
             }
         });
        
@@ -116,7 +120,7 @@ var TableAjax_database = function () {
                     [1, "asc"]
                 ],// set first column as a default sort by asc
                 "columnDefs": [ {
-                    "targets": [ 1 ],
+                    "targets": [ 2 ],
                     "visible": false
                 }]
             }
@@ -248,7 +252,10 @@ var TableAjax = function () {
                     [1, "asc"]
                 ],// set first column as a default sort by asc
                 "columnDefs": [ {
-                    "targets": [ 1 ],
+                    "targets": [ 0 ],
+                    "visible": false
+                }, {
+                    "targets": [ 2 ],
                     "visible": false
                 }]
             }

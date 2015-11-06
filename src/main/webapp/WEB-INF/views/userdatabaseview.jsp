@@ -231,6 +231,7 @@
 									<thead>
 										<tr role="row" class="heading">
 											<th>编号</th>
+											<th>隐藏实际编号</th>
 											<th>名称</th>
 											<th>备注</th>
 											<th>标识符</th>
@@ -285,6 +286,7 @@
 												<th width="2%"><input type="checkbox"
 													class="group-checkable"></th>
 												<th width="5%">编号</th>
+												<th>隐藏实际编号</th>
 												<th width="15%">名称</th>
 												<th width="15%">描述</th>
 											</tr>
@@ -342,6 +344,7 @@
 												<th width="2%"><input type="checkbox"
 													class="group-checkable"></th>
 												<th width="5%">编号</th>
+												<th>隐藏实际编号</th>
 												<th width="15%">名称</th>
 												<th width="15%">描述</th>
 												<th width="10%">最小值</th>

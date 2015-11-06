@@ -315,6 +315,7 @@ public class MetadataController {
 			tempStore.add("<input type='checkbox' name='id" + tableInfo.getTableid() + "' value='"
 					+ tableInfo.getDatabaseid()+"_"+tableInfo.getTableid() + "' "+(getCheckedState(httpSession,
 							tableInfo.getDatabaseid(),tableInfo.getTableid())?"checked":"")+">");
+			tempStore.add((i+1)+"");
 			tempStore.add(tableInfo.getTableid());
 			tempStore.add(tableInfo.getName());
 			tempStore.add(tableInfo.getComments());
@@ -357,6 +358,7 @@ public class MetadataController {
 		for (int i = start; i < end; i++) {
 			DatabaseInfo databaseInfo = list.get(i);
 			ArrayList<String> tempStore = new ArrayList<String>();
+			tempStore.add((i+1)+"");
 			tempStore.add(databaseInfo.getDatabaseid());
 			tempStore.add(databaseInfo.getName());
 			tempStore.add(databaseInfo.getComments());
@@ -431,6 +433,7 @@ public class MetadataController {
 			ArrayList<String> tempStore = new ArrayList<String>();
 			tempStore.add("<input type='checkbox' name='id" + fieldInfo.getFieldid() + "' value='"
 					+ fieldInfo.getFieldid() + "'>");
+			tempStore.add((i+1)+"");
 			tempStore.add(fieldInfo.getFieldid());
 			tempStore.add(fieldInfo.getName());
 			tempStore.add(fieldInfo.getComments());
