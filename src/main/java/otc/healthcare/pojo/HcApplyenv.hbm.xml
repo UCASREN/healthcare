@@ -94,5 +94,8 @@
         <property name="applyRejectReason" type="string">
             <column name="APPLY_REJECT_REASON" />
         </property>
+         <property name="envUrl" type="string">
+            <column name="ENV_URL" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -30,6 +30,7 @@ public class HcApplyenv implements java.io.Serializable {
 	private String flagApplydata;
 	private String applyTime;
 	private String applyRejectReason;
+	private String envUrl;
 
 	public HcApplyenv() {
 	}
@@ -215,6 +216,14 @@ public class HcApplyenv implements java.io.Serializable {
 
 	public void setApplyRejectReason(String applyRejectReason) {
 		this.applyRejectReason = applyRejectReason;
+	}
+
+	public String getEnvUrl() {
+		return envUrl;
+	}
+
+	public void setEnvUrl(String envUrl) {
+		this.envUrl = envUrl;
 	}
 
 }

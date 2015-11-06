@@ -127,12 +127,12 @@ public class ApplyDataController {
 				String f_name = UUID.randomUUID() + ".doc";
 				String f_path_name = docPath + "/" + f_name;
 				this.oracleService.insertApplyData(req, f_name, false);
-				this.WordService.createWordFromFtl(req, resp, f_path_name);
+				this.WordService.createWordFromFtl(req, resp, f_path_name, "data");
 			}else{
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_path_name = docPath + "/" + docid;
 				this.oracleService.insertApplyData(req, docid, true);
-				this.WordService.createWordFromFtl(req, resp, f_path_name);
+				this.WordService.createWordFromFtl(req, resp, f_path_name, "data");
 			}
 			
 			

@@ -1138,7 +1138,60 @@ public class OracleService implements IService {
 	}
 	
 	@Transactional
-	public void insertApplyEnv(HttpServletRequest req, String f_path_name) {
+	public void insertApplyEnv(HttpServletRequest req, String f_name, boolean update) {
+		
+		if(update){
+			//begin update envApply
+			HcApplyenv hc_applyenv = hcApplyenvDao.findByDocName(f_name);
+			
+			String hc_userName = req.getParameter("userName");
+			String hc_userDepartment = req.getParameter("userDepartment");
+			String hc_userAddress = req.getParameter("userAddress");
+			String hc_userTel = req.getParameter("userTel");
+			String hc_userEmail = req.getParameter("userEmail");
+
+			String hc_userDemandType = req.getParameter("userDemandType");
+			String hc_userDemand = req.getParameter("userDemand");
+
+			String hc_useFields = req.getParameter("allUseField");//
+			String hc_projectName = req.getParameter("projectName");
+			String hc_projectChairman = req.getParameter("projectChairman");
+			String hc_projectSource = req.getParameter("projectSource");
+			String hc_projectUndertaking = req.getParameter("projectUndertaking");
+			String hc_applyDate = req.getParameter("applyDate");
+			String hc_projectRemarks = req.getParameter("projectRemarks");
+			
+			
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			hc_applyenv.setHcUsername(user.getUsername());// hc系统用户名
+//			hc_applyenv.setDocName(f_name);// 主键
+
+			hc_applyenv.setName(hc_userName);// 申请表填写用户
+			hc_applyenv.setDepartment(hc_userDepartment);
+			hc_applyenv.setAddress(hc_userAddress);
+			hc_applyenv.setTel(hc_userTel);
+			hc_applyenv.setEmail(hc_userEmail);
+
+			hc_applyenv.setDemandtype(hc_userDemandType);
+			hc_applyenv.setDemand(hc_userDemand);
+
+			hc_applyenv.setProUsefield(hc_useFields);
+			hc_applyenv.setProName(hc_projectName);
+			hc_applyenv.setProChair(hc_projectChairman);
+			hc_applyenv.setProSource(hc_projectSource);
+			hc_applyenv.setProUndertake(hc_projectUndertaking);
+			hc_applyenv.setApplyTime(hc_applyDate);
+			hc_applyenv.setProRemark(hc_projectRemarks);
+			
+			// 提交后，apply标志为1
+			hc_applyenv.setFlagApplydata("1");
+
+			hcApplyenvDao.attachDirty(hc_applyenv);
+			System.out.println("update hc_applyenv ok");
+			return;
+		}
+		
 		HcApplyenv hc_applyenv = new HcApplyenv();
 
 		String hc_userName = req.getParameter("userName");
@@ -1161,7 +1214,7 @@ public class OracleService implements IService {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		hc_applyenv.setHcUsername(user.getUsername());// hc系统用户名
-		hc_applyenv.setDocName(f_path_name);// 主键
+		hc_applyenv.setDocName(f_name);// 主键
 
 		hc_applyenv.setName(hc_userName);// 申请表填写用户
 		hc_applyenv.setDepartment(hc_userDepartment);

@@ -10,7 +10,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8"/>
-<title>数据申请</title>
+<title>数据申请历史记录</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
