@@ -70,9 +70,9 @@ public class WordService implements IService{
 		return configuration;
 	}
 	
-	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp, String f_path_name){
+	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp, String f_path_name, String applyType){
 		Map<String,Object> dataMap = new HashMap<String,Object>();
-		getData(req , dataMap);
+		getData(req , dataMap, applyType);
 	    createDoc(dataMap, "apply",f_path_name); 
         System.out.println("加载word模版成功，生成word文件！");
 	}
@@ -153,7 +153,7 @@ public class WordService implements IService{
 		return t;
 	}
 
-	private void getData(HttpServletRequest req, Map<String, Object> dataMap) {
+	private void getData(HttpServletRequest req, Map<String, Object> dataMap, String applyType) {
 		
 		String hc_userName = req.getParameter("userName");
 		String hc_userDepartment  = req.getParameter("userDepartment");
@@ -187,7 +187,14 @@ public class WordService implements IService{
 			dataMap.put("t2","√");
 			dataMap.put("t1","□");
 		}
-		dataMap.put("hc_UserDemand",hc_userDemand);
+		
+		if(applyType.equals("data")){
+			String applydata = req.getParameter("applydata");
+			dataMap.put("hc_UserDemand",hc_userDemand+"                   "+applydata);
+		}else{
+			dataMap.put("hc_UserDemand",hc_userDemand);
+		}
+		
 		
 		//project info(5)
 		String[] useFields = hc_useFields.split(",");

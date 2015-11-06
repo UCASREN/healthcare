@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="false"%>
 <jsp:useBean id="databaseinfo"  class="otc.healthcare.pojo.DatabaseInfo" scope="request" ></jsp:useBean>

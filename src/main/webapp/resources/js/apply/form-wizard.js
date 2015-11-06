@@ -41,7 +41,7 @@ var FormWizard = function () {
 //            	$.each(hc_doc,function(key,val){
 //            		console.log(key+" : "+val);
 //            	});
-            	
+            	$('#applydata').val(hc_doc.applyData);
             	var shopdata = hc_doc.applyData.split(',');
             	
             	var shoptable = $('#shoptable');

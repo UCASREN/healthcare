@@ -118,7 +118,7 @@ public class ApplyEnvController {
 	}
 	
 	@RequestMapping(value = "/createdataword", method = RequestMethod.POST)
-	public String createDataApplyWordFromFtl(HttpServletRequest req, HttpServletResponse resp) {
+	public String createEnvApplyWordFromFtl(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			req. setCharacterEncoding("UTF-8");
 			String docid = req.getParameter("docid");
@@ -126,13 +126,13 @@ public class ApplyEnvController {
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_name = UUID.randomUUID() + ".doc";
 				String f_path_name = docPath + "/" + f_name;
-				this.oracleService.insertApplyData(req, f_name, false);
-				this.WordService.createWordFromFtl(req, resp, f_path_name);
+				this.oracleService.insertApplyEnv(req, f_name, false);
+				this.WordService.createWordFromFtl(req, resp, f_path_name, "env");
 			}else{
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_path_name = docPath + "/" + docid;
-				this.oracleService.insertApplyData(req, docid, true);
-				this.WordService.createWordFromFtl(req, resp, f_path_name);
+				this.oracleService.insertApplyEnv(req, docid, true);
+				this.WordService.createWordFromFtl(req, resp, f_path_name, "env");
 			}
 			
 		} catch (UnsupportedEncodingException e) {
@@ -224,7 +224,6 @@ public class ApplyEnvController {
 	}
 	
 	private String getApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
-		// TODO Auto-generated method stub
 		String status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-warning\">出错了</span>";
 		switch (flag_Apply) {
 		case "1":
@@ -234,7 +233,7 @@ public class ApplyEnvController {
 			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-default\">审核中</span>";
 			break;
 		case "3":
-			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-success\">审核通过</span>";
+			status= "<button id=\"a"+ApplyID+"\"  class=\"btn btn-success\">审核通过</button>";
 			break;
 		case "4":
 			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-danger\">审核失败</span>";
