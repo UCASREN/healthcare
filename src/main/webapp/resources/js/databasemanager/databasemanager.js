@@ -273,8 +273,10 @@ var ajaxTable2 = function() {
 				+ aData[1] + '">';
 		jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="'
 				+ aData[2] + '">';
-		jqTds[3].innerHTML = '<a class="edit" href="">保存</a>';
-		jqTds[4].innerHTML = '<a class="cancel" href="">取消</a>';
+		jqTds[3].innerHTML = '<input type="text" class="form-control input-small" value="'
+			+ aData[3] + '">';
+		jqTds[4].innerHTML = '<a class="edit" href="">保存</a>';
+		jqTds[5].innerHTML = '<a class="cancel" href="">取消</a>';
 		ComponentsPickers.init();
 	}
 
@@ -282,8 +284,9 @@ var ajaxTable2 = function() {
 		var jqInputs = $('input', nRow);
 		oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
-		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 3, false);
-		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 4, false);
+		oTable.fnUpdate(jqInputs[2].value, nRow, 3, false);
+		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 4, false);
+		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 5, false);
 		oTable.fnDraw();
 		// 向后台更改数据逻辑
 		var aData = oTable.fnGetData(nRow);
@@ -298,7 +301,8 @@ var ajaxTable2 = function() {
 					databaseid:$("#whichtableid_belong").text(),
 					tableid:$("#whichtableid").text(),
 					name:aData[1], 
-					comments:aData[2]
+					comments:aData[2],
+					datadictionary:aData[3]
 				}, 
 				success :function(data) {
 					alert(data); 
@@ -320,7 +324,8 @@ var ajaxTable2 = function() {
 						tableid:$("#whichtableid").text(),
 						fieldid:aData[0],
 						name:aData[1], 
-						comments:aData[2]
+						comments:aData[2],
+						datadictionary:aData[3]
 					}, 
 					success :function(data) {
 						alert(data); 
@@ -394,7 +399,7 @@ var ajaxTable2 = function() {
 					}
 				}
 
-				var aiNew = oTable.fnAddData([ "自动生成", "", "",
+				var aiNew = oTable.fnAddData([ "自动生成", "", "","",
 						'<a class="edit" href="">编辑</a>',
 						'<a class="delete" href="">删除</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
@@ -640,7 +645,7 @@ var AjaxTree = function() {
 							/* if (field.fieldid > maxId)
 								maxId = field.fieldid; */
 							oTable2.fnAddData([ field.fieldid, field.name,
-							                   field.comments, '<a class="edit" href="">编辑</a>',
+							                   field.comments,field.datadictionary, '<a class="edit" href="">编辑</a>',
 									'<a class="delete" href="">删除</a>' ]);
 						});
 					});
@@ -667,7 +672,7 @@ var AjaxTree = function() {
 						/* if (field.fieldid > maxId)
 							maxId = field.fieldid; */
 						oTable2.fnAddData([ field.fieldid, field.name,
-						                   field.comments, '<a class="edit" href="">编辑</a>',
+						                   field.comments, field.datadictionary,'<a class="edit" href="">编辑</a>',
 								'<a class="delete" href="">删除</a>' ]);
 					});
 				});

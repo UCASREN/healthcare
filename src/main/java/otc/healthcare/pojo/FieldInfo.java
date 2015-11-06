@@ -13,6 +13,7 @@ public class FieldInfo {
 	private String datalength;
 	private String nullable;
 	private String comments;
+	private String datadictionary;
 
 	@XmlElement(name = "datalength")
 	public String getDatalength() {
@@ -74,6 +75,19 @@ public class FieldInfo {
 	public String toString() {
 		return "FieldInfoModel [fieldid="+fieldid+", databaseid=" + databaseid+ ", tableid=" + tableid + ", name=" + name
 				+ ", datatype=" + datatype+ ", comments=" + comments + "]";
+	}
+	/**
+	 * @return the datadictionary
+	 */
+	@XmlElement(name = "datadictionary")
+	public String getDatadictionary() {
+		return datadictionary;
+	}
+	/**
+	 * @param datadictionary the datadictionary to set
+	 */
+	public void setDatadictionary(String datadictionary) {
+		this.datadictionary = datadictionary;
 	}
 	
 }

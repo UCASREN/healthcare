@@ -225,7 +225,8 @@ public class MetadataController {
 			@RequestParam(value = "tableid", required = false) String tableid,
 			@RequestParam(value = "fieldid", required = false) String fieldid,
 			@RequestParam(value = "name", required = false) String name,
-			@RequestParam(value = "comments", required = false) String comments) {
+			@RequestParam(value = "comments", required = false) String comments,
+			@RequestParam(value = "datadictionary", required = false) String datadictionary) {
 		String operationResult = "";
 		switch (operation) {
 		case "delete": {
@@ -238,12 +239,12 @@ public class MetadataController {
 			// +
 			// this.oracleSerive.createTable(parent.substring(parent.indexOf("_")
 			// + 1), text, comments==null?"备注为空":comments);
-			this.oracleSerive.createField(databaseid, tableid, name, comments);
+			this.oracleSerive.createField(databaseid, tableid, name, comments,datadictionary);
 			operationResult = "success";
 		}
 			break;
 		case "rename": {
-			this.oracleSerive.changeField(fieldid, databaseid, tableid, name, comments);
+			this.oracleSerive.changeField(fieldid, databaseid, tableid, name, comments,datadictionary);
 			operationResult = "success";
 		}
 			break;
@@ -433,6 +434,7 @@ public class MetadataController {
 			tempStore.add(fieldInfo.getComments());
 			tempStore.add("0");
 			tempStore.add("100");
+			tempStore.add(fieldInfo.getDatadictionary());
 			store.add(tempStore);
 		}
 		resultMap.put("draw", draw);

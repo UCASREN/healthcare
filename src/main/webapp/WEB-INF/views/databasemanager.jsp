@@ -152,7 +152,7 @@
 											<tr>
 												<th>编号</th>
 												<th>表名</th>
-												<th>备注</th>
+												<th>描述</th>
 												<th>操作</th>
 												<th>操作</th>
 											</tr>
@@ -204,7 +204,8 @@
 											<tr>
 												<th>编号</th>
 												<th>列名</th>
-												<th>备注</th>
+												<th>描述</th>
+												<th>数据字典</th>
 												<th>操作</th>
 												<th>操作</th>
 											</tr>
@@ -319,10 +320,10 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">备注</label>
+										<label class="col-md-2 control-label">描述</label>
 										<div class="col-md-9">
 											<sf:input type="text" class="form-control" id="form_database_comments" path="comments"
-												placeholder="输入数据库备注"/>
+												placeholder="输入数据库描述"/>
 										</div>
 									</div>
 									<div class="form-group">
