@@ -93,8 +93,9 @@ request.setCharacterEncoding("UTF-8");
 		<div class="page-content">
 		
 			<!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
-			<div class="modal fade draggable-modal" id="ajax" tabindex="-1" role="basic" aria-hidden="true">
-				<div class="modal-dialog">
+			<div class="modal fade" id="large" tabindex="-1" role="dialog" aria-hidden="true">
+				<!--<div class="modal-dialog modal-lg"> -->	
+				<div class="modal-dialog">				
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -121,10 +122,10 @@ request.setCharacterEncoding("UTF-8");
 									<div class="project-screening">
 										<div class="project-screening-yellow"></div>
 										<div class="select-1-yellow"></div>
-										<div class="screening-select select-1 current"><a href="javascript:;">已提交</a></div>
-										<div class="screening-select select-2" selval="4,6"><a href="javascript:;" selval="4,6">待审核</a></div>
-										<div class="screening-select select-3" selval="6,7"><a href="javascript:;" selval="6,7">卒中数据中心</a></div>
-										<div class="screening-select select-4" selval="7,10"><a href="javascript:;" selval="7,10">卒中防治委员会</a></div>
+										<div class="screening-select select-1 current"><a href="javascript:;">待审核</a></div>
+										<div class="screening-select select-2" selval="4,6"><a href="javascript:;" selval="4,6">卒中数据中心</a></div>
+										<div class="screening-select select-3" selval="6,7"><a href="javascript:;" selval="6,7">卒中防治委员会</a></div>
+										<div class="screening-select select-4" selval="7,10"><a href="javascript:;" selval="7,10">虚拟环境分配</a></div>
 										<div id="status_final" class="screening-select select-5" selval="10,-1"><a href="javascript:;" selval="10,-1">审核成功</a></div>
 									</div>
 								</div>

@@ -226,20 +226,19 @@ public class ApplyDataController {
 	}
 	
 	private String getApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
-		// TODO Auto-generated method stub
-		String status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-warning\">出错了</span>";
+		String status = "<button id=\"a"+ApplyID+"\" class=\"btn btn-xs btn-warning env-no\">出错了</button>";
 		switch (flag_Apply) {
 		case "1":
-			status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-primary\">待审核</span>";
+			status = "<button id=\"a"+ApplyID+"\" title=\"点击查看申请进度\" class=\"btn btn-xs btn-primary env-no\">待审核</button>";
 			break;
 		case "2":
-			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-default\">审核中</span>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-default env-no\">审核中</button>";
 			break;
 		case "3":
-			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-success\">审核通过</span>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击进入虚拟环境\" class=\"btn btn-xs btn-success env-success\">审核通过</button>";
 			break;
 		case "4":
-			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-danger\">审核失败</span>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-danger env-no\">审核失败</button>";
 			break;
 		default:
 			System.out.println("申请标志位"+flag_Apply);

@@ -275,10 +275,10 @@ var Datatable = function() {
 //        	console.log($('tbody > tr > td:nth-child(7)', table)+"");
         	var url = window.location.href;
         	
-    		if(url.indexOf('env') != -1){
-    			the.userStatusModal();//数据申请
+    		if(url.indexOf("env") < 0){
+    			the.userDataStatusModal();//数据申请
     		}else{
-    			the.userStatusModal();//虚拟环境申请
+    			the.userEnvStatusModal();//虚拟环境申请
     		}
     		
         },
@@ -298,8 +298,8 @@ var Datatable = function() {
         	$('#modal_projectname').html(hc_doc.proName);
         },
         
-        userStatusModal : function (){
-            $('tbody > tr > td:nth-child(7) span', table).each(function() {
+        userEnvStatusModal : function (){
+            $('tbody > tr > td:nth-child(7) button[class*=\'env-no\']', table).each(function() {
                 $(this).on('click',function(){
                 	
                 	var applyID = $(this).attr('id');
@@ -322,12 +322,15 @@ var Datatable = function() {
      					  	switch(applyStatus){
 	                    		case '1' ://待审核
 	                    			the.screeningSelect($('.screening-select.select-2'), 130);
+	                    			$('#failPanel').hide();
 	                    			break;
 	                    		case '2' ://卒中数据中心ed---//卒中防治委员会ing
 	                    			the.screeningSelect($('.screening-select.select-4'), 260);
+	                    			$('#failPanel').hide();
 	                    			break;
 	                    		case '3' ://审核成功
 	                    			the.screeningSelect($('.screening-select.select-5'), 520);
+	                    			$('#failPanel').hide();
 	                    			break;
 	                    		case '4' ://审核失败
 	                    			var applyRejectReason = data.applyRejectReason;
@@ -347,15 +350,14 @@ var Datatable = function() {
      					} 
              		});
                 	
-                	$('#ajax').modal('show');
+                	$('#large').modal('show');
                 
                 });
             });
         },
         
-        
-        adminStatusModal : function (query_url){
-            $('tbody > tr > td:nth-child(8) span', table).each(function() {
+        userDataStatusModal : function (){
+            $('tbody > tr > td:nth-child(7) button', table).each(function() {
                 $(this).on('click',function(){
                 	
                 	var applyID = $(this).attr('id');
@@ -363,8 +365,8 @@ var Datatable = function() {
                 	applyID = applyID.substring(1);
                 	
                 	$.ajax({ 
-     					type : "get",//请求方式
-     					url : query_url,//发送请求地址    getdocenvbyapplyid   getdocdatabyapplyid
+     					type : "get",//请求方式 
+     					url : "getdocdatabyapplyid",//发送请求地址
      					dataType : "json", 
      					data:{ 
      						applyid : applyID

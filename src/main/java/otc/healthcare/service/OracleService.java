@@ -1132,6 +1132,17 @@ public class OracleService implements IService {
 	}
 	
 	@Transactional
+	public void updateEnvUrlByApplyID(String applyID, String EnvUrl){
+		HcApplyenv hc_applyenv = hcApplyenvDao.findByApplyID(applyID);
+		hc_applyenv.setEnvUrl(EnvUrl);
+		hc_applyenv.setFlagApplydata("4");//分配虚拟环境结束
+
+		hcApplyenvDao.attachDirty(hc_applyenv);
+		System.out.println("update EnvUrl ok");
+		return;
+	}
+	
+	@Transactional
 	public void insertApplyEnv(HttpServletRequest req, String f_name, boolean update) {
 		
 		if(update){
