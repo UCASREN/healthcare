@@ -507,3 +507,12 @@ $("#showshoppingcart").click(function(){
     });
 	$("#showshoppingcart_model").modal('show');
 });
+$("#deleteallshoppingcart").click(function(){
+	$.ajax({ 
+		type : "get",//请求方式 
+		url : "deleteallshoppingcart",//发送请求地址
+		success :function(data) {
+			location.reload(true);
+		} 
+	});
+});

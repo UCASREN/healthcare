@@ -506,7 +506,7 @@ request.setCharacterEncoding("UTF-8");
 												<a href="javascript:;" class="btn blue button-next">
 												下一步 <i class="m-icon-swapright m-icon-white"></i>
 												</a>
-												<a href="javascript:;" class="btn green button-submit">
+												<a href="javascript:;" class="btn green button-submit" >
 												提交 <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												<a href="/healthcare/applydata/wordonline" target="_blank" class="btn purple button-wordPreview">Word预览 </a>
