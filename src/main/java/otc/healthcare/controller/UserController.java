@@ -157,8 +157,9 @@ public class UserController {
 	}
 	@RequestMapping("/deleteallshoppingcart")
 	@ResponseBody
-	public void deleteAllShoppingCart(HttpSession httpSession){
+	public String deleteAllShoppingCart(HttpSession httpSession){
 		httpSession.removeAttribute("shoppingcart");
+		return "成功删除";
 	}
 	
 	@RequestMapping("/deleteshoppingcart")

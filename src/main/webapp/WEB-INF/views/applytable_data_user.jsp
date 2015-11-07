@@ -85,6 +85,22 @@ request.setCharacterEncoding("UTF-8");
 		<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
 		<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 		<div class="page-sidebar navbar-collapse collapse">
+		<ul class="page-sidebar-menu" data-keep-expanded="false"
+					data-auto-scroll="true" data-slide-speed="200">
+					<li><a href="userdatabaseview"> <i class="icon-home"></i> <span
+							class="title">数据发布</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="applydatatable"> <i class="icon-rocket"></i> <span
+							class="title">数据申请</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="applyenvtable"> <i class="icon-diamond"></i> <span
+							class="title">虚拟环境申请</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="datasetanalysis"> <i class="icon-puzzle"></i> <span
+							class="title">数据分析</span> <span class="arrow "></span>
+					</a></li>
+
+				</ul>
 		</div>
 	</div>
 	<!-- END SIDEBAR -->

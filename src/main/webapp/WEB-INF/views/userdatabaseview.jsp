@@ -378,7 +378,7 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true"></button>
-					<h4 class="modal-title">购物车信息</h4>
+					<h4 class="modal-title">已选数据集</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -386,6 +386,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn red" id="deleteallshoppingcart">清空</button>
 					<button type="button" data-dismiss="modal" class="btn">确定</button>
 				</div>
 			</div>
