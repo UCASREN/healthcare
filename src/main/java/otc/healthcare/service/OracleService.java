@@ -952,9 +952,15 @@ public class OracleService implements IService {
 	public void insertApplyData(HttpServletRequest req, String f_name, boolean update) {
 		
 		if(update){
-			//begin updata
+			//begin update
 			HcApplydata hc_applydata = hcApplydataDao.findByDocName(f_name);
 			
+			String curStatus = hc_applydata.getFlagApplydata();
+			if(!curStatus.equals("2")){
+				System.out.println("applyData 状态不为2，此时已经无法更新申请！");
+				return;
+			}
+
 			String hc_userName = req.getParameter("userName");
 			String hc_userDepartment = req.getParameter("userDepartment");
 			String hc_userAddress = req.getParameter("userAddress");
@@ -998,8 +1004,8 @@ public class OracleService implements IService {
 			
 			hc_applydata.setApplyData(applydata);
 			
-			// 提交后，apply标志为1
-			hc_applydata.setFlagApplydata("1");
+			//只有在未进行审核情况下才可以update，apply标志为2 --- status=2（待审核状态）
+			hc_applydata.setFlagApplydata("2");
 
 			hcApplydataDao.attachDirty(hc_applydata);
 			System.out.println("update hc_applydata ok");
@@ -1051,8 +1057,8 @@ public class OracleService implements IService {
 		hc_applydata.setProRemark(hc_projectRemarks);
 		hc_applydata.setApplyData(applydata);
 		
-		// 提交后，apply标志为1
-		hc_applydata.setFlagApplydata("1");
+		// 提交后，apply标志为2 --- status=2（待审核状态）
+		hc_applydata.setFlagApplydata("2");
 
 		hcApplydataDao.attachDirty(hc_applydata);
 		

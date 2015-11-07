@@ -109,7 +109,7 @@ function FileManagerClass(){
 						<li data-name="article"><a href="">帮助</a></li>
 					</ul>
 				</nav>
-				<sec:authorize access="hasAnyRole('USER','ADMIN')">
+				<sec:authorize access="hasAnyRole('USER','ADMIN','SU1','SU2')">
 				<div class="quick-menu">
 					<div class="quick-menu-unlogined">
 						<div id="NTGUID__1">
@@ -165,7 +165,7 @@ function FileManagerClass(){
 		<!-- js 追加 -->
 		<div class="dot-list"></div>
 	</div>
-	<sec:authorize access="!hasAnyRole('USER','ADMIN')">
+	<sec:authorize access="!hasAnyRole('USER','ADMIN','SU1','SU2')">
 		<div class="wrap relative">
 			<div class="form-box">
 				<div class="form-title"></div>

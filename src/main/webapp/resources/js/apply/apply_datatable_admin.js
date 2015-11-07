@@ -291,7 +291,7 @@ var Datatable = function() {
         },
         
         adminStatusModal : function (query_url){
-            $('tbody > tr > td:nth-child(8) span', table).each(function() {
+            $('tbody > tr > td:nth-child(8) button', table).each(function() {
                 $(this).on('click',function(){
                 	
                 	var applyID = $(this).attr('id');
