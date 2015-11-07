@@ -159,7 +159,8 @@ public class MetadataController {
 			@RequestParam(value = "parent", required = false) String parent,
 			@RequestParam(value = "position", required = false) String position,
 			@RequestParam(value = "text", required = false) String text,
-			@RequestParam(value = "comments", required = false) String comments) {
+			@RequestParam(value = "comments", required = false) String comments,
+			@RequestParam(value = "numrows", required = false) String numrows) {
 		String operationResult = "";
 		String operationType = id != null
 				? (id.contains("alldatabase") ? "database" : (id.contains("table") ? "table" : "all")) : "";// detect
@@ -177,7 +178,7 @@ public class MetadataController {
 			operationResult = parent.indexOf("all_") != -1
 					? "alldatabase_" + this.oracleSerive.createDatabase(text, comments == null ? "备注为空" : comments)
 					: "alltable_" + this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text,
-							comments == null ? "备注为空" : comments);
+							comments == null ? "备注为空" : comments,numrows==null?"0":numrows);
 		}
 			break;
 		case "rename_node": {
@@ -186,11 +187,12 @@ public class MetadataController {
 				operationResult = "success";
 			}
 			if (operationType.equals("table")) {
-				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments);
+				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments,numrows);
 				operationResult = "success";
 			}
 			if (operationType.equals("all")) {
-				operationResult = "fail";
+				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments,numrows);
+				operationResult = "success";
 			}
 			/*
 			 * operationResult = (operationType.equals("database") ?
@@ -225,7 +227,8 @@ public class MetadataController {
 			@RequestParam(value = "tableid", required = false) String tableid,
 			@RequestParam(value = "fieldid", required = false) String fieldid,
 			@RequestParam(value = "name", required = false) String name,
-			@RequestParam(value = "comments", required = false) String comments) {
+			@RequestParam(value = "comments", required = false) String comments,
+			@RequestParam(value = "datadictionary", required = false) String datadictionary) {
 		String operationResult = "";
 		switch (operation) {
 		case "delete": {
@@ -238,12 +241,12 @@ public class MetadataController {
 			// +
 			// this.oracleSerive.createTable(parent.substring(parent.indexOf("_")
 			// + 1), text, comments==null?"备注为空":comments);
-			this.oracleSerive.createField(databaseid, tableid, name, comments);
+			this.oracleSerive.createField(databaseid, tableid, name, comments,datadictionary);
 			operationResult = "success";
 		}
 			break;
 		case "rename": {
-			this.oracleSerive.changeField(fieldid, databaseid, tableid, name, comments);
+			this.oracleSerive.changeField(fieldid, databaseid, tableid, name, comments,datadictionary);
 			operationResult = "success";
 		}
 			break;
@@ -312,6 +315,7 @@ public class MetadataController {
 			tempStore.add("<input type='checkbox' name='id" + tableInfo.getTableid() + "' value='"
 					+ tableInfo.getDatabaseid()+"_"+tableInfo.getTableid() + "' "+(getCheckedState(httpSession,
 							tableInfo.getDatabaseid(),tableInfo.getTableid())?"checked":"")+">");
+			tempStore.add((i+1)+"");
 			tempStore.add(tableInfo.getTableid());
 			tempStore.add(tableInfo.getName());
 			tempStore.add(tableInfo.getComments());
@@ -354,6 +358,7 @@ public class MetadataController {
 		for (int i = start; i < end; i++) {
 			DatabaseInfo databaseInfo = list.get(i);
 			ArrayList<String> tempStore = new ArrayList<String>();
+			tempStore.add((i+1)+"");
 			tempStore.add(databaseInfo.getDatabaseid());
 			tempStore.add(databaseInfo.getName());
 			tempStore.add(databaseInfo.getComments());
@@ -428,11 +433,13 @@ public class MetadataController {
 			ArrayList<String> tempStore = new ArrayList<String>();
 			tempStore.add("<input type='checkbox' name='id" + fieldInfo.getFieldid() + "' value='"
 					+ fieldInfo.getFieldid() + "'>");
+			tempStore.add((i+1)+"");
 			tempStore.add(fieldInfo.getFieldid());
 			tempStore.add(fieldInfo.getName());
 			tempStore.add(fieldInfo.getComments());
 			tempStore.add("0");
 			tempStore.add("100");
+			tempStore.add(fieldInfo.getDatadictionary());
 			store.add(tempStore);
 		}
 		resultMap.put("draw", draw);

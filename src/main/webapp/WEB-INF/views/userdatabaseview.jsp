@@ -207,12 +207,11 @@
 					data-placeholder="Select..." style="min-width: 100px;">
 						<option value="">请选择数据库下的表...</option>
 				</select>
-				</label>
-				<label class="checkbox-inline" style="padding-left: 20px;">
+				</label> <label class="checkbox-inline" style="padding-left: 20px;">
 					<a class="btn green" data-toggle="modal" href="#"
-										id="showshoppingcart">当前购物车</a>
+					id="showshoppingcart">已选数据集</a>
 				</label>
-				
+
 				<p></p>
 				<div id="showalldatabaseinfo" style="display: block;">
 					<p></p>
@@ -232,6 +231,7 @@
 									<thead>
 										<tr role="row" class="heading">
 											<th>编号</th>
+											<th>隐藏实际编号</th>
 											<th>名称</th>
 											<th>备注</th>
 											<th>标识符</th>
@@ -259,66 +259,18 @@
 				</div>
 				<p></p>
 				<div id="showdatabaseinfo" style="display: none;">
-					<div class="alert alert-success">
-						<div class="row">
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_name"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_comments"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_identifier"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_language"></span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_charset"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_subjectclassification"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_keywords"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_credibility"></span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_resinstitution"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_resname"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_resaddress"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_respostalcode"></span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_resphone"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_resemail"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_resourceurl"></span>
-							</div>
-							<div class="col-md-3">
-								<span id="showdatabaseinfo_tablenumber"></span>
-							</div>
-						</div>
-					</div>
+						
 					<p></p>
 					<div class="alert alert-info">
+						<div class="row">
+							<span id="showdatabaseinfo_name"></span>
+						</div>
+						<div class="row">
+							<span id="showdatabaseinfo_comments"></span>
+						</div>
+						<div class="row">
+							<span id="showdatabaseinfo_tablenumber"></span>
+						</div>
 						<div class="row">
 							<div class="col-md-10">
 								<div class="table-container">
@@ -334,8 +286,9 @@
 												<th width="2%"><input type="checkbox"
 													class="group-checkable"></th>
 												<th width="5%">编号</th>
+												<th>隐藏实际编号</th>
 												<th width="15%">名称</th>
-												<th width="15%">备注</th>
+												<th width="15%">描述</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -346,13 +299,11 @@
 							<div class="col-md-2">
 								<div class="row">
 									<button class="btn btn-sm yellow table-group-action-submit">
-										<i class="fa fa-check"></i> 添加/更新购物车
+										<i class="fa fa-check"></i> 添加/更新数据集
 									</button>
 								</div>
 								<p></p>
-								<div class="row">
-									
-								</div>
+								<div class="row"></div>
 							</div>
 						</div>
 					</div>
@@ -360,10 +311,20 @@
 				<div id="showtableinfo" style="display: none;">
 					<div class="alert alert-success">
 						<div class="row">
-							<span id="showtableinfo_name"></span> <span
-								id="showtableinfo_comments"></span> <span
-								id="showtableinfo_others"></span> <span
+							<span id="showtableinfo_name"></span> 
+								
+						</div>
+						<div class="row">
+							<span
+								id="showtableinfo_comments"></span>
+						</div>
+						<div class="row">
+							<span
 								id="showtableinfo_fieldnumber"></span>
+						</div>
+						<div class="row">
+							<span
+								id="showtableinfo_numrows"></span>
 						</div>
 					</div>
 					<p></p>
@@ -383,10 +344,12 @@
 												<th width="2%"><input type="checkbox"
 													class="group-checkable"></th>
 												<th width="5%">编号</th>
+												<th>隐藏实际编号</th>
 												<th width="15%">名称</th>
-												<th width="15%">备注</th>
+												<th width="15%">描述</th>
 												<th width="10%">最小值</th>
 												<th width="10%">最大值</th>
+												<th width="10%">数据字典</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -419,7 +382,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-							<div class="col-md-12" id="selectedtableinfo"></div>
+						<div class="col-md-12" id="selectedtableinfo"></div>
 					</div>
 				</div>
 				<div class="modal-footer">
