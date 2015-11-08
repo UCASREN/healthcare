@@ -227,12 +227,29 @@ public class AdminController {
 			tempStore.add(docEnv.getDemand());
 			tempStore.add(docEnv.getApplyTime());
 			
-			String applyStatus = getApplyStatus(docEnv.getFlagApplydata(), String.valueOf(docEnv.getIdApplydata()), docEnv.getProName(), docEnv.getName());
+			String applyStatus = getEnvApplyStatus(docEnv.getFlagApplydata(), String.valueOf(docEnv.getIdApplydata()), docEnv.getProName(), docEnv.getName());
 			tempStore.add(applyStatus);
 			
+			//处理按钮--根据statuts添加按钮
+			String envStatusFlag = docEnv.getFlagApplydata();
 			String docID = docEnv.getDocName();
-			tempStore.add("<a href=\"/healthcare/applyenv/wordonline?docid="+docID+"\" id=\""+docEnv.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
-					+"<a href=\"/healthcare/adminpanel/applyenvcheck?applydataid="+docEnv.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>");
+			
+			String blank = "&nbsp;&nbsp;&nbsp;";
+			String wordPreview = "<a href=\"/healthcare/applyenv/wordonline?docid="+docID+"\" id=\""+docEnv.getIdApplydata()+"\" "
+					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>";
+			
+			String envCheck = "<a href=\"/healthcare/adminpanel/applyenvcheck?applydataid="+docEnv.getIdApplydata()+"\" "
+					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 环境审核</a>";
+			
+			String envAlloc = "<a href=\"/healthcare/adminpanel/applyenvalloc?applydataid="+docEnv.getIdApplydata()+"\" "
+					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-cogs\"></i> 环境分配</a>";;
+			String button = wordPreview+blank;
+			if(envStatusFlag.equals("1") || envStatusFlag.equals("2"))
+				button += envCheck;
+			
+			if(envStatusFlag.equals("3"))
+				button += envAlloc;
+			tempStore.add(button);
 			store.add(tempStore);
 		}
 		
@@ -242,6 +259,32 @@ public class AdminController {
 		resultMap.put("data", store);
 		return resultMap;
 	}
+	
+	private String getEnvApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
+		String status = "<button id=\"a"+ApplyID+"\" class=\"btn btn-xs btn-default env-no\">出错了</button>";
+		switch (flag_Apply) {
+		case "1":
+			status = "<button id=\"a"+ApplyID+"\" title=\"点击查看申请进度\" class=\"btn btn-xs btn-primary env-no\">待审核</button>";
+			break;
+		case "2"://卒中中心---审核ok
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info env-no\">审核中</button>";
+			break;
+		case "3"://卒中办公室---审核ok
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-warning env-no\">分配中</button>";
+			break;
+		case "4"://分配虚拟环境---ok
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success env-success\">审核通过</button>";
+			break;
+		case "5"://审核失败
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-danger env-no\">审核失败</button>";
+			break;
+		default:
+			System.out.println("申请标志位"+flag_Apply);
+			break;
+		}
+		return status;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/getdocdata_admin", method = RequestMethod.GET)
@@ -297,12 +340,25 @@ public class AdminController {
 			tempStore.add(docData.getDemand());
 			tempStore.add(docData.getApplyTime());
 			
-			String applyStatus = getApplyStatus(docData.getFlagApplydata(), String.valueOf(docData.getIdApplydata()), docData.getProName(),docData.getName());
+			String applyStatus = getDataApplyStatus(docData.getFlagApplydata(), String.valueOf(docData.getIdApplydata()), docData.getProName(),docData.getName());
 			tempStore.add(applyStatus);
 			
+			//处理按钮--根据statuts添加按钮
+			String dataStatusFlag = docData.getFlagApplydata();
 			String docID = docData.getDocName();
-			tempStore.add("<a href=\"/healthcare/applydata/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
-					+"<a href=\"/healthcare/adminpanel/applydatacheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>");
+			
+			String blank = "&nbsp;&nbsp;&nbsp;";
+			String wordPreview = "<a href=\"/healthcare/applyenv/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" "
+					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>";
+			
+			String dataCheck = "<a href=\"/healthcare/adminpanel/applydatacheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" "
+					+ "class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>";
+			
+			String button = wordPreview+blank;
+			if(dataStatusFlag.equals("1"))
+				button += dataCheck;
+			
+			tempStore.add(button);
 			store.add(tempStore);
 		}
 		
@@ -313,21 +369,20 @@ public class AdminController {
 		return resultMap;
 	}
 
-	private String getApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
-		// TODO Auto-generated method stub
-		String status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-warning\">出错了</span>";
+	private String getDataApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
+		String status = "<button id=\"a"+ApplyID+"\" class=\"btn btn-xs btn-default env-no\">出错了</button>";
 		switch (flag_Apply) {
 		case "1":
-			status = "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-primary\">待审核</span>";
+			status = "<button id=\"a"+ApplyID+"\" title=\"点击查看申请进度\" class=\"btn btn-xs btn-primary env-no\">待审核</button>";
 			break;
-		case "2":
-			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-default\">审核中</span>";
+		case "2"://卒中中心---审核ok
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info env-no\">审核中</button>";
 			break;
-		case "3":
-			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-success\">审核通过</span>";
+		case "3"://卒中办公室---审核ok---审核通过
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success env-success\">审核通过</button>";
 			break;
-		case "4":
-			status= "<span id=\"a"+ApplyID+"\" class=\"label label-sm label-danger\">审核失败</span>";
+		case "4"://审核失败
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-danger env-no\">审核失败</button>";
 			break;
 		default:
 			System.out.println("申请标志位"+flag_Apply);
@@ -335,6 +390,8 @@ public class AdminController {
 		}
 		return status;
 	}
+	
+
 
 	@RequestMapping(value = "/starttool", method = RequestMethod.GET)
 	public void startWordOnlineTools(HttpServletRequest req, HttpServletResponse resp) {

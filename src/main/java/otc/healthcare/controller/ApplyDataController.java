@@ -208,13 +208,26 @@ public class ApplyDataController {
 			tempStore.add(docData.getDemand());
 			tempStore.add(docData.getApplyTime());
 			
-			String applyStatus = getApplyStatus(docData.getFlagApplydata(), String.valueOf(docData.getIdApplydata()), docData.getProName(),docData.getName());
+			String applyStatus = getDataApplyStatus(docData.getFlagApplydata(), String.valueOf(docData.getIdApplydata()), docData.getProName(),docData.getName());
 			tempStore.add(applyStatus);
 			
-			String docID = docData.getDocName();
-			tempStore.add("<a href=\"/healthcare/applydata/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>"
-					+"&nbsp;&nbsp;&nbsp;"+ "<a href=\"/healthcare/applydata/applydata?docid="+docID+"&applydataid="+String.valueOf(docData.getIdApplydata())+"\" class=\"btn btn-xs default btn-editable\"><i class=\"fa fa-pencil\"></i> 编辑申请</a>");
 			
+			//处理按钮--根据statuts添加按钮
+			String dataStatusFlag = docData.getFlagApplydata();
+			String docID = docData.getDocName();
+			
+			String blank = "&nbsp;&nbsp;&nbsp;";
+			String wordPreview = "<a href=\"/healthcare/applyenv/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" "
+					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>";
+			
+			String EditApply = "<a href=\"/healthcare/applyenv/applyenv?docid="+docID+"&applydataid="+String.valueOf(docData.getIdApplydata())+"\" "
+					+ "class=\"btn btn-xs default btn-editable\"><i class=\"fa fa-pencil\"></i> 编辑申请</a>";
+			
+			String button = wordPreview+blank;
+			if(dataStatusFlag.equals("1"))
+				button += EditApply;
+			
+			tempStore.add(button);
 			store.add(tempStore);
 		}
 		
@@ -225,19 +238,19 @@ public class ApplyDataController {
 		return resultMap;
 	}
 	
-	private String getApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
-		String status = "<button id=\"a"+ApplyID+"\" class=\"btn btn-xs btn-warning env-no\">出错了</button>";
+	private String getDataApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
+		String status = "<button id=\"a"+ApplyID+"\" class=\"btn btn-xs btn-default env-no\">出错了</button>";
 		switch (flag_Apply) {
 		case "1":
 			status = "<button id=\"a"+ApplyID+"\" title=\"点击查看申请进度\" class=\"btn btn-xs btn-primary env-no\">待审核</button>";
 			break;
-		case "2":
-			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-default env-no\">审核中</button>";
+		case "2"://卒中中心---审核ok
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info env-no\">审核中</button>";
 			break;
-		case "3":
-			status= "<button id=\"a"+ApplyID+"\"  title=\"点击进入虚拟环境\" class=\"btn btn-xs btn-success env-success\">审核通过</button>";
+		case "3"://卒中办公室---审核ok---审核通过
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success env-success\">审核通过</button>";
 			break;
-		case "4":
+		case "4"://审核失败
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-danger env-no\">审核失败</button>";
 			break;
 		default:
