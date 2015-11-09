@@ -107,7 +107,7 @@ function FileManagerClass(){
 					<ul>
 						<li data-name="home"><a href="">首页</a></li>
 						<li data-name="help"><a href="">帮助</a></li>
-						<li data-name="haflow"><a href="http://124.16.137.206:8088/haflow/">haflow平台</a></li>
+						<li data-name="haflow"><a href="http://124.16.137.206:8088/haflow/" target="_blank">haflow平台</a></li>
 					</ul>
 				</nav>
 				<sec:authorize access="hasAnyRole('USER','ADMIN','SU1','SU2')">

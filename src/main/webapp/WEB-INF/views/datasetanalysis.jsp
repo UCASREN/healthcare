@@ -246,7 +246,7 @@
 		<!-- BEGIN CONTENT -->
 		<div class="page-content-wrapper">
 			<div class="page-content">
-				<iframe  id='main' src='http://133.133.133.73:8080/haflow/service_dashboard' height=1000px  width="99%" frameborder="0" align="top"    ></iframe>
+				<iframe  id='main' src='http://124.16.137.206:8088/haflow/service_dashboard' height=1000px  width="99%" frameborder="0" align="top"    ></iframe>
 			</div>
 		</div>
 		<!-- END CONTENT -->

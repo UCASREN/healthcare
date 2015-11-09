@@ -386,6 +386,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn green" id="applaydata">数据申请</button>
 					<button type="button" class="btn red" id="deleteallshoppingcart">清空</button>
 					<button type="button" data-dismiss="modal" class="btn">确定</button>
 				</div>
