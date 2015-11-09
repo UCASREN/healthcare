@@ -426,7 +426,7 @@ var FormWizard = function () {
   					url : "/healthcare/getshoppingcartAlldetail",//发送请求地址
   					dataType : "json", 
   					success :function(data) {
-  						alert("购物车内容 : "+data); 
+//  						alert("购物车内容 : "+data); 
   						fillShoppingCart(data);
   					} 
           		});
