@@ -266,11 +266,14 @@ request.setCharacterEncoding("UTF-8");
 													<hr class="col-md-12"/>
 													<label class="control-label col-md-3">选择数据</label>
 													<div class="col-md-4">
-														<button id="db_select" class="btn red" >
-															<i class="fa fa-database"></i>&nbsp;点击进入
+														<button id="db_select" class="btn yellow" >
+															<i class="fa fa-database"></i>&nbsp;选择
 														</button>
 														<button id="shoppingCart" class="btn green" >
 															<i class="fa fa-shopping-cart"></i>&nbsp;加载数据集
+														</button>
+														<button id="cleanShopingCart" class="btn red" >
+															<i class="fa fa-trash-o"></i>&nbsp;清空
 														</button>
 													</div>
 												</div>

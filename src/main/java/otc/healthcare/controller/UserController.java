@@ -155,11 +155,13 @@ public class UserController {
 		}
 		return shoppingcartDetail;
 	}
+	
+	
 	@RequestMapping("/deleteallshoppingcart")
 	@ResponseBody
 	public String deleteAllShoppingCart(HttpSession httpSession){
 		httpSession.removeAttribute("shoppingcart");
-		return "成功删除";
+		return "deleteSuccess--njz";
 	}
 	
 	@RequestMapping("/deleteshoppingcart")

@@ -517,5 +517,5 @@ $("#deleteallshoppingcart").click(function(){
 	});
 });
 $("#applaydata").click(function(){
-	window.open('applydata/applydata')
+	window.open('/healthcare/applydata/applydata?historyFlag=1')
 });
