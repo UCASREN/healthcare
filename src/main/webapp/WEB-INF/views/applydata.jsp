@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf8"
     pageEncoding="utf-8"
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%
 request.setCharacterEncoding("UTF-8");   
 %>
@@ -36,14 +38,38 @@ request.setCharacterEncoding("UTF-8");
 </head>
 
 <body>
+
 <div class="page-container">
 
+	<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar-wrapper">
+		<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+		<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+		<div class="page-sidebar navbar-collapse collapse">
+		<ul class="page-sidebar-menu" data-keep-expanded="false"
+					data-auto-scroll="true" data-slide-speed="200">
+					<li><a href="userdatabaseview"> <i class="icon-home"></i> <span
+							class="title">数据发布</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
+							class="title">数据申请</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
+							class="title">虚拟环境申请</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="datasetanalysis"> <i class="icon-puzzle"></i> <span
+							class="title">数据分析</span> <span class="arrow "></span>
+					</a></li>
+
+				</ul>
+		</div>
+	</div>
+	<!-- END SIDEBAR -->
+	
 	<!-- BEGIN CONTENT -->
 	<div class="page-content-wrapper">
 		<div class="page-content">
 			
-			
-			<!-- BEGIN PAGE HEADER -->
 			<h3 class="page-title">
 			数据申请 <small>医疗大数据分析平台</small>
 			</h3>
@@ -63,6 +89,7 @@ request.setCharacterEncoding("UTF-8");
 					</li>
 				</ul>
 			</div>
+			
 			<!-- END PAGE HEADER-->
 			
 			<!-- BEGIN PAGE CONTENT-->
@@ -243,7 +270,7 @@ request.setCharacterEncoding("UTF-8");
 															<i class="fa fa-database"></i>&nbsp;点击进入
 														</button>
 														<button id="shoppingCart" class="btn green" >
-															<i class="fa fa-shopping-cart"></i>&nbsp;加载购物车
+															<i class="fa fa-shopping-cart"></i>&nbsp;加载数据集
 														</button>
 													</div>
 												</div>
@@ -255,13 +282,13 @@ request.setCharacterEncoding("UTF-8");
 														<div id="emptyshoppingcart" class="row" style="display:none;">
 															<div class="col-md-7">
 																<ul>
-																	<span>当前购物车为空！</span>
+																	<span>当前数据集为空！</span>
 																</ul>
 															</div>
 														</div>
 														
 														<table id="shoptable" border="1" align="center" style="display:none;">
-		    												<caption align="top">购物车</caption>
+		    												<caption align="top">数据集列表</caption>
 													    	<tr>
 													  		  <th style="width:10%;text-align:center;">数据集名称</th>
 													  		  <th style="width:10%;text-align:center;">数据表名称</th>

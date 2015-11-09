@@ -101,13 +101,14 @@ public class ApplyDataController {
 	
 	@RequestMapping(value = "/deleteapplydata", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String>  deleteApplyData(@RequestParam(value = "id[]", required = false) String[] applydataid) {
+	public List<String>  deleteApplyData(@RequestParam(value = "id[]", required = false) String[] applydataid,
+			@RequestParam(value = "deleteType" ,required = true) String deleteType) {
 		List<String> rs = new ArrayList<>();
 		if(applydataid == null || applydataid.length == 0){
 			 rs.add(DELETE_APPLYDATA_ERROR);
 			 return rs;
 		}
-		boolean word_flag = this.WordService.deleteDoc(applydataid);
+		boolean word_flag = this.WordService.deleteDoc(applydataid, deleteType);
 		boolean sql_flag = this.oracleService.deleteApplyData(applydataid);
 		if(sql_flag && word_flag){
 			rs.add(DELETE_APPLYDATA_SUCCESS);
@@ -152,7 +153,7 @@ public class ApplyDataController {
 	@RequestMapping(value = "/getdocdatabyapplyid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplydata getDocDataByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
-		HcApplydata docData = this.oracleService.getDocByApplyDataID(applyid);
+		HcApplydata docData = this.oracleService.getDataDocByApplyDataID(applyid);
 		return docData;
 	}
 	
@@ -217,10 +218,10 @@ public class ApplyDataController {
 			String docID = docData.getDocName();
 			
 			String blank = "&nbsp;&nbsp;&nbsp;";
-			String wordPreview = "<a href=\"/healthcare/applyenv/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" "
+			String wordPreview = "<a href=\"/healthcare/applydata/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" "
 					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>";
 			
-			String EditApply = "<a href=\"/healthcare/applyenv/applyenv?docid="+docID+"&applydataid="+String.valueOf(docData.getIdApplydata())+"\" "
+			String EditApply = "<a href=\"/healthcare/applydata/applydata?docid="+docID+"&applydataid="+String.valueOf(docData.getIdApplydata())+"\" "
 					+ "class=\"btn btn-xs default btn-editable\"><i class=\"fa fa-pencil\"></i> 编辑申请</a>";
 			
 			String button = wordPreview+blank;

@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,9 +88,25 @@ public class AdminController {
 	
 	@RequestMapping(value = "/applydatacheck_success", method = RequestMethod.GET)
 	public String applyDataCheck_success(@RequestParam(value = "applyid", required = false) String applydataid) {
-		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
-		String status = "3";
-		this.oracleService.changeApplyDataStatus(applydataid,status);
+		Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String authority = "";  
+		if(principal instanceof UserDetails){
+			Iterator it = ((UserDetails)principal).getAuthorities().iterator();  
+			while(it.hasNext()) 
+				authority = ((GrantedAuthority)it.next()).getAuthority();  
+		}
+		
+		HcApplydata docData = this.oracleService.getDataDocByApplyDataID(applydataid);
+		String curStatus = docData.getFlagApplydata();
+		
+		//中国卒中数据中心 --- 状态由1到2 --- 办公室
+		if(authority.equals("ROLE_SU1") && curStatus.equals("1"))
+			this.oracleService.changeApplyDataStatus(applydataid,"2");
+		
+		//国家卫生计生委脑卒中防治委员会办公室 --- 状态由2到3 --- 管理员分配
+		if(authority.equals("ROLE_SU2") && curStatus.equals("2"))
+			this.oracleService.changeApplyDataStatus(applydataid,"3");
+		
 		return "applydatacheck";
 	}
 	
@@ -95,12 +114,12 @@ public class AdminController {
 	public String applyDataCheck_reject(@RequestParam(value = "applyid", required = false) String applydataid
 			,@RequestParam(value = "rejectReason", required = false) String rejectReason) {
 		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
-		String status = "4";
+		String status = "5";
 		this.oracleService.changeApplyDataStatus(applydataid,status);
 		if(!rejectReason.equals("")){
 			try {
 				String reason = URLDecoder.decode(URLDecoder.decode(rejectReason,"UTF-8"),"UTF-8");
-				this.oracleService.insertApplyDataFailReason(applydataid,reason);
+				this.oracleService.insertApplyDataFailReason(applydataid, reason);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} 
@@ -116,17 +135,57 @@ public class AdminController {
 	
 	@RequestMapping(value = "/applyenvcheck_success", method = RequestMethod.GET)
 	public String applyEnvCheck_success(@RequestParam(value = "applyid", required = false) String applydataid) {
-		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
-		String status = "3";
-		this.oracleService.changeApplyEnvStatus(applydataid,status);
+		Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String authority = "";  
+		if(principal instanceof UserDetails){
+			Iterator it = ((UserDetails)principal).getAuthorities().iterator();  
+			while(it.hasNext()) 
+				authority = ((GrantedAuthority)it.next()).getAuthority();  
+		}
+		
+		HcApplyenv docEnv = this.oracleService.getDocEnvByApplyDataID(applydataid);
+		String curStatus = docEnv.getFlagApplydata();
+		
+		//中国卒中数据中心 --- 状态由1到2 --- 办公室
+		if(authority.equals("ROLE_SU1") && curStatus.equals("1"))
+			this.oracleService.changeApplyEnvStatus(applydataid,"2");
+		
+		//国家卫生计生委脑卒中防治委员会办公室 --- 状态由2到3 --- 管理员分配
+		if(authority.equals("ROLE_SU2") && curStatus.equals("2"))
+			this.oracleService.changeApplyEnvStatus(applydataid,"3");
+		
+		/*
+		 * 以下部分应该是新的界面中，分配按钮对应的内荣，这里仅仅是为了测试
+		 */
+		//系统管理员 --- 状态由3到4 --- 审核成功
+		if(authority.equals("ROLE_ADMIN") && curStatus.equals("3")){
+			this.oracleService.changeApplyEnvStatus(applydataid,"4");
+			this.oracleService.updateEnvUrlByApplyID(applydataid,"http://133.133.135.11:8989/novnc/console.html?id=bda2af74");
+		}
+		
 		return "applyenvcheck";
+	}
+	
+	@RequestMapping(value = "/applycheck_getauthority", method = RequestMethod.GET)
+	@ResponseBody
+	public String applyCheckGetAuthority(@RequestParam(value = "applyid", required = false) String applydataid) {
+		Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String authority = "";  
+
+		if(principal instanceof UserDetails){
+			Iterator it = ((UserDetails)principal).getAuthorities().iterator();  
+			while(it.hasNext())
+				authority = ((GrantedAuthority)it.next()).getAuthority();  
+		}
+		return authority;
 	}
 	
 	@RequestMapping(value = "/applyenvcheck_reject", method = RequestMethod.GET)
 	public String applyEnvCheck_reject(@RequestParam(value = "applyid", required = false) String applydataid
 			,@RequestParam(value = "rejectReason", required = false) String rejectReason) {
-		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
-		String status = "4";
+		
+		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室----拒绝申请
+		String status = "5";
 		this.oracleService.changeApplyEnvStatus(applydataid,status);
 		if(!rejectReason.equals("")){
 			try {
@@ -162,7 +221,7 @@ public class AdminController {
 	@RequestMapping(value = "/getdocdatabyapplyid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplydata getDocDataByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
-		HcApplydata docData = this.oracleService.getDocByApplyDataID(applyid);
+		HcApplydata docData = this.oracleService.getDataDocByApplyDataID(applyid);
 		return docData;
 	}
 	
@@ -243,11 +302,26 @@ public class AdminController {
 			
 			String envAlloc = "<a href=\"/healthcare/adminpanel/applyenvalloc?applydataid="+docEnv.getIdApplydata()+"\" "
 					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-cogs\"></i> 环境分配</a>";;
+			
 			String button = wordPreview+blank;
-			if(envStatusFlag.equals("1") || envStatusFlag.equals("2"))
+			Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			String authority = "";  
+
+			if(principal instanceof UserDetails){
+				Iterator it = ((UserDetails)principal).getAuthorities().iterator();  
+				while(it.hasNext()){  
+					authority = ((GrantedAuthority)it.next()).getAuthority();  
+//					System.out.println("Authority:"+authority);  
+				}  
+			}
+			
+			if(envStatusFlag.equals("1") && authority.equals("ROLE_SU1"))
 				button += envCheck;
 			
-			if(envStatusFlag.equals("3"))
+			if(envStatusFlag.equals("2") && authority.equals("ROLE_SU2"))
+				button += envCheck;
+			
+			if(envStatusFlag.equals("3") && authority.equals("ROLE_ADMIN"))
 				button += envAlloc;
 			tempStore.add(button);
 			store.add(tempStore);
@@ -348,14 +422,27 @@ public class AdminController {
 			String docID = docData.getDocName();
 			
 			String blank = "&nbsp;&nbsp;&nbsp;";
-			String wordPreview = "<a href=\"/healthcare/applyenv/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" "
+			String wordPreview = "<a href=\"/healthcare/applydata/wordonline?docid="+docID+"\" id=\""+docData.getIdApplydata()+"\" "
 					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-search\"></i> word预览</a>";
 			
 			String dataCheck = "<a href=\"/healthcare/adminpanel/applydatacheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" "
 					+ "class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>";
 			
 			String button = wordPreview+blank;
-			if(dataStatusFlag.equals("1"))
+			
+			Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			String authority = "";  
+			if(principal instanceof UserDetails){
+				Iterator it = ((UserDetails)principal).getAuthorities().iterator();  
+				while(it.hasNext()){  
+					authority = ((GrantedAuthority)it.next()).getAuthority();  
+//					System.out.println("Authority:"+authority);  
+				}  
+			}
+			
+			if(dataStatusFlag.equals("1") && authority.equals("ROLE_SU1"))
+				button += dataCheck;
+			if(dataStatusFlag.equals("2") && authority.equals("ROLE_SU2"))
 				button += dataCheck;
 			
 			tempStore.add(button);

@@ -58,7 +58,8 @@ public class SimpleSavedRequestAwareAuthenticationSuccessHandler extends SimpleU
         boolean isAdmin = false;  
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();  
         for (GrantedAuthority grantedAuthority : authorities) {  
-            if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {  
+            if (grantedAuthority.getAuthority().equals("ROLE_ADMIN") || grantedAuthority.getAuthority().equals("ROLE_SU1")
+            		|| grantedAuthority.getAuthority().equals("ROLE_SU2")) {  
                 isAdmin = true;  
                 break;  
             }  

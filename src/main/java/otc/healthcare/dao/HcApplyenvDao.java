@@ -225,4 +225,21 @@ public class HcApplyenvDao {
 	}
 	
 	
+	public void setApplyEnvUrl(BigDecimal applyID, String EnvUrl) {
+		String propertyName = "envUrl";
+		log.debug("update HcApplyenv instance with property: " + propertyName + ", id: " + applyID);
+		try {
+			String updateString = "update HcApplyenv as h set h.envUrl=? where h.idApplydata=?";
+			Session session = sessionFactory.getCurrentSession();
+			Query queryObject = session.createQuery(updateString);
+			queryObject.setParameter(0, EnvUrl);
+			queryObject.setParameter(1, applyID);
+			queryObject.executeUpdate();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	
 }

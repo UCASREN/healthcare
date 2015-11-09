@@ -276,9 +276,9 @@ var Datatable = function() {
         	var url = window.location.href;
         	
     		if(url.indexOf('env') != -1){
-    			the.adminStatusModal("getdocenvbyapplyid");
+    			the.adminEnvStatusModal("getdocenvbyapplyid");
     		}else{
-    			the.adminStatusModal("getdocdatabyapplyid");
+    			the.adminDataStatusModal("getdocdatabyapplyid");
     		}
         	
         	
@@ -290,7 +290,7 @@ var Datatable = function() {
         	$('#modal_projectname').html(hc_doc.proName);
         },
         
-        adminStatusModal : function (query_url){
+        adminDataStatusModal : function (query_url){
             $('tbody > tr > td:nth-child(8) button', table).each(function() {
                 $(this).on('click',function(){
                 	
@@ -312,16 +312,74 @@ var Datatable = function() {
      						var applyStatus = data.flagApplydata;
      						
      					  	switch(applyStatus){
-	                    		case '1' ://待审核
+	     					  	case '1' ://待审核
 	                    			the.screeningSelect($('.screening-select.select-2'), 130);
 	                    			break;
 	                    		case '2' ://卒中数据中心ed---//卒中防治委员会ing
-	                    			the.screeningSelect($('.screening-select.select-4'), 260);
+	                    			the.screeningSelect($('.screening-select.select-3'), 260);
 	                    			break;
 	                    		case '3' ://审核成功
 	                    			the.screeningSelect($('.screening-select.select-5'), 520);
 	                    			break;
 	                    		case '4' ://审核失败
+	                    			var applyRejectReason = data.applyRejectReason;
+	                    			$('#rejectReason').html(applyRejectReason);
+	                    			$('#failPanel').show();
+	                    			$('#status_final > a').html('审核失败');
+	                    			the.screeningSelect($('.screening-select.select-5'), 520);
+	                    			break;
+	                    		default :
+	                    			$('#rejectReason').html('无法提交申请，请联系系统管理员！');
+	                    			$('#failPanel > h5').html('<b>系统提示</b>');
+                    				$('#failPanel').show();
+	                    			the.screeningSelect($('.screening-select.select-1'), 0);
+	                    			break;
+     					  	}
+     					} 
+             		});
+                	
+                	$('#ajax').modal('show');
+                
+                });
+            });
+        },
+        
+        adminEnvStatusModal : function (query_url){
+            $('tbody > tr > td:nth-child(8) button', table).each(function() {
+                $(this).on('click',function(){
+                	
+                	var applyID = $(this).attr('id');
+//                	console.log(applyID);
+                	applyID = applyID.substring(1);
+                	
+                	$.ajax({ 
+     					type : "get",//请求方式
+     					url : query_url,//发送请求地址    getdocenvbyapplyid   getdocdatabyapplyid
+     					dataType : "json", 
+     					data:{ 
+     						applyid : applyID
+     					}, 
+     					success :function(data) {
+     						//alert(data); 
+//     						console.log(applyID+" : "+data);
+     						the.fillStatusModal(data);
+     						var applyStatus = data.flagApplydata;
+     						
+     						
+     					  	switch(applyStatus){
+	     						case '1' ://待审核---//卒中数据中心ing
+	                    			the.screeningSelect($('.screening-select.select-1'), 0);
+	                    			break;
+	                    		case '2' ://卒中数据中心ed---//卒中防治委员会ing
+	                    			the.screeningSelect($('.screening-select.select-2'), 130);
+	                    			break;
+	                    		case '3' ://卒中数据办公室ed---//分配环境ing
+	                    			the.screeningSelect($('.screening-select.select-3'), 260);
+	                    			break;
+	                    		case '4' ://环境分配ed---//审核通过
+	                    			the.screeningSelect($('.screening-select.select-5'), 520);
+	                    			break;
+	                    		case '5' ://审核失败
 	                    			var applyRejectReason = data.applyRejectReason;
 	                    			$('#rejectReason').html(applyRejectReason);
 	                    			$('#failPanel').show();

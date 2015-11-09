@@ -112,7 +112,26 @@ var applydataCheck = function () {
 
             
             $('#applycheck_form #submit_button').click(function () {
-            	if(!confirm('您确定同意本次申请?'))
+            	//获取用户身份
+            	$.ajax({ 
+  					type : "get",//请求方式 
+  					url : "applycheck_getauthority",//发送请求地址
+  					data:{ 
+  					},
+  					success :function(data) {
+//   						alert(data); 
+  						applyDatacheck_success(data);
+   					} 
+      			});
+            })
+            
+            var applyDatacheck_success = function(curAuthority){
+            	if(curAuthority == 'ROLE_SU1')
+            		curAuthority = '卒中中心';
+            	if(curAuthority == 'ROLE_SU2')
+            		curAuthority = '卒中防治办公室';
+            	
+            	if(!confirm('当前审核单位 ：'+curAuthority+'\n\n您确定同意本次数据集申请?'))
             		return;
             	$.ajax({ 
       					type : "get",//请求方式 
@@ -124,12 +143,34 @@ var applydataCheck = function () {
       					  window.open ("/healthcare/adminpanel/applydatatable", target="_self");
        					} 
           			});
-            })
+            	
+            };
+            
+        	//获取用户身份
+        	$.ajax({ 
+					type : "get",//请求方式 
+					url : "applycheck_getauthority",//发送请求地址
+					data:{ 
+					},
+					success :function(curAuthority) {
+						if(curAuthority == 'ROLE_SU1')
+		            		curAuthority = '卒中中心';
+		            	if(curAuthority == 'ROLE_SU2')
+		            		curAuthority = '卒中防治办公室';
+						$('#rejectTitle').text('确认拒绝本次申请？'+'(当前审核单位：'+curAuthority+')');
+					} 
+  			});
             
             $('#reject_button').click(function () {
 //            	var rejectReason = $('#rejectReason').val();
             	var rejectReason = encodeURI(encodeURI( $('#rejectReason').val() ));
-            	console.log('njz : '+rejectReason);
+//            	console.log('njz : '+rejectReason);
+            	var title = $('#rejectTitle').text();
+            	if(title.indexOf('办公室') >= 0)
+            		rejectReason += encodeURI(encodeURI('(国家卫生计生委脑卒中防治委员会办公室)' ));
+            	else if(title.indexOf('中心') >= 0)
+            		rejectReason += encodeURI(encodeURI('(中国卒中数据中心)'));
+            	
             	$.ajax({ 
   					type : "get",//请求方式 
   					url : "applydatacheck_reject",//发送请求地址

@@ -1004,8 +1004,8 @@ public class OracleService implements IService {
 			
 			hc_applydata.setApplyData(applydata);
 			
-			//只有在未进行审核情况下才可以update，apply标志为2 --- status=2（待审核状态）
-			hc_applydata.setFlagApplydata("2");
+			//只有在未进行审核情况下才可以update，apply标志为1 --- status=1（待审核状态）
+			hc_applydata.setFlagApplydata("1");
 
 			hcApplydataDao.attachDirty(hc_applydata);
 			System.out.println("update hc_applydata ok");
@@ -1057,8 +1057,8 @@ public class OracleService implements IService {
 		hc_applydata.setProRemark(hc_projectRemarks);
 		hc_applydata.setApplyData(applydata);
 		
-		// 提交后，apply标志为2 --- status=2（待审核状态）
-		hc_applydata.setFlagApplydata("2");
+		// 提交后，apply标志为1 --- status=1（待审核状态）
+		hc_applydata.setFlagApplydata("1");
 
 		hcApplydataDao.attachDirty(hc_applydata);
 		
@@ -1075,7 +1075,7 @@ public class OracleService implements IService {
 	}
 	
 	@Transactional
-	public HcApplydata getDocByApplyDataID(String applydataId) {
+	public HcApplydata getDataDocByApplyDataID(String applydataId) {
 		BigDecimal bd = new BigDecimal(applydataId);
 		HcApplydata docData = hcApplydataDao.findByApplyID(bd);
 		return docData;
@@ -1153,16 +1153,6 @@ public class OracleService implements IService {
 		return true;	
 	}
 	
-	@Transactional
-	public void updateEnvUrlByApplyID(String applyID, String EnvUrl){
-		HcApplyenv hc_applyenv = hcApplyenvDao.findByApplyID(applyID);
-		hc_applyenv.setEnvUrl(EnvUrl);
-		hc_applyenv.setFlagApplydata("4");//分配虚拟环境结束
-
-		hcApplyenvDao.attachDirty(hc_applyenv);
-		System.out.println("update EnvUrl ok");
-		return;
-	}
 	
 	@Transactional
 	public void insertApplyEnv(HttpServletRequest req, String f_name, boolean update) {
@@ -1299,5 +1289,12 @@ public class OracleService implements IService {
 		BigDecimal bd = new BigDecimal(applyid);
 		hcApplyenvDao.setApplyFailReason(bd,rejectReason);
 	}
-
+	
+	@Transactional
+	public void updateEnvUrlByApplyID(String applyid, String envUrl) {
+		BigDecimal bd = new BigDecimal(applyid);
+		hcApplyenvDao.setApplyEnvUrl(bd,envUrl);		
+		System.out.println("update EnvUrl ok");
+	}
+	
 }

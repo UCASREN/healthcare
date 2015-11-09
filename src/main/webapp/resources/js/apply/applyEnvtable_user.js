@@ -89,6 +89,7 @@ var applyDatatable = function () {
     					dataType : "json", 
     					data:{ 
     						id: applyDataGrid.getSelectedRows(),
+    						deleteType : 'env'
     					}, 
     					success :function(data) {
 //    						alert(data);

@@ -281,13 +281,18 @@ public class WordService implements IService{
 	
 	
 	/*
-	 * 删除word文档
+	 * 删除word文档(对于data和env都可以)
 	 */
-	public boolean deleteDoc(String[] applydataidList) {
+	public boolean deleteDoc(String[] applydataidList, String deleteType) {
 		boolean swf_flag;
 		boolean open_flag;
 		for(String applydataid : applydataidList){
-			String doc_name = oracleService.getDocByApplyDataID(applydataid).getDocName();
+			String doc_name = "";
+			if(deleteType.equals("data"))
+				doc_name = oracleService.getDataDocByApplyDataID(applydataid).getDocName();
+			else if(deleteType.equals("env"))
+				doc_name = oracleService.getDocEnvByApplyDataID(applydataid).getDocName();
+			
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
 		    ServletContext servletContext = webApplicationContext.getServletContext(); 
 			String swfPath = servletContext.getRealPath("/resources/swf");

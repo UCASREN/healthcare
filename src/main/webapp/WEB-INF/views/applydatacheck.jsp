@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf8"
     pageEncoding="utf-8"
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%
 request.setCharacterEncoding("UTF-8");   
 %>
@@ -59,7 +61,42 @@ request.setCharacterEncoding("UTF-8");
 			</div>
 		</div>
 		<!-- END LOGO -->
-	
+		<div class="top-menu">
+				<ul class="nav navbar-nav pull-right">
+					<li class="dropdown dropdown-user"><a href="javascript:;"
+						class="dropdown-toggle" data-toggle="dropdown"
+						data-hover="dropdown" data-close-others="true"> <img alt=""
+							class="img-circle" src="/healthcare/img/avatar3_small.jpg" /> <span
+							class="username username-hide-on-mobile"> <sec:authentication property="name" />
+						</span> <i class="fa fa-angle-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-default">
+							<li><a href="userpanel" target="_blank"> <i
+									class="icon-user"></i> 我的账户
+							</a></li>
+							<li><a href="applydata/applytable" target="_blank"> <i
+									class="icon-envelope-open"></i> 数据申请 <span
+									class="badge badge-danger"> 3 </span>
+							</a></li>
+							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
+									虚拟环境申请<span class="badge badge-success"> 7 </span>
+							</a></li>
+							<li class="divider"></li>
+							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
+							</a></li>
+							<c:url value="/logout" var="logoutUrl" />
+							<li><a href="#" id="logoutbutton"> <i class="icon-key"></i>
+									登出
+							</a>
+								<form action="${logoutUrl}" method="post" style="display: none;"
+									id="logoutform">
+									<input name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form></li>
+						</ul></li>
+					<!-- END USER LOGIN DROPDOWN -->
+
+				</ul>
+			</div>
 		
 	</div>
 	<!-- END HEADER INNER -->
@@ -80,7 +117,7 @@ request.setCharacterEncoding("UTF-8");
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-							<h4 class="modal-title">确认拒绝本次申请？</h4>
+							<h4 class="modal-title" id="rejectTitle">确认拒绝本次申请？</h4>
 						</div>
 						<div class="modal-body">
 								<div>

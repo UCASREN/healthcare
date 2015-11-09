@@ -101,13 +101,15 @@ public class ApplyEnvController {
 	
 	@RequestMapping(value = "/deleteapplydata", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String>  deleteApplyData(@RequestParam(value = "id[]", required = false) String[] applydataid) {
+	public List<String>  deleteApplyData(@RequestParam(value = "id[]", required = false) String[] applydataid,
+			@RequestParam(value = "deleteType", required = true) String deleteType) {
+		
 		List<String> rs = new ArrayList<>();
 		if(applydataid == null || applydataid.length == 0){
 			 rs.add(DELETE_APPLYDATA_ERROR);
 			 return rs;
 		}
-		boolean word_flag = this.WordService.deleteDoc(applydataid);
+		boolean word_flag = this.WordService.deleteDoc(applydataid, deleteType);
 		boolean sql_flag = this.oracleService.deleteApplyEnv(applydataid);
 		if(sql_flag && word_flag){
 			rs.add(DELETE_APPLYDATA_SUCCESS);

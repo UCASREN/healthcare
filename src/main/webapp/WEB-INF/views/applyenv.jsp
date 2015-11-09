@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf8"
     pageEncoding="utf-8"
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%
 request.setCharacterEncoding("UTF-8");   
 %>
@@ -37,6 +39,31 @@ request.setCharacterEncoding("UTF-8");
 
 <body>
 <div class="page-container">
+
+	<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar-wrapper">
+		<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+		<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+		<div class="page-sidebar navbar-collapse collapse">
+		<ul class="page-sidebar-menu" data-keep-expanded="false"
+					data-auto-scroll="true" data-slide-speed="200">
+					<li><a href="/healthcare/userdatabaseview"> <i class="icon-home"></i> <span
+							class="title">数据发布</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
+							class="title">数据申请</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
+							class="title">虚拟环境申请</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/datasetanalysis"> <i class="icon-puzzle"></i> <span
+							class="title">数据分析</span> <span class="arrow "></span>
+					</a></li>
+
+				</ul>
+		</div>
+	</div>
+	<!-- END SIDEBAR -->
 
 	<!-- BEGIN CONTENT -->
 	<div class="page-content-wrapper">

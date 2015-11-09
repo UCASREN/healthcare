@@ -41,26 +41,6 @@ var FormWizard = function () {
 //            	$.each(hc_doc,function(key,val){
 //            		console.log(key+" : "+val);
 //            	});
-            	$('#applydata').val(hc_doc.applyData);
-            	var shopdata = hc_doc.applyData.split(',');
-            	
-            	var shoptable = $('#shoptable');
-            	var shoppanel = $("#shoppanel");
-            	
-            	for(var i=1; i<shopdata.length; i++){
-//            		alert(shopdata[i]);
-        			var tr = $("<tr class='append'></tr>");
-        			var db_name = shopdata[i].split('_')[1];
-        			var t_name = shopdata[i].split('_')[3];
-        			var t_comment = shopdata[i].split('_')[4];
-//        			console.log(db_name+" : "+t_name+" : "+t_comment);
-        			tr.append('<td style="width:10%;text-align:center;">'+db_name+'</td>');
-        			tr.append('<td style="width:10%;text-align:center;">'+t_name+'</td>');
-        			tr.append('<td style="width:10%;text-align:center;">'+t_comment+'</td>');
-            		shoptable.append(tr);
-            	}
-            	shoptable.show();
-            	
             	
             	$('#submit_form_userName').val(hc_doc.name);
             	$('#submit_form_userDepartment').val(hc_doc.department);
@@ -108,6 +88,26 @@ var FormWizard = function () {
             	$('#submit_form_applyDate').val(hc_doc.applyTime);
             	$('#submit_form_projectRemarks').val(hc_doc.proRemark);
 
+             	$('#applydata').val(hc_doc.applyData);
+            	var shopdata = hc_doc.applyData.split(',');
+            	
+            	var shoptable = $('#shoptable');
+            	var shoppanel = $("#shoppanel");
+            	
+            	for(var i=1; i<shopdata.length; i++){
+//            		alert(shopdata[i]);
+        			var tr = $("<tr class='append'></tr>");
+        			var db_name = shopdata[i].split('_')[1];
+        			var t_name = shopdata[i].split('_')[3];
+        			var t_comment = shopdata[i].split('_')[4];
+//        			console.log(db_name+" : "+t_name+" : "+t_comment);
+        			tr.append('<td style="width:10%;text-align:center;">'+db_name+'</td>');
+        			tr.append('<td style="width:10%;text-align:center;">'+t_name+'</td>');
+        			tr.append('<td style="width:10%;text-align:center;">'+t_comment+'</td>');
+            		shoptable.append(tr);
+            	}
+            	shoptable.show();
+            	
             }//end fillForm function
             
             //获取文档id

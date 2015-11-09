@@ -118,10 +118,12 @@
 				</div>
 			</form>
 			<!-- END HEADER SEARCH BOX -->
+			
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 			<a href="javascript:;" class="menu-toggler responsive-toggler"
 				data-toggle="collapse" data-target=".navbar-collapse"> </a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
+			
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown dropdown-user"><a href="javascript:;"

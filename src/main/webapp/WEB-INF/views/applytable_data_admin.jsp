@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf8"
 	pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 %>
@@ -85,6 +87,44 @@
 			<a href="javascript:;" class="menu-toggler responsive-toggler"
 				data-toggle="collapse" data-target=".navbar-collapse"> </a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
+			
+			<div class="top-menu">
+				<ul class="nav navbar-nav pull-right">
+					<li class="dropdown dropdown-user"><a href="javascript:;"
+						class="dropdown-toggle" data-toggle="dropdown"
+						data-hover="dropdown" data-close-others="true"> <img alt=""
+							class="img-circle" src="/healthcare/img/avatar3_small.jpg" /> <span
+							class="username username-hide-on-mobile"> <sec:authentication property="name" />
+						</span> <i class="fa fa-angle-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-default">
+							<li><a href="userpanel" target="_blank"> <i
+									class="icon-user"></i> 我的账户
+							</a></li>
+							<li><a href="applydata/applytable" target="_blank"> <i
+									class="icon-envelope-open"></i> 数据申请 <span
+									class="badge badge-danger"> 3 </span>
+							</a></li>
+							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
+									虚拟环境申请<span class="badge badge-success"> 7 </span>
+							</a></li>
+							<li class="divider"></li>
+							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
+							</a></li>
+							<c:url value="/logout" var="logoutUrl" />
+							<li><a href="#" id="logoutbutton"> <i class="icon-key"></i>
+									登出
+							</a>
+								<form action="${logoutUrl}" method="post" style="display: none;"
+									id="logoutform">
+									<input name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form></li>
+						</ul></li>
+					<!-- END USER LOGIN DROPDOWN -->
+
+				</ul>
+			</div>
+			
 		</div>
 		<!-- END HEADER INNER -->
 	</div>
@@ -196,90 +236,6 @@
 				</div>
 
 
-				<!-- BEGIN STYLE CUSTOMIZER -->
-				<div class="theme-panel hidden-xs hidden-sm">
-					<div class="toggler"></div>
-					<div class="toggler-close"></div>
-					<div class="theme-options">
-						<div class="theme-option theme-colors clearfix">
-							<span> THEME COLOR </span>
-							<ul>
-								<li class="color-default current tooltips" data-style="default"
-									data-container="body" data-original-title="Default"></li>
-								<li class="color-darkblue tooltips" data-style="darkblue"
-									data-container="body" data-original-title="Dark Blue"></li>
-								<li class="color-blue tooltips" data-style="blue"
-									data-container="body" data-original-title="Blue"></li>
-								<li class="color-grey tooltips" data-style="grey"
-									data-container="body" data-original-title="Grey"></li>
-								<li class="color-light tooltips" data-style="light"
-									data-container="body" data-original-title="Light"></li>
-								<li class="color-light2 tooltips" data-style="light2"
-									data-container="body" data-html="true"
-									data-original-title="Light 2"></li>
-							</ul>
-						</div>
-						<div class="theme-option">
-							<span> Layout </span> <select
-								class="layout-option form-control input-sm">
-								<option value="fluid" selected="selected">Fluid</option>
-								<option value="boxed">Boxed</option>
-							</select>
-						</div>
-						<div class="theme-option">
-							<span> Header </span> <select
-								class="page-header-option form-control input-sm">
-								<option value="fixed" selected="selected">Fixed</option>
-								<option value="default">Default</option>
-							</select>
-						</div>
-						<div class="theme-option">
-							<span> Top Menu Dropdown</span> <select
-								class="page-header-top-dropdown-style-option form-control input-sm">
-								<option value="light" selected="selected">Light</option>
-								<option value="dark">Dark</option>
-							</select>
-						</div>
-						<div class="theme-option">
-							<span> Sidebar Mode</span> <select
-								class="sidebar-option form-control input-sm">
-								<option value="fixed">Fixed</option>
-								<option value="default" selected="selected">Default</option>
-							</select>
-						</div>
-						<div class="theme-option">
-							<span> Sidebar Menu </span> <select
-								class="sidebar-menu-option form-control input-sm">
-								<option value="accordion" selected="selected">Accordion</option>
-								<option value="hover">Hover</option>
-							</select>
-						</div>
-						<div class="theme-option">
-							<span> Sidebar Style </span> <select
-								class="sidebar-style-option form-control input-sm">
-								<option value="default" selected="selected">Default</option>
-								<option value="light">Light</option>
-							</select>
-						</div>
-						<div class="theme-option">
-							<span> Sidebar Position </span> <select
-								class="sidebar-pos-option form-control input-sm">
-								<option value="left" selected="selected">Left</option>
-								<option value="right">Right</option>
-							</select>
-						</div>
-						<div class="theme-option">
-							<span> Footer </span> <select
-								class="page-footer-option form-control input-sm">
-								<option value="fixed">Fixed</option>
-								<option value="default" selected="selected">Default</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<!-- END STYLE CUSTOMIZER -->
-
-
 				<!-- BEGIN PAGE HEADER-->
 				<h3 class="page-title">
 					数据申请 <small>历史清单</small>
@@ -288,7 +244,7 @@
 					<ul class="page-breadcrumb">
 						<li><i class="fa fa-home"></i> <a href="/healthcare">主页</a> <i
 							class="fa fa-angle-right"></i></li>
-						<li><a href="#">数据申请 </a></li>
+						<li><a href="#">数据申请(管理员) </a></li>
 					</ul>
 				</div>
 				<!-- END PAGE HEADER-->
