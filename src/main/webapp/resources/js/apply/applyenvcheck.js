@@ -5,6 +5,10 @@ var applyenvCheck = function () {
         //main function to initiate the module
         init: function () {
         	
+        	  $("#logoutbutton").click(function(){
+              	$("#logoutform").submit();
+              });
+        	
             var form = $('#applycheck_form');
             
             var fillForm = function (hc_doc){

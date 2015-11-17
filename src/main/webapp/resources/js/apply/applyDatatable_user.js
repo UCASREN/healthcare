@@ -103,6 +103,7 @@ var applyDatatable = function () {
             	//$.ajax(delete_options);
     		}
     		
+         
 //            applyDataGrid.setMotalClickEvent();
             
       /*      var action = $(".table-group-action-input", applyDataGrid.getTableWrapper());
@@ -130,6 +131,10 @@ var applyDatatable = function () {
                 });
             }*/
             
+        });
+        
+        $("#logoutbutton").click(function(){
+        	$("#logoutform").submit();
         });
         
         $('#filter_panel').hide();

@@ -100,7 +100,6 @@ var applyDatatable = function () {
             	//$.ajax(delete_options);
     		}
     		
-    		
             
       /*      var action = $(".table-group-action-input", applyDataGrid.getTableWrapper());
             if (action.val() != "" && applyDataGrid.getSelectedRowsCount() > 0) {
@@ -127,6 +126,11 @@ var applyDatatable = function () {
                 });
             }*/
             
+        });
+        
+        
+        $("#logoutbutton").click(function(){
+        	$("#logoutform").submit();
         });
         
         $('#filter_panel').hide();

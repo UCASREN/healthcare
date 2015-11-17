@@ -129,6 +129,10 @@ var applyDatatable = function () {
             
         });
         
+        $("#logoutbutton").click(function(){
+        	$("#logoutform").submit();
+        });
+        
         $('#filter_panel').hide();
     }
 

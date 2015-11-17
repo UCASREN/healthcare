@@ -312,16 +312,19 @@ var Datatable = function() {
      						var applyStatus = data.flagApplydata;
      						
      					  	switch(applyStatus){
-	     					  	case '1' ://待审核
-	                    			the.screeningSelect($('.screening-select.select-2'), 130);
+	     					  	case '1' ://待审核---//卒中数据中心ing
+	                    			the.screeningSelect($('.screening-select.select-1'), 0);
 	                    			break;
 	                    		case '2' ://卒中数据中心ed---//卒中防治委员会ing
+	                    			the.screeningSelect($('.screening-select.select-2'), 130);
+	                    			break;
+	                    		case '3' ://卒中数据办公室ed---//分配环境ing
 	                    			the.screeningSelect($('.screening-select.select-3'), 260);
 	                    			break;
-	                    		case '3' ://审核成功
+	                    		case '4' ://环境分配ed---//审核通过
 	                    			the.screeningSelect($('.screening-select.select-5'), 520);
 	                    			break;
-	                    		case '4' ://审核失败
+	                    		case '5' ://审核失败
 	                    			var applyRejectReason = data.applyRejectReason;
 	                    			$('#rejectReason').html(applyRejectReason);
 	                    			$('#failPanel').show();
@@ -331,7 +334,7 @@ var Datatable = function() {
 	                    		default :
 	                    			$('#rejectReason').html('无法提交申请，请联系系统管理员！');
 	                    			$('#failPanel > h5').html('<b>系统提示</b>');
-                    				$('#failPanel').show();
+	                				$('#failPanel').show();
 	                    			the.screeningSelect($('.screening-select.select-1'), 0);
 	                    			break;
      					  	}

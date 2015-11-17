@@ -239,25 +239,26 @@ public class ApplyEnvController {
 	}
 	
 	private String getEnvApplyStatus(String flag_Apply, String ApplyID, String proName, String userName) {
-		String status = "<button id=\"a"+ApplyID+"\" class=\"btn btn-xs btn-default env-no\">出错了</button>";
+		String status = "<button id=\"a"+ApplyID+"\" class=\"btn btn-xs btn-default motalButton\">出错了</button>";
 		switch (flag_Apply) {
 		case "1":
-			status = "<button id=\"a"+ApplyID+"\" title=\"点击查看申请进度\" class=\"btn btn-xs btn-primary env-no\">待审核</button>";
+			status = "<button id=\"a"+ApplyID+"\" title=\"点击查看申请进度\" class=\"btn btn-xs btn-primary motalButton\">待审核</button>";
 			break;
 		case "2"://卒中中心---审核ok
-			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info env-no\">审核中</button>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info motalButton\">审核中</button>";
 			break;
 		case "3"://卒中办公室---审核ok
-			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-warning env-no\">分配中</button>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-warning motalButton\">环境分配中</button>";
 			break;
 		case "4"://分配虚拟环境---ok
 			HcApplyenv encDoc = this.oracleService.getDocEnvByApplyDataID(ApplyID);
 			String targetUrl = encDoc.getEnvUrl();
-			status= "<button id=\"a"+ApplyID+"\"  onclick=\"window.open('"+targetUrl+"')\" title=\"点击进入虚拟环境\" "
-					+ "class=\"btn btn-xs btn-success env-success\">审核通过</button>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success motalButton\">审核通过</button>"
+					+ "&nbsp;<button id=\"a1"+ApplyID+"\"  onclick=\"window.open('"+targetUrl+"')\" title=\"点击进入虚拟环境\" "
+					+ "class=\"btn btn-xs btn-success env-enter\">进入</button>";
 			break;
 		case "5"://审核失败
-			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-danger env-no\">审核失败</button>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-danger motalButton\">审核失败</button>";
 			break;
 		default:
 			System.out.println("申请标志位"+flag_Apply);

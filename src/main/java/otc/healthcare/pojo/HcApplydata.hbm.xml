@@ -97,5 +97,8 @@
          <property name="applyData" type="string">
             <column name="APPLY_DATA" length="4000" />
         </property>
+           <property name="applyDataDir" type="string">
+            <column name="APPLY_DATA_DIR" length="255" />
+        </property>
     </class>
 </hibernate-mapping>

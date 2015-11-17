@@ -195,22 +195,11 @@
 										<div class="project-screening">
 											<div class="project-screening-yellow"></div>
 											<div class="select-1-yellow"></div>
-											<div class="screening-select select-1 current">
-												<a href="javascript:;">已提交</a>
-											</div>
-											<div class="screening-select select-2" selval="4,6">
-												<a href="javascript:;" selval="4,6">待审核</a>
-											</div>
-											<div class="screening-select select-3" selval="6,7">
-												<a href="javascript:;" selval="6,7">卒中数据中心</a>
-											</div>
-											<div class="screening-select select-4" selval="7,10">
-												<a href="javascript:;" selval="7,10">卒中防治委员会</a>
-											</div>
-											<div id="status_final" class="screening-select select-5"
-												selval="10,-1">
-												<a href="javascript:;" selval="10,-1">审核成功</a>
-											</div>
+											<div class="screening-select select-1 current"><a href="javascript:;">待审核</a></div>
+											<div class="screening-select select-2" selval="4,6"><a href="javascript:;" selval="4,6">卒中数据中心</a></div>
+											<div class="screening-select select-3" selval="6,7"><a href="javascript:;" selval="6,7">卒中防治委员会</a></div>
+											<div class="screening-select select-4" selval="7,10"><a href="javascript:;" selval="7,10">数据集分配</a></div>
+											<div id="status_final" class="screening-select select-5" selval="10,-1"><a href="javascript:;" selval="10,-1">审核成功</a></div>
 										</div>
 									</div>
 								</div>
@@ -269,15 +258,32 @@
 										<thead>
 											<tr role="row" class="heading">
 												<th width="2%"><input type="checkbox"
-													class="group-checkable"></th>
-												<th width="5%">序号</th>
-												<th width="7%">申请者</th>
-												<th width="10%">所在单位</th>
-												<th width="10%">项目名称</th>
-												<th width="20%">数据需求</th>
-												<th width="13%">申请时间</th>
-												<th width="10%">申请状态</th>
-												<th width="20%">操作</th>
+													class="group-checkable">
+												</th>
+												<th width="4%">
+													 序号
+												</th>
+												<th width="7%">
+													申请者
+												</th>
+												<th width="10%">
+													所在单位
+												</th>
+												<th width="10%">
+													 项目名称
+												</th>
+												<th width="20%">
+													  数据需求
+												</th>
+												<th width="11%">
+													申请时间
+												</th>
+												<th width="10%">
+													 申请状态
+												</th>
+												<th width="27%">
+													 操作
+												</th>
 											</tr>
 											<tr role="row" class="filter" id="filter_panel">
 												<td></td>

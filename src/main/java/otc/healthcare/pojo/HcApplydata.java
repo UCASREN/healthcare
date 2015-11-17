@@ -30,6 +30,7 @@ public class HcApplydata implements java.io.Serializable {
 	private String applyTime;
 	private String applyRejectReason;
 	private String applyData;
+	private String applyDataDir;
 	
 	public String getApplyRejectReason() {
 		return applyRejectReason;
@@ -51,7 +52,7 @@ public class HcApplydata implements java.io.Serializable {
 	public HcApplydata(BigDecimal idApplydata, String hcUsername, String docName, String name, String department,
 			String address, String tel, String email, String demandtype, String demand, String proName, String proChair,
 			String proSource, String proUndertake, String proRemark, String proUsefield, String flagApplydata,
-			String applyTime, String applyRejectReason,String applyData) {
+			String applyTime, String applyRejectReason,String applyData, String applyDataDir) {
 		this.idApplydata = idApplydata;
 		this.hcUsername = hcUsername;
 		this.docName = docName;
@@ -72,6 +73,7 @@ public class HcApplydata implements java.io.Serializable {
 		this.applyTime = applyTime;
 		this.applyRejectReason = applyRejectReason;
 		this.applyData = applyData;
+		this.applyDataDir = applyDataDir;
 	}
 
 	public String getApplyData() {
@@ -224,6 +226,14 @@ public class HcApplydata implements java.io.Serializable {
 
 	public void setApplyTime(String applyTime) {
 		this.applyTime = applyTime;
+	}
+
+	public String getApplyDataDir() {
+		return applyDataDir;
+	}
+
+	public void setApplyDataDir(String applyDataDir) {
+		this.applyDataDir = applyDataDir;
 	}
 
 }

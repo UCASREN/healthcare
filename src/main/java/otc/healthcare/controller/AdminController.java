@@ -79,7 +79,13 @@ public class AdminController {
 		this.filterService = filterService;
 	}
 	
-
+	@RequestMapping(value = "/applydataalloc", method = RequestMethod.GET)
+	public String applyDataAlloc(@RequestParam(value = "docid", required = false) String docid,
+			@RequestParam(value = "applydataid", required = false) String applydataid) {
+		return "applydataalloc";
+	}
+	
+	
 	@RequestMapping(value = "/applydatacheck", method = RequestMethod.GET)
 	public String applyDataCheck(@RequestParam(value = "docid", required = false) String docid,
 			@RequestParam(value = "applydataid", required = false) String applydataid) {
@@ -106,6 +112,11 @@ public class AdminController {
 		//国家卫生计生委脑卒中防治委员会办公室 --- 状态由2到3 --- 管理员分配
 		if(authority.equals("ROLE_SU2") && curStatus.equals("2"))
 			this.oracleService.changeApplyDataStatus(applydataid,"3");
+		
+		//系统管理员---状态变到4
+		if(authority.equals("ROLE_ADMIN"))
+			this.oracleService.changeApplyDataStatus(applydataid,"3");
+		
 		
 		return "applydatacheck";
 	}
@@ -154,12 +165,11 @@ public class AdminController {
 		if(authority.equals("ROLE_SU2") && curStatus.equals("2"))
 			this.oracleService.changeApplyEnvStatus(applydataid,"3");
 		
-		/*
-		 * 以下部分应该是新的界面中，分配按钮对应的内荣，这里仅仅是为了测试
-		 */
-		//系统管理员 --- 状态由3到4 --- 审核成功
-		if(authority.equals("ROLE_ADMIN") && curStatus.equals("3")){
-			this.oracleService.changeApplyEnvStatus(applydataid,"4");
+		//系统管理员 --- 状态变到4 --- 审核成功
+		if(authority.equals("ROLE_ADMIN")){
+			this.oracleService.changeApplyEnvStatus(applydataid,"3");
+			
+			//以下部分应该是新的界面中，分配按钮对应的内荣，这里仅仅是为了测试
 			this.oracleService.updateEnvUrlByApplyID(applydataid,"http://133.133.135.11:8989/novnc/console.html?id=bda2af74");
 		}
 		
@@ -303,7 +313,9 @@ public class AdminController {
 			String envAlloc = "<a href=\"/healthcare/adminpanel/applyenvalloc?applydataid="+docEnv.getIdApplydata()+"\" "
 					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-cogs\"></i> 环境分配</a>";;
 			
-			String button = wordPreview+blank;
+			String envCheck_All = "<a href=\"/healthcare/adminpanel/applyenvcheck?applydataid="+docEnv.getIdApplydata()+"\" "
+							+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 一键审核</a>";
+			String button = wordPreview;
 			Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			String authority = "";  
 
@@ -317,12 +329,11 @@ public class AdminController {
 			
 			if(envStatusFlag.equals("1") && authority.equals("ROLE_SU1"))
 				button += envCheck;
-			
 			if(envStatusFlag.equals("2") && authority.equals("ROLE_SU2"))
-				button += envCheck;
+				button += envCheck+envAlloc;
+			if(authority.equals("ROLE_ADMIN"))
+				button += envCheck_All + envAlloc;
 			
-			if(envStatusFlag.equals("3") && authority.equals("ROLE_ADMIN"))
-				button += envAlloc;
 			tempStore.add(button);
 			store.add(tempStore);
 		}
@@ -344,7 +355,7 @@ public class AdminController {
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info env-no\">审核中</button>";
 			break;
 		case "3"://卒中办公室---审核ok
-			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-warning env-no\">分配中</button>";
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-warning env-no\">环境分配中</button>";
 			break;
 		case "4"://分配虚拟环境---ok
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success env-success\">审核通过</button>";
@@ -428,7 +439,13 @@ public class AdminController {
 			String dataCheck = "<a href=\"/healthcare/adminpanel/applydatacheck?applydataid="+docData.getIdApplydata()+"\" target=\"_blank\" "
 					+ "class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 数据审核</a>";
 			
-			String button = wordPreview+blank;
+			String dataCheck_All = "<a href=\"/healthcare/adminpanel/applydatacheck?applydataid="+docData.getIdApplydata()+"\" "
+					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-lock\"></i> 一键审核</a>";
+			
+			String dataAlloc = "<a href=\"/healthcare/adminpanel/applydataalloc?applydataid="+docData.getIdApplydata()+"\" "
+					+ "target=\"_blank\" class=\"btn btn-xs default\"><i class=\"fa fa-cogs\"></i> 数据分配</a>";;
+			
+			String button = wordPreview;
 			
 			Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			String authority = "";  
@@ -444,6 +461,8 @@ public class AdminController {
 				button += dataCheck;
 			if(dataStatusFlag.equals("2") && authority.equals("ROLE_SU2"))
 				button += dataCheck;
+			if(authority.equals("ROLE_ADMIN"))
+				button += dataCheck_All + dataAlloc;
 			
 			tempStore.add(button);
 			store.add(tempStore);
@@ -465,10 +484,13 @@ public class AdminController {
 		case "2"://卒中中心---审核ok
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info env-no\">审核中</button>";
 			break;
-		case "3"://卒中办公室---审核ok---审核通过
+		case "3"://卒中办公室---审核ok
+			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info env-no\">数据分配中</button>";
+			break;
+		case "4"://管理员---审核ok---审核通过
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success env-success\">审核通过</button>";
 			break;
-		case "4"://审核失败
+		case "5"://审核失败
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-danger env-no\">审核失败</button>";
 			break;
 		default:
