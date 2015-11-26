@@ -9,6 +9,7 @@ public class FieldInfo {
 	private String databaseid;
 	private String tableid;
 	private String name;
+	private String zhcnname;
 	private String datatype;
 	private String datalength;
 	private String nullable;
@@ -88,6 +89,19 @@ public class FieldInfo {
 	 */
 	public void setDatadictionary(String datadictionary) {
 		this.datadictionary = datadictionary;
+	}
+	/**
+	 * @return the zhcnname
+	 */
+	@XmlElement(name = "zhcnname")
+	public String getZhcnname() {
+		return zhcnname;
+	}
+	/**
+	 * @param zhcnname the zhcnname to set
+	 */
+	public void setZhcnname(String zhcnname) {
+		this.zhcnname = zhcnname;
 	}
 	
 }

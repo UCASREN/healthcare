@@ -377,7 +377,7 @@ var TableAjax = function () {
                 	success : function(data) {
                 		console.log(data);
                 		$("#showdatabaseinfo_name").text("数据库名："+data.name);
-                		$("#showdatabaseinfo_comments").text("备注："+data.comments);
+                		$("#showdatabaseinfo_comments").text("描述："+data.comments);
 //                		$("#showdatabaseinfo_identifier").text("标识符："+data.identifier==null?"空":data.identifier);
 //                		$("#showdatabaseinfo_language").text("语种："+data.language==null?"空":data.identifier);
 //                		$("#showdatabaseinfo_charset").text("字符集："+data.charset==null?"空":data.identifier);
@@ -417,7 +417,7 @@ var TableAjax = function () {
                 	success : function(data) {
                 		console.log(data);
                 		$("#showtableinfo_name").text("表名："+data.name);
-                		$("#showtableinfo_comments").text("备注："+data.comments);
+                		$("#showtableinfo_comments").text("描述："+data.comments);
                 		$("#showtableinfo_others").text("其它："+data.others);
                 		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
                 		$("#showtableinfo").show();

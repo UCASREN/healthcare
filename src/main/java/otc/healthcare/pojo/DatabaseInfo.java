@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DatabaseInfo {
 	private String databaseid;
 	private String name;
+	private String zhcnname;
 	private String comments;
 	private String identifier;
 	private String language;
@@ -143,6 +144,19 @@ public class DatabaseInfo {
 	 */
 	public void setTablelist(List<TableInfo> tablelist) {
 		this.tablelist = tablelist;
+	}
+	/**
+	 * @return the zhcnname
+	 */
+	@XmlElement(name = "zhcnname")
+	public String getZhcnname() {
+		return zhcnname;
+	}
+	/**
+	 * @param zhcnname the zhcnname to set
+	 */
+	public void setZhcnname(String zhcnname) {
+		this.zhcnname = zhcnname;
 	}
 	
 	

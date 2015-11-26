@@ -266,6 +266,7 @@ public class MetadataController {
 			@RequestParam(value = "parent", required = false) String parent,
 			@RequestParam(value = "position", required = false) String position,
 			@RequestParam(value = "text", required = false) String text,
+			@RequestParam(value = "zhcnname", required = false) String zhcnname,
 			@RequestParam(value = "comments", required = false) String comments,
 			@RequestParam(value = "numrows", required = false) String numrows) {
 		String operationResult = "";
@@ -283,7 +284,7 @@ public class MetadataController {
 			break;
 		case "create_node": {
 			operationResult = parent.indexOf("all_") != -1
-					? "alldatabase_" + this.oracleSerive.createDatabase(text, comments == null ? "备注为空" : comments)
+					? "alldatabase_" + this.oracleSerive.createDatabase(text,zhcnname, comments == null ? "备注为空" : comments)
 					: "alltable_" + this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text,
 							comments == null ? "备注为空" : comments,numrows==null?"0":numrows);
 		}
@@ -294,11 +295,11 @@ public class MetadataController {
 				operationResult = "success";
 			}
 			if (operationType.equals("table")) {
-				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments,numrows);
+				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text,zhcnname, comments,numrows);
 				operationResult = "success";
 			}
 			if (operationType.equals("all")) {
-				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, comments,numrows);
+				this.oracleSerive.changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, zhcnname,comments,numrows);
 				operationResult = "success";
 			}
 			/*
@@ -334,6 +335,7 @@ public class MetadataController {
 			@RequestParam(value = "tableid", required = false) String tableid,
 			@RequestParam(value = "fieldid", required = false) String fieldid,
 			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "zhcnname", required = false) String zhcnname,
 			@RequestParam(value = "comments", required = false) String comments,
 			@RequestParam(value = "datadictionary", required = false) String datadictionary) {
 		String operationResult = "";
@@ -348,12 +350,12 @@ public class MetadataController {
 			// +
 			// this.oracleSerive.createTable(parent.substring(parent.indexOf("_")
 			// + 1), text, comments==null?"备注为空":comments);
-			this.oracleSerive.createField(databaseid, tableid, name, comments,datadictionary);
+			this.oracleSerive.createField(databaseid, tableid, name, zhcnname,comments,datadictionary);
 			operationResult = "success";
 		}
 			break;
 		case "rename": {
-			this.oracleSerive.changeField(fieldid, databaseid, tableid, name, comments,datadictionary);
+			this.oracleSerive.changeField(fieldid, databaseid, tableid, name,zhcnname, comments,datadictionary);
 			operationResult = "success";
 		}
 			break;
@@ -425,6 +427,7 @@ public class MetadataController {
 			tempStore.add((i+1)+"");
 			tempStore.add(tableInfo.getTableid());
 			tempStore.add(tableInfo.getName());
+			tempStore.add(tableInfo.getZhcnname());
 			tempStore.add(tableInfo.getComments());
 			store.add(tempStore);
 		}
@@ -468,6 +471,7 @@ public class MetadataController {
 			tempStore.add((i+1)+"");
 			tempStore.add(databaseInfo.getDatabaseid());
 			tempStore.add(databaseInfo.getName());
+			tempStore.add(databaseInfo.getZhcnname());
 			tempStore.add(databaseInfo.getComments());
 			tempStore.add(databaseInfo.getIdentifier());
 			tempStore.add(databaseInfo.getLanguage());
@@ -543,9 +547,8 @@ public class MetadataController {
 			tempStore.add((i+1)+"");
 			tempStore.add(fieldInfo.getFieldid());
 			tempStore.add(fieldInfo.getName());
+			tempStore.add(fieldInfo.getZhcnname());
 			tempStore.add(fieldInfo.getComments());
-			tempStore.add("0");
-			tempStore.add("100");
 			tempStore.add(fieldInfo.getDatadictionary());
 			store.add(tempStore);
 		}

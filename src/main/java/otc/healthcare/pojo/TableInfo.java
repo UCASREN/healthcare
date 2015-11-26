@@ -10,6 +10,7 @@ public class TableInfo {
 	private String tableid;
 	private String databaseid;
 	private String name;
+	private String zhcnname;
 	private String comments;
 	private String numrows;
 	private List<FieldInfo> fieldlist;
@@ -72,5 +73,18 @@ public class TableInfo {
 	 */
 	public void setNumrows(String numrows) {
 		this.numrows = numrows;
+	}
+	/**
+	 * @return the zhcnname
+	 */
+	@XmlElement(name = "zhcnname")
+	public String getZhcnname() {
+		return zhcnname;
+	}
+	/**
+	 * @param zhcnname the zhcnname to set
+	 */
+	public void setZhcnname(String zhcnname) {
+		this.zhcnname = zhcnname;
 	}
 }

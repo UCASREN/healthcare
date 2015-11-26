@@ -91,6 +91,7 @@ public class OracleService implements IService {
 				dim.setResphone(res.getString(14));
 				dim.setResemail(res.getString(15));
 				dim.setResourceurl(res.getString(16));
+				dim.setZhcnname(res.getString(17));
 				resultList.add(dim);
 			}
 		} catch (Exception e) {
@@ -129,6 +130,7 @@ public class OracleService implements IService {
 				databaseSummary.put("resphone", res.getString(14));
 				databaseSummary.put("resemail", res.getString(15));
 				databaseSummary.put("resourceurl", res.getString(16));
+				databaseSummary.put("zhcnname", res.getString(17));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,6 +158,7 @@ public class OracleService implements IService {
 				tim.setName(res.getString(3));
 				tim.setComments(res.getString(4));
 				tim.setNumrows(res.getString(5)==null?"0":res.getString(5));
+				tim.setZhcnname(res.getString(6));
 				resultList.add(tim);
 			}
 		} catch (Exception e) {
@@ -234,7 +237,7 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			ResultSet res = dbUtil
-					.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS,DATADICTIONARY from SYSTEM.HC_FIELD where DATABASEID="
+					.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS,DATADICTIONARY,ZHCNNAME from SYSTEM.HC_FIELD where DATABASEID="
 							+ databaseid + " and TABLEID=" + tableid);
 			while (res.next()) {
 
@@ -245,6 +248,7 @@ public class OracleService implements IService {
 				fim.setName(res.getString(4));
 				fim.setComments(res.getString(5));
 				fim.setDatadictionary(res.getString(6));
+				fim.setZhcnname(res.getString(7));
 				resultList.add(fim);
 			}
 		} catch (Exception e) {
@@ -736,7 +740,7 @@ public class OracleService implements IService {
 		return false;
 	}
 
-	public Integer createDatabase(String databasename, String comments) {// insert
+	public Integer createDatabase(String databasename, String zhcnname,String comments) {// insert
 																			// into
 																			// database
 																			// table
@@ -748,8 +752,8 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			String vsql = "insert into SYSTEM.HC_DATABASE (DATABASEID,NAME,COMMENTS) values(DATABASE_DATABASEID.nextval,"
-					+ "'" + databasename + "','" + comments + "')";
+			String vsql = "insert into SYSTEM.HC_DATABASE (DATABASEID,NAME,ZHCNNAME,COMMENTS) values(DATABASE_DATABASEID.nextval,"
+					+ "'" + databasename + "','"+"'"+zhcnname+"','"+ comments + "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
 					"select DATABASE_DATABASEID.currval as id from SYSTEM.HC_DATABASE");
 		} catch (Exception e) {
@@ -784,7 +788,7 @@ public class OracleService implements IService {
 		return null;
 	}
 
-	public Integer createField(String databaseid, String tableid, String fieldname, String comments,String datadictionary) {// insert
+	public Integer createField(String databaseid, String tableid, String fieldname, String zhcnname,String comments,String datadictionary) {// insert
 		// into database table one row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
@@ -793,8 +797,8 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			String vsql = "insert into SYSTEM.HC_FIELD (FIELDID,TABLEID,DATABASEID,NAME,COMMENTS,DATADICTIONARY) values(FIELD_FIELDID.nextval,"
-					+ tableid + "," + databaseid + ",'" + fieldname + "','" + comments+ "','"+ datadictionary+ "')";
+			String vsql = "insert into SYSTEM.HC_FIELD (FIELDID,TABLEID,DATABASEID,NAME,ZHCNNAME,COMMENTS,DATADICTIONARY) values(FIELD_FIELDID.nextval,"
+					+ tableid + "," + databaseid + ",'" + fieldname+ "','"+zhcnname + "','" + comments+ "','"+ datadictionary+ "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
 					"select FIELD_FIELDID.currval as id from SYSTEM.HC_FIELD");
 		} catch (Exception e) {
@@ -849,7 +853,8 @@ public class OracleService implements IService {
 					+ databaseinfo.getResname() + "'," + "RESADDRESS='" + databaseinfo.getResaddress() + "',"
 					+ "RESPOSTALCODE='" + databaseinfo.getRespostalcode() + "'," + "RESPHONE='"
 					+ databaseinfo.getResphone() + "'," + "RESEMAIL='" + databaseinfo.getResemail() + "',"
-					+ "RESOURCEURL='" + databaseinfo.getResourceurl() + "'" + " where DATABASEID="
+					+ "RESOURCEURL='" + databaseinfo.getResourceurl() + "',"
+					+ "ZHCNNAME='" + databaseinfo.getZhcnname() + "'"+ " where DATABASEID="
 					+ databaseinfo.getDatabaseid();
 			dbUtil.execute(sql);
 			return true;
@@ -861,7 +866,7 @@ public class OracleService implements IService {
 		return false;
 	}
 
-	public boolean changeTable(String databaseid, String tableid, String newName, String newComments,String newNumRows) {
+	public boolean changeTable(String databaseid, String tableid, String newName,String zhcnname, String newComments,String newNumRows) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -872,6 +877,11 @@ public class OracleService implements IService {
 		try {
 			if (newName != null) {
 				sql = "update SYSTEM.HC_TABLE set NAME='" + newName + "'  where DATABASEID=" + databaseid
+						+ " and TABLEID=" + tableid;
+				dbUtil.execute(sql);
+			}
+			if (zhcnname != null) {
+				sql = "update SYSTEM.HC_TABLE set ZHCNNAME='" + zhcnname + "'  where DATABASEID=" + databaseid
 						+ " and TABLEID=" + tableid;
 				dbUtil.execute(sql);
 			}
@@ -894,7 +904,7 @@ public class OracleService implements IService {
 		return false;
 	}
 
-	public boolean changeField(String fieldid, String databaseid, String tableid, String newName, String newComments,String newDatadictionary) {
+	public boolean changeField(String fieldid, String databaseid, String tableid, String newName,String newZhcnname, String newComments,String newDatadictionary) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -905,6 +915,11 @@ public class OracleService implements IService {
 		try {
 			if (newName != null) {
 				sql = "update SYSTEM.HC_FIELD set NAME='" + newName + "'  where DATABASEID=" + databaseid
+						+ " and TABLEID=" + tableid + " and FIELDID=" + fieldid;
+				dbUtil.execute(sql);
+			}
+			if (newZhcnname != null) {
+				sql = "update SYSTEM.HC_FIELD set ZHCNNAME='" + newZhcnname + "'  where DATABASEID=" + databaseid
 						+ " and TABLEID=" + tableid + " and FIELDID=" + fieldid;
 				dbUtil.execute(sql);
 			}

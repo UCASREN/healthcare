@@ -151,6 +151,7 @@
 											<tr>
 												<th>编号</th>
 												<th>表名</th>
+												<th>中文名</th>
 												<th>描述</th>
 												<th>行数</th>
 												<th>操作</th>
@@ -204,8 +205,9 @@
 											<tr>
 												<th>编号</th>
 												<th>列名</th>
+												<th>中文名</th>
 												<th>描述</th>
-												<th>数据字典</th>
+												<th>备注</th>
 												<th>操作</th>
 												<th>操作</th>
 											</tr>
@@ -316,7 +318,14 @@
 											<sf:input type="hidden" id="form_database_id" path="databaseid"/>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											<sf:input type="text" class="form-control" id="form_database_name" path="name"
-												placeholder="输入数据库名称"/>
+												placeholder="输入数据库名"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">中文名</label>
+										<div class="col-md-9">
+											<sf:input type="text" class="form-control" id="form_database_zhcnname" path="zhcnname"
+												placeholder="输入中文名"/>
 										</div>
 									</div>
 									<div class="form-group">

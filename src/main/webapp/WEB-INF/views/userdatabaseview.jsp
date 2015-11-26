@@ -232,8 +232,9 @@
 										<tr role="row" class="heading">
 											<th>编号</th>
 											<th>隐藏实际编号</th>
-											<th>名称</th>
-											<th>备注</th>
+											<th>数据库名</th>
+											<th>中文名</th>
+											<th>描述</th>
 											<th>标识符</th>
 											<th>语种</th>
 											<th>字符集</th>
@@ -272,7 +273,7 @@
 							<span id="showdatabaseinfo_tablenumber"></span>
 						</div>
 						<div class="row">
-							<div class="col-md-10">
+							<div class="col-md-7">
 								<div class="table-container">
 									<div class="table-actions-wrapper">
 										<span> </span>
@@ -283,12 +284,13 @@
 										id="datatable_ajax_database">
 										<thead>
 											<tr role="row" class="heading">
-												<th width="2%"><input type="checkbox"
+												<th width="1%"><input type="checkbox"
 													class="group-checkable"></th>
 												<th width="5%">编号</th>
 												<th>隐藏实际编号</th>
-												<th width="15%">名称</th>
-												<th width="15%">描述</th>
+												<th width="5%">表名</th>
+												<th width="5%">中文名</th>
+												<th width="20%">描述</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -296,7 +298,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-5">
 								<div class="row">
 									<button class="btn btn-sm yellow table-group-action-submit">
 										<i class="fa fa-check"></i> 添加/更新数据集
@@ -331,7 +333,7 @@
 					<div class="alert alert-info">
 						<div class="row">
 							'
-							<div class="col-md-10">
+							<div class="col-md-7">
 								<div class="table-container">
 									<div class="table-actions-wrapper">
 										<span> </span>
@@ -341,15 +343,14 @@
 										id="datatable_ajax">
 										<thead>
 											<tr role="row" class="heading">
-												<th width="2%"><input type="checkbox"
+												<th width="1%"><input type="checkbox"
 													class="group-checkable"></th>
 												<th width="5%">编号</th>
 												<th>隐藏实际编号</th>
-												<th width="15%">名称</th>
+												<th width="5%">列名</th>
+												<th width="5%">中文名</th>
 												<th width="15%">描述</th>
-												<th width="10%">最小值</th>
-												<th width="10%">最大值</th>
-												<th width="10%">数据字典</th>
+												<th width="20%">备注</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -357,7 +358,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="col-md-2"></div>
+							<div class="col-md-5"></div>
 						</div>
 					</div>
 				</div>
