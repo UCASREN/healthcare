@@ -116,7 +116,7 @@ public class OracleService implements IService {
 			while (res.next()) {
 				databaseSummary.put("databaseid", res.getString(1));
 				databaseSummary.put("name", res.getString(2));
-				databaseSummary.put("comments", res.getString(3));
+				databaseSummary.put("comments", res.getString(3)==null?"空":res.getString(3));
 				databaseSummary.put("identifier", res.getString(4));
 				databaseSummary.put("language", res.getString(5));
 				databaseSummary.put("charset", res.getString(6));
@@ -130,7 +130,7 @@ public class OracleService implements IService {
 				databaseSummary.put("resphone", res.getString(14));
 				databaseSummary.put("resemail", res.getString(15));
 				databaseSummary.put("resourceurl", res.getString(16));
-				databaseSummary.put("zhcnname", res.getString(17));
+				databaseSummary.put("zhcnname", res.getString(17)==null?"空":res.getString(17));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -625,17 +625,17 @@ public class OracleService implements IService {
 		for(TableInfo tableInfo:tableInfoList){
 			dbUtil.query("select TABLE_TABLEID.nextval from dual");
 			String tableId = dbUtil.showListResults("select TABLE_TABLEID.currval from dual").get(0);
-			dbUtil.execute("insert into HC_TABLE(TABLEID,NAME,COMMENTS,DATABASEID) values(" + tableId
-					+ ",'" + tableInfo.getName() + "','" + tableInfo.getComments() + "'," + databaseId + ")");
+			dbUtil.execute("insert into HC_TABLE(TABLEID,NAME,ZHCNNAME,COMMENTS,DATABASEID) values(" + tableId
+					+ ",'" + tableInfo.getName() + "','"+tableInfo.getZhcnname()+"','"+ tableInfo.getComments() + "'," + databaseId + ")");
 			List<FieldInfo>	fieldInfoList=tableInfo.getFieldlist();
 			for(FieldInfo fieldInfo:fieldInfoList){
 				dbUtil.query("select FIELD_FIELDID.nextval from dual");
 				String fieldId = dbUtil.showListResults("select FIELD_FIELDID.currval from dual")
 						.get(0);
 				dbUtil.execute("insert into HC_FIELD( "
-						+ "FIELDID,NAME,DATATYPE,DATALENGTH,COMMENTS,NOTNULL,TABLEID,DATABASEID) "
-						+ "values(" + fieldId + ",'" + fieldInfo.getName() + "','" + fieldInfo.getDatatype() + "','"
-						+ fieldInfo.getDatalength() + "','" + fieldInfo.getComments() + "','" + fieldInfo.getNullable()+ "',"
+						+ "FIELDID,NAME,ZHCNNAME,COMMENTS,DATADICTIONARY,TABLEID,DATABASEID) "
+						+ "values(" + fieldId + ",'" + fieldInfo.getName() + "','" + fieldInfo.getZhcnname() + "','"
+						+ fieldInfo.getComments() + "','" + fieldInfo.getDatadictionary()+ "',"
 						+ tableId + "," + databaseId + ")");
 			}
 		}

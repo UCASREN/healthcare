@@ -638,6 +638,7 @@ var AjaxTree = function() {
 					$.each(data, function(i, table) {
 						/* if (table.tableid > maxId)
 							maxId = table.tableid; */
+						console.log(table);
 						oTable1.fnAddData([ table.tableid, table.name,table.zhcnname,
 						                   table.comments,table.numrows, '<a class="edit" href="">编辑</a>',
 								'<a class="delete" href="">删除</a>' ]);
@@ -660,6 +661,7 @@ var AjaxTree = function() {
 						$.each(data, function(i, field) {
 							/* if (field.fieldid > maxId)
 								maxId = field.fieldid; */
+							console.log(field)
 							oTable2.fnAddData([ field.fieldid, field.name,field.zhcnname,
 							                   field.comments,field.datadictionary, '<a class="edit" href="">编辑</a>',
 									'<a class="delete" href="">删除</a>' ]);
@@ -687,7 +689,7 @@ var AjaxTree = function() {
 					$.each(data, function(i, field) {
 						/* if (field.fieldid > maxId)
 							maxId = field.fieldid; */
-						oTable2.fnAddData([ field.fieldid, field.name,
+						oTable2.fnAddData([ field.fieldid, field.name,field.zhcnname,
 						                   field.comments, field.datadictionary,'<a class="edit" href="">编辑</a>',
 								'<a class="delete" href="">删除</a>' ]);
 					});
@@ -711,7 +713,7 @@ var AjaxTree = function() {
 						$.each(data, function(i, table) {
 							/* if (table.tableid > maxId)
 								maxId = table.tableid; */
-							oTable1.fnAddData([ table.tableid, table.name,
+							oTable1.fnAddData([ table.tableid, table.name,table.zhcnname,
 							                   table.comments,table.numrows,  '<a class="edit" href="">编辑</a>',
 									'<a class="delete" href="">删除</a>' ]);
 						});
