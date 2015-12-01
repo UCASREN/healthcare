@@ -347,7 +347,7 @@ public class MetadataController {
 		}
 			break;
 		case "move_node":{
-			System.out.println("输入参数："+id+","+parent+","+position);
+//			System.out.println("输入参数："+id+","+parent+","+position);
 			this.oracleSerive.changeDatabase(operationId, null, null,parent.substring(parent.indexOf("_") + 1));
 			operationResult = "success";
 		}
@@ -363,10 +363,21 @@ public class MetadataController {
 		this.oracleSerive.changeDatabase(databaseinfo);
 		return  true;
 	}
+	@RequestMapping(value = "/updateclassificationdetail", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean updateclassificationdetail(@ModelAttribute ClassificationInfo classificationinfo) {
+		this.oracleSerive.changeClassification(classificationinfo);
+		return  true;
+	}
 	@RequestMapping(value = "/getdatabaseInfo", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,String> databaseInfo(@RequestParam(value = "databaseid", required = true)String databaseid) {
 		return  this.oracleSerive.getDatabaseSummary(databaseid);
+	}
+	@RequestMapping(value = "/getclassificationdetail", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,String> getClassificationDetail(@RequestParam(value = "classificationid", required = true)String classificationid) {
+		return  this.oracleSerive.getClassificationSummary(classificationid);
 	}
 
 	@RequestMapping(value = "/fieldoperation", method = RequestMethod.GET)

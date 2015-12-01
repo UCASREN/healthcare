@@ -586,8 +586,8 @@ var AjaxTree = function() {
 		 * data.parent, 'position' : data.position }) .fail(function () {
 		 * data.instance.refresh(); });
 		 */
-		console.log(data.node.id);
-		console.log(data.node.parent);
+//		console.log(data.node.id);
+//		console.log(data.node.parent);
 		if(data.node.id.indexOf("alldatabase_") != -1 && data.node.parent.indexOf("classification_")!=-1){
 			$.get('dataresource/nodeoperation?operation=move_node', {
 				'id' : data.node.id,
@@ -615,6 +615,23 @@ var AjaxTree = function() {
 	}).on('changed.jstree', function(e, data) {
 
 	}).on('select_node.jstree', function(e, data) {
+		if(data.node.id.indexOf("classification")!=-1){
+			$("#setclassificationdetail").removeClass("disabled");
+			$("#setclassificationdetail").text("更改类别"+data.node.text+"的信息");
+			$.ajax({
+				type : "get",//请求方式
+				url : "dataresource/getclassificationdetail",//发送请求地址
+				data:{
+					classificationid:data.node.id.substring(data.node.id.indexOf("_")+1)
+				},
+				dataType : "json",
+				success : function(data) {
+					$("#classificationdetail_id").val(data.classificationid);
+					$("#classificationdetail_name").val(data.name);
+					$("#classificationdetail_comments").val(data.comments);
+				}
+			});
+		}
 		if (data.node.id.indexOf("alldatabase") != -1) {
 			//更新“更改数据库信息”模态框中表单内容
 			$("#setchangedatabasetitle").removeClass("disabled");
@@ -806,6 +823,10 @@ $.ajax({
 $("#savedatabaseinfo").click(function(){
     $.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
 	$('#changedatabaseinfo').modal('hide');
+});
+$("#saveclassificationdetail").click(function(){
+    $.post("dataresource/updateclassificationdetail", $("#classificationdetail_form").serialize(), function (result) {console.log(result) }, "json");
+	$('#changeclassificationdetail').modal('hide');
 });
 $("#remote_test_connect").click(function(){
 	 $.post("dataresource/testremoteconnect", $("#remote_database_form").serialize(), function (data) {

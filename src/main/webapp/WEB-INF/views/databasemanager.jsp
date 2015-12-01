@@ -4,6 +4,7 @@
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="false"%>
 <jsp:useBean id="databaseinfo"  class="otc.healthcare.pojo.DatabaseInfo" scope="request" ></jsp:useBean>
+<jsp:useBean id="classificationinfo"  class="otc.healthcare.pojo.ClassificationInfo" scope="request" ></jsp:useBean>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -112,6 +113,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<a class="btn default" data-toggle="modal" href="#fileuploadmodal"> 上传文件</a> 
+							<a class="btn default disabled" data-toggle="modal" href="#changeclassificationdetail" id="setclassificationdetail">请从左侧选择要更改的类别</a>
 							<a class="btn default disabled" data-toggle="modal" href="#changedatabaseinfo" id="setchangedatabasetitle">请从左侧选择要更改的数据库</a>
 							<a class="btn default" data-toggle="modal" href="#changedatabaseinfo_remote" id="setdatabasefromremote">从远端导入数据库元信息</a>
 						</div>
@@ -434,6 +436,49 @@
 				<div class="modal-footer">
 					<button type="button" data-dismiss="modal" class="btn">离开</button>
 					<button type="button" class="btn red" id="savedatabaseinfo">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="changeclassificationdetail" class="modal fade" tabindex="-1"
+		data-width="400">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title" >类别信息更改</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<sf:form id="classificationdetail_form" class="form-horizontal" method="post" modelAttribute="classificationinfo" role="form" action="dataresource/updateclassificationdetail">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="col-md-2 control-label">名称</label>
+										<div class="col-md-9">
+											<sf:input type="hidden" id="classificationdetail_id" path="classificationid"/>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											<sf:input type="text" class="form-control" id="classificationdetail_name" path="name"
+												placeholder="输入类别名"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">描述</label>
+										<div class="col-md-9">
+											<sf:input type="text" class="form-control" id="classificationdetail_comments" path="comments"
+												placeholder="输入类别描述"/>
+										</div>
+									</div>
+								</div>
+							</sf:form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn">离开</button>
+					<button type="button" class="btn red" id="saveclassificationdetail">保存</button>
 				</div>
 			</div>
 		</div>

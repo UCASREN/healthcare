@@ -196,7 +196,28 @@ public class OracleService implements IService {
 		}
 		return resultList;
 	}
-
+	public Map<String,String> getClassificationSummary(String classificationid){
+		Map<String, String> classificationSummary = new HashMap<String, String>();
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil.query("select * from SYSTEM.HC_CLASSIFICATION where CLASSIFICATIONID=" + classificationid);
+			while (res.next()) {
+				classificationSummary.put("classificationid", res.getString(1));
+				classificationSummary.put("name", res.getString(2));
+				classificationSummary.put("comments", res.getString(3) == null ? "空" : res.getString(3));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return classificationSummary;
+	}
 	public Map<String, String> getDatabaseSummary(String databaseid) {
 		Map<String, String> databaseSummary = new HashMap<String, String>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -1040,7 +1061,27 @@ public class OracleService implements IService {
 		}
 		return false;
 	}
-
+	public boolean changeClassification(ClassificationInfo classificationinfo) {
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		String sql = "";
+		try {
+			sql = "update SYSTEM.HC_CLASSIFICATION set NAME='" + classificationinfo.getName() + "'," + "COMMENTS='"
+					+ classificationinfo.getComments() 
+					+ "'" + " where CLASSIFICATIONID=" + classificationinfo.getClassificationid();
+			dbUtil.execute(sql);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
 	public boolean changeTable(String databaseid, String tableid, String newName, String zhcnname, String newComments,
 			String newNumRows) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
