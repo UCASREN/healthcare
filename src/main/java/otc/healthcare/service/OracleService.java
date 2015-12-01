@@ -20,6 +20,7 @@ import otc.healthcare.dao.ConnectionFactory;
 import otc.healthcare.dao.HcApplydataDao;
 import otc.healthcare.dao.HcApplyenvDao;
 import otc.healthcare.dao.OracleDBUtil;
+import otc.healthcare.pojo.ClassificationInfo;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.HcApplydata;
@@ -53,14 +54,68 @@ public class OracleService implements IService {
 	public void setHcApplyenvDao(HcApplyenvDao hcApplyenvDao) {
 		this.hcApplyenvDao = hcApplyenvDao;
 	}
-	
-	
+
 	public boolean testConnection(String oracle_url, String oracle_username, String oracle_password) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
 				oracle_password);
 		if (connectionFactory.getInstance().getConnection() != null)
 			return true;
 		return false;
+	}
+
+	public List<ClassificationInfo> getAllClassificationDatabaseInfoWithClass() {
+		List<ClassificationInfo> classificationInfoList = new ArrayList<ClassificationInfo>();
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		// ConnectionFactory connectionFactory1 = new
+		// ConnectionFactory("oracle", oracle_url, oracle_username,
+		// oracle_password);
+		// OracleDBUtil dbUtil1 = new
+		// OracleDBUtil(connectionFactory1.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil.query("select * from SYSTEM.HC_CLASSIFICATION");
+			while (res.next()) {
+				ClassificationInfo classificationInfo = new ClassificationInfo();
+				classificationInfo.setClassificationid(res.getString(1));
+				classificationInfo.setName(res.getString(2));
+				classificationInfo.setComments(res.getString(3));
+				List<DatabaseInfo> databaseInfoList = new ArrayList<DatabaseInfo>();
+				ResultSet res_list = dbUtil
+						.query("select * from SYSTEM.HC_DATABASE WHERE SUBJECTCLASSIFICATION=" + res.getString(1));
+				while (res_list.next()) {
+					DatabaseInfo dim = new DatabaseInfo();
+					dim.setDatabaseid(res_list.getString(1));
+					dim.setName(res_list.getString(2));
+					dim.setComments(res_list.getString(3));
+					dim.setIdentifier(res_list.getString(4));
+					dim.setLanguage(res_list.getString(5));
+					dim.setCharset(res_list.getString(6));
+					dim.setSubjectclassification(res_list.getString(7));
+					dim.setKeywords(res_list.getString(8));
+					dim.setCredibility(res_list.getString(9));
+					dim.setResinstitution(res_list.getString(10));
+					dim.setResname(res_list.getString(11));
+					dim.setResaddress(res_list.getString(12));
+					dim.setRespostalcode(res_list.getString(13));
+					dim.setResphone(res_list.getString(14));
+					dim.setResemail(res_list.getString(15));
+					dim.setResourceurl(res_list.getString(16));
+					dim.setZhcnname(res_list.getString(17));
+					databaseInfoList.add(dim);
+				}
+				classificationInfo.setDatabaseinfolist(databaseInfoList);
+				classificationInfoList.add(classificationInfo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return classificationInfoList;
 	}
 
 	public List<DatabaseInfo> getALLDatabaseInfo() {
@@ -102,7 +157,46 @@ public class OracleService implements IService {
 		return resultList;
 	}
 
-	
+	public List<DatabaseInfo> getDatabaseInfoWithClass(String classificationid) {
+		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			ResultSet res = dbUtil
+					.query("select * from SYSTEM.HC_DATABASE WHERE SUBJECTCLASSIFICATION=" + classificationid);
+			while (res.next()) {
+				DatabaseInfo dim = new DatabaseInfo();
+				dim.setDatabaseid(res.getString(1));
+				dim.setName(res.getString(2));
+				dim.setComments(res.getString(3));
+				dim.setIdentifier(res.getString(4));
+				dim.setLanguage(res.getString(5));
+				dim.setCharset(res.getString(6));
+				dim.setSubjectclassification(res.getString(7));
+				dim.setKeywords(res.getString(8));
+				dim.setCredibility(res.getString(9));
+				dim.setResinstitution(res.getString(10));
+				dim.setResname(res.getString(11));
+				dim.setResaddress(res.getString(12));
+				dim.setRespostalcode(res.getString(13));
+				dim.setResphone(res.getString(14));
+				dim.setResemail(res.getString(15));
+				dim.setResourceurl(res.getString(16));
+				dim.setZhcnname(res.getString(17));
+				resultList.add(dim);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return resultList;
+	}
+
 	public Map<String, String> getDatabaseSummary(String databaseid) {
 		Map<String, String> databaseSummary = new HashMap<String, String>();
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
@@ -116,7 +210,7 @@ public class OracleService implements IService {
 			while (res.next()) {
 				databaseSummary.put("databaseid", res.getString(1));
 				databaseSummary.put("name", res.getString(2));
-				databaseSummary.put("comments", res.getString(3)==null?"空":res.getString(3));
+				databaseSummary.put("comments", res.getString(3) == null ? "空" : res.getString(3));
 				databaseSummary.put("identifier", res.getString(4));
 				databaseSummary.put("language", res.getString(5));
 				databaseSummary.put("charset", res.getString(6));
@@ -130,7 +224,7 @@ public class OracleService implements IService {
 				databaseSummary.put("resphone", res.getString(14));
 				databaseSummary.put("resemail", res.getString(15));
 				databaseSummary.put("resourceurl", res.getString(16));
-				databaseSummary.put("zhcnname", res.getString(17)==null?"空":res.getString(17));
+				databaseSummary.put("zhcnname", res.getString(17) == null ? "空" : res.getString(17));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,7 +251,7 @@ public class OracleService implements IService {
 				tim.setDatabaseid(res.getString(2));
 				tim.setName(res.getString(3));
 				tim.setComments(res.getString(4));
-				tim.setNumrows(res.getString(5)==null?"0":res.getString(5));
+				tim.setNumrows(res.getString(5) == null ? "0" : res.getString(5));
 				tim.setZhcnname(res.getString(6));
 				resultList.add(tim);
 			}
@@ -191,7 +285,7 @@ public class OracleService implements IService {
 				tim.setDatabaseid(res.getString(2));
 				tim.setName(res.getString(3));
 				tim.setComments(res.getString(4));
-				tim.setNumrows(res.getString(5)==null?"0":res.getString(5));
+				tim.setNumrows(res.getString(5) == null ? "0" : res.getString(5));
 				resultList.add(tim);
 			}
 		} catch (Exception e) {
@@ -217,7 +311,7 @@ public class OracleService implements IService {
 				tableSummary.put("name", res.getString(3));
 				tableSummary.put("comments", res.getString(4));
 				tableSummary.put("others", "still need to be filled");
-				tableSummary.put("numrows", res.getString(5)==null?"0":res.getString(5));
+				tableSummary.put("numrows", res.getString(5) == null ? "0" : res.getString(5));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -337,9 +431,9 @@ public class OracleService implements IService {
 			String tableName = temp.split(";")[1];
 			if (map.get(databaseName) == null) {
 				map.put(databaseName, new ArrayList<String>());
-			} 
+			}
 			map.get(databaseName).add(tableName);
-			
+
 		}
 		for (String databaseName : map.keySet()) {
 			dbUtilNative.query("select DATABASE_DATABASEID.nextval from dual");
@@ -350,15 +444,17 @@ public class OracleService implements IService {
 			for (String tableName : tempList) {
 				String talbeifno_query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='"
 						+ databaseName + "' AND table_type='TABLE' AND TABLE_NAME='" + tableName + "'";
-				String talbeifno_query_sql_num_rows="select NUM_ROWS from SYS.ALL_TABLES where TABLE_NAME='"+tableName+"'";
-				String  numRows= dbUtil.showListResults(talbeifno_query_sql_num_rows).get(0);
+				String talbeifno_query_sql_num_rows = "select NUM_ROWS from SYS.ALL_TABLES where TABLE_NAME='"
+						+ tableName + "'";
+				String numRows = dbUtil.showListResults(talbeifno_query_sql_num_rows).get(0);
 				ResultSet rs = dbUtil.query(talbeifno_query_sql);
 				try {
 					while (rs.next()) {
 						dbUtilNative.query("select TABLE_TABLEID.nextval from dual");
 						String tableId = dbUtilNative.showListResults("select TABLE_TABLEID.currval from dual").get(0);
-						dbUtilNative.execute("insert into HC_TABLE(TABLEID,NAME,COMMENTS,NUMROWS,DATABASEID) values(" + tableId
-								+ ",'" + tableName + "','" + rs.getString(2)+"',"+numRows+ "," + databaseId + ")");
+						dbUtilNative.execute("insert into HC_TABLE(TABLEID,NAME,COMMENTS,NUMROWS,DATABASEID) values("
+								+ tableId + ",'" + tableName + "','" + rs.getString(2) + "'," + numRows + ","
+								+ databaseId + ")");
 						//
 						String fieldinfo_query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
 								+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
@@ -370,9 +466,9 @@ public class OracleService implements IService {
 									.get(0);
 							dbUtilNative.execute("insert into HC_FIELD( "
 									+ "FIELDID,NAME,DATATYPE,DATALENGTH,COMMENTS,NOTNULL,TABLEID,DATABASEID) "
-									+ "values(" + fieldId + ",'" + field_rs.getString(1) + "','" + field_rs.getString(2) + "','"
-									+ field_rs.getString(3) + "','" + field_rs.getString(4) + "','" + field_rs.getString(5) + "',"
-									+ tableId + "," + databaseId + ")");
+									+ "values(" + fieldId + ",'" + field_rs.getString(1) + "','" + field_rs.getString(2)
+									+ "','" + field_rs.getString(3) + "','" + field_rs.getString(4) + "','"
+									+ field_rs.getString(5) + "'," + tableId + "," + databaseId + ")");
 						}
 					}
 				} catch (SQLException e) {
@@ -616,30 +712,31 @@ public class OracleService implements IService {
 			}
 		}
 	}
-	public void insertTableToDatabase(String databaseId,List<TableInfo> tableInfoList){
+
+	public void insertTableToDatabase(String databaseId, List<TableInfo> tableInfoList) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle",
 				hcConfiguration.getProperty(HealthcareConfiguration.DB_URL),
 				hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME),
 				hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
-		for(TableInfo tableInfo:tableInfoList){
+		for (TableInfo tableInfo : tableInfoList) {
 			dbUtil.query("select TABLE_TABLEID.nextval from dual");
 			String tableId = dbUtil.showListResults("select TABLE_TABLEID.currval from dual").get(0);
-			dbUtil.execute("insert into HC_TABLE(TABLEID,NAME,ZHCNNAME,COMMENTS,DATABASEID) values(" + tableId
-					+ ",'" + tableInfo.getName() + "','"+tableInfo.getZhcnname()+"','"+ tableInfo.getComments() + "'," + databaseId + ")");
-			List<FieldInfo>	fieldInfoList=tableInfo.getFieldlist();
-			for(FieldInfo fieldInfo:fieldInfoList){
+			dbUtil.execute("insert into HC_TABLE(TABLEID,NAME,ZHCNNAME,COMMENTS,DATABASEID) values(" + tableId + ",'"
+					+ tableInfo.getName() + "','" + tableInfo.getZhcnname() + "','" + tableInfo.getComments() + "',"
+					+ databaseId + ")");
+			List<FieldInfo> fieldInfoList = tableInfo.getFieldlist();
+			for (FieldInfo fieldInfo : fieldInfoList) {
 				dbUtil.query("select FIELD_FIELDID.nextval from dual");
-				String fieldId = dbUtil.showListResults("select FIELD_FIELDID.currval from dual")
-						.get(0);
+				String fieldId = dbUtil.showListResults("select FIELD_FIELDID.currval from dual").get(0);
 				dbUtil.execute("insert into HC_FIELD( "
-						+ "FIELDID,NAME,ZHCNNAME,COMMENTS,DATADICTIONARY,TABLEID,DATABASEID) "
-						+ "values(" + fieldId + ",'" + fieldInfo.getName() + "','" + fieldInfo.getZhcnname() + "','"
-						+ fieldInfo.getComments() + "','" + fieldInfo.getDatadictionary()+ "',"
-						+ tableId + "," + databaseId + ")");
+						+ "FIELDID,NAME,ZHCNNAME,COMMENTS,DATADICTIONARY,TABLEID,DATABASEID) " + "values(" + fieldId
+						+ ",'" + fieldInfo.getName() + "','" + fieldInfo.getZhcnname() + "','" + fieldInfo.getComments()
+						+ "','" + fieldInfo.getDatadictionary() + "'," + tableId + "," + databaseId + ")");
 			}
 		}
 	}
+
 	private static List<String> toList(String[] data) {
 		List<String> rs = new ArrayList<String>();
 		for (int i = 0; i < data.length; i++)
@@ -682,6 +779,35 @@ public class OracleService implements IService {
 			e.printStackTrace();
 		}
 		return DBid;
+	}
+
+	public boolean deleteClassification(String classificationid) {
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			// 首先检测这个类别下是否还有表
+			ResultSet res = dbUtil
+					.query("select * from SYSTEM.HC_DATABASE where SUBJECTCLASSIFICATION=" + classificationid);
+			int count = 0;
+			while (res.next()) {
+				count = count + 1;
+			}
+			if (count == 0) {// 只有类别下没有任何表时才能删除
+				dbUtil.execute("delete from SYSTEM.HC_CLASSIFICATION where CLASSIFICATIONID=" + classificationid);// 删除
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
 	}
 
 	public boolean deleteDatabase(String databaseid) {
@@ -740,11 +866,31 @@ public class OracleService implements IService {
 		return false;
 	}
 
-	public Integer createDatabase(String databasename, String zhcnname,String comments) {// insert
-																			// into
-																			// database
-																			// table
-																			// row
+	public Integer createClassification(String classificationname,String comments) {// insert
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		try {
+			String vsql = "insert into SYSTEM.HC_CLASSIFICATION (CLASSIFICATIONID,NAME,COMMENTS) values(CLASSIFICATIONID.nextval,"
+					+ "'" + classificationname + "','" + comments + "')";
+			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
+					"select CLASSIFICATIONID.currval as id from SYSTEM.HC_CLASSIFICATION");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return null;
+	}
+
+	public Integer createDatabase(String databasename, String zhcnname, String comments) {// insert
+		// into
+		// database
+		// table
+		// row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -753,7 +899,7 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			String vsql = "insert into SYSTEM.HC_DATABASE (DATABASEID,NAME,ZHCNNAME,COMMENTS) values(DATABASE_DATABASEID.nextval,"
-					+ "'" + databasename + "','"+"'"+zhcnname+"','"+ comments + "')";
+					+ "'" + databasename + "','" + "'" + zhcnname + "','" + comments + "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
 					"select DATABASE_DATABASEID.currval as id from SYSTEM.HC_DATABASE");
 		} catch (Exception e) {
@@ -764,11 +910,11 @@ public class OracleService implements IService {
 		return null;
 	}
 
-	public Integer createTable(String databaseid, String tablename, String comments,String numRows) {// insert
-																						// into
-																						// database
-																						// table
-																						// row
+	public Integer createTable(String databaseid, String tablename, String comments, String numRows) {// insert
+		// into
+		// database
+		// table
+		// row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -777,7 +923,7 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			String vsql = "insert into SYSTEM.HC_TABLE (TABLEID,DATABASEID,NAME,COMMENTS,NUMROWS) values(TABLE_TABLEID.nextval,"
-					+ databaseid + ",'" + tablename + "','" + comments+ "','" +numRows+ "')";
+					+ databaseid + ",'" + tablename + "','" + comments + "','" + numRows + "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
 					"select TABLE_TABLEID.currval as id from SYSTEM.HC_TABLE");
 		} catch (Exception e) {
@@ -788,7 +934,8 @@ public class OracleService implements IService {
 		return null;
 	}
 
-	public Integer createField(String databaseid, String tableid, String fieldname, String zhcnname,String comments,String datadictionary) {// insert
+	public Integer createField(String databaseid, String tableid, String fieldname, String zhcnname, String comments,
+			String datadictionary) {// insert
 		// into database table one row
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
@@ -798,7 +945,8 @@ public class OracleService implements IService {
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
 			String vsql = "insert into SYSTEM.HC_FIELD (FIELDID,TABLEID,DATABASEID,NAME,ZHCNNAME,COMMENTS,DATADICTIONARY) values(FIELD_FIELDID.nextval,"
-					+ tableid + "," + databaseid + ",'" + fieldname+ "','"+zhcnname + "','" + comments+ "','"+ datadictionary+ "')";
+					+ tableid + "," + databaseid + ",'" + fieldname + "','" + zhcnname + "','" + comments + "','"
+					+ datadictionary + "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
 					"select FIELD_FIELDID.currval as id from SYSTEM.HC_FIELD");
 		} catch (Exception e) {
@@ -808,8 +956,32 @@ public class OracleService implements IService {
 		}
 		return null;
 	}
-
-	public boolean changeDatabase(String databaseid, String newName, String newComments) {
+	public boolean changeClassification(String classificationid, String newName, String newComments) {
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
+		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
+				oracle_password);
+		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		String sql = "";
+		try {
+			if (newName != null) {
+				sql = "update SYSTEM.HC_CLASSIFICATION set NAME='" + newName + "'  where CLASSIFICATIONID=" + classificationid;
+				dbUtil.execute(sql);
+			}
+			if (newComments != null) {
+				sql = "update SYSTEM.HC_CLASSIFICATION set COMMENTS='" + newComments + "'  where CLASSIFICATIONID=" + classificationid;
+				dbUtil.execute(sql);
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return false;
+	}
+	public boolean changeDatabase(String databaseid, String newName, String newComments,String classification) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -824,6 +996,10 @@ public class OracleService implements IService {
 			}
 			if (newComments != null) {
 				sql = "update SYSTEM.HC_DATABASE set COMMENTS='" + newComments + "'  where DATABASEID=" + databaseid;
+				dbUtil.execute(sql);
+			}
+			if (classification != null) {
+				sql = "update SYSTEM.HC_DATABASE set SUBJECTCLASSIFICATION='" + classification + "'  where DATABASEID=" + databaseid;
 				dbUtil.execute(sql);
 			}
 			return true;
@@ -853,9 +1029,8 @@ public class OracleService implements IService {
 					+ databaseinfo.getResname() + "'," + "RESADDRESS='" + databaseinfo.getResaddress() + "',"
 					+ "RESPOSTALCODE='" + databaseinfo.getRespostalcode() + "'," + "RESPHONE='"
 					+ databaseinfo.getResphone() + "'," + "RESEMAIL='" + databaseinfo.getResemail() + "',"
-					+ "RESOURCEURL='" + databaseinfo.getResourceurl() + "',"
-					+ "ZHCNNAME='" + databaseinfo.getZhcnname() + "'"+ " where DATABASEID="
-					+ databaseinfo.getDatabaseid();
+					+ "RESOURCEURL='" + databaseinfo.getResourceurl() + "'," + "ZHCNNAME='" + databaseinfo.getZhcnname()
+					+ "'" + " where DATABASEID=" + databaseinfo.getDatabaseid();
 			dbUtil.execute(sql);
 			return true;
 		} catch (Exception e) {
@@ -866,7 +1041,8 @@ public class OracleService implements IService {
 		return false;
 	}
 
-	public boolean changeTable(String databaseid, String tableid, String newName,String zhcnname, String newComments,String newNumRows) {
+	public boolean changeTable(String databaseid, String tableid, String newName, String zhcnname, String newComments,
+			String newNumRows) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -904,7 +1080,8 @@ public class OracleService implements IService {
 		return false;
 	}
 
-	public boolean changeField(String fieldid, String databaseid, String tableid, String newName,String newZhcnname, String newComments,String newDatadictionary) {
+	public boolean changeField(String fieldid, String databaseid, String tableid, String newName, String newZhcnname,
+			String newComments, String newDatadictionary) {
 		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
@@ -929,8 +1106,8 @@ public class OracleService implements IService {
 				dbUtil.execute(sql);
 			}
 			if (newDatadictionary != null) {
-				sql = "update SYSTEM.HC_FIELD set DATADICTIONARY='" + newDatadictionary + "'   where DATABASEID=" + databaseid
-						+ " and TABLEID=" + tableid + " and FIELDID=" + fieldid;
+				sql = "update SYSTEM.HC_FIELD set DATADICTIONARY='" + newDatadictionary + "'   where DATABASEID="
+						+ databaseid + " and TABLEID=" + tableid + " and FIELDID=" + fieldid;
 				dbUtil.execute(sql);
 			}
 			return true;
@@ -965,13 +1142,13 @@ public class OracleService implements IService {
 	 */
 	@Transactional
 	public void insertApplyData(HttpServletRequest req, String f_name, boolean update) {
-		
-		if(update){
-			//begin update
+
+		if (update) {
+			// begin update
 			HcApplydata hc_applydata = hcApplydataDao.findByDocName(f_name);
-			
+
 			String curStatus = hc_applydata.getFlagApplydata();
-			if(!curStatus.equals("2")){
+			if (!curStatus.equals("2")) {
 				System.out.println("applyData 状态不为2，此时已经无法更新申请！");
 				return;
 			}
@@ -992,13 +1169,13 @@ public class OracleService implements IService {
 			String hc_projectUndertaking = req.getParameter("projectUndertaking");
 			String hc_applyDate = req.getParameter("applyDate");
 			String hc_projectRemarks = req.getParameter("projectRemarks");
-			
+
 			String applydata = req.getParameter("applydata");
-			
+
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			hc_applydata.setHcUsername(user.getUsername());// hc系统用户名
-//			hc_applydata.setDocName(f_name);// 主键
+			// hc_applydata.setDocName(f_name);// 主键
 
 			hc_applydata.setName(hc_userName);// 申请表填写用户
 			hc_applydata.setDepartment(hc_userDepartment);
@@ -1016,10 +1193,10 @@ public class OracleService implements IService {
 			hc_applydata.setProUndertake(hc_projectUndertaking);
 			hc_applydata.setApplyTime(hc_applyDate);
 			hc_applydata.setProRemark(hc_projectRemarks);
-			
+
 			hc_applydata.setApplyData(applydata);
-			
-			//只有在未进行审核情况下才可以update，apply标志为1 --- status=1（待审核状态）
+
+			// 只有在未进行审核情况下才可以update，apply标志为1 --- status=1（待审核状态）
 			hc_applydata.setFlagApplydata("1");
 
 			hcApplydataDao.attachDirty(hc_applydata);
@@ -1027,7 +1204,7 @@ public class OracleService implements IService {
 			return;
 		}
 
-		//begin insert
+		// begin insert
 		HcApplydata hc_applydata = new HcApplydata();
 
 		String hc_userName = req.getParameter("userName");
@@ -1046,7 +1223,7 @@ public class OracleService implements IService {
 		String hc_projectUndertaking = req.getParameter("projectUndertaking");
 		String hc_applyDate = req.getParameter("applyDate");
 		String hc_projectRemarks = req.getParameter("projectRemarks");
-		
+
 		String applydata = req.getParameter("applydata");
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -1071,12 +1248,12 @@ public class OracleService implements IService {
 		hc_applydata.setApplyTime(hc_applyDate);
 		hc_applydata.setProRemark(hc_projectRemarks);
 		hc_applydata.setApplyData(applydata);
-		
+
 		// 提交后，apply标志为1 --- status=1（待审核状态）
 		hc_applydata.setFlagApplydata("1");
 
 		hcApplydataDao.attachDirty(hc_applydata);
-		
+
 		System.out.println("insert hc_applydata ok");
 	}
 
@@ -1088,14 +1265,14 @@ public class OracleService implements IService {
 		HcApplydata docData = hcApplydataDao.findByDocName(docid);
 		return docData;
 	}
-	
+
 	@Transactional
 	public HcApplydata getDataDocByApplyDataID(String applydataId) {
 		BigDecimal bd = new BigDecimal(applydataId);
 		HcApplydata docData = hcApplydataDao.findByApplyID(bd);
 		return docData;
 	}
-	
+
 	/*
 	 * get the apply docdata from db by hc_userName(系统用户)
 	 */
@@ -1113,11 +1290,11 @@ public class OracleService implements IService {
 		List ALLdocDataList = hcApplydataDao.findAll();
 		return ALLdocDataList;
 	}
-	
+
 	@Transactional
 	public String getApplyDataByDocId(String docid) {
 		HcApplydata hcapplydata = hcApplydataDao.findByDocName(docid);
-		return hcapplydata.getApplyData();	
+		return hcapplydata.getApplyData();
 	}
 
 	/*
@@ -1126,8 +1303,8 @@ public class OracleService implements IService {
 	@Transactional
 	public boolean deleteApplyData(String[] applydataid) {
 		try {
-			for(int i=0; i<applydataid.length; i++){
-				BigDecimal bd = new BigDecimal(applydataid[i]);  
+			for (int i = 0; i < applydataid.length; i++) {
+				BigDecimal bd = new BigDecimal(applydataid[i]);
 				HcApplydata tmp = hcApplydataDao.findByApplyID(bd);
 				hcApplydataDao.delete(tmp);
 			}
@@ -1137,17 +1314,17 @@ public class OracleService implements IService {
 		}
 		return true;
 	}
-	
+
 	@Transactional
 	public void changeApplyDataStatus(String applyid, String status) {
 		BigDecimal bd = new BigDecimal(applyid);
-		hcApplydataDao.changeApplyStatus(bd,status);
+		hcApplydataDao.changeApplyStatus(bd, status);
 	}
-	
+
 	@Transactional
 	public void insertApplyDataFailReason(String applyid, String rejectReason) {
 		BigDecimal bd = new BigDecimal(applyid);
-		hcApplydataDao.setApplyFailReason(bd,rejectReason);
+		hcApplydataDao.setApplyFailReason(bd, rejectReason);
 	}
 
 	/*
@@ -1156,8 +1333,8 @@ public class OracleService implements IService {
 	@Transactional
 	public boolean deleteApplyEnv(String[] applydataid) {
 		try {
-			for(int i=0; i<applydataid.length; i++){
-				BigDecimal bd = new BigDecimal(applydataid[i]);  
+			for (int i = 0; i < applydataid.length; i++) {
+				BigDecimal bd = new BigDecimal(applydataid[i]);
 				HcApplyenv tmp = hcApplyenvDao.findByApplyID(bd);
 				hcApplyenvDao.delete(tmp);
 			}
@@ -1165,17 +1342,16 @@ public class OracleService implements IService {
 			e.printStackTrace();
 			return false;
 		}
-		return true;	
+		return true;
 	}
-	
-	
+
 	@Transactional
 	public void insertApplyEnv(HttpServletRequest req, String f_name, boolean update) {
-		
-		if(update){
-			//begin update envApply
+
+		if (update) {
+			// begin update envApply
 			HcApplyenv hc_applyenv = hcApplyenvDao.findByDocName(f_name);
-			
+
 			String hc_userName = req.getParameter("userName");
 			String hc_userDepartment = req.getParameter("userDepartment");
 			String hc_userAddress = req.getParameter("userAddress");
@@ -1192,12 +1368,11 @@ public class OracleService implements IService {
 			String hc_projectUndertaking = req.getParameter("projectUndertaking");
 			String hc_applyDate = req.getParameter("applyDate");
 			String hc_projectRemarks = req.getParameter("projectRemarks");
-			
-			
+
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			hc_applyenv.setHcUsername(user.getUsername());// hc系统用户名
-//			hc_applyenv.setDocName(f_name);// 主键
+			// hc_applyenv.setDocName(f_name);// 主键
 
 			hc_applyenv.setName(hc_userName);// 申请表填写用户
 			hc_applyenv.setDepartment(hc_userDepartment);
@@ -1215,7 +1390,7 @@ public class OracleService implements IService {
 			hc_applyenv.setProUndertake(hc_projectUndertaking);
 			hc_applyenv.setApplyTime(hc_applyDate);
 			hc_applyenv.setProRemark(hc_projectRemarks);
-			
+
 			// 提交后，apply标志为1
 			hc_applyenv.setFlagApplydata("1");
 
@@ -1223,7 +1398,7 @@ public class OracleService implements IService {
 			System.out.println("update hc_applyenv ok");
 			return;
 		}
-		
+
 		HcApplyenv hc_applyenv = new HcApplyenv();
 
 		String hc_userName = req.getParameter("userName");
@@ -1274,18 +1449,18 @@ public class OracleService implements IService {
 
 	public HcApplyenv getEnvDocBydocID(String docid) {
 		HcApplyenv docData = hcApplyenvDao.findByDocName(docid);
-		return docData;	}
-
+		return docData;
+	}
 
 	public HcApplyenv getDocEnvByApplyDataID(String applyid) {
 		BigDecimal bd = new BigDecimal(applyid);
 		HcApplyenv docEnv = hcApplyenvDao.findByApplyID(bd);
-		return docEnv;	
+		return docEnv;
 	}
 
 	public List<HcApplyenv> getEnvDocByHcUserName(String hcUserName) {
 		List docEnvDataList = hcApplyenvDao.findByHcUserName(hcUserName);
-		return docEnvDataList;	
+		return docEnvDataList;
 	}
 
 	public List<HcApplyenv> getAllDocEnv() {
@@ -1296,20 +1471,20 @@ public class OracleService implements IService {
 	@Transactional
 	public void changeApplyEnvStatus(String applyid, String status) {
 		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.changeApplyStatus(bd,status);
+		hcApplyenvDao.changeApplyStatus(bd, status);
 	}
-	
+
 	@Transactional
 	public void insertApplyEnvFailReason(String applyid, String rejectReason) {
 		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.setApplyFailReason(bd,rejectReason);
+		hcApplyenvDao.setApplyFailReason(bd, rejectReason);
 	}
-	
+
 	@Transactional
 	public void updateEnvUrlByApplyID(String applyid, String envUrl) {
 		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.setApplyEnvUrl(bd,envUrl);		
+		hcApplyenvDao.setApplyEnvUrl(bd, envUrl);
 		System.out.println("update EnvUrl ok");
 	}
-	
+
 }

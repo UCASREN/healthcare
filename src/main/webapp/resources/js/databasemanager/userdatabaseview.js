@@ -294,56 +294,101 @@ var TableAjax = function () {
         
         $.ajax({
         	type : "get",//请求方式
-        	url : "dataresource/getalldatabaseinfo",//发送请求地址
+        	url : "dataresource/getalldatabaseinfowithclass",//发送请求地址
         	dataType : "json",
         	data:{
         		operation:"all"
         	},
         	success : function(data) {
-        		$(data).each(function (i,databaseinfo) {
-        			$("#database").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
-        			var tablelist="";
-        			$(databaseinfo.tablelist).each(function (j,tableinfo) {
-        				tablelist=tablelist+"<li class='active'><a href='#' id='databasetable_"+databaseinfo.databaseid+"_"+tableinfo.tableid+"'> <i class='fa fa-table'></i>"+tableinfo.name+"</a></li>";
-        				
-        			});
-        			var appendlist="<li><a href='#' id='database_"+databaseinfo.databaseid+"'><i class='fa fa-database'></i><span class='title'>"
-        			+databaseinfo.name
-        			+"</span><span class='arrow open'> </span></a><ul class='sub-menu'>"
-					+tablelist
-					+"</ul></li>"
-        			$("#alldatabaselist").append(appendlist);
-        			$("a[id^=databasetable_"+databaseinfo.databaseid+"_]").click(function(){
-        				$("#showtableinfo").show();
-                    	$("#showdatabaseinfo").hide();
-                    	$("#showalldatabaseinfo").hide();
-        				var thisidlist=$(this).attr("id").split("_");//databasetable_1_1
-        				
-        				var databaseid=thisidlist[1];
-        				var tableid=thisidlist[2];
-        				table_grid.setAjaxParam("databaseid",databaseid);
-        				table_grid.setAjaxParam("tableid", tableid);
-        				table_grid.getDataTable().ajax.reload();
-        				//更新表概要信息
-        				$.ajax({
-        			    	type : "get",//请求方式
-        			    	url : "dataresource/gettablesummary",//发送请求地址
-        			    	dataType : "json",
-        			    	data:{
-        			    		databaseid:databaseid,
-        			    		tableid:tableid
-        			    	},
-        			    	success : function(data) {
-        			    		//console.log(data);
-        			    		$("#showtableinfo_name").text("表名："+data.name);
-        			    		$("#showtableinfo_comments").text("描述："+data.comments);
-//        			    		$("#showtableinfo_others").text("其它："+data.others);
-        			    		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
-        			    		$("#showtableinfo_numrows").text("数据量："+data.numrows);
-        			    	}
-        			    });
-        			});
+        		$(data).each(function(k,classificationinfo){
+        			temp_databaseinfo_list=classificationinfo.databaseinfolist;
+        			appenddatabaselist="";
+	        		$(temp_databaseinfo_list).each(function (i,databaseinfo) {
+	        			//下拉列表数据填充
+	        			$("#database").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
+	        			var tablelist="";
+	        			$(databaseinfo.tablelist).each(function (j,tableinfo) {
+	        				tablelist=tablelist+"<li ><a href='#' id='databasetable_"+databaseinfo.databaseid+"_"+tableinfo.tableid+"'> <i class='fa fa-table'></i>"+tableinfo.name+"</a></li>";
+	        				
+	        			});
+	        			var appenddatabase="<li><a href='#' id='database_"+databaseinfo.databaseid+"'><i class='fa fa-database'></i><span class='title'>"
+	        			+databaseinfo.name
+	        			+"</span><span class='arrow open'> </span></a><ul class='sub-menu'>"
+						+tablelist
+						+"</ul></li>"
+	//        			$("#alldatabaselist").append(appendlist);
+						appenddatabaselist=appenddatabaselist+appenddatabase;
+	//        			$("a[id^=databasetable_"+databaseinfo.databaseid+"_]").click(function(){
+	//        				$("#showtableinfo").show();
+	//                    	$("#showdatabaseinfo").hide();
+	//                    	$("#showalldatabaseinfo").hide();
+	//        				var thisidlist=$(this).attr("id").split("_");//databasetable_1_1
+	//        				
+	//        				var databaseid=thisidlist[1];
+	//        				var tableid=thisidlist[2];
+	//        				table_grid.setAjaxParam("databaseid",databaseid);
+	//        				table_grid.setAjaxParam("tableid", tableid);
+	//        				table_grid.getDataTable().ajax.reload();
+	//        				//更新表概要信息
+	//        				$.ajax({
+	//        			    	type : "get",//请求方式
+	//        			    	url : "dataresource/gettablesummary",//发送请求地址
+	//        			    	dataType : "json",
+	//        			    	data:{
+	//        			    		databaseid:databaseid,
+	//        			    		tableid:tableid
+	//        			    	},
+	//        			    	success : function(data) {
+	//        			    		//console.log(data);
+	//        			    		$("#showtableinfo_name").text("表名："+data.name);
+	//        			    		$("#showtableinfo_comments").text("描述："+data.comments);
+	////        			    		$("#showtableinfo_others").text("其它："+data.others);
+	//        			    		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
+	//        			    		$("#showtableinfo_numrows").text("数据量："+data.numrows);
+	//        			    	}
+	//        			    });
+	//        			});
+	        		});
+	        		var appenddatabaselist="<li><a href='#' id='classification_"+classificationinfo.classificationid+"'><i class='icon-folder'></i><span class='title'>"
+	    			+classificationinfo.name
+	    			+"</span><span class='arrow open'> </span></a><ul class='sub-menu'>"
+					+appenddatabaselist
+					+"</ul></li>";
+        		$("#allclassificationlist").append(appenddatabaselist);
+        		
         		});
+        		//绑定所有事件
+    			$("a[id^=databasetable_").click(function(){
+				$("#showtableinfo").show();
+            	$("#showdatabaseinfo").hide();
+            	$("#showalldatabaseinfo").hide();
+				var thisidlist=$(this).attr("id").split("_");//databasetable_1_1
+				
+				var databaseid=thisidlist[1];
+				var tableid=thisidlist[2];
+				table_grid.setAjaxParam("databaseid",databaseid);
+				table_grid.setAjaxParam("tableid", tableid);
+				table_grid.getDataTable().ajax.reload();
+				//更新表概要信息
+				$.ajax({
+			    	type : "get",//请求方式
+			    	url : "dataresource/gettablesummary",//发送请求地址
+			    	dataType : "json",
+			    	data:{
+			    		databaseid:databaseid,
+			    		tableid:tableid
+			    	},
+			    	success : function(data) {
+			    		//console.log(data);
+			    		$("#showtableinfo_name").text("表名："+data.name);
+			    		$("#showtableinfo_comments").text("描述："+data.comments);
+//			    		$("#showtableinfo_others").text("其它："+data.others);
+			    		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
+			    		$("#showtableinfo_numrows").text("数据量："+data.numrows);
+			    	}
+			    });
+			});
+    		//绑定事件结束
         	}
         });
         
@@ -375,7 +420,6 @@ var TableAjax = function () {
                 		databaseid:$("#database").select2("val")
                 	},
                 	success : function(data) {
-                		console.log(data);
                 		$("#showdatabaseinfo_name").text("数据库名："+data.name);
                 		$("#showdatabaseinfo_comments").text("描述："+data.comments);
 //                		$("#showdatabaseinfo_identifier").text("标识符："+data.identifier==null?"空":data.identifier);

@@ -551,8 +551,8 @@ var AjaxTree = function() {
 			'id' : data.node.id,
 			'parent' : data.node.parent
 		}).done(function(d) {
-			//alert(d);
-			console.log(d);
+			alert(d);
+//			console.log(d);
 		}).fail(function() {
 			data.instance.refresh();
 		});
@@ -586,8 +586,24 @@ var AjaxTree = function() {
 		 * data.parent, 'position' : data.position }) .fail(function () {
 		 * data.instance.refresh(); });
 		 */
-		alert("不支持移动动作");
-		data.instance.refresh();
+		console.log(data.node.id);
+		console.log(data.node.parent);
+		if(data.node.id.indexOf("alldatabase_") != -1 && data.node.parent.indexOf("classification_")!=-1){
+			$.get('dataresource/nodeoperation?operation=move_node', {
+				'id' : data.node.id,
+				'parent' : data.node.parent,
+				'position' : data.position
+			}).fail(function() {
+				data.instance.refresh();
+			});
+			//alert("不支持移动动作");
+			data.instance.refresh();
+//			location.reload(true);
+		}else{
+			alert("只支持将数据库节点拖拽到类别下");
+			location.reload(true);
+		}
+		
 	}).on('copy_node.jstree', function(e, data) {
 		/*
 		 * $.get('?operation=copy_node', { 'id' : data.original.id, 'parent' :
@@ -599,7 +615,6 @@ var AjaxTree = function() {
 	}).on('changed.jstree', function(e, data) {
 
 	}).on('select_node.jstree', function(e, data) {
-		
 		if (data.node.id.indexOf("alldatabase") != -1) {
 			//更新“更改数据库信息”模态框中表单内容
 			$("#setchangedatabasetitle").removeClass("disabled");
@@ -638,7 +653,7 @@ var AjaxTree = function() {
 					$.each(data, function(i, table) {
 						/* if (table.tableid > maxId)
 							maxId = table.tableid; */
-						console.log(table);
+//						console.log(table);
 						oTable1.fnAddData([ table.tableid, table.name,table.zhcnname,
 						                   table.comments,table.numrows, '<a class="edit" href="">编辑</a>',
 								'<a class="delete" href="">删除</a>' ]);
@@ -661,7 +676,7 @@ var AjaxTree = function() {
 						$.each(data, function(i, field) {
 							/* if (field.fieldid > maxId)
 								maxId = field.fieldid; */
-							console.log(field)
+//							console.log(field)
 							oTable2.fnAddData([ field.fieldid, field.name,field.zhcnname,
 							                   field.comments,field.datadictionary, '<a class="edit" href="">编辑</a>',
 									'<a class="delete" href="">删除</a>' ]);

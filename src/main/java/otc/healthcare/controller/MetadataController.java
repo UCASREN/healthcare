@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import otc.healthcare.pojo.ClassificationInfo;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.HcApplydata;
@@ -162,15 +163,27 @@ public class MetadataController {
 			tm.setType("root");
 			returnList.add(tm);
 		}
-		if (parent.indexOf("all_") != -1) {
-			List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
+		if(parent.indexOf("all_")!=-1){
+			List<ClassificationInfo> list=this.oracleSerive.getAllClassificationDatabaseInfoWithClass();
+			for(int i=0;i<list.size();i++){
+				TreeJson tm=new TreeJson();
+				tm.setId("classification_"+list.get(i).getClassificationid());
+				tm.setText(list.get(i).getName());
+				tm.setChildren(true);
+				tm.setIcon("fa fa-folder icon-lg icon-state-success");
+				tm.setType("root");
+				returnList.add(tm);
+			}
+		}
+		if (parent.indexOf("classification_") != -1) {
+			List<DatabaseInfo> list = this.oracleSerive.getDatabaseInfoWithClass(parent.substring(parent.indexOf("_") + 1));
 			for (int i = 0; i < list.size(); i++) {
 				TreeJson tm = new TreeJson();
 				tm.setId("alldatabase_" + list.get(i).getDatabaseid());
 				tm.setText(list.get(i).getName());
 				tm.setChildren(true);
 				tm.setIcon("fa fa-folder icon-lg icon-state-success");
-				tm.setType("root");
+				tm.setType("default");
 				returnList.add(tm);
 			}
 		}
@@ -212,7 +225,7 @@ public class MetadataController {
 			@RequestParam(value = "url", required = false) String url,
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "password", required = false) String password) {
-		System.out.println(parent);
+//		System.out.println(parent);
 		List<TreeJson> returnList = new ArrayList<TreeJson>();
 		if (parent.equals("#")) {
 			TreeJson tm = new TreeJson();
@@ -255,7 +268,7 @@ public class MetadataController {
 	public Map<String,String> addRemoteDatabase(@RequestParam(value = "url", required = false) String url,
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "password", required = false) String password,String selectedtables) {
-		System.out.println("传过来的数据"+selectedtables);
+//		System.out.println("传过来的数据"+selectedtables);
 		this.oracleSerive.insertRemoteDB(url,username,password,selectedtables);
 		return null;
 	}
@@ -271,27 +284,50 @@ public class MetadataController {
 			@RequestParam(value = "numrows", required = false) String numrows) {
 		String operationResult = "";
 		String operationType = id != null
-				? (id.contains("alldatabase") ? "database" : (id.contains("table") ? "table" : "all")) : "";// detect
+				?(id.contains("classification")?"classification":(id.contains("alldatabase") ? "database" : (id.contains("table") ? "table" : "all"))) : "";// detect
 																											// operation
 																											// type
 		String operationId = id != null ? (id.substring(id.indexOf("_") + 1)) : "";
 		switch (operation) {
 		case "delete_node": {
-			operationResult = (operationType.equals("database") ? this.oracleSerive.deleteDatabase(operationId)
-					: this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_") + 1), operationId)) ? "success"
-							: "fail";
+			if(operationType.equals("database")){
+				operationResult=this.oracleSerive.deleteDatabase(operationId)?"success":"fail";
+			}
+			if(operationType.equals("table")){
+				operationResult=this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_") + 1), operationId)?"success":"fail";
+			}
+			if(operationType.equals("classification")){
+				operationResult=this.oracleSerive.deleteClassification(operationId)?"success":"类别下有数据库，请清空后再删除";
+			}
+//			operationResult = (operationType.equals("database") ? this.oracleSerive.deleteDatabase(operationId)
+//					: this.oracleSerive.deleteTable(parent.substring(parent.indexOf("_") + 1), operationId)) ? "success"
+//							: "fail";
 		}
 			break;
 		case "create_node": {
-			operationResult = parent.indexOf("all_") != -1
-					? "alldatabase_" + this.oracleSerive.createDatabase(text,zhcnname, comments == null ? "备注为空" : comments)
-					: "alltable_" + this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text,
-							comments == null ? "备注为空" : comments,numrows==null?"0":numrows);
+			if(parent.indexOf("all_")!=-1){
+				operationResult ="classification_" + this.oracleSerive.createClassification(text,comments == null ? "备注为空" : comments);
+			}
+			if(parent.indexOf("classification_")!=-1){
+				operationResult ="alldatabase_" + this.oracleSerive.createDatabase(text,zhcnname, comments == null ? "备注为空" : comments);
+			}
+			if(parent.indexOf("alldatabase_")!=-1){
+				operationResult ="alltable_" + this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text,
+						comments == null ? "备注为空" : comments,numrows==null?"0":numrows);
+			}
+//			operationResult = parent.indexOf("all_") != -1
+//					? "alldatabase_" + this.oracleSerive.createDatabase(text,zhcnname, comments == null ? "备注为空" : comments)
+//					: "alltable_" + this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text,
+//							comments == null ? "备注为空" : comments,numrows==null?"0":numrows);
 		}
 			break;
 		case "rename_node": {
+			if (operationType.equals("classification")) {
+				this.oracleSerive.changeClassification(operationId, text, comments);
+				operationResult = "success";
+			}
 			if (operationType.equals("database")) {
-				this.oracleSerive.changeDatabase(operationId, text, comments);
+				this.oracleSerive.changeDatabase(operationId, text, comments,null);
 				operationResult = "success";
 			}
 			if (operationType.equals("table")) {
@@ -310,15 +346,20 @@ public class MetadataController {
 			 */
 		}
 			break;
+		case "move_node":{
+			System.out.println("输入参数："+id+","+parent+","+position);
+			this.oracleSerive.changeDatabase(operationId, null, null,parent.substring(parent.indexOf("_") + 1));
+			operationResult = "success";
+		}
 		default:
-			operationResult = "sucess";
+			operationResult = "success";
 		}
 		return operationResult;
 	}
 	@RequestMapping(value = "/databaseupdate", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean databaseUpdate(@ModelAttribute DatabaseInfo databaseinfo) {
-		System.out.println("前台传过来的"+databaseinfo);
+//		System.out.println("前台传过来的"+databaseinfo);
 		this.oracleSerive.changeDatabase(databaseinfo);
 		return  true;
 	}
@@ -368,19 +409,33 @@ public class MetadataController {
 	@RequestMapping(value = "/getalldatabaseinfo", method = RequestMethod.GET)
 	@ResponseBody
 	public List<DatabaseInfo> getAllDatabaseInfo(@RequestParam(value = "operation", required = false) String operation) {
-		System.out.println("get_all_database_info_list");
+//		System.out.println("get_all_database_info_list");
 		List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
+//			System.out.println(list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
 			if(operation!=null&&operation.equals("all"))
 				list.get(i).setTablelist(this.oracleSerive.getDatabaseInfo(list.get(i).getDatabaseid()));
+		}
+		return list;
+	}
+	@RequestMapping(value = "/getalldatabaseinfowithclass", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ClassificationInfo> getAllDatabaseInfoWithClass(@RequestParam(value = "operation", required = false) String operation) {
+//		System.out.println("get_all_database_info_list_with_class");
+		List<ClassificationInfo> list = this.oracleSerive.getAllClassificationDatabaseInfoWithClass();
+		for(ClassificationInfo classification:list){
+			List<DatabaseInfo> databaseInfoList=classification.getDatabaseinfolist();
+			for (int i = 0; i < databaseInfoList.size(); i++) {
+				if(operation!=null&&operation.equals("all"))
+					databaseInfoList.get(i).setTablelist(this.oracleSerive.getDatabaseInfo(databaseInfoList.get(i).getDatabaseid()));
+			}
 		}
 		return list;
 	}
 	@RequestMapping(value = "/getdatabasesummary", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,String> getDatabaseSummary(@RequestParam(value = "databaseid", required = true) String databaseid) {
-		System.out.println("get_database_info_summary");
+//		System.out.println("get_database_info_summary");
 		Map<String,String> resultMap=this.oracleSerive.getDatabaseSummary(databaseid);
 		resultMap.put("length",this.oracleSerive.getDatabaseInfo(databaseid).size()+"");
 		return resultMap;
@@ -388,11 +443,11 @@ public class MetadataController {
 	@RequestMapping(value = "/getdatabaseinfo", method = RequestMethod.GET)
 	@ResponseBody
 	public List<TableInfo> getDatabaseInfo(@RequestParam(value = "databaseid", required = true) String databaseid) {
-		System.out.println("get_database_info_list");
+//		System.out.println("get_database_info_list");
 		List<TableInfo> list = this.oracleSerive.getDatabaseInfo(databaseid);
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).getTableid() + "::" + list.get(i).getDatabaseid() + "::"
-					+ list.get(i).getName() + "::" + list.get(i).getComments());
+//			System.out.println(list.get(i).getTableid() + "::" + list.get(i).getDatabaseid() + "::"
+//					+ list.get(i).getName() + "::" + list.get(i).getComments());
 		}
 		return list;
 	}
@@ -450,7 +505,7 @@ public class MetadataController {
 	public Map<String, Object> getAllDatabaseCssInfo(@RequestParam(value = "length", required = false) Integer length,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "draw", required = false) Integer draw) {
-		System.out.println("get_all_database_css_info_list");
+//		System.out.println("get_all_database_css_info_list");
 		List<DatabaseInfo> list = this.oracleSerive.getALLDatabaseInfo();
 //		for (int i = 0; i < list.size(); i++) {
 //			System.out.println(list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
@@ -498,7 +553,7 @@ public class MetadataController {
 	@ResponseBody
 	public Map<String,String> getTableSummary(@RequestParam(value = "databaseid", required = true) String databaseid,
 			@RequestParam(value = "tableid", required = true) String tableid) {
-		System.out.println("get_table_info_summary");
+//		System.out.println("get_table_info_summary");
 		Map<String,String> resultMap=this.oracleSerive.getTableSummary(databaseid, tableid);
 		resultMap.put("length", this.oracleSerive.getTableInfo(databaseid, tableid).size()+"");
 		return resultMap;
@@ -507,11 +562,11 @@ public class MetadataController {
 	@ResponseBody
 	public List<FieldInfo> getTableInfo(@RequestParam(value = "databaseid", required = true) String databaseid,
 			@RequestParam(value = "tableid", required = true) String tableid) {
-		System.out.println("get_table_info_list");
+//		System.out.println("get_table_info_list");
 		List<FieldInfo> list = this.oracleSerive.getTableInfo(databaseid, tableid);
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).getFieldid() + "::" + list.get(i).getTableid() + "::"
-					+ list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
+//			System.out.println(list.get(i).getFieldid() + "::" + list.get(i).getTableid() + "::"
+//					+ list.get(i).getDatabaseid() + "::" + list.get(i).getName() + "::" + list.get(i).getComments());
 		}
 		return list;
 	}

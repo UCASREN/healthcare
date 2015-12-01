@@ -167,39 +167,41 @@ var Layout = function () {
                     handleSidebarAndContentHeight();
                 });
             } else if (hasSubMenu) {
-            	$("#showtableinfo").hide();
-            	$("#showdatabaseinfo").show();
-            	$("#showalldatabaseinfo").hide();
-				var databaseid=$(this).attr("id").substring($(this).attr("id").indexOf("_")+1);
-				database_grid.setAjaxParam("databaseid",databaseid);
-				database_grid.getDataTable().ajax.reload();
-				//更新数据库概要信息
-				$.ajax({
-			    	type : "get",//请求方式
-			    	url : "dataresource/getdatabasesummary",//发送请求地址
-			    	dataType : "json",
-			    	data:{
-			    		databaseid:databaseid
-			    	},
-			    	success : function(data) {
-			    		$("#showdatabaseinfo_name").text("数据库名："+data.name);
-                		$("#showdatabaseinfo_comments").text("描述："+data.comments);
-                		$("#showdatabaseinfo_identifier").text("标识符："+(data.identifier==null?"空":data.identifier));
-                		$("#showdatabaseinfo_language").text("语种："+(data.language==null?"空":data.identifier));
-                		$("#showdatabaseinfo_charset").text("字符集："+(data.charset==null?"空":data.charset));
-                		$("#showdatabaseinfo_subjectclassification").text("学科分类："+(data.subjectclassification==null?"空":data.identifier));
-                		$("#showdatabaseinfo_keywords").text("关键词："+(data.keywords==null?"空":data.identifier));
-                		$("#showdatabaseinfo_credibility").text("可信度："+(data.credibility==null?"空":data.identifier));
-                		$("#showdatabaseinfo_resinstitution").text("负责单位："+(data.resinstitution==null?"空":data.identifier));
-                		$("#showdatabaseinfo_resname").text("负责人："+(data.resname==null?"空":data.identifier));
-                		$("#showdatabaseinfo_resaddress").text("通讯地址："+(data.resaddress==null?"空":data.identifier));
-                		$("#showdatabaseinfo_respostalcode").text("邮政编码："+(data.respostalcode==null?"空":data.identifier));
-                		$("#showdatabaseinfo_resphone").text("联系电话："+(data.resphone==null?"空":data.identifier));
-                		$("#showdatabaseinfo_resemail").text("电子邮件："+(data.resemail==null?"空":data.identifier));
-                		$("#showdatabaseinfo_resourceurl").text("资源链接："+(data.resourceurl==null?"空":data.identifier));
-                		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
-			    	}
-			    });
+            	if($(this).attr("id").indexOf("classification_")==-1){
+            		$("#showtableinfo").hide();
+                	$("#showdatabaseinfo").show();
+                	$("#showalldatabaseinfo").hide();
+					var databaseid=$(this).attr("id").substring($(this).attr("id").indexOf("_")+1);
+					database_grid.setAjaxParam("databaseid",databaseid);
+					database_grid.getDataTable().ajax.reload();
+					//更新数据库概要信息
+					$.ajax({
+				    	type : "get",//请求方式
+				    	url : "dataresource/getdatabasesummary",//发送请求地址
+				    	dataType : "json",
+				    	data:{
+				    		databaseid:databaseid
+				    	},
+				    	success : function(data) {
+				    		$("#showdatabaseinfo_name").text("数据库名："+data.name);
+	                		$("#showdatabaseinfo_comments").text("描述："+data.comments);
+	                		$("#showdatabaseinfo_identifier").text("标识符："+(data.identifier==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_language").text("语种："+(data.language==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_charset").text("字符集："+(data.charset==null?"空":data.charset));
+	                		$("#showdatabaseinfo_subjectclassification").text("学科分类："+(data.subjectclassification==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_keywords").text("关键词："+(data.keywords==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_credibility").text("可信度："+(data.credibility==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_resinstitution").text("负责单位："+(data.resinstitution==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_resname").text("负责人："+(data.resname==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_resaddress").text("通讯地址："+(data.resaddress==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_respostalcode").text("邮政编码："+(data.respostalcode==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_resphone").text("联系电话："+(data.resphone==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_resemail").text("电子邮件："+(data.resemail==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_resourceurl").text("资源链接："+(data.resourceurl==null?"空":data.identifier));
+	                		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
+				    	}
+				    });
+            	}
                 $('.arrow', $(this)).addClass("open");
                 $(this).parent().addClass("open");
                 sub.slideDown(slideSpeed, function () {

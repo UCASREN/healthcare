@@ -180,7 +180,7 @@
 			<div class="page-sidebar navbar-collapse collapse">
 				<!-- BEGIN SIDEBAR MENU1 -->
 				<ul class="page-sidebar-menu hidden-sm hidden-xs"
-					data-auto-scroll="true" data-slide-speed="200" id="alldatabaselist">
+					data-auto-scroll="true" data-slide-speed="200" id="allclassificationlist">
 
 				</ul>
 				<!-- END SIDEBAR MENU1 -->
