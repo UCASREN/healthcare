@@ -248,14 +248,24 @@ function FileManagerClass(){
 		<div class="wrap">
 			<p class="subsite-btn clearfix">
 				<a href="userdatabaseview" target="_blank"> <span
-					class="icons48 icons48-it"></span> <b>数据发布</b>
-				</a> <a href="applydata/applytable" target="_blank"> <span
-					class="icons48 icons48-estate"></span> <b>数据申请</b>
-				</a> <a href="applyenv/applytable" target="_blank"> <span
-					class="icons48 icons48-financial"></span> <b>虚拟环境申请</b>
-				</a> <a href="datasetanalysis" target="_blank"> <span
-					class="icons48 icons48-medicine"></span> <b>数据分析</b>
+					class="icons48 icons48-it"></span> <b>元数据</b>
+				</a> 
+				
+				<a href="datasetanalysis" target="_blank"> <span
+					class="icons48 icons48-medicine"></span> <b>主题报告</b>
 				</a>
+				
+				<a href="applydata/applytable" target="_blank"> <span
+					class="icons48 icons48-estate"></span> <b>数据服务</b>
+				</a> 
+				
+				<a href="applyenv/applytable" target="_blank"> <span
+					class="icons48 icons48-financial"></span> <b>虚拟计算</b>
+				</a> 
+				
+				<a href="#" target="_blank"> <span
+					class="icons48 icons48-telephone"></span> <b>联系我们</b>
+				</a> 
 
 				<!--  <a href="">
 	    <span class="icons48 icons48-car"></span>
