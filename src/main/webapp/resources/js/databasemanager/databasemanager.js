@@ -40,8 +40,10 @@ var ajaxTable1 = function() {
 				+ aData[2] + '">';
 		jqTds[3].innerHTML = '<input type="text" class="form-control input-small" value="'
 			+ aData[3] + '">';
-		jqTds[4].innerHTML = '<a class="edit" href="">保存</a>';
-		jqTds[5].innerHTML = '<a class="cancel" href="">取消</a>';
+		jqTds[4].innerHTML = '<input type="text" class="form-control input-small" value="'
+			+ aData[4] + '">';
+		jqTds[5].innerHTML = '<a class="edit" href="">保存</a>';
+		jqTds[6].innerHTML = '<a class="cancel" href="">取消</a>';
 		ComponentsPickers.init();
 	}
 
@@ -50,8 +52,9 @@ var ajaxTable1 = function() {
 		oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
 		oTable.fnUpdate(jqInputs[2].value, nRow, 3, false);
-		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 4, false);
-		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 5, false);
+		oTable.fnUpdate(jqInputs[3].value, nRow, 4, false);
+		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 5, false);
+		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 6, false);
 		oTable.fnDraw();
 		// 向后台更改数据逻辑
 		var aData = oTable.fnGetData(nRow);
@@ -65,8 +68,9 @@ var ajaxTable1 = function() {
 						operation:"create_node",
 						parent:"alldatabase_"+$("#whichdatabaseid").text(),
 						text:aData[1], 
-						comments:aData[2],
-						numrows:aData[3]
+						zhcnname:aData[2],
+						comments:aData[3],
+						numrows:aData[4]
 					}, 
 					success :function(data) {
 						alert(data); 
@@ -87,8 +91,9 @@ var ajaxTable1 = function() {
 						id:aData[0],
 						parent:"alldatabase_"+$("#whichdatabaseid").text(),
 						text:aData[1], 
-						comments:aData[2],
-						numrows:aData[3]
+						zhcnname:aData[2],
+						comments:aData[3],
+						numrows:aData[4]
 					}, 
 					success :function(data) {
 						alert(data); 
@@ -162,7 +167,7 @@ var ajaxTable1 = function() {
 					}
 				}
 
-				var aiNew = oTable.fnAddData([ "自动生成", "", "","",
+				var aiNew = oTable.fnAddData([ "自动生成", "","", "","",
 						'<a class="edit" href="">编辑</a>',
 						'<a class="delete" href="">删除</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
@@ -280,8 +285,10 @@ var ajaxTable2 = function() {
 				+ aData[2] + '">';
 		jqTds[3].innerHTML = '<input type="text" class="form-control input-small" value="'
 			+ aData[3] + '">';
-		jqTds[4].innerHTML = '<a class="edit" href="">保存</a>';
-		jqTds[5].innerHTML = '<a class="cancel" href="">取消</a>';
+		jqTds[4].innerHTML = '<input type="text" class="form-control input-small" value="'
+			+ aData[4] + '">';
+		jqTds[5].innerHTML = '<a class="edit" href="">保存</a>';
+		jqTds[6].innerHTML = '<a class="cancel" href="">取消</a>';
 		ComponentsPickers.init();
 	}
 
@@ -290,8 +297,9 @@ var ajaxTable2 = function() {
 		oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
 		oTable.fnUpdate(jqInputs[2].value, nRow, 3, false);
-		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 4, false);
-		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 5, false);
+		oTable.fnUpdate(jqInputs[3].value, nRow, 4, false);
+		oTable.fnUpdate('<a class="edit" href="">编辑</a>', nRow, 5, false);
+		oTable.fnUpdate('<a class="delete" href="">删除</a>', nRow, 6, false);
 		oTable.fnDraw();
 		// 向后台更改数据逻辑
 		var aData = oTable.fnGetData(nRow);
@@ -306,8 +314,9 @@ var ajaxTable2 = function() {
 					databaseid:$("#whichtableid_belong").text(),
 					tableid:$("#whichtableid").text(),
 					name:aData[1], 
-					comments:aData[2],
-					datadictionary:aData[3]
+					zhcnname:aData[2], 
+					comments:aData[3],
+					datadictionary:aData[4]
 				}, 
 				success :function(data) {
 					alert(data); 
@@ -329,8 +338,9 @@ var ajaxTable2 = function() {
 						tableid:$("#whichtableid").text(),
 						fieldid:aData[0],
 						name:aData[1], 
-						comments:aData[2],
-						datadictionary:aData[3]
+						zhcnname:aData[2], 
+						comments:aData[3],
+						datadictionary:aData[4]
 					}, 
 					success :function(data) {
 						alert(data); 
@@ -404,7 +414,7 @@ var ajaxTable2 = function() {
 					}
 				}
 
-				var aiNew = oTable.fnAddData([ "自动生成", "", "","",
+				var aiNew = oTable.fnAddData([ "自动生成", "","", "","",
 						'<a class="edit" href="">编辑</a>',
 						'<a class="delete" href="">删除</a>' ]);
 				var nRow = oTable.fnGetNodes(aiNew[0]);
@@ -541,8 +551,8 @@ var AjaxTree = function() {
 			'id' : data.node.id,
 			'parent' : data.node.parent
 		}).done(function(d) {
-			//alert(d);
-			console.log(d);
+			alert(d);
+//			console.log(d);
 		}).fail(function() {
 			data.instance.refresh();
 		});
@@ -576,8 +586,24 @@ var AjaxTree = function() {
 		 * data.parent, 'position' : data.position }) .fail(function () {
 		 * data.instance.refresh(); });
 		 */
-		alert("不支持移动动作");
-		data.instance.refresh();
+//		console.log(data.node.id);
+//		console.log(data.node.parent);
+		if(data.node.id.indexOf("alldatabase_") != -1 && data.node.parent.indexOf("classification_")!=-1){
+			$.get('dataresource/nodeoperation?operation=move_node', {
+				'id' : data.node.id,
+				'parent' : data.node.parent,
+				'position' : data.position
+			}).fail(function() {
+				data.instance.refresh();
+			});
+			//alert("不支持移动动作");
+			data.instance.refresh();
+//			location.reload(true);
+		}else{
+			alert("只支持将数据库节点拖拽到类别下");
+			location.reload(true);
+		}
+		
 	}).on('copy_node.jstree', function(e, data) {
 		/*
 		 * $.get('?operation=copy_node', { 'id' : data.original.id, 'parent' :
@@ -589,7 +615,23 @@ var AjaxTree = function() {
 	}).on('changed.jstree', function(e, data) {
 
 	}).on('select_node.jstree', function(e, data) {
-		
+		if(data.node.id.indexOf("classification")!=-1){
+			$("#setclassificationdetail").removeClass("disabled");
+			$("#setclassificationdetail").text("更改类别"+data.node.text+"的信息");
+			$.ajax({
+				type : "get",//请求方式
+				url : "dataresource/getclassificationdetail",//发送请求地址
+				data:{
+					classificationid:data.node.id.substring(data.node.id.indexOf("_")+1)
+				},
+				dataType : "json",
+				success : function(data) {
+					$("#classificationdetail_id").val(data.classificationid);
+					$("#classificationdetail_name").val(data.name);
+					$("#classificationdetail_comments").val(data.comments);
+				}
+			});
+		}
 		if (data.node.id.indexOf("alldatabase") != -1) {
 			//更新“更改数据库信息”模态框中表单内容
 			$("#setchangedatabasetitle").removeClass("disabled");
@@ -604,6 +646,7 @@ var AjaxTree = function() {
 				success : function(data) {
 					$("#form_database_id").val(data.databaseid);
 					$("#form_database_name").val(data.name);
+					$("#form_database_zhcnname").val(data.zhcnname);
 					$("#form_database_comments").val(data.comments);
 					$("#form_database_identifier").val(data.identifier);
 					$("#form_database_language").val(data.language);
@@ -627,7 +670,8 @@ var AjaxTree = function() {
 					$.each(data, function(i, table) {
 						/* if (table.tableid > maxId)
 							maxId = table.tableid; */
-						oTable1.fnAddData([ table.tableid, table.name,
+//						console.log(table);
+						oTable1.fnAddData([ table.tableid, table.name,table.zhcnname,
 						                   table.comments,table.numrows, '<a class="edit" href="">编辑</a>',
 								'<a class="delete" href="">删除</a>' ]);
 					});
@@ -649,7 +693,8 @@ var AjaxTree = function() {
 						$.each(data, function(i, field) {
 							/* if (field.fieldid > maxId)
 								maxId = field.fieldid; */
-							oTable2.fnAddData([ field.fieldid, field.name,
+//							console.log(field)
+							oTable2.fnAddData([ field.fieldid, field.name,field.zhcnname,
 							                   field.comments,field.datadictionary, '<a class="edit" href="">编辑</a>',
 									'<a class="delete" href="">删除</a>' ]);
 						});
@@ -676,7 +721,7 @@ var AjaxTree = function() {
 					$.each(data, function(i, field) {
 						/* if (field.fieldid > maxId)
 							maxId = field.fieldid; */
-						oTable2.fnAddData([ field.fieldid, field.name,
+						oTable2.fnAddData([ field.fieldid, field.name,field.zhcnname,
 						                   field.comments, field.datadictionary,'<a class="edit" href="">编辑</a>',
 								'<a class="delete" href="">删除</a>' ]);
 					});
@@ -700,7 +745,7 @@ var AjaxTree = function() {
 						$.each(data, function(i, table) {
 							/* if (table.tableid > maxId)
 								maxId = table.tableid; */
-							oTable1.fnAddData([ table.tableid, table.name,
+							oTable1.fnAddData([ table.tableid, table.name,table.zhcnname,
 							                   table.comments,table.numrows,  '<a class="edit" href="">编辑</a>',
 									'<a class="delete" href="">删除</a>' ]);
 						});
@@ -778,6 +823,10 @@ $.ajax({
 $("#savedatabaseinfo").click(function(){
     $.post("dataresource/databaseupdate", $("#databaseinfo_form").serialize(), function (result) {console.log(result) }, "json");
 	$('#changedatabaseinfo').modal('hide');
+});
+$("#saveclassificationdetail").click(function(){
+    $.post("dataresource/updateclassificationdetail", $("#classificationdetail_form").serialize(), function (result) {console.log(result) }, "json");
+	$('#changeclassificationdetail').modal('hide');
 });
 $("#remote_test_connect").click(function(){
 	 $.post("dataresource/testremoteconnect", $("#remote_database_form").serialize(), function (data) {

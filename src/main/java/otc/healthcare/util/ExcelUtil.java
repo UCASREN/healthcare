@@ -49,7 +49,8 @@ public class ExcelUtil {
 			// Row firstRow=sheet.getRow(rowStart);
 			TableInfo tableInfo = new TableInfo();
 			tableInfo.setName(sheet.getRow(rowStart + 1).getCell(0).getStringCellValue());
-			tableInfo.setComments(sheet.getRow(rowStart + 1).getCell(1).getStringCellValue());
+			tableInfo.setZhcnname(sheet.getRow(rowStart + 1).getCell(1).getStringCellValue());
+			tableInfo.setComments(sheet.getRow(rowStart + 1).getCell(2).getStringCellValue());
 			tableInfo.setFieldlist(new ArrayList<FieldInfo>());
 			for (int j = rowStart + 4; j <=rowEnd; j++) {// 从相对位置的第4行开始
 				FieldInfo fieldInfo = new FieldInfo();
@@ -57,12 +58,10 @@ public class ExcelUtil {
 				sheet.getRow(j).getCell(1).setCellType(Cell.CELL_TYPE_STRING);
 				sheet.getRow(j).getCell(2).setCellType(Cell.CELL_TYPE_STRING);
 				sheet.getRow(j).getCell(3).setCellType(Cell.CELL_TYPE_STRING);
-				sheet.getRow(j).getCell(4).setCellType(Cell.CELL_TYPE_STRING);
 				fieldInfo.setName(sheet.getRow(j).getCell(0).getStringCellValue());
-				fieldInfo.setDatatype(sheet.getRow(j).getCell(1).getStringCellValue());
+				fieldInfo.setZhcnname(sheet.getRow(j).getCell(1).getStringCellValue());
 				fieldInfo.setComments(sheet.getRow(j).getCell(2).getStringCellValue());
-				fieldInfo.setNullable(sheet.getRow(j).getCell(3).getStringCellValue());
-				fieldInfo.setDatalength(sheet.getRow(j).getCell(4).getStringCellValue());
+				fieldInfo.setDatadictionary(sheet.getRow(j).getCell(3).getStringCellValue());
 				tableInfo.getFieldlist().add(fieldInfo);// 将属于这个表的列信息加入
 			}
 			tableInfoList.add(tableInfo);
