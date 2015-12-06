@@ -152,12 +152,12 @@ function FileManagerClass(){
 		<div class="slider-list">
 
 			<div
-				style="background: url(home/images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #4d3722;">
+				style="background: url(home/images/home/banner1.jpg) center 0 no-repeat #4d3722;">
 				<a href="" target="_blank"></a>
 			</div>
 
 			<div
-				style="background: url(home/images/home/55cc6f4990ee82c1813be31803a.jpg) center 0 no-repeat #0e5164;">
+				style="background: url(home/images/home/banner2.jpg) center 0 no-repeat #0e5164;">
 				<a href="" target="_blank"></a>
 			</div>
 
