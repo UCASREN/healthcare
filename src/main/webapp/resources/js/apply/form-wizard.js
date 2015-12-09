@@ -63,7 +63,8 @@ var FormWizard = function () {
    		       					url : "/healthcare/putshopdetailIntoSessionfromdb",//发送请求地址
    		       					dataType : "json", 
    		       					data:{ 
-   		       						docid : docid
+   		       						docid : docid,
+   		       						applyType : "data"
    		       					}, 
    		       					success :function(data1) {
    		       						//alert(data); 
@@ -414,10 +415,10 @@ var FormWizard = function () {
             
             $('#db_select').click(function(){
             	//确认按钮
-            	if(!confirm('选择数据加入购物车后，回到本界面加载购物车！'))
-            		return;
-                window.open ("/healthcare/userdatabaseview");
-            	return false;
+            	if(confirm('选择数据加入购物车后，回到本界面加载购物车！')){
+            		window.open ("/healthcare/userdatabaseview");
+                  	return false;
+            	}
             });
             
             $('#shoppingCart').click(function(){
@@ -502,7 +503,7 @@ var FormWizard = function () {
 //            	console.log($('#form_wizard_1 div.icheckbox_flat-blue').attr('checked'));
             	$('#form_wizard_1 input[type="checkbox"]').each(function(){
 //            		console.log($(this).attr('checked'));
-            		if($(this).attr("checked") == "checked"){
+            		if($(this).val()!="projectApply" && $(this).attr("checked") == "checked"){
             				tmp += $(this).val()+",";
 //            			console.log(tmp);
             		}
@@ -510,7 +511,21 @@ var FormWizard = function () {
             	$('#allUseField').val(tmp);
             });
             
+            $("#projectApply").on('ifUnchecked', function(event){
+           	 	$('#form_wizard_1 .projectItems').hide();
+           	 	$('#form_wizard_1 #submit_form_projectName').val("无");
+           	 	$('#form_wizard_1 #submit_form_projectChairman').val("无");
+           	 	$('#form_wizard_1 #submit_form_projectSource').val("无");
+           	 	$('#form_wizard_1 #submit_form_projectUndertaking').val("无");
+            });
             
+            $("#projectApply").on('ifChecked', function(event){
+           		$('#form_wizard_1 #submit_form_projectName').val("");
+        	 	$('#form_wizard_1 #submit_form_projectChairman').val("");
+        	 	$('#form_wizard_1 #submit_form_projectSource').val("");
+        	 	$('#form_wizard_1 #submit_form_projectUndertaking').val("");
+        		$('#form_wizard_1 .projectItems').show();
+            });
         }
 
     };

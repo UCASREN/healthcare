@@ -31,7 +31,8 @@ public class HcApplyenv implements java.io.Serializable {
 	private String applyTime;
 	private String applyRejectReason;
 	private String envUrl;
-
+	private String applyData;
+	
 	public HcApplyenv() {
 	}
 
@@ -44,7 +45,7 @@ public class HcApplyenv implements java.io.Serializable {
 	public HcApplyenv(BigDecimal idApplydata, String hcUsername, String docName, String name, String department,
 			String address, String tel, String email, String demandtype, String demand, String proName, String proChair,
 			String proSource, String proUndertake, String proRemark, String proUsefield, String flagApplydata,
-			String applyTime, String applyRejectReason) {
+			String applyTime, String applyRejectReason,String applyData) {
 		this.idApplydata = idApplydata;
 		this.hcUsername = hcUsername;
 		this.docName = docName;
@@ -64,6 +65,7 @@ public class HcApplyenv implements java.io.Serializable {
 		this.flagApplydata = flagApplydata;
 		this.applyTime = applyTime;
 		this.applyRejectReason = applyRejectReason;
+		this.applyData = applyData;
 	}
 
 	public BigDecimal getIdApplydata() {
@@ -224,6 +226,14 @@ public class HcApplyenv implements java.io.Serializable {
 
 	public void setEnvUrl(String envUrl) {
 		this.envUrl = envUrl;
+	}
+
+	public String getApplyData() {
+		return applyData;
+	}
+
+	public void setApplyData(String applyData) {
+		this.applyData = applyData;
 	}
 
 }

@@ -99,11 +99,10 @@
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="userdatabaseview">
-							数据发布 </a></li>
-					<li class="classic-menu-dropdown"><a href="adminpanel/applydatatable" target="_blank"> 数据申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="adminpanel/applyenvtable" target="_blank"> 虚拟环境申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 数据分析 </a></li>
+					<li class="classic-menu-dropdown "><a href="userdatabaseview">元数据 </a></li>
+					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 主题分析 </a></li>
+					<li class="classic-menu-dropdown"><a href="adminpanel/applydatatable" target="_blank"> 数据服务 </a></li>
+					<li class="classic-menu-dropdown"><a href="adminpanel/applyenvtable" target="_blank"> 虚拟计算 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
@@ -139,11 +138,11 @@
 									class="icon-user"></i> 我的账户
 							</a></li>
 							<li><a href="applydata/applytable" target="_blank"> <i
-									class="icon-envelope-open"></i> 数据申请 <span
+									class="icon-envelope-open"></i> 数据服务 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>
 							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
-									虚拟环境申请<span class="badge badge-success"> 7 </span>
+									虚拟计算<span class="badge badge-success"> 7 </span>
 							</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
@@ -213,7 +212,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 数据申请
+								 数据服务
 							</div>
 							<div class="desc">
 								数据分析操作
@@ -231,7 +230,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 虚拟环境申请
+								 虚拟计算
 							</div>
 							<div class="desc">
 								 Docker技术

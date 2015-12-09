@@ -115,12 +115,18 @@ public class UserController {
 	@RequestMapping(value = "/putshopdetailIntoSessionfromdb", method = RequestMethod.GET)
 	@ResponseBody
 	public boolean putShopDetailIntoSessionfromdb(HttpSession httpSession,
-			@RequestParam(value = "docid", required = false) String docid){
+			@RequestParam(value = "docid", required = false) String docid,
+			@RequestParam(value = "applyType", required = false) String applyType){
 		
 		this.deleteAllShoppingCart(httpSession);
 		Map<String,HashSet<String>> shoppingcartMap = getShoppingCart(httpSession);
 		
-		String shopInfo = this.oracleSerive.getApplyDataByDocId(docid);
+		String shopInfo = new String();
+		if(applyType.equals("data"))
+			shopInfo = this.oracleSerive.getApplyDataByDocId(docid);
+		else if(applyType.equals("env"))
+			shopInfo = this.oracleSerive.getApplyDataByEnvDocId(docid);
+		
 		if(shopInfo==null || shopInfo.equals(""))
 			return false;
 		

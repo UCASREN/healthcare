@@ -10,7 +10,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN HEAD -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-<title>数据申请审批</title>
+<title>数据服务审批</title>
 
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
@@ -74,12 +74,12 @@ request.setCharacterEncoding("UTF-8");
 							<li><a href="userpanel" target="_blank"> <i
 									class="icon-user"></i> 我的账户
 							</a></li>
-							<li><a href="applydata/applytable" target="_blank"> <i
-									class="icon-envelope-open"></i> 数据申请 <span
+							<li><a href="applydatatable" target="_blank"> <i
+									class="icon-envelope-open"></i> 数据服务 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>
-							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
-									虚拟环境申请<span class="badge badge-success"> 7 </span>
+							<li><a href="applyenvtable"> <i class="icon-rocket"></i>
+									虚拟计算<span class="badge badge-success"> 7 </span>
 							</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
@@ -115,18 +115,17 @@ request.setCharacterEncoding("UTF-8");
 		<ul class="page-sidebar-menu" data-keep-expanded="false"
 					data-auto-scroll="true" data-slide-speed="200">
 					<li><a href="/healthcare/userdatabaseview"> <i class="icon-home"></i> <span
-							class="title">数据发布</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
-							class="title">数据申请</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
-							class="title">虚拟环境申请</span> <span class="arrow "></span>
+							class="title">元数据</span> <span class="arrow "></span>
 					</a></li>
 					<li><a href="/healthcare/datasetanalysis"> <i class="icon-puzzle"></i> <span
-							class="title">数据分析</span> <span class="arrow "></span>
+							class="title">主题分析</span> <span class="arrow "></span>
 					</a></li>
-
+					<li><a href="applydatatable"> <i class="icon-rocket"></i> <span
+							class="title">数据服务</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="applyenvtable"> <i class="icon-diamond"></i> <span
+							class="title">虚拟计算</span> <span class="arrow "></span>
+					</a></li>
 				</ul>
 		</div>
 	</div>
@@ -164,7 +163,7 @@ request.setCharacterEncoding("UTF-8");
 					
 			<!-- BEGIN PAGE HEADER-->
 			<h3 class="page-title">
-			申请审批 <small>数据申请</small>
+			申请审批 <small>数据服务</small>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -178,7 +177,7 @@ request.setCharacterEncoding("UTF-8");
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="#">数据申请审批（管理员）</a>
+						<a href="#">数据服务审批（管理员）</a>
 					</li>
 				</ul>
 				

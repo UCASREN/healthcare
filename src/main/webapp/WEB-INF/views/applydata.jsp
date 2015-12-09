@@ -11,7 +11,7 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-<title>数据申请流程</title>
+<title>数据服务流程</title>
 
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/> -->
@@ -49,16 +49,16 @@ request.setCharacterEncoding("UTF-8");
 		<ul class="page-sidebar-menu" data-keep-expanded="false"
 					data-auto-scroll="true" data-slide-speed="200">
 					<li><a href="userdatabaseview"> <i class="icon-home"></i> <span
-							class="title">数据发布</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
-							class="title">数据申请</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
-							class="title">虚拟环境申请</span> <span class="arrow "></span>
+							class="title">元数据</span> <span class="arrow "></span>
 					</a></li>
 					<li><a href="datasetanalysis"> <i class="icon-puzzle"></i> <span
-							class="title">数据分析</span> <span class="arrow "></span>
+							class="title">主题分析</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
+							class="title">数据服务</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
+							class="title">虚拟计算</span> <span class="arrow "></span>
 					</a></li>
 
 				</ul>
@@ -71,7 +71,7 @@ request.setCharacterEncoding("UTF-8");
 		<div class="page-content">
 			
 			<h3 class="page-title">
-			数据申请 <small>医疗大数据分析平台</small>
+			数据服务 <small>新建申请</small>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -85,7 +85,7 @@ request.setCharacterEncoding("UTF-8");
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="#">数据申请</a>
+						<a href="#">数据服务申请</a>
 					</li>
 				</ul>
 			</div>
@@ -347,7 +347,16 @@ request.setCharacterEncoding("UTF-8");
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group" style="margin-bottom:20px;margin-top:10px">
+													<label class="control-label col-md-3">申请课题情况 <span class="required">
+													* </span>
+													</label>
+													<div class="col-md-4" style="margin-top: 8px;">
+														<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue" id="projectApply"
+															checked="checked" name="projectApply" value="projectApply" data-title="已申请课题 " >已申请课题 </label>
+													</div>
+												</div>
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题名称 <span class="required">
 													* </span>
 													</label>
@@ -357,7 +366,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">首席科学家(首要负责人)<span class="required">
 													* </span>
 													</label>
@@ -367,7 +376,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题来源<span class="required">
 													* </span>
 													</label>
@@ -377,7 +386,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">承担单位<span class="required">
 													* </span>
 													</label>
@@ -481,28 +490,28 @@ request.setCharacterEncoding("UTF-8");
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题名称：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectName">
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">首席科学家(首要负责人)：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectChairman">
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题来源：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectSource">
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">承担单位：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectUndertaking">

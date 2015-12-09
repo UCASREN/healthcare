@@ -11,7 +11,7 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-<title>虚拟环境申请流程</title>
+<title>虚拟计算流程</title>
 
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/> -->
@@ -47,17 +47,17 @@ request.setCharacterEncoding("UTF-8");
 		<div class="page-sidebar navbar-collapse collapse">
 		<ul class="page-sidebar-menu" data-keep-expanded="false"
 					data-auto-scroll="true" data-slide-speed="200">
-					<li><a href="/healthcare/userdatabaseview"> <i class="icon-home"></i> <span
-							class="title">数据发布</span> <span class="arrow "></span>
+					<li><a href="userdatabaseview"> <i class="icon-home"></i> <span
+							class="title">元数据</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="datasetanalysis"> <i class="icon-puzzle"></i> <span
+							class="title">主题分析</span> <span class="arrow "></span>
 					</a></li>
 					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
-							class="title">数据申请</span> <span class="arrow "></span>
+							class="title">数据服务</span> <span class="arrow "></span>
 					</a></li>
 					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
-							class="title">虚拟环境申请</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/datasetanalysis"> <i class="icon-puzzle"></i> <span
-							class="title">数据分析</span> <span class="arrow "></span>
+							class="title">虚拟计算</span> <span class="arrow "></span>
 					</a></li>
 
 				</ul>
@@ -71,7 +71,7 @@ request.setCharacterEncoding("UTF-8");
 			
 			<!-- BEGIN PAGE HEADER -->
 			<h3 class="page-title">
-			虚拟环境申请 <small>医疗大数据分析平台</small>
+			虚拟计算 <small>新建申请</small>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -260,6 +260,46 @@ request.setCharacterEncoding("UTF-8");
 														<textarea class="form-control" cols="15" rows="4" name="userDemand" id="submit_form_userDemand"></textarea>
 													</div>
 												</div>
+												<div class="form-group" style="margin-top:3px">
+													<hr class="col-md-12"/>
+													<label class="control-label col-md-3">选择数据</label>
+													<div class="col-md-4">
+														<button id="db_select" class="btn yellow" >
+															<i class="fa fa-database"></i>&nbsp;选择
+														</button>
+														<button id="shoppingCart" class="btn green" >
+															<i class="fa fa-shopping-cart"></i>&nbsp;加载数据集
+														</button>
+														<button id="cleanShopingCart" class="btn red" >
+															<i class="fa fa-trash-o"></i>&nbsp;清空
+														</button>
+													</div>
+												</div>
+												
+												<div style="margin-top:3px">
+													<div id="shoppanel" class="alert alert-success" style="margin-left:180px;margin-right:180px">
+														<input type="hidden" id="applydata" name="applydata" value=""></input>
+														
+														<div id="emptyshoppingcart" class="row" style="display:none;">
+															<div class="col-md-7">
+																<ul>
+																	<span>当前数据集为空！</span>
+																</ul>
+															</div>
+														</div>
+														
+														<table id="shoptable" border="1" align="center" style="display:none;">
+		    												<caption align="top">数据集列表</caption>
+													    	<tr>
+													  		  <th style="width:10%;text-align:center;">数据集名称</th>
+													  		  <th style="width:10%;text-align:center;">数据表名称</th>
+													  		  <th style="width:20%;text-align:center;">相关说明</th>
+													  		</tr>
+											  			</table>
+														
+													</div>
+												</div>
+												
 											</div>
 											
 											<div class="tab-pane" id="tab3"> 
@@ -303,40 +343,41 @@ request.setCharacterEncoding("UTF-8");
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
-													<label class="control-label col-md-3">项目/课题名称 <span class="required">
+												<div class="form-group" style="margin-bottom:20px;margin-top:10px">
+													<label class="control-label col-md-3">申请课题情况 <span class="required">
 													* </span>
 													</label>
+													<div class="col-md-4" style="margin-top: 8px;">
+														<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue" id="projectApply"
+															checked="checked" name="projectApply" value="projectApply" data-title="已申请课题 " >已申请课题 </label>
+													</div>
+												</div>
+												<div class="form-group projectItems" style="margin-bottom:0px">
+													<label class="control-label col-md-3">项目/课题名称</label>
 													<div class="col-md-4">
 														<input type="text" class="form-control" name="projectName" id="submit_form_projectName"/>
 														<span class="help-block">
 														</span>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
-													<label class="control-label col-md-3">首席科学家(首要负责人)<span class="required">
-													* </span>
-													</label>
+												<div class="form-group projectItems" style="margin-bottom:0px">
+													<label class="control-label col-md-3">首席科学家(首要负责人)</label>
 													<div class="col-md-4">
 														<input type="text" placeholder="" class="form-control" name="projectChairman" id="submit_form_projectChairman"/>
 														<span class="help-block">
 														</span>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
-													<label class="control-label col-md-3">项目/课题来源<span class="required">
-													* </span>
-													</label>
+												<div class="form-group projectItems" style="margin-bottom:0px">
+													<label class="control-label col-md-3">项目/课题来源</label>
 													<div class="col-md-4">
 														<input type="text" placeholder="" class="form-control" name="projectSource" id="submit_form_projectSource"/>
 														<span class="help-block">
 														</span>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
-													<label class="control-label col-md-3">承担单位<span class="required">
-													* </span>
-													</label>
+												<div class="form-group projectItems" style="margin-bottom:0px">
+													<label class="control-label col-md-3">承担单位</label>
 													<div class="col-md-4">
 														<input type="text" placeholder="" class="form-control" name="projectUndertaking" id="submit_form_projectUndertaking"/>
 														<span class="help-block">
@@ -344,9 +385,7 @@ request.setCharacterEncoding("UTF-8");
 													</div>
 												</div>
 												<div class="form-group" style="margin-bottom:0px">
-													<label class="control-label col-md-3">申请时间(DD/MM/YYYY) <span class="required">
-													* </span>
-													</label>
+													<label class="control-label col-md-3">申请时间(DD/MM/YYYY)</label>
 													<div class="col-md-4">
 														<div class="input-group input-medium date date-picker" data-date-format="yyyy/mm/dd" data-date-start-date="+0d">
 															<input type="text" class="form-control" readonly name="applyDate" id="submit_form_applyDate">
@@ -436,28 +475,28 @@ request.setCharacterEncoding("UTF-8");
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题名称：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectName">
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">首席科学家(首要负责人)：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectChairman">
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">项目/课题来源：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectSource">
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group projectItems" style="margin-bottom:0px">
 													<label class="control-label col-md-3">承担单位：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="projectUndertaking">

@@ -4,26 +4,28 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,8 +33,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.beyondsphere.database.JDBCUtil;
+
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
+import otc.healthcare.pojo.VMUser;
 import otc.healthcare.service.FilterService;
 import otc.healthcare.service.OracleService;
 import otc.healthcare.service.WordService;
@@ -79,10 +84,179 @@ public class AdminController {
 		this.filterService = filterService;
 	}
 	
+	@RequestMapping(value = "/listVMService", method = RequestMethod.POST)
+	public void listVMService(@RequestParam(value = "docid", required = false) String docid,
+			@RequestParam(value = "applydataid", required = false) String applydataid,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		response.setHeader("Expires","-1");
+		response.setHeader("Pragma","no-cache");
+		response.setHeader("Cache-control","no-cache");
+		response.setHeader("Content-Type", "text/html; charset=utf-8");
+		response.setContentType("text/html");
+		try {
+			PrintWriter out = response.getWriter();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		//从云平台获得所有虚拟机id， name, 
+		//再判断vmid是否在本地数据库表vmmanger中存在，如果存在表示已经分配。把虚拟机id， 名字，使用者显示到页面，不存在时只显示vmid， vmname
+		JDBCUtil jdbc = new JDBCUtil();
+		List<String> uuids = jdbc.getAllVMsByUserName("133.133.135.11","ditest");
+		ArrayList<VMUser>  vmUserList = new ArrayList<VMUser>();  //存放已经分配的
+		ArrayList<VMUser>  vmUserList2 = new ArrayList<VMUser>();  //存放已经分配和未分配的
+//		String  vmNames = jdbc.getAllVMNameByID("133.133.135.11","ditest");
+		  
+		//查找id在表vmmanger中是否存在
+		String sql = "select * from SYSTEM.HC_VMMANAGER";
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+        	 Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+//             String url="jdbc:oracle:thin:@localhost:1522:orcl";
+             String url="jdbc:oracle:thin:@localhost:1521:XE";
+//             conn = DriverManager.getConnection(url,"scott","tiger");
+             conn = DriverManager.getConnection(url,"system","123456");
+             stmt = conn.createStatement();
+	         rs = stmt.executeQuery(sql);
+	         while(rs.next()){
+            	 VMUser  vms = new VMUser();
+            	 vms.vmid = rs.getString(1);
+            	 vms.vmName =rs.getString(2);
+            	 vms.vmUser = rs.getString(3);
+            	 
+            	 //将已经分配好的显示到页面，并保存好vmid
+            	 vmUserList.add(vms); //用于和所有的vmid比较，筛选出未分配的
+            	 vmUserList2.add(vms);
+            }
+	         
+	        conn.close();
+            stmt.close();
+         } catch (SQLException e) {
+	          e.printStackTrace();
+         } catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	    //先前一个也没分配过
+       if ( vmUserList.size() ==0){
+    	   //将vmid， vmName 显示到页面
+    	   for(int i = 0 ; i < uuids.size(); i++){
+    		   VMUser  vms2 = new VMUser();
+    		   vms2.vmid = uuids.get(i);
+    		   vms2.vmName = jdbc.getNameByUuid("133.133.135.11", uuids.get(i));
+    		   vms2.vmUser = "";   //没分配过，使用者是“”
+    		   vmUserList2.add(vms2);
+    		   }
+        }else{
+        	//获得未分配的vmid, vmname, 显示到页面
+        	for(int i = 0 ; i < uuids.size(); i++){
+		    	 VMUser  vms3 = new VMUser();
+	        	 String sid = uuids.get(i);
+	        	 boolean bFlag = false; //未分配
+	        	 for(int j = 0; j< vmUserList.size(); j++){
+	        		 String idtmp = vmUserList.get(j).getVMid();
+	        		 String str1 = sid.substring(0, 7);
+	        		 String str2 = idtmp.substring(0, 7);
+	        		 //说明已经分配过
+	        		 if (str1.equals(str2)== true ){
+	        			 bFlag = true;
+	        			 break;	        
+	        		 }
+	        	 }
+	        	 
+	        	//未分配过	 
+		        if (bFlag == false){
+		        	//根据该id，向云平台获得名字
+		        	vms3.vmid = sid;
+		        	String sName = "";
+		        	sName = jdbc.getNameByUuid("133.133.135.11", sid);
+		        	vms3.vmName = sName;
+		        	vms3.vmUser = "";
+		        	vmUserList2.add(vms3);
+		        }
+		     }//end for
+	      }//end else
+	         
+	       try {
+	    	   //把变量vmUserList输出到页面
+		       RequestDispatcher rd = request.getRequestDispatcher("applyenvalloc");
+		       request.setAttribute("vmUserList", vmUserList2);
+		       rd.forward(request,response);
+	       } catch (ServletException e) {
+	    	   e.printStackTrace();
+	       } catch (IOException e) {
+	    	   e.printStackTrace();
+	       }
+	}
+	
+	@RequestMapping(value = "/saveVMService", method = RequestMethod.POST)
+	public void saveVMService(@RequestParam(value = "docid", required = false) String docid,
+			@RequestParam(value = "applydataid", required = false) String applydataid,
+			HttpServletRequest request, HttpServletResponse response) {
+			try {
+				response.setContentType("text/html");
+				request.setCharacterEncoding("utf-8");
+				PrintWriter out = response.getWriter();
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			//将选中的虚拟机id， 名字，使用者，插入到本地数据库vmManager中，并把拼接好的url，根据使用者名称插入到表HC_APPLYENV对应的字段ENV_URL中
+			String vmid = request.getParameter("vmidSelect");
+			String vmName = request.getParameter("vmNameSelect");
+			String user = request.getParameter("vmuser");
+			
+			String sSQL = "";
+			sSQL = String.format("insert into HC_VMMANAGER values( '%s','%s','%s') ",  vmid,vmName,user);
+			java.sql.Connection conn = null;
+			Statement stmt = null;
+			Statement stmt2 = null;
+		   
+			try {
+	      	  	Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+//	      	  	String url="jdbc:oracle:thin:@localhost:1522:orcl";
+	            String url="jdbc:oracle:thin:@localhost:1521:XE";
+	      	  	conn = DriverManager.getConnection(url,"system","123456");
+	      	  	stmt = conn.createStatement();
+	      	  	stmt2 = conn.createStatement();
+	      	  	stmt.executeUpdate(sSQL);
+	           
+	      	  	//拼成可访问的虚拟机url
+	      	  	String uuid8 = vmid.substring(0, 7) ;  //截取vmid前8位
+	      	  	String vmurl;
+	           
+	      	  	vmurl = "http://133.133.135.11:8989/novnc/console.html?id=" + uuid8;
+	      	  	String sql2 = "" ;
+	      	  	sql2 = String.format("update HC_APPLYENV set ENV_URL = '%s' where hc_username= '%s' ", vmurl,user);
+	      	  	stmt2.executeUpdate(sql2);
+	      	  	
+	      		conn.close();
+                stmt.close();
+                this.oracleService.changeApplyEnvStatus(applydataid,"4");//改变状态
+		   }catch (Exception e) {
+	           e.printStackTrace();
+	       }
+	}
+	
 	@RequestMapping(value = "/applydataalloc", method = RequestMethod.GET)
 	public String applyDataAlloc(@RequestParam(value = "docid", required = false) String docid,
 			@RequestParam(value = "applydataid", required = false) String applydataid) {
 		return "applydataalloc";
+	}
+	
+	
+	@RequestMapping(value = "/applyenvalloc")
+	public String applyEnvAlloc(@RequestParam(value = "docid", required = false) String docid,
+			@RequestParam(value = "applydataid", required = false) String applydataid) {
+		return "vm_envalloc";
 	}
 	
 	
@@ -168,9 +342,9 @@ public class AdminController {
 		//系统管理员 --- 状态变到4 --- 审核成功
 		if(authority.equals("ROLE_ADMIN")){
 			this.oracleService.changeApplyEnvStatus(applydataid,"3");
-			
 			//以下部分应该是新的界面中，分配按钮对应的内荣，这里仅仅是为了测试
 			this.oracleService.updateEnvUrlByApplyID(applydataid,"http://133.133.135.11:8989/novnc/console.html?id=bda2af74");
+			this.oracleService.changeApplyEnvStatus(applydataid,"4");
 		}
 		
 		return "applyenvcheck";
@@ -460,7 +634,7 @@ public class AdminController {
 			if(dataStatusFlag.equals("1") && authority.equals("ROLE_SU1"))
 				button += dataCheck;
 			if(dataStatusFlag.equals("2") && authority.equals("ROLE_SU2"))
-				button += dataCheck;
+				button += dataCheck + dataAlloc;
 			if(authority.equals("ROLE_ADMIN"))
 				button += dataCheck_All + dataAlloc;
 			

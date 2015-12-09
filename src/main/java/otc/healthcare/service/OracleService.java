@@ -1294,7 +1294,6 @@ public class OracleService implements IService {
 		hc_applydata.setFlagApplydata("1");
 
 		hcApplydataDao.attachDirty(hc_applydata);
-
 		System.out.println("insert hc_applydata ok");
 	}
 
@@ -1387,6 +1386,12 @@ public class OracleService implements IService {
 	}
 
 	@Transactional
+	public String getApplyDataByEnvDocId(String docid) {
+		HcApplyenv hcApplyenv = hcApplyenvDao.findByDocName(docid);
+		return hcApplyenv.getApplyData();
+	}
+	
+	@Transactional
 	public void insertApplyEnv(HttpServletRequest req, String f_name, boolean update) {
 
 		if (update) {
@@ -1409,6 +1414,7 @@ public class OracleService implements IService {
 			String hc_projectUndertaking = req.getParameter("projectUndertaking");
 			String hc_applyDate = req.getParameter("applyDate");
 			String hc_projectRemarks = req.getParameter("projectRemarks");
+			String applydata = req.getParameter("applydata");
 
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -1431,7 +1437,7 @@ public class OracleService implements IService {
 			hc_applyenv.setProUndertake(hc_projectUndertaking);
 			hc_applyenv.setApplyTime(hc_applyDate);
 			hc_applyenv.setProRemark(hc_projectRemarks);
-
+			hc_applyenv.setApplyData(applydata);
 			// 提交后，apply标志为1
 			hc_applyenv.setFlagApplydata("1");
 
@@ -1458,6 +1464,7 @@ public class OracleService implements IService {
 		String hc_projectUndertaking = req.getParameter("projectUndertaking");
 		String hc_applyDate = req.getParameter("applyDate");
 		String hc_projectRemarks = req.getParameter("projectRemarks");
+		String applydata = req.getParameter("applydata");
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -1480,7 +1487,7 @@ public class OracleService implements IService {
 		hc_applyenv.setProUndertake(hc_projectUndertaking);
 		hc_applyenv.setApplyTime(hc_applyDate);
 		hc_applyenv.setProRemark(hc_projectRemarks);
-
+		hc_applyenv.setApplyData(applydata);
 		// 提交后，apply标志为1
 		hc_applyenv.setFlagApplydata("1");
 

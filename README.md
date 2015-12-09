@@ -12,7 +12,14 @@ word在线预览:
 		soffice -headless -accept="socket,host=127.0.0.1,port=8100;urp; –nofirststartwizard
 		
 	3.安装swftools
+
 	
 解锁：
+
 	conn sys/sys as sysdba; //以DBA的身份登录
     alter user system account unlock;// 然后解锁
+    
+    
+虚拟计算环境：
+   
+   	手动安装mvn本地库，oncecloud

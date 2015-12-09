@@ -12,7 +12,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8"/>
-<title>虚拟环境申请历史记录</title>
+<title>虚拟计算</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -84,12 +84,12 @@ request.setCharacterEncoding("UTF-8");
 							<li><a href="userpanel" target="_blank"> <i
 									class="icon-user"></i> 我的账户
 							</a></li>
-							<li><a href="applydata/applytable" target="_blank"> <i
-									class="icon-envelope-open"></i> 数据申请 <span
+							<li><a href="/healthcare/applydata/applytable" target="_blank"> <i
+									class="icon-envelope-open"></i> 数据服务 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>
-							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
-									虚拟环境申请<span class="badge badge-success"> 7 </span>
+							<li><a href="/healthcare/applyenv/applytable"> <i class="icon-rocket"></i>
+									虚拟计算<span class="badge badge-success"> 7 </span>
 							</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
@@ -127,18 +127,17 @@ request.setCharacterEncoding("UTF-8");
 		<ul class="page-sidebar-menu" data-keep-expanded="false"
 					data-auto-scroll="true" data-slide-speed="200">
 					<li><a href="userdatabaseview"> <i class="icon-home"></i> <span
-							class="title">数据发布</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
-							class="title">数据申请</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
-							class="title">虚拟环境申请</span> <span class="arrow "></span>
+							class="title">元数据</span> <span class="arrow "></span>
 					</a></li>
 					<li><a href="datasetanalysis"> <i class="icon-puzzle"></i> <span
-							class="title">数据分析</span> <span class="arrow "></span>
+							class="title">主题分析</span> <span class="arrow "></span>
 					</a></li>
-
+					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
+							class="title">数据服务</span> <span class="arrow "></span>
+					</a></li>
+					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
+							class="title">虚拟计算</span> <span class="arrow "></span>
+					</a></li>
 				</ul>
 		</div>
 	</div>
@@ -179,7 +178,7 @@ request.setCharacterEncoding("UTF-8");
 										<div class="project-screening-yellow"></div>
 										<div class="select-1-yellow"></div>
 										<div class="screening-select select-1 current"><a href="javascript:;">待审核</a></div>
-										<div class="screening-select select-2" selval="4,6"><a href="javascript:;" selval="4,6">卒中数据中心</a></div>
+										<div class="screening-select select-2" selval="4,6"><a href="javascript:;" selval="4,6">卒中中心</a></div>
 										<div class="screening-select select-3" selval="6,7"><a href="javascript:;" selval="6,7">卒中防治委员会</a></div>
 										<div class="screening-select select-4" selval="7,10"><a href="javascript:;" selval="7,10">虚拟环境分配</a></div>
 										<div id="status_final" class="screening-select select-5" selval="10,-1"><a href="javascript:;" selval="10,-1">审核成功</a></div>
@@ -208,7 +207,7 @@ request.setCharacterEncoding("UTF-8");
 			
 			<!-- BEGIN PAGE HEADER-->
 			<h3 class="page-title">
-			虚拟环境申请 <small>历史清单</small>
+			虚拟计算 <small>历史清单</small>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -218,7 +217,7 @@ request.setCharacterEncoding("UTF-8");
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="#">虚拟环境申请 </a>
+						<a href="#">虚拟计算 </a>
 					</li>
 				</ul>
 			</div>

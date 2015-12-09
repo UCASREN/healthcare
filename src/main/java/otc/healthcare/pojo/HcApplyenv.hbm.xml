@@ -97,5 +97,8 @@
          <property name="envUrl" type="string">
             <column name="ENV_URL" />
         </property>
+        <property name="applyData" type="string">
+            <column name="APPLY_DATA" length="4000" />
+        </property>
     </class>
 </hibernate-mapping>
