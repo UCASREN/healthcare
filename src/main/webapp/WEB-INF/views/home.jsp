@@ -221,7 +221,7 @@ function FileManagerClass(){
 		<div class="wrap">
 			<p class="subsite-btn  clearfix">
                  <a href="userdatabaseview" target="_blank"> <span class="icons48 icons48-it"></span> <b>元数据</b></a>
-				 <a href="datasetanalysis" target="_blank"> <span class="icons48 icons48-estate"></span> <b>主题分析</b></a>
+				 <a href="topicanalysis" target="_blank"> <span class="icons48 icons48-estate"></span> <b>主题分析</b></a>
 				 <a href="applydata/applytable" target="_blank"> <span class="icons48 icons48-financial"></span> <b>数据服务</b></a>
 				 <a href="applyenv/applytable" target="_blank"> <span class="icons48 icons48-medicine"></span> <b>虚拟计算</b></a>
             </p>
