@@ -10,11 +10,18 @@ import org.springframework.stereotype.Component;
 public class HealthcareConfiguration {
 	private static final String PROERTIES_FILE_NAME = "healthcare.properties";
 
+	public static final String SWFTOOLS_PATH = "SWFToolsPath";
+	public static final String HC_DOCPATH = "hc_docpath";
+	
 	public static final String DB_URL = "db_url";
 	public static final String DB_USERNAME = "db_username";
 	public static final String DB_PASSWORD = "db_password";
-	public static final String SWFTOOLS_PATH = "SWFToolsPath";
-	public static final String HC_DOCPATH = "hc_docpath";
+
+	public static final String SQLSERVER_URL = "sqlserver_url";
+	public static final String SQLSERVER_USERNAME = "sqlserver_username";
+	public static final String SQLSERVER_PASSWORD = "sqlserver_password";
+
+	
 	private Properties properties;
 
 	public HealthcareConfiguration() {

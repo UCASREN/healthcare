@@ -40,7 +40,6 @@
 	<view-controller path="/userdatabaseview" view-name="userdatabaseview"/>
 	<view-controller path="/adminpanel" view-name="adminpanel"/>
 	<view-controller path="/userpanel" view-name="userpanel"/>
-	<view-controller path="/datasetanalysis" view-name="datasetanalysis"/>
 	<view-controller path="/adminpanel_welcome" view-name="adminpanel_welcome"/>
 	
 	<!-- fileupload -->

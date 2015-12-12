@@ -18,19 +18,17 @@ public class SQLServerConnection extends ConnectionBase implements IConnection {
 
 	@Override
 	public List<String> showFields(String tableName) {
-		String sql = "SELECT Name FROM SysColumns WHERE id=Object_Id('"
-				+ tableName + "')";
+		String sql = "SELECT Name FROM SysColumns WHERE id=Object_Id('"  + tableName + "')";
 		DBUtil utils = new DBUtil(this.getConnection());
 		return utils.showListResults(sql);
 	}
 
 	public static void main(String[] args) {
-		String url = "jdbc:sqlserver://133.133.133.92:1433;databaseName=sql-orcl";
-		String username = "sa";
-		String password = "sa";
-		IConnection connection = new SQLServerConnection(url, username,
-				password);
-		for (String s : connection.showFields("TAB")) {
+		String url = "jdbc:sqlserver://133.133.133.103\\SQLEXPRESS;databaseName=csdi_";
+		String username = "otcaix";
+		String password = "otcaix";
+		IConnection connection = new SQLServerConnection(url, username,password);
+		for (String s : connection.showFields("TB_Inpatient_FirstPage")) {
 			System.out.println(s);
 		}
 	}
