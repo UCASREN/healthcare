@@ -1,5 +1,7 @@
 package otc.healthcare.dao;
 
+import org.w3c.dom.css.ElementCSSInlineStyle;
+
 public class ConnectionFactory {
 	private IConnection iConnection;
 
@@ -21,18 +23,9 @@ public class ConnectionFactory {
 			iConnection = new DMConnection(url, username, password);
 		else if (type.equals("oracle")) {
 			iConnection = new OracleConnection(url, username, password);
-		}
-		// else if (type.equals("sqlserver"))
-		// driverName = "com.microsoft.jdbc.sqlserver.SQLServerDriver";
-		// else if (type.equals("db2"))
-		// driverName = "com.ibm.db2.jdbc.app.DB2Driver";
-		// else if (type.equals("informix"))
-		// driverName = "com.informix.jdbc.IfxDriver";
-		// else if (type.equals("sybase"))
-		// driverName = "com.sybase.jdbc.SybDriver";
-		// else if (type.equals("postgresql"))
-		// driverName = "org.postgresql.Driver";
-		else
+		}else if (type.equals("sqlserver")){
+			iConnection = new SQLServerConnection(url, username, password);
+		}else
 			return;
 	}
 
