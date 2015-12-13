@@ -534,24 +534,25 @@ public class MetadataController {
 		for (int i = start; i < end; i++) {
 			DatabaseInfo databaseInfo = list.get(i);
 			ArrayList<String> tempStore = new ArrayList<String>();
-			tempStore.add((i+1)+"");
-			tempStore.add(databaseInfo.getDatabaseid());
-			tempStore.add(databaseInfo.getName());
-			tempStore.add(databaseInfo.getZhcnname());
-			tempStore.add(databaseInfo.getComments());
-			tempStore.add(databaseInfo.getIdentifier());
-			tempStore.add(databaseInfo.getLanguage());
-			tempStore.add(databaseInfo.getCharset());
-			tempStore.add(databaseInfo.getSubjectclassification());
-			tempStore.add(databaseInfo.getKeywords());
-			tempStore.add(databaseInfo.getCredibility());
-			tempStore.add(databaseInfo.getResinstitution());
-			tempStore.add(databaseInfo.getResname());
-			tempStore.add(databaseInfo.getResaddress());
-			tempStore.add(databaseInfo.getRespostalcode());
-			tempStore.add(databaseInfo.getResphone());
-			tempStore.add(databaseInfo.getResemail());
-			tempStore.add(databaseInfo.getResourceurl());
+			tempStore.add((i+1)+"");//0
+			tempStore.add(databaseInfo.getDatabaseid());//1
+			tempStore.add(databaseInfo.getName());//2
+			tempStore.add(databaseInfo.getZhcnname());//3
+			tempStore.add(databaseInfo.getComments());//4
+			tempStore.add(databaseInfo.getIdentifier());//5
+			tempStore.add(databaseInfo.getLanguage());//6
+			tempStore.add(databaseInfo.getCharset());//7
+			tempStore.add(databaseInfo.getSubjectclassification());//8
+			tempStore.add(databaseInfo.getKeywords());//9
+			tempStore.add(databaseInfo.getCredibility());//10
+			tempStore.add(databaseInfo.getResinstitution());//11
+			tempStore.add(databaseInfo.getResname());//12
+			tempStore.add(databaseInfo.getResaddress());//13
+			tempStore.add(databaseInfo.getRespostalcode());//14
+			tempStore.add(databaseInfo.getResphone());//15
+			tempStore.add(databaseInfo.getResemail());//16
+			tempStore.add(databaseInfo.getResourceurl());//17
+			tempStore.add("<a class='checkmore' href=''>查看详情</a>");//18
 			store.add(tempStore);
 		}
 		resultMap.put("draw", draw);

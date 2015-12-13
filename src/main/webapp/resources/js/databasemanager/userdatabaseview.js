@@ -52,11 +52,70 @@ var TableAjax_alldatabase = function () {
                 ],// set first column as a default sort by asc
                 "columnDefs": [ {
                     "targets": [ 1 ],
+                    "visible": false,
+                    "searchable":false
+                },{
+                    "targets": [ 4 ],
+                    "visible": false
+                },{
+                    "targets": [ 5 ],
+                    "visible": false
+                },{
+                    "targets": [ 6 ],
+                    "visible": false
+                },{
+                    "targets": [ 7 ],
+                    "visible": false
+                },{
+                    "targets": [ 8 ],
+                    "visible": false
+                },{
+                    "targets": [ 10 ],
+                    "visible": false
+                },{
+                    "targets": [ 12 ],
+                    "visible": false
+                },{
+                    "targets": [ 13 ],
+                    "visible": false
+                },{
+                    "targets": [ 14 ],
+                    "visible": false
+                },{
+                    "targets": [ 15 ],
+                    "visible": false
+                },{
+                    "targets": [ 16 ],
+                    "visible": false
+                },{
+                    "targets": [ 17 ],
                     "visible": false
                 }]
             }
-        });
-       
+        });//,4,5,6,7,8,10,12,13,14,15,16,17
+        var table = $('#datatable_ajax_alldatabase');
+        var oTable = table.dataTable();
+    	table.on('click', '.checkmore', function(e) {
+    		e.preventDefault();
+
+    		var nRow = $(this).parents('tr')[0];
+
+    		var aData = oTable.fnGetData(nRow);
+    			
+    		//读取表格隐藏数据，将详细内容显示到固定位置
+    		$("#showdetail_db_zhname").text(aData[3]==null?"空":aData[3]);
+    		$("#showdetail_description").text(aData[4]==null?"空":aData[4]);
+    		$("#showdetail_resinstitution").text("负责单位名称："+(aData[11]==null?"空":aData[11]));
+    		$("#showdetail_resaddress").text("负责单位通讯地址："+(aData[13]==null?"空":aData[13]));
+    		$("#showdetail_respostalcode").text("负责单位邮政编码："+(aData[14]==null?"空":aData[14]));
+    		$("#showdetail_resphone").text("负责单位联系电话："+(aData[15]==null?"空":aData[15]));
+    		$("#showdetail_resemail").text("负责单位电子邮件地址："+(aData[16]==null?"空":aData[16]));
+    		$("#showdetail_identifier").text("标识符："+(aData[5]==null?"空":aData[5]));
+    		$("#showdetail_keywords").text("关键字："+(aData[9]==null?"空":aData[9]));
+    		$("#showdetail_language").text("数据集语种："+(aData[6]==null?"空":aData[6]));
+    		$("#showalldatabaseinfo").hide();
+    		$("#showdetail").show();
+    	});
     }
 
     return {
@@ -72,6 +131,8 @@ var TableAjax_alldatabase = function () {
 
 }();
 TableAjax_alldatabase.init();
+
+
 
 var TableAjax_database = function () {
 
@@ -256,6 +317,9 @@ var TableAjax = function () {
                     "visible": false
                 }, {
                     "targets": [ 2 ],
+                    "visible": false
+                },{
+                    "targets": [ 6 ],
                     "visible": false
                 }]
             }
@@ -562,4 +626,8 @@ $("#deleteallshoppingcart").click(function(){
 });
 $("#applaydata").click(function(){
 	window.open('/healthcare/applydata/applydata?historyFlag=1')
+});
+$("#back").click(function(){
+	$("#showdetail").hide();
+	$("#showalldatabaseinfo").show();
 });
