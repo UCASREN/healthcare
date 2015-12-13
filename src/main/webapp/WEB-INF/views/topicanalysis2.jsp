@@ -2,10 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -103,10 +99,12 @@
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="userdatabaseview">元数据 </a></li>
-					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 主题分析 </a></li>
-					<li class="classic-menu-dropdown"><a href="adminpanel/applydatatable" target="_blank"> 数据服务 </a></li>
-					<li class="classic-menu-dropdown"><a href="adminpanel/applyenvtable" target="_blank"> 虚拟计算 </a></li>
+					<li class="classic-menu-dropdown "><a href="userdatabaseview">
+							数据发布 </a></li>
+					<li class="classic-menu-dropdown"><a href="apply/applytable"
+						target="_blank"> 数据申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="#"> 虚拟环境申请 </a></li>
+					<li class="classic-menu-dropdown"><a href="#"> 数据分析 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
@@ -125,7 +123,6 @@
 			<a href="javascript:;" class="menu-toggler responsive-toggler"
 				data-toggle="collapse" data-target=".navbar-collapse"> </a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
-					
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown dropdown-user"><a href="javascript:;"
@@ -141,11 +138,11 @@
 									class="icon-user"></i> 我的账户
 							</a></li>
 							<li><a href="applydata/applytable" target="_blank"> <i
-									class="icon-envelope-open"></i> 数据服务 <span
+									class="icon-envelope-open"></i> 数据申请 <span
 									class="badge badge-danger"> 3 </span>
 							</a></li>
 							<li><a href="applyenv/applytable"> <i class="icon-rocket"></i>
-									虚拟计算<span class="badge badge-success"> 7 </span>
+									虚拟环境申请<span class="badge badge-success"> 7 </span>
 							</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
@@ -160,6 +157,7 @@
 								</form></li>
 						</ul></li>
 					<!-- END USER LOGIN DROPDOWN -->
+
 				</ul>
 			</div>
 		</div>
@@ -239,22 +237,16 @@
 									class="icon-basket"></i> 实时分析
 							</a></li>
 						</ul></li>
-					
-					<!-- 住院数据 -->
-					<li><a href="javascript:;" id="inhospital_home"> <i class="icon-basket"></i> <span
-							class="title">住院首页 </span> <span class="arrow "></span>
-						</a>
-					</li>
-						
-						
 				</ul>
+				<!-- END SIDEBAR MENU1 -->
+
 			</div>
 		</div>
 		<!-- END SIDEBAR -->
 		<!-- BEGIN CONTENT -->
 		<div class="page-content-wrapper">
 			<div class="page-content">
-				<iframe  id='main' src='' height=1000px  width="99%" frameborder="0" align="top"></iframe>
+				<iframe  id='main' src='http://124.16.137.206:8088/haflow/service_dashboard' height=1000px  width="99%" frameborder="0" align="top"    ></iframe>
 			</div>
 		</div>
 		<!-- END CONTENT -->

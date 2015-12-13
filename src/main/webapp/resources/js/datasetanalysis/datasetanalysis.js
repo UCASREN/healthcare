@@ -40,3 +40,8 @@ $("#cloud_label_l1").click(function(){
 $("#cloud_label_l2").click(function(){
 	$('#main').attr('src', 'http://124.16.137.206:8088/haflow/' + "real_time");
 });
+
+//住院数据
+$("#inhospital_home").click(function(){
+	$('#main').attr('src', '/healthcare/' + "inhospital_home");
+});

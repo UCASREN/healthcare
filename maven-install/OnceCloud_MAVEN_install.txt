@@ -1,1 +1,0 @@
-C:\Users\Andy\git\healthcare\maven-install>mvn install:install-file -DgroupId=OnceCloud -DartifactId=OnceCloud-api -Dversion=1.0 -Dpackaging=jar -Dfile=./OnceCloudAPI.jar
