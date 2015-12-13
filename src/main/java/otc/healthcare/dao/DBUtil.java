@@ -52,7 +52,6 @@ public class DBUtil {
 			e.printStackTrace();
 			System.out.println("执行更新出错了");
 		}
-
 		return count;
 
 	}
