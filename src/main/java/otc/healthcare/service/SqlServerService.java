@@ -135,9 +135,6 @@ public class SqlServerService implements IService {
 		String preDate_1 = Calendar2String(getDateThisWeek(getDateLastWeek(getCurDate(), timeType), timeType));
 
 		String Inhospital_num_lastweek = getInhospitalNum(preDate_1, curDate_1);
-		if (Inhospital_num_lastweek.equals("0"))
-			return "--";
-
 		String Inhospital_num_thisweek = getInhospitalNum(preDate, curDate);
 
 		double tmp_rate = (Double.valueOf(Inhospital_num_thisweek) - Double.valueOf(Inhospital_num_lastweek))
@@ -195,9 +192,6 @@ public class SqlServerService implements IService {
 		String preDate_1 = Calendar2String(getDateThisWeek(getDateLastWeek(getCurDate(), timeType), timeType));
 
 		String InhospitalAverageDays_num_lastweek = getInhospitalAverageDays_Num(preDate_1, curDate_1);
-		if (InhospitalAverageDays_num_lastweek.equals("0"))
-			return "--";
-
 		String InhospitalAverageDays_num_thisweek = getInhospitalAverageDays_Num(preDate, curDate);
 
 		double tmp_rate = (Double.valueOf(InhospitalAverageDays_num_thisweek) - Double.valueOf(InhospitalAverageDays_num_lastweek))
@@ -255,9 +249,6 @@ public class SqlServerService implements IService {
 		String preDate_1 = Calendar2String(getDateThisWeek(getDateLastWeek(getCurDate(), timeType), timeType));
 
 		String TreatmentAverageCost_Rate_lastweek = getInhospitalAverageDays_Num(preDate_1, curDate_1);
-		if (TreatmentAverageCost_Rate_lastweek.equals("0"))
-			return "--";
-
 		String TreatmentAverageCost_Rate_thisweek = getInhospitalAverageDays_Num(preDate, curDate);
 
 		double tmp_rate = (Double.valueOf(TreatmentAverageCost_Rate_thisweek) - Double.valueOf(TreatmentAverageCost_Rate_lastweek))

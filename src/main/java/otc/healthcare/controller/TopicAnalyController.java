@@ -15,14 +15,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import otc.healthcare.service.SqlServerService;
 
 @Controller
-@RequestMapping("/topicanalysis")
 public class TopicAnalyController {
 	@Autowired
 	public SqlServerService SqlServerService;
 	
-	@RequestMapping(value="")
+	@RequestMapping(value="/topicanalysis")
 	public String TopicAnalysis(){
 		return "topicanalysis";
+	}
+	
+	@RequestMapping(value="/inhospital_home")
+	public String inhospital_home(){
+		return "inhospital_home";
 	}
 	
 	@RequestMapping(value="/inhospital_patientsNum")
