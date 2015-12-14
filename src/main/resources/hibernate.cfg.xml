@@ -11,7 +11,6 @@
         <property name="hibernate.connection.username">system</property>
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
-        
         <mapping resource="otc/healthcare/pojo/HcApplydata.hbm.xml" />
         <mapping resource="otc/healthcare/pojo/HcApplyenv.hbm.xml" />
     </session-factory>

@@ -28,7 +28,7 @@ var getInhospitalAverageDays = function(timeType){
 			success :function(data) {
 				var inhospitalAverageDays_num = data[0];
 				var inhospitalAverageDays_rate = data[1];
-//				alert(data);
+				alert(data);
 				$('#inhospitalAverageDays_num').html(inhospitalAverageDays_num);
 				$('#inhospitalAverageDays_rate').html(inhospitalAverageDays_rate)
 			} 
@@ -47,7 +47,7 @@ var getTreatmentAverageCost = function(timeType){
 			success :function(data) {
 				var treatmentAverageCost_num = data[0];
 				var treatmentAverageCost_rate = data[1];
-//				alert(data);
+				alert(data);
 				$('#treatmentAverageCost_num').html(treatmentAverageCost_num);
 				$('#treatmentAverageCost_rate').html(treatmentAverageCost_rate)
 			} 
@@ -66,4 +66,3 @@ $('#home_time_opt').change(function(){
 	getInhospitalAverageDays(home_time_opt);
 	getTreatmentAverageCost(home_time_opt);
 });
-

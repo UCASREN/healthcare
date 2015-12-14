@@ -20,6 +20,10 @@ public class HealthcareConfiguration {
 	public static final String SQLSERVER_URL = "sqlserver_url";
 	public static final String SQLSERVER_USERNAME = "sqlserver_username";
 	public static final String SQLSERVER_PASSWORD = "sqlserver_password";
+	
+	public static final String MYSQL_DB_URL = "mysql_db_url";
+	public static final String MYSQL_DB_USERNAME = "mysql_db_username";
+	public static final String MYSQL_DB_PASSWORD = "mysql_db_password";
 
 	
 	private Properties properties;

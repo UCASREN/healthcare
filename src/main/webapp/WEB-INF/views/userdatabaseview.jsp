@@ -55,8 +55,7 @@
 
 <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN THEME STYLES -->
-<link href="resources/css/components.css" id="style_components"
-	rel="stylesheet" type="text/css" />
+
 <link href="resources/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/layout.css" rel="stylesheet" type="text/css" />
 <link id="style_color" href="resources/css/darkblue.css"
@@ -64,6 +63,10 @@
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/style-shop.css" rel="stylesheet"
 	type="text/css" />
+<link href="resources/css/components.css" id="style_components"
+	rel="stylesheet" type="text/css" />
+	<link href="resources/css/docs.min.css"
+	rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 <!-- BEGIN DIV STYLES -->
 <style type="text/css">
@@ -180,7 +183,8 @@
 			<div class="page-sidebar navbar-collapse collapse">
 				<!-- BEGIN SIDEBAR MENU1 -->
 				<ul class="page-sidebar-menu hidden-sm hidden-xs"
-					data-auto-scroll="true" data-slide-speed="200" id="allclassificationlist">
+					data-auto-scroll="true" data-slide-speed="200"
+					id="allclassificationlist">
 
 				</ul>
 				<!-- END SIDEBAR MENU1 -->
@@ -248,6 +252,7 @@
 											<th>联系电话</th>
 											<th>电子邮件</th>
 											<th>资源链接</th>
+											<th>查看详情</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -257,10 +262,50 @@
 						</div>
 						<!-- <div class="col-md-5"></div> -->
 					</div>
+
+				</div>
+				<div id="showdetail" style="display: none;">
+					<div class="row">
+						<button type="button" class="btn btn-primary" id="back">返回</button>
+					</div>
+					
+					<div class="row">
+						<div id="showdetail_db_zhname"></div>
+					</div>
+					<div class="media">
+						<div class="media-left">
+							<div class="color-swatch brand-success">描述</div>
+						</div>
+						<div class="media-body">
+							<div id="showdetail_description"></div>
+						</div>
+					</div>
+					<div class="media">
+						<div class="media-left">
+							<div class="color-swatch brand-info">负责单位信息</div>
+						</div>
+						<div class="media-body">
+							<div id="showdetail_resinstitution"></div>
+							<div id="showdetail_resaddress"></div>
+							<div id="showdetail_respostalcode"></div>
+							<div id="showdetail_resphone"></div>
+							<div id="showdetail_resemail"></div>
+						</div>
+					</div>
+					<div class="media">
+						<div class="media-left">
+							<div class="color-swatch brand-warning">其他信息</div>
+						</div>
+						<div class="media-body">
+							<div id="showdetail_identifier"></div>
+							<div id="showdetail_keywords"></div>
+							<div id="showdetail_language"></div>
+						</div>
+					</div>
 				</div>
 				<p></p>
 				<div id="showdatabaseinfo" style="display: none;">
-						
+
 					<p></p>
 					<div class="alert alert-info">
 						<div class="row">
@@ -313,20 +358,17 @@
 				<div id="showtableinfo" style="display: none;">
 					<div class="alert alert-success">
 						<div class="row">
-							<span id="showtableinfo_name"></span> 
-								
+							<span id="showtableinfo_name"></span>
+
 						</div>
 						<div class="row">
-							<span
-								id="showtableinfo_comments"></span>
+							<span id="showtableinfo_comments"></span>
 						</div>
 						<div class="row">
-							<span
-								id="showtableinfo_fieldnumber"></span>
+							<span id="showtableinfo_fieldnumber"></span>
 						</div>
 						<div class="row">
-							<span
-								id="showtableinfo_numrows"></span>
+							<span id="showtableinfo_numrows"></span>
 						</div>
 					</div>
 					<p></p>
