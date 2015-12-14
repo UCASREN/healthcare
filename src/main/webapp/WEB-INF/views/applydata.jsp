@@ -48,10 +48,10 @@ request.setCharacterEncoding("UTF-8");
 		<div class="page-sidebar navbar-collapse collapse">
 		<ul class="page-sidebar-menu" data-keep-expanded="false"
 					data-auto-scroll="true" data-slide-speed="200">
-					<li><a href="userdatabaseview"> <i class="icon-home"></i> <span
+					<li><a href="/healthcare/userdatabaseview"> <i class="icon-home"></i> <span
 							class="title">元数据</span> <span class="arrow "></span>
 					</a></li>
-					<li><a href="datasetanalysis"> <i class="icon-puzzle"></i> <span
+					<li><a href="/healthcare/topicanalysis"> <i class="icon-puzzle"></i> <span
 							class="title">主题分析</span> <span class="arrow "></span>
 					</a></li>
 					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
