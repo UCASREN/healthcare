@@ -95,28 +95,25 @@
 		<div class="page-header-inner">
 			<!-- BEGIN LOGO -->
 			<div class="page-logo">
-				<a href="#" id="refreshalldatabaseinfo"> <img src="img/logo.png"
-					alt="logo" class="logo-default" />
+				<a href="#" id="refreshalldatabaseinfo"> <img src="img/change_logo_1.png"
+					alt="logo" class="" />
 				</a>
+				<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>	
 				<div class="menu-toggler sidebar-toggler"></div>
 			</div>
 			<!-- END LOGO -->
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="userdatabaseview">
-							数据发布 </a></li>
-					<li class="classic-menu-dropdown"><a
-						href="applydata/applytable" target="_blank"> 数据申请 </a></li>
-					<li class="classic-menu-dropdown"><a
-						href="applyenv/applytable" target="_blank"> 虚拟环境申请 </a></li>
-					<li class="classic-menu-dropdown"><a href="datasetanalysis"
-						target="_blank"> 数据分析 </a></li>
+						<li class="classic-menu-dropdown "><a href="userdatabaseview">元数据 </a></li>
+					<li class="classic-menu-dropdown"><a href="topicanalysis" target="_blank"> 主题分析 </a></li>
+					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据服务 </a></li>
+					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟计算 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
 			<!-- BEGIN HEADER SEARCH BOX -->
-			<form class="search-form" action="#" method="GET">
+			<!-- <form class="search-form" action="#" method="GET">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search..."
 						name="query"> <span class="input-group-btn"> <a
@@ -124,7 +121,7 @@
 							class="icon-magnifier"></i></a>
 					</span>
 				</div>
-			</form>
+			</form> -->
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 			<a href="javascript:;" class="menu-toggler responsive-toggler"
@@ -146,12 +143,12 @@
 										class="icon-user"></i> 我的账户
 								</a></li>
 								<li><a href="applydata/applytable" target="_blank"> <i
-										class="icon-envelope-open"></i> 数据申请 <span
-										class="badge badge-danger"> 3 </span>
+										class="icon-envelope-open"></i> 数据服务 <span
+										class="badge badge-danger"> 2 </span>
 								</a></li>
 								<li><a href="applyenv/applytable"> <i
-										class="icon-rocket"></i> 虚拟环境申请<span
-										class="badge badge-success"> 7 </span>
+										class="icon-rocket"></i> 虚拟计算<span
+										class="badge badge-success"> 3 </span>
 								</a></li>
 								<li class="divider"></li>
 								<li><a href="javascript:;"> <i class="icon-lock"></i>

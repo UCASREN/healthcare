@@ -54,9 +54,10 @@
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a href="/healthcare">
-			<img src="../resources/img/logo.png" alt="logo" class="logo-default"/>
+			<a href="/healthcare" id="refreshalldatabaseinfo"> <img src="../resources/img/change_logo_1.png"
+				alt="logo" class="" />
 			</a>
+			<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>
 			<div class="menu-toggler sidebar-toggler hide">
 				<!-- DOC:f Remove the above "hide" to enable the sidebar toggler button on header -->
 			</div>
@@ -123,10 +124,10 @@
 		<div class="page-sidebar navbar-collapse collapse">
 		<ul class="page-sidebar-menu" data-keep-expanded="false"
 					data-auto-scroll="true" data-slide-speed="200">
-					<li><a href="userdatabaseview"> <i class="icon-home"></i> <span
+					<li><a href="/healthcare/userdatabaseview"> <i class="icon-home"></i> <span
 							class="title">元数据</span> <span class="arrow "></span>
 					</a></li>
-					<li><a href="datasetanalysis"> <i class="icon-puzzle"></i> <span
+					<li><a href="/healthcare/topicanalysis"> <i class="icon-puzzle"></i> <span
 							class="title">主题分析</span> <span class="arrow "></span>
 					</a></li>
 					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span

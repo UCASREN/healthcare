@@ -199,13 +199,13 @@ function FileManagerClass(){
 								<a href="javascript:;" target="_blank">忘记密码？</a>
 							-->
 							</div>
-							<div class="connect-login">
+						<!-- 	<div class="connect-login">
 								<a href="javascript:;">使用其他方式登录</a>
 								 <a class="icon-24 icon-24-account-qq" href="#"
 									target="_blank"></a> <a class="icon-24 icon-24-account-weixin"
 									href="#" target="_blank"></a> <a
 									class="icon-24 icon-24-account-weibo" href="#" target="_blank"></a>
-							</div>
+							</div> -->
 
 						</form>
 						

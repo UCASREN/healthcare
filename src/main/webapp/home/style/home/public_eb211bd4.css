@@ -1078,7 +1078,8 @@ filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 #home .form-box {
 	width: 290px;
-	height: 246px;
+/* 	height: 246px; */
+	height: 190px;
 	position: absolute;
 	margin-right: -490px;
 	right: 50%;
