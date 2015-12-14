@@ -1,9 +1,15 @@
 package otc.healthcare.controller;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,8 +37,9 @@ public class TopicAnalyController {
 	
 	@RequestMapping(value="/inhospital_patientsNum")
 	public String inhospital_patientsNum(){
-		return "service_inhospital_patientsNum";
+		return "inhospital_patientsNum";
 	}
+	
 	
 	@RequestMapping(value="/getInhospitalNum")
 	@ResponseBody
@@ -40,6 +47,8 @@ public class TopicAnalyController {
 		List<String> InhospitalNum_list = new ArrayList<>();
 		String inHospital_num = this.SqlServerService.getInhospitalNum(timeType);
 		String inHospital_rate = this.SqlServerService.getInhospitalRate(timeType);
+		if(inHospital_num.equals("Infinity"))
+			inHospital_num = "--";
 		InhospitalNum_list.add(inHospital_num);
 		InhospitalNum_list.add(inHospital_rate);
 		return InhospitalNum_list;
@@ -52,6 +61,8 @@ public class TopicAnalyController {
 		List<String> inhospitalAverageDays_list = new ArrayList<>();
 		String inhospitalAverageDays_num = this.SqlServerService.getInhospitalAverageDays_Num(timeType);
 		String inhospitalAverageDays_rate = this.SqlServerService.getInhospitalAverageDays_Rate(timeType);
+		if(inhospitalAverageDays_num.equals("Infinity"))
+			inhospitalAverageDays_num = "--";
 		inhospitalAverageDays_list.add(inhospitalAverageDays_num);
 		inhospitalAverageDays_list.add(inhospitalAverageDays_rate);
 		return inhospitalAverageDays_list;
@@ -63,6 +74,8 @@ public class TopicAnalyController {
 		List<String> TreatmentAverageCost_list = new ArrayList<>();
 		String TreatmentAverageCost_Num = this.SqlServerService.getTreatmentAverageCost_Num(timeType);
 		String TreatmentAverageCost_Rate = this.SqlServerService.getTreatmentAverageCost_Rate(timeType);
+		if(TreatmentAverageCost_Num.equals("Infinity"))
+			TreatmentAverageCost_Num = "--";
 		TreatmentAverageCost_list.add(TreatmentAverageCost_Num);
 		TreatmentAverageCost_list.add(TreatmentAverageCost_Rate);
 		return TreatmentAverageCost_list;
@@ -75,6 +88,43 @@ public class TopicAnalyController {
 		RYKB_list = this.SqlServerService.getAll_RYKB();
 		return RYKB_list;
 	}
+	
+	@RequestMapping(value="/inhospitalPatienConsist")
+	@ResponseBody
+	public Map<String,String> getInhospitalPatienConsist(HttpServletRequest request){
+		Map<String,String> map = new HashMap<String,String>();
+		Map<String,String[]> requestMap = request.getParameterMap();
+		Map<String,String> paramMap = new HashMap<String,String>();
+		Set<String> keys = requestMap.keySet();
+		for(String key:keys)
+			paramMap.put(key, requestMap.get(key)[0]);
+		map = this.SqlServerService.getInhospitalPatienConsist(paramMap);
+		return map;
+	}
+	
+	@RequestMapping(value="/inhospitalPatien_SexAgeConsist")
+	@ResponseBody
+	public List<Map<String,String>> getInhospitalPatienSexAgeConsist(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps){
+		
+		List<Map<String,String>> rs_list = new ArrayList<Map<String,String>>(); 
+		rs_list = this.SqlServerService.getInhospitalPatienSexAgeConsist(bingZhong,timeType,hospitalDeps);
+		return rs_list;
+	}
+	
+	@RequestMapping(value="/inhospitalPatienNum_bytime")
+	@ResponseBody
+	public Map<String,String> getInhospitalPatienNum_bytime(
+			@RequestParam(value = "showSize", required = true) String showSize,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps){
+		
+		Map<String,String> map = this.SqlServerService.getInhospitalPatienNum_bytime(showSize,timeType,hospitalDeps);
+		return map;
+	}
+	
 	
 	public SqlServerService getSqlServerService() {
 		return SqlServerService;
