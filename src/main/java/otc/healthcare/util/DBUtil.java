@@ -78,6 +78,7 @@ public class DBUtil {
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.execute(sql);
+			stmt.close();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

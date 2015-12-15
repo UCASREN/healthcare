@@ -17,12 +17,12 @@ function query() {
 	//加载chart2的数据
 	$.ajax({
 		type : "get",//请求方式
-		url : "getagestrokeinfo",//发送请求地址
+		url : "getgenderdangerfactorinfo",//发送请求地址
 		dataType : "json",
 		data : {
 			provinceid : $("#opt_province").val(),
-			accodeup : $("#opt_basehospital").val(),
-			community : $("#opt_community").val()
+			dangertype : $("#opt_danger_factor").val(),
+			ageclassification : $("#opt_age_class").val()
 		},
 		success : function(data) {
 			if (data) {

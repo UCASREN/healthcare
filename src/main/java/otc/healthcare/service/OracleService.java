@@ -539,6 +539,8 @@ public class OracleService implements IService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			dbUtil.close();
 		}
 		return fieldMap;
 	}
@@ -573,6 +575,8 @@ public class OracleService implements IService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			dbUtil.close();
 		}
 		return fieldMap;
 	}
@@ -597,6 +601,8 @@ public class OracleService implements IService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			dbUtil.close();
 		}
 		return TableMap;
 	}
@@ -625,6 +631,8 @@ public class OracleService implements IService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			dbUtil.close();
 		}
 		return TableMap;
 	}
@@ -649,6 +657,8 @@ public class OracleService implements IService {
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			dbUtil.close();
 		}
 		return tableList;
 	}
@@ -669,6 +679,8 @@ public class OracleService implements IService {
 			res.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			dbUtil.close();
 		}
 		return dataBaseList;
 	}
@@ -741,14 +753,14 @@ public class OracleService implements IService {
 				hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		for (TableInfo tableInfo : tableInfoList) {
-			dbUtil.query("select TABLE_TABLEID.nextval from dual");
+			dbUtil.execute("select TABLE_TABLEID.nextval from dual");
 			String tableId = dbUtil.showListResults("select TABLE_TABLEID.currval from dual").get(0);
 			dbUtil.execute("insert into HC_TABLE(TABLEID,NAME,ZHCNNAME,COMMENTS,DATABASEID) values(" + tableId + ",'"
 					+ tableInfo.getName() + "','" + tableInfo.getZhcnname() + "','" + tableInfo.getComments() + "',"
 					+ databaseId + ")");
 			List<FieldInfo> fieldInfoList = tableInfo.getFieldlist();
 			for (FieldInfo fieldInfo : fieldInfoList) {
-				dbUtil.query("select FIELD_FIELDID.nextval from dual");
+				dbUtil.execute("select FIELD_FIELDID.nextval from dual");
 				String fieldId = dbUtil.showListResults("select FIELD_FIELDID.currval from dual").get(0);
 				dbUtil.execute("insert into HC_FIELD( "
 						+ "FIELDID,NAME,ZHCNNAME,COMMENTS,DATADICTIONARY,TABLEID,DATABASEID) " + "values(" + fieldId
@@ -785,6 +797,7 @@ public class OracleService implements IService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		dbUtil.close();
 		return tableID;
 	}
 
@@ -799,6 +812,7 @@ public class OracleService implements IService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		dbUtil.close();
 		return DBid;
 	}
 
@@ -907,7 +921,7 @@ public class OracleService implements IService {
 		return null;
 	}
 
-	public Integer createDatabase(String databasename, String zhcnname, String comments) {// insert
+	public Integer createDatabase(String classification,String databasename, String zhcnname, String comments) {// insert
 		// into
 		// database
 		// table
@@ -919,8 +933,8 @@ public class OracleService implements IService {
 				oracle_password);
 		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
 		try {
-			String vsql = "insert into SYSTEM.HC_DATABASE (DATABASEID,NAME,ZHCNNAME,COMMENTS) values(DATABASE_DATABASEID.nextval,"
-					+ "'" + databasename + "','" + "'" + zhcnname + "','" + comments + "')";
+			String vsql = "insert into SYSTEM.HC_DATABASE (DATABASEID,SUBJECTCLASSIFICATION,NAME,ZHCNNAME,COMMENTS) values(DATABASE_DATABASEID.nextval,"+classification
+					+ ",'" + databasename + "','"  + zhcnname + "','" + comments + "')";
 			return dbUtil.insertDataReturnKeyByReturnInto(vsql,
 					"select DATABASE_DATABASEID.currval as id from SYSTEM.HC_DATABASE");
 		} catch (Exception e) {

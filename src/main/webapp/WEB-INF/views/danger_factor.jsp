@@ -112,11 +112,11 @@
 				<option value='dfSportsLack'>体育锻炼缺乏</option>
 				<option value='dfOverweight'>超重</option>
 				<option value='dfStrokeFamily'>脑卒中家族史</option>
-			</select> <span class="text-primary">年龄</span> <select name="select"
-				id="opt_age" class="xla_k">
-				<option value=''>全部</option>
-				<option value='1'>男</option>
-				<option value='2'>女</option>
+			</select> <span class="text-primary">年龄段</span> <select name="select"
+				id="opt_age_class" class="xla_k">
+				<option value='1'>1</option>
+				<option value='5'>5</option>
+				<option value='10'>10</option>
 			</select>
 			<button class="btn btn-danger" onclick="query()">查询</button>
 			<span id='wrong-message' style="color: red"></span>
