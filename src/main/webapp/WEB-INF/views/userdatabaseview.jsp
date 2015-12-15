@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>用户界面</title>
+<title>元数据</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -58,14 +58,14 @@
 
 <link href="resources/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/layout.css" rel="stylesheet" type="text/css" />
-<link id="style_color" href="resources/css/darkblue.css"
+<link id="style_color" href="resources/css/themes/light2.css"
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/style-shop.css" rel="stylesheet"
 	type="text/css" />
 <link href="resources/css/components.css" id="style_components"
 	rel="stylesheet" type="text/css" />
-	<link href="resources/css/docs.min.css"
+<link href="resources/css/docs.min.css"
 	rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 <!-- BEGIN DIV STYLES -->
@@ -88,40 +88,36 @@
 </head>
 <!-- BEGIN BODY -->
 <body
-	class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo">
+	class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo" style="background-color: #F6F6F6;">
 	<!-- BEGIN HEADER -->
-	<div class="page-header -i navbar navbar-fixed-top">
+	<div class="page-header -i navbar navbar-fixed-top" style='background-color:#2c79a2;'>
 		<!-- BEGIN HEADER INNER -->
 		<div class="page-header-inner">
 			<!-- BEGIN LOGO -->
-			<div class="page-logo">
+			<div class="page-logo" >
 				<a href="#" id="refreshalldatabaseinfo"> <img src="img/change_logo_1.png"
 					alt="logo" class="" />
 				</a>
-				<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>	
-				<div class="menu-toggler sidebar-toggler"></div>
+				<span style="color:#FFF;font-weight:bold;">中国心脑血管病大数据平台</span>	
+				<!-- <div class="menu-toggler sidebar-toggler" style="margin:4px 15px 0px 0px;"></div> -->
 			</div>
 			<!-- END LOGO -->
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-						<li class="classic-menu-dropdown "><a href="userdatabaseview">元数据 </a></li>
-					<li class="classic-menu-dropdown"><a href="topicanalysis" target="_blank"> 主题分析 </a></li>
-					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据服务 </a></li>
-					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟计算 </a></li>
+					<li class="classic-menu-dropdown "><a href="userdatabaseview"  style="color:#c6cfda;">
+							元数据</a></li>
+					<li class="classic-menu-dropdown"><a
+						href="topicanalysis" target="_blank" style="color:#c6cfda;"> 主题分析</a></li>
+					<li class="classic-menu-dropdown"><a
+						href="applydata/applytable" target="_blank" style="color:#c6cfda;">数据服务 </a></li>
+					<li class="classic-menu-dropdown"><a href="applyenv/applytable"
+						target="_blank" style="color:#c6cfda;">虚拟计算 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
 			<!-- BEGIN HEADER SEARCH BOX -->
-			<!-- <form class="search-form" action="#" method="GET">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Search..."
-						name="query"> <span class="input-group-btn"> <a
-						href="javascript:;" class="btn submit"><i
-							class="icon-magnifier"></i></a>
-					</span>
-				</div>
-			</form> -->
+			
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 			<a href="javascript:;" class="menu-toggler responsive-toggler"
@@ -181,8 +177,17 @@
 				<!-- BEGIN SIDEBAR MENU1 -->
 				<ul class="page-sidebar-menu hidden-sm hidden-xs"
 					data-auto-scroll="true" data-slide-speed="200"
-					id="allclassificationlist">
-
+					>
+					<li>
+					<a href="javascript:;">
+					<i class="icon-folder"></i>
+					<span class="title">元数据类别</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu" id="allclassificationlist">
+					
+					</ul>
+					</li>
 				</ul>
 				<!-- END SIDEBAR MENU1 -->
 
@@ -227,7 +232,7 @@
 									<span> </span>
 								</div>
 
-								<table class="table table-striped table-bordered table-hover"
+								<table class="table table-striped table-bordered table-hover" style="display:none;"
 									id="datatable_ajax_alldatabase">
 									<thead>
 										<tr role="row" class="heading">
@@ -263,25 +268,26 @@
 				</div>
 				<div id="showdetail" style="display: none;">
 					<div class="row">
-						<button type="button" class="btn btn-primary" id="back">返回</button>
+						<button type="button" class="btn btn-primary" style="margin-left:25px;" id="back">返回</button>
 					</div>
 					
 					<div class="row">
-						<div id="showdetail_db_zhname"></div>
+						<h2 id="showdetail_db_zhname" style="text-align:center;"></h2>
 					</div>
+					<hr>
 					<div class="media">
 						<div class="media-left">
-							<div class="color-swatch brand-success">描述</div>
+							<div class="color-swatch brand-success bg-primary" style="width:150px;height:150px;text-align:center;line-height:150px; ">描述</div>
 						</div>
-						<div class="media-body">
+						<div class="media-body highlight">
 							<div id="showdetail_description"></div>
 						</div>
 					</div>
 					<div class="media">
 						<div class="media-left">
-							<div class="color-swatch brand-info">负责单位信息</div>
+							<div class="color-swatch brand-info bg-danger" style="width:150px;height:150px;text-align:center;line-height:150px; ">负责单位信息</div>
 						</div>
-						<div class="media-body">
+						<div class="media-body highlight" >
 							<div id="showdetail_resinstitution"></div>
 							<div id="showdetail_resaddress"></div>
 							<div id="showdetail_respostalcode"></div>
@@ -291,9 +297,9 @@
 					</div>
 					<div class="media">
 						<div class="media-left">
-							<div class="color-swatch brand-warning">其他信息</div>
+							<div class="color-swatch brand-warning bg-info" style="width:150px;height:150px;text-align:center;line-height:150px; ">其他信息</div>
 						</div>
-						<div class="media-body">
+						<div class="media-body highlight">
 							<div id="showdetail_identifier"></div>
 							<div id="showdetail_keywords"></div>
 							<div id="showdetail_language"></div>
@@ -301,7 +307,9 @@
 					</div>
 				</div>
 				<p></p>
-				<div id="showdatabaseinfo" style="display: none;">
+				<div class="row">
+					<div class="col-md-7">
+					<div id="showdatabaseinfo" style="display: none;">
 
 					<p></p>
 					<div class="alert alert-info">
@@ -315,7 +323,7 @@
 							<span id="showdatabaseinfo_tablenumber"></span>
 						</div>
 						<div class="row">
-							<div class="col-md-7">
+							<div class="col-md-9">
 								<div class="table-container">
 									<div class="table-actions-wrapper">
 										<span> </span>
@@ -340,7 +348,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="col-md-5">
+							<div class="col-md-3">
 								<div class="row">
 									<button class="btn btn-sm yellow table-group-action-submit">
 										<i class="fa fa-check"></i> 添加/更新数据集
@@ -352,7 +360,13 @@
 						</div>
 					</div>
 				</div>
-				<div id="showtableinfo" style="display: none;">
+					</div>
+					<div class="col-md-5"></div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-7">
+					<div id="showtableinfo" style="display: none;">
 					<div class="alert alert-success">
 						<div class="row">
 							<span id="showtableinfo_name"></span>
@@ -372,7 +386,7 @@
 					<div class="alert alert-info">
 						<div class="row">
 							'
-							<div class="col-md-7">
+							<div class="col-md-12">
 								<div class="table-container">
 									<div class="table-actions-wrapper">
 										<span> </span>
@@ -397,10 +411,13 @@
 									</table>
 								</div>
 							</div>
-							<div class="col-md-5"></div>
 						</div>
 					</div>
 				</div>
+					</div>
+					<div class="col-md-5"></div>
+				</div>
+				
 				<!-- End: life time stats -->
 
 				<!-- END EXAMPLE TABLE PORTLET-->

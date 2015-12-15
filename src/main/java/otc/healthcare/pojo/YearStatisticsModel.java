@@ -3,6 +3,7 @@ package otc.healthcare.pojo;
 public class YearStatisticsModel {
 	private Integer provinceCount;
 	private Integer cityCount;
+	private Integer joinBaseHospitalCount;
 	private Integer joinCommunityCount;
 	private Integer endCount;
 	private Integer dangerCount;
@@ -42,5 +43,17 @@ public class YearStatisticsModel {
 	}
 	public void setStrokeCount(Integer strokeCount) {
 		this.strokeCount = strokeCount;
+	}
+	/**
+	 * @return the joinBaseHospitalCount
+	 */
+	public Integer getJoinBaseHospitalCount() {
+		return joinBaseHospitalCount;
+	}
+	/**
+	 * @param joinBaseHospitalCount the joinBaseHospitalCount to set
+	 */
+	public void setJoinBaseHospitalCount(Integer joinBaseHospitalCount) {
+		this.joinBaseHospitalCount = joinBaseHospitalCount;
 	}
 }

@@ -167,7 +167,8 @@ var Layout = function () {
                     handleSidebarAndContentHeight();
                 });
             } else if (hasSubMenu) {
-            	if($(this).attr("id").indexOf("classification_")==-1){
+            	if($(this).attr("id")!=undefined&&$(this).attr("id").indexOf("classification_")==-1){
+            		$("#showdetail").hide();
             		$("#showtableinfo").hide();
                 	$("#showdatabaseinfo").show();
                 	$("#showalldatabaseinfo").hide();

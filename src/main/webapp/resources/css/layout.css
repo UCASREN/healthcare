@@ -71,11 +71,14 @@ Page Header
 }
 .page-header.navbar .page-logo {
   float: left;
-  display: block;
-  width: 235px;
-  height: 46px;
-  padding-left: 20px;
-  padding-right: 20px;
+    display: block;
+    height: 46px;
+    line-height: 46px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #F5F7FC;
+    font-size: 20px;
+    font-weight: bold;
 }
 .page-sidebar-closed.page-sidebar-closed-hide-logo .page-header.navbar .page-logo {
   padding: 0;
@@ -866,7 +869,7 @@ Page container
   clear: both;
 }
 .page-header-fixed .page-container {
-  margin-top: 46px;
+  margin-top: 75px;
 }
 .page-footer-fixed.page-footer-fixed-mobile .page-container {
   margin-bottom: 20px !important;

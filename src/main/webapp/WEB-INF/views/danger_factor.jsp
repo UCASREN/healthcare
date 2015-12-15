@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>人群特征</title>
+<title>疾病负担</title>
 <style type="text/css">
 .s_p.part1 {
 	width: 80%;
@@ -102,12 +102,21 @@
 			<span class="text-primary">省</span> <select name="select"
 				id="opt_province" class="xla_k">
 				<option value=''>全部</option>
-			</select> <span class="text-primary">基地医院</span> <select name="select"
-				id="opt_basehospital" class="xla_k">
+			</select> <span class="text-primary">危险因素</span> <select name="select"
+				id="opt_danger_factor" class="xla_k">
+				<option value='dfHypertension'>高血压</option>
+				<option value='dfLDL'>血脂异常</option>
+				<option value='dfGlycuresis'>糖尿病</option>
+				<option value='dfAF'>房颤或心率不齐</option>
+				<option value='dfSmoking'>吸烟史</option>
+				<option value='dfSportsLack'>体育锻炼缺乏</option>
+				<option value='dfOverweight'>超重</option>
+				<option value='dfStrokeFamily'>脑卒中家族史</option>
+			</select> <span class="text-primary">年龄</span> <select name="select"
+				id="opt_age" class="xla_k">
 				<option value=''>全部</option>
-			</select> <span class="text-primary">社区</span> <select name="select"
-				id="opt_community" class="xla_k">
-				<option value=''>全部</option>
+				<option value='1'>男</option>
+				<option value='2'>女</option>
 			</select>
 			<button class="btn btn-danger" onclick="query()">查询</button>
 			<span id='wrong-message' style="color: red"></span>
@@ -124,29 +133,6 @@
 				
 			</script>
 		</div>
-	</div>
-	<div class="s_p_p2">
-		<div id="taskchartcontainera2" style="height: 100%; width: 100%;">
-			<i class='ace-icon fa fa-spinner fa-spin green bigger-300'></i>
-
-		</div>
-		<script type="text/javascript">
-			
-		</script>
-
-	</div>
-	<div class="s_p_part2">
-		<div class="s_p_p3">
-			<div id="taskchartcontainera3"
-				style="height: 100%; width: 100%; line-height: 100%;">
-				<i class='ace-icon fa fa-spinner fa-spin green bigger-300'></i>
-
-			</div>
-			<script type="text/javascript">
-				
-			</script>
-		</div>
-
 	</div>
 	<div class="clear"></div>
 
@@ -178,6 +164,6 @@
 
 </body>
 <script src="resources/js/echarts-all.js"></script>
-<script src="resources/js/crowd_features/crowd_features.js"
+<script src="resources/js/danger_factor/danger_factor.js"
 	type="text/javascript"></script>
 </html>
