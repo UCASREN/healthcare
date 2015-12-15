@@ -192,6 +192,10 @@ public class ScreenController {
 	public String yearInfo(){
 		return "year_info";
 	}
+	@RequestMapping(value="danger_factor")
+	public String dangerFactor(){
+		return "danger_factor";
+	}
 	/**
 	 * @return the mySQLService
 	 */

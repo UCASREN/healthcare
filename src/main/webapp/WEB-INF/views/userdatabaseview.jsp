@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>用户界面</title>
+<title>元数据</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -58,7 +58,7 @@
 
 <link href="resources/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/layout.css" rel="stylesheet" type="text/css" />
-<link id="style_color" href="resources/css/darkblue.css"
+<link id="style_color" href="resources/css/themes/light2.css"
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/style-shop.css" rel="stylesheet"
@@ -88,31 +88,31 @@
 </head>
 <!-- BEGIN BODY -->
 <body
-	class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo">
+	class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo" style="background-color: #F6F6F6;">
 	<!-- BEGIN HEADER -->
-	<div class="page-header -i navbar navbar-fixed-top">
+	<div class="page-header -i navbar navbar-fixed-top" style='background-color:#2c79a2;'>
 		<!-- BEGIN HEADER INNER -->
 		<div class="page-header-inner">
 			<!-- BEGIN LOGO -->
-			<div class="page-logo">
+			<div class="page-logo" >
 				<a href="#" id="refreshalldatabaseinfo"> <img src="img/change_logo_1.png"
 					alt="logo" class="" />
 				</a>
-				<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>	
-				<div class="menu-toggler sidebar-toggler"></div>
+				<span style="color:#FFF;font-weight:bold;">中国心脑血管病大数据平台</span>	
+				<!-- <div class="menu-toggler sidebar-toggler" style="margin:4px 15px 0px 0px;"></div> -->
 			</div>
 			<!-- END LOGO -->
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="userdatabaseview">
+					<li class="classic-menu-dropdown "><a href="userdatabaseview"  style="color:#c6cfda;">
 							元数据</a></li>
 					<li class="classic-menu-dropdown"><a
-						href="topicanalysis" target="_blank"> 主题分析</a></li>
+						href="topicanalysis" target="_blank" style="color:#c6cfda;"> 主题分析</a></li>
 					<li class="classic-menu-dropdown"><a
-						href="applydata/applytable" target="_blank">数据服务 </a></li>
+						href="applydata/applytable" target="_blank" style="color:#c6cfda;">数据服务 </a></li>
 					<li class="classic-menu-dropdown"><a href="applyenv/applytable"
-						target="_blank">虚拟计算 </a></li>
+						target="_blank" style="color:#c6cfda;">虚拟计算 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
@@ -177,8 +177,17 @@
 				<!-- BEGIN SIDEBAR MENU1 -->
 				<ul class="page-sidebar-menu hidden-sm hidden-xs"
 					data-auto-scroll="true" data-slide-speed="200"
-					id="allclassificationlist">
-
+					>
+					<li>
+					<a href="javascript:;">
+					<i class="icon-folder"></i>
+					<span class="title">元数据类别</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu" id="allclassificationlist">
+					
+					</ul>
+					</li>
 				</ul>
 				<!-- END SIDEBAR MENU1 -->
 
@@ -223,7 +232,7 @@
 									<span> </span>
 								</div>
 
-								<table class="table table-striped table-bordered table-hover"
+								<table class="table table-striped table-bordered table-hover" style="display:none;"
 									id="datatable_ajax_alldatabase">
 									<thead>
 										<tr role="row" class="heading">
