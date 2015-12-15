@@ -168,6 +168,7 @@ var Layout = function () {
                 });
             } else if (hasSubMenu) {
             	if($(this).attr("id").indexOf("classification_")==-1){
+            		$("#showdetail").hide();
             		$("#showtableinfo").hide();
                 	$("#showdatabaseinfo").show();
                 	$("#showalldatabaseinfo").hide();

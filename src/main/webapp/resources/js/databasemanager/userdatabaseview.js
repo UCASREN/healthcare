@@ -423,6 +423,7 @@ var TableAjax = function () {
         		});
         		//绑定所有事件
     			$("a[id^=databasetable_").click(function(){
+    			$("#showdetail").hide();
 				$("#showtableinfo").show();
             	$("#showdatabaseinfo").hide();
             	$("#showalldatabaseinfo").hide();
