@@ -11,12 +11,13 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>管理员界面</title>
+<title>管理员界面---中国心脑血管病大数据平台</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <meta content="" name="description" />
 <meta content="" name="author" />
+<link rel="icon" href="home/icons/home/logo.ico" type="image/x-icon" />
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="resources/plugins/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
@@ -88,14 +89,17 @@
 	<div class="page-header -i navbar navbar-fixed-top">
 		<!-- BEGIN HEADER INNER -->
 		<div class="page-header-inner">
+		
 			<!-- BEGIN LOGO -->
-			<div class="page-logo">
-				<a href="#" id="refreshalldatabaseinfo"> <img src="img/logo.png"
-					alt="logo" class="logo-default" />
-				</a>
-				<div class="menu-toggler sidebar-toggler"></div>
-			</div>
+				<div class="page-logo">
+					<a href="/healthcare" id=""> <img src="/healthcare/img/change_logo_1.png"
+						alt="logo" class="" />
+					</a>
+					<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病大数据平台</span>	
+					<!-- <div class="menu-toggler sidebar-toggler"></div> -->
+				</div>
 			<!-- END LOGO -->
+			
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
@@ -106,8 +110,9 @@
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
+			
 			<!-- BEGIN HEADER SEARCH BOX -->
-			<form class="search-form" action="#" method="GET">
+			<!-- <form class="search-form" action="#" method="GET">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search..."
 						name="query"> <span class="input-group-btn"> <a
@@ -115,7 +120,7 @@
 							class="icon-magnifier"></i></a>
 					</span>
 				</div>
-			</form>
+			</form> -->
 			<!-- END HEADER SEARCH BOX -->
 			
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->

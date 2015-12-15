@@ -15,6 +15,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<link rel="icon" href="/healthcare/img/logo.ico" type="image/x-icon" />
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link
 	href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
@@ -72,15 +73,14 @@
 	<div class="page-header -i navbar navbar-fixed-top">
 		<!-- BEGIN HEADER INNER -->
 		<div class="page-header-inner">
+		
 			<!-- BEGIN LOGO -->
 			<div class="page-logo">
-				<a href="/healthcare" id="refreshalldatabaseinfo"> <img src="../resources/img/change_logo_1.png"
-				alt="logo" class="" />
+				<a href="/healthcare" id=""> <img src="/healthcare/img/change_logo_1.png"
+					alt="logo" class="" />
 				</a>
-				<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>
-				<div class="menu-toggler sidebar-toggler hide">
-					<!-- DOC:f Remove the above "hide" to enable the sidebar toggler button on header -->
-				</div>
+				<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病大数据平台</span>	
+				<!-- <div class="menu-toggler sidebar-toggler"></div> -->
 			</div>
 			<!-- END LOGO -->
 
