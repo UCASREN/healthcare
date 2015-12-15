@@ -309,7 +309,7 @@ public class MetadataController {
 				operationResult ="classification_" + this.oracleSerive.createClassification(text,comments == null ? "备注为空" : comments);
 			}
 			if(parent.indexOf("classification_")!=-1){
-				operationResult ="alldatabase_" + this.oracleSerive.createDatabase(text,zhcnname, comments == null ? "备注为空" : comments);
+				operationResult ="alldatabase_" + this.oracleSerive.createDatabase(parent.substring(15),text,zhcnname, comments == null ? "备注为空" : comments);
 			}
 			if(parent.indexOf("alldatabase_")!=-1){
 				operationResult ="alltable_" + this.oracleSerive.createTable(parent.substring(parent.indexOf("_") + 1), text,
