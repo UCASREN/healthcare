@@ -57,7 +57,7 @@
 			<a href="/healthcare" id="refreshalldatabaseinfo"> <img src="../resources/img/change_logo_1.png"
 				alt="logo" class="" />
 			</a>
-			<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>
+			<span style="color:#FFF;font-size:12px;font-weight:bold;margin-bottom:15px">中国心脑血管病大数据平台</span>
 			<div class="menu-toggler sidebar-toggler hide">
 				<!-- DOC:f Remove the above "hide" to enable the sidebar toggler button on header -->
 			</div>

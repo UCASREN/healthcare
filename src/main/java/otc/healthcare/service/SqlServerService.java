@@ -436,10 +436,10 @@ public class SqlServerService implements IService {
 				e.printStackTrace();
 			}
 			dbUtil.close();
-		}
+		}//end ifelse
 		
 		//无数据时候，模拟相应数据
-		if(rs_list.size() != 2){
+		if(rs_list.size() != 3){
 			rs_list = new ArrayList<Map<String,String>>();
 			for(int i=2; i<4; i++){
 				Map<String,String> map = new TreeMap<String,String>();
@@ -519,8 +519,770 @@ public class SqlServerService implements IService {
 				map.put(day, "0");
 		}
 		
-		//对map中的key排序，方便前台show
+		//treeMap的key排序，方便前台show
 		return map;
+	}
+	
+	
+	//入院途径       ---   1.急诊 2.门诊 3.其他医疗机构转入 9.其他
+	public Map<String, String> getInhospital_approach(String bingZhong, String timeType, String hospitalDeps,
+			String sex, String age) {
+		
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
+		Map<String, String> inhospital_approach_map = new HashMap<>();
+		inhospital_approach_map.put("1", "急诊 ");
+		inhospital_approach_map.put("2", "门诊 ");
+		inhospital_approach_map.put("3", "其他医疗机构转入 ");
+		inhospital_approach_map.put("9", "其他 ");
+		
+		Map<String, String> map = getInhospital_approach(bingZhong,hospitalDeps,sex,age,preDate,curDate);
+		Map<String, String> rs_map = new HashMap<>();
+		double sum = 0.0;
+		for(String key : map.keySet()){
+			String new_key = inhospital_approach_map.get(key);
+			sum += Double.valueOf(map.get(key));
+			rs_map.put(new_key, map.get(key));
+		}
+		
+		for(String key : rs_map.keySet())
+			rs_map.put(key, String.valueOf(Double.valueOf(rs_map.get(key))/sum));
+		
+		return rs_map;
+	}
+	
+	private Map<String, String> getInhospital_approach(String bingZhong, String hospitalDeps, String sex, String age,
+			String preDate, String curDate) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		Map<String,String> rs_map = new HashMap();
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		if(bingZhong.equals("1")){//缺血卒中
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
+				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY RYTJBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("2")){
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
+				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "GROUP BY RYTJBM;",		
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else{
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
+				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
+				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
+				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "GROUP BY RYTJBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}//end else
+		
+		//无法查出数据，使用样本数据
+		if(rs_map.size() == 0){
+			rs_map.put("1", "35");
+			rs_map.put("2", "23");
+			rs_map.put("3", "34");
+			rs_map.put("9", "56");
+		}
+		return rs_map;
+	}
+	
+	//入院病情   ---  1.危重 2.急诊 3.一般 9.其他
+	public Map<String, String> getInhospital_illstatus(String bingZhong, String timeType, String hospitalDeps,
+			String sex, String age) {
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
+		Map<String, String> inhospital_illstatus_map = new HashMap<>();
+		inhospital_illstatus_map.put("1", "危重 ");
+		inhospital_illstatus_map.put("2", "急诊 ");
+		inhospital_illstatus_map.put("3", "一般 ");
+		inhospital_illstatus_map.put("9", "其他 ");
+		
+		Map<String, String> map = getInhospital_illstatus(bingZhong,hospitalDeps,sex,age,preDate,curDate);
+		Map<String, String> rs_map = new HashMap<>();
+		double sum = 0.0;
+		for(String key : map.keySet()){
+			String new_key = inhospital_illstatus_map.get(key);
+			sum += Double.valueOf(map.get(key));
+			rs_map.put(new_key, map.get(key));
+		}
+		
+		for(String key : rs_map.keySet())
+			rs_map.put(key, String.valueOf(Double.valueOf(rs_map.get(key))/sum));
+		
+		return rs_map;
+	}
+	
+	private Map<String, String> getInhospital_illstatus(String bingZhong, String hospitalDeps, String sex, String age,
+			String preDate, String curDate) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		Map<String,String> rs_map = new HashMap();
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		if(bingZhong.equals("1")){//缺血卒中
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYQKBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
+				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY RYQKBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("2")){
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYQKBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
+				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "GROUP BY RYQKBM;",		
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else{
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYQKBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
+				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
+				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
+				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "GROUP BY RYQKBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}//end else
+		
+		//无法查出数据，使用样本数据
+		if(rs_map.size() == 0){
+			rs_map.put("1", "12");
+			rs_map.put("2", "23");
+			rs_map.put("3", "45");
+			rs_map.put("9", "89");
+		}
+		return rs_map;
+	}
+
+	//离院方式       ---  1.医嘱离院 2.医嘱转院 3.医嘱转社区卫生服务机构/乡镇卫生院  4.非医嘱离院 5.死亡 6.其他
+	public Map<String, String> getOuthospital_approach(String bingZhong, String timeType, String hospitalDeps,
+			String sex, String age) {
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
+		Map<String, String> outhospital_approach_map = new HashMap<>();
+		outhospital_approach_map.put("1", "医嘱离院 ");
+		outhospital_approach_map.put("2", "医嘱转院 ");
+		outhospital_approach_map.put("3", "医嘱转社区卫生服务机构/乡镇卫生院 ");
+		outhospital_approach_map.put("4", "非医嘱离院 ");
+		outhospital_approach_map.put("5", "死亡 ");
+		outhospital_approach_map.put("6", "其他 ");
+		
+		Map<String, String> map = getOuthospital_approach(bingZhong,hospitalDeps,sex,age,preDate,curDate);
+		Map<String, String> rs_map = new HashMap<>();
+		double sum = 0.0;
+		for(String key : map.keySet()){
+			String new_key = outhospital_approach_map.get(key);
+			sum += Double.valueOf(map.get(key));
+			rs_map.put(new_key, map.get(key));
+		}
+		
+		for(String key : rs_map.keySet())
+			rs_map.put(key, String.valueOf(Double.valueOf(rs_map.get(key))/sum));
+		
+		return rs_map;
+	}
+
+	private Map<String, String> getOuthospital_approach(String bingZhong, String hospitalDeps, String sex, String age,
+			String preDate, String curDate) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		Map<String,String> rs_map = new HashMap();
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		if(bingZhong.equals("1")){//缺血卒中
+			String sql = "";
+			sql = String.format(
+				"SELECT	LYFSBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
+				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY LYFSBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("2")){
+			String sql = "";
+			sql = String.format(
+				"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
+				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "GROUP BY LYFSBM;",		
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else{
+			String sql = "";
+			sql = String.format(
+				"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
+				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
+				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
+				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "GROUP BY LYFSBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}//end else
+		
+		//无法查出数据，使用样本数据
+		if(rs_map.size() == 0){
+			rs_map.put("1", "35");
+			rs_map.put("2", "23");
+			rs_map.put("3", "34");
+			rs_map.put("4", "12");
+			rs_map.put("5", "23");
+			rs_map.put("6", "17");
+		}
+		
+		return rs_map;
+	}
+
+	//离院病情   ---  1.治愈 2.好转 3.稳定 4.恶化 5.死亡 6.其他
+	public Map<String, String> getOuthospital_illstatus(String bingZhong, String timeType, String hospitalDeps,
+			String sex, String age) {
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
+		Map<String, String> outhospital_illstatus_map = new HashMap<>();
+		outhospital_illstatus_map.put("1", "治愈");
+		outhospital_illstatus_map.put("2", "好转 ");
+		outhospital_illstatus_map.put("3", "稳定 ");
+		outhospital_illstatus_map.put("4", "恶化");
+		outhospital_illstatus_map.put("5", "死亡");
+		outhospital_illstatus_map.put("6", "其他 ");
+		
+		Map<String, String> map = getOuthospital_illstatus(bingZhong,hospitalDeps,sex,age,preDate,curDate);
+		Map<String, String> rs_map = new HashMap<>();
+		double sum = 0.0;
+		for(String key : map.keySet()){
+			String new_key = outhospital_illstatus_map.get(key);
+			sum += Double.valueOf(map.get(key));
+			rs_map.put(new_key, map.get(key));
+		}
+		
+		for(String key : rs_map.keySet())
+			rs_map.put(key, String.valueOf(Double.valueOf(rs_map.get(key))/sum));
+		
+		return rs_map;
+	}
+	
+	private Map<String, String> getOuthospital_illstatus(String bingZhong, String hospitalDeps, String sex, String age,
+			String preDate, String curDate) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		Map<String,String> rs_map = new HashMap();
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		if(bingZhong.equals("1")){//缺血卒中
+			String sql = "";
+			sql = String.format(
+				"SELECT	CYBQ, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
+				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY CYBQ;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("2")){
+			String sql = "";
+			sql = String.format(
+				"SELECT	CYBQ, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
+				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "GROUP BY CYBQ;",		
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else{
+			String sql = "";
+			sql = String.format(
+				"SELECT	CYBQ, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
+				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
+				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
+				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "GROUP BY CYBQ;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}//end else
+		
+		//无法查出数据，使用样本数据
+		if(rs_map.size() == 0){
+			rs_map.put("1", "56");
+			rs_map.put("2", "54");
+			rs_map.put("3", "74");
+			rs_map.put("4", "23");
+			rs_map.put("5", "68");
+			rs_map.put("6", "54");
+		}
+		
+		return rs_map;
+	}
+
+	//住院情况 --- 医疗付费方式 --- 01城镇职工基本医疗保险;02城镇居民基本医疗保险;03新型农村合作医疗;04贫困救助;05商业医疗保险06全公费07全自费08其他社会保险99其他
+	public Map<String, String> getbeInhospital_treatmentPayWay(String bingZhong, String timeType, String hospitalDeps,
+			String sex, String age) {
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
+		Map<String, String> beinhospital_treatmentPayWay_map = new HashMap<>();
+		beinhospital_treatmentPayWay_map.put("01", "城镇职工基本医疗保险");
+		beinhospital_treatmentPayWay_map.put("02", "城镇居民基本医疗保险 ");
+		beinhospital_treatmentPayWay_map.put("03", "新型农村合作医疗 ");
+		beinhospital_treatmentPayWay_map.put("04", "贫困救助 ");
+		beinhospital_treatmentPayWay_map.put("05", "商业医疗保险");
+		beinhospital_treatmentPayWay_map.put("06", "全公费");
+		beinhospital_treatmentPayWay_map.put("07", "全自费 ");
+		beinhospital_treatmentPayWay_map.put("08", "其他社会保险 ");
+		beinhospital_treatmentPayWay_map.put("99", "其他 ");
+
+		
+		Map<String, String> map = getbeInhospital_treatmentPayWay(bingZhong,hospitalDeps,sex,age,preDate,curDate);
+		Map<String, String> rs_map = new HashMap<>();
+		double sum = 0.0;
+		for(String key : map.keySet()){
+			String new_key = beinhospital_treatmentPayWay_map.get(key);
+			sum += Double.valueOf(map.get(key));
+			rs_map.put(new_key, map.get(key));
+		}
+		
+		for(String key : rs_map.keySet())
+			rs_map.put(key, String.valueOf(Double.valueOf(rs_map.get(key))/sum));
+		
+		return rs_map;
+	}
+	
+	private Map<String, String> getbeInhospital_treatmentPayWay(String bingZhong, String hospitalDeps, String sex,
+			String age, String preDate, String curDate) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		Map<String,String> rs_map = new HashMap();
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		if(bingZhong.equals("1")){//缺血卒中
+			String sql = "";
+			sql = String.format(
+				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
+				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY YLFKFS;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("2")){
+			String sql = "";
+			sql = String.format(
+				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
+				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "GROUP BY YLFKFS;",		
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else{
+			String sql = "";
+			sql = String.format(
+				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
+				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
+				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
+				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
+				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "GROUP BY YLFKFS;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}//end else
+		
+		//无法查出数据，使用样本数据
+		if(rs_map.size() == 0){
+			rs_map.put("01", "56");
+			rs_map.put("02", "54");
+			rs_map.put("03", "74");
+			rs_map.put("04", "23");
+			rs_map.put("05", "68");
+			rs_map.put("06", "54");
+			rs_map.put("07", "74");
+			rs_map.put("08", "23");
+			rs_map.put("99", "68");
+		}
+		
+		return rs_map;
+	}
+	
+	//住院情况 --- 平均费用--- X轴：病种---Y轴：平均费用
+	public Map<String, String> getbeInhospital_averageCost(String timeType, String hospitalDeps, String sex,
+			String age) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		String sql = "";
+		sql = String.format(
+			"SELECT SUM (CAST(ZFY AS DECIMAL)) / COUNT (ZYH) AS '平均费用', "
+			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
+			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
+			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "
+			+ "OR CYZDBM = 'I67.7' OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' "
+			+ "ELSE	'其他' END AS '病种'"
+			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
+			+ "GROUP BY "
+			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' "
+			+ "OR CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN	'缺血性卒中' "
+			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' OR CYZDBM = 'I67.7' "
+			+ "OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' ELSE '其他' END;",					
+			preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
+		
+		Map<String,String> rs_map = new HashMap();
+		try {
+			ResultSet res = dbUtil.query(sql);
+			while (res.next())
+				rs_map.put(res.getString(2), res.getString(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dbUtil.close();
+		
+		//无法查出数据，使用样本数据
+		if(rs_map.size() == 0){
+			rs_map.put("缺血性卒中", "56");
+			rs_map.put("出血性卒中", "54");
+			rs_map.put("其他", "74");
+		}
+		
+		return rs_map;
+	}
+	
+	//住院情况 --- 费用构成---（药费、手术费、检查检验费用、其他费用） --- 饼状图
+	public Map<String, String> getbeInhospital_costConsist(String timeType, String hospitalDeps, String sex,
+			String age) {
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		Map<String,String> rs_map = getbeInhospital_costConsist(curDate, preDate, hospitalDeps, sex, age);
+		
+		double sum = 0.0;
+		for(Entry<String, String> tmp : rs_map.entrySet()){
+			String key = tmp.getKey();
+			sum += Double.valueOf(tmp.getValue());
+		}
+		if(sum == 0.0){
+			rs_map.put("药费", "56");
+			rs_map.put("手术费", "54");
+			rs_map.put("检查检验费", "89");
+			rs_map.put("其他费用", "74");
+			
+		}
+		sum = 56 + 54 + 89 + 74;
+		for(Entry<String, String> tmp : rs_map.entrySet()){
+			String key = tmp.getKey();
+			rs_map.put(key, String.valueOf(Double.valueOf(tmp.getValue())/sum) );
+		}
+		return rs_map;
+	}
+	
+	public Map<String, String> getbeInhospital_costConsist(String curDate, String preDate, String hospitalDeps, String sex,
+			String age) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		
+		
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		String sql = "";
+		sql = String.format(
+			"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费 AS '其他费用' FROM (SELECT SUM (CAST(ZFY AS DECIMAL)) AS '总费用',	SUM ("
+			+ "CAST (XYF AS DECIMAL) + CAST (KJYWF AS DECIMAL) + CAST (ZCYF AS DECIMAL) + CAST (ZCYF1 AS DECIMAL) + CAST (BDBLZPF AS DECIMAL) + CAST (QDBLZPF AS DECIMAL) + CAST (NXYZLZPF AS DECIMAL) + "
+			+ "CAST (XBYZLZPF AS DECIMAL)) AS '药费',	SUM (CAST (SSF AS DECIMAL) + CAST (MAF AS DECIMAL) + CAST (SSZLF AS DECIMAL) + CAST (YCXYYCLF AS DECIMAL)) AS '手术费',"
+			+ "SUM (CAST (SYSZDF AS DECIMAL) + CAST (YXXZDF AS DECIMAL) + CAST (LCZDXMF AS DECIMAL)) AS '检查检验费'"
+			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
+			+ ") a",
+			preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
+		
+		Map<String,String> rs_map = new HashMap();
+		try {
+			ResultSet res = dbUtil.query(sql);
+			ResultSetMetaData rsmd = res.getMetaData() ;
+			while (res.next()){
+				for(int i=1; i<=rsmd.getColumnCount(); i++){
+					if(rsmd.getColumnName(i).equals("总费用"))
+						continue;
+					if(res.getString(i) == null || res.getString(i).equals("") || Double.valueOf(res.getString(i)) < 0)
+						rs_map.put(rsmd.getColumnName(i), "0");
+					else
+						rs_map.put(rsmd.getColumnName(i), res.getString(i));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dbUtil.close();
+		
+		return rs_map;
+	}
+	
+	//住院情况---住院费用---每床日费用 X轴：病种    Y轴：每床日费用
+	public Map<String, String> getbeInhospital_sickbedCostByDay(String timeType, String hospitalDeps, String sex,
+			String age) {
+		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
+		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
+		String sqlserver_password = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_PASSWORD);
+		ConnectionFactory connectionFactory = new ConnectionFactory("sqlserver", sqlserver_url, sqlserver_username,
+				sqlserver_password);
+		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		
+		String curDate = Calendar2String(getCurDate());
+		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
+		String[] tmp = age.substring(1, age.length()-1).split(",");
+		String age1 = tmp[0];
+		String age2 = tmp[1];
+		
+		String sql = "";
+		sql = String.format(
+			"SELECT SUM (CAST(ZFY AS DECIMAL)) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
+			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
+			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
+			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "
+			+ "OR CYZDBM = 'I67.7' OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' "
+			+ "ELSE	'其他' END AS '病种'"
+			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
+			+ "GROUP BY "
+			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' "
+			+ "OR CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN	'缺血性卒中' "
+			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' OR CYZDBM = 'I67.7' "
+			+ "OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' ELSE '其他' END;",					
+			preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
+		
+		Map<String,String> rs_map = new HashMap();
+		try {
+			ResultSet res = dbUtil.query(sql);
+			while (res.next())
+				rs_map.put(res.getString(2), res.getString(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dbUtil.close();
+		
+		//无法查出数据，使用样本数据
+		if(rs_map.size() == 0){
+			rs_map.put("缺血性卒中", "442");
+			rs_map.put("出血性卒中", "544");
+			rs_map.put("其他", "141");
+		}
+		
+		return rs_map;
 	}
 	
 	private String Calendar2String(Calendar date) {
@@ -578,5 +1340,7 @@ public class SqlServerService implements IService {
 		now.add(Calendar.DAY_OF_YEAR, 10);
 		return now;
 	}
+
+
 
 }

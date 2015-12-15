@@ -30,14 +30,34 @@ public class TopicAnalyController {
 		return "topicanalysis";
 	}
 	
-	@RequestMapping(value="/inhospital_home")
+	//住院数据---首页
+	@RequestMapping(value="/topic_inhospital_home")
 	public String inhospital_home(){
-		return "inhospital_home";
+		return "topic_inhospital_home";
 	}
 	
-	@RequestMapping(value="/inhospital_patientsNum")
+	//入院情况---入院人次
+	@RequestMapping(value="/topic_inhospital_patientsNum")
 	public String inhospital_patientsNum(){
-		return "inhospital_patientsNum";
+		return "topic_inhospital_patientsNum";
+	}
+	
+	//入院情况---入院途径、病情
+	@RequestMapping(value="/topic_inhospital_approachAndillstate")
+	public String inhospital_approachAndillstate(){
+		return "topic_inhospital_approachAndillstate";
+	}
+	
+	//出院情况---出院方式、病情
+	@RequestMapping(value="/topic_outhospital_approachAndillstate")
+	public String outhospital_approachAndillstate(){
+		return "topic_outhospital_approachAndillstate";
+	}
+	
+	//住院情况---住院费用
+	@RequestMapping(value="/topic_beInhospital_costs")
+	public String topic_beInhospital_costs(){
+		return "topic_beInhospital_costs";
 	}
 	
 	
@@ -89,6 +109,7 @@ public class TopicAnalyController {
 		return RYKB_list;
 	}
 	
+	//入院患者病种构成---筛选项：性别、年龄
 	@RequestMapping(value="/inhospitalPatienConsist")
 	@ResponseBody
 	public Map<String,String> getInhospitalPatienConsist(HttpServletRequest request){
@@ -102,6 +123,7 @@ public class TopicAnalyController {
 		return map;
 	}
 	
+	//性别年龄构成---病种
 	@RequestMapping(value="/inhospitalPatien_SexAgeConsist")
 	@ResponseBody
 	public List<Map<String,String>> getInhospitalPatienSexAgeConsist(
@@ -114,6 +136,7 @@ public class TopicAnalyController {
 		return rs_list;
 	}
 	
+	//入院患者时间变化
 	@RequestMapping(value="/inhospitalPatienNum_bytime")
 	@ResponseBody
 	public Map<String,String> getInhospitalPatienNum_bytime(
@@ -125,6 +148,116 @@ public class TopicAnalyController {
 		return map;
 	}
 	
+	//入院途径   --- 筛选项:科室、性别、年龄、病种、时间范围
+	@RequestMapping(value="/inhospital_approach")
+	@ResponseBody
+	public Map<String,String> getInhospital_approach(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getInhospital_approach(bingZhong,timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
+	//入院病情 --- 筛选项：科室、性别、年龄、病种、时间范围
+	@RequestMapping(value="/inhospital_illstatus")
+	@ResponseBody
+	public Map<String,String> getInhospital_illstatus(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getInhospital_illstatus(bingZhong,timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
+	//离院方式   --- 筛选项:科室、性别、年龄、病种、时间范围
+	@RequestMapping(value="/outhospital_approach")
+	@ResponseBody
+	public Map<String,String> getOuthospital_approach(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getOuthospital_approach(bingZhong,timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
+	//离院病情 --- 筛选项：科室、性别、年龄、病种、时间范围
+	@RequestMapping(value="/outhospital_illstatus")
+	@ResponseBody
+	public Map<String,String> getOuthospital_illstatus(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getOuthospital_illstatus(bingZhong,timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
+	//住院费用 --- 筛选项：科室、性别、年龄、病种、时间范围
+	@RequestMapping(value="/beInhospital_treatmentPayWay")
+	@ResponseBody
+	public Map<String,String> getbeInhospital_treatmentPayWay(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getbeInhospital_treatmentPayWay(bingZhong,timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
+	//住院费用---平均费用---筛选项：科室、性别、年龄、病种、时间范围
+	@RequestMapping(value="/beInhospital_averageCost")
+	@ResponseBody
+	public Map<String,String> getbeInhospital_averageCost(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getbeInhospital_averageCost(timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
+	//费用构成（药费、手术费、检查检验费用、其他费用）
+	@RequestMapping(value="/beInhospital_costConsist")
+	@ResponseBody
+	public Map<String,String> getbeInhospital_costConsist(
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getbeInhospital_costConsist(timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
+	//住院情况---住院费用---每床日费用 X轴：病种    Y轴：每床日费用
+	@RequestMapping(value="/beInhospital_sickbedCostByDay")
+	@ResponseBody
+	public Map<String,String> getbeInhospital_sickbedCostByDay(
+			@RequestParam(value = "timeType", required = true) String timeType,
+			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
+			@RequestParam(value = "sex", required = true) String sex,
+			@RequestParam(value = "age", required = true) String age){
+		
+		Map<String,String> map = this.SqlServerService.getbeInhospital_sickbedCostByDay(timeType,hospitalDeps,sex,age);
+		return map;
+	}
+	
 	
 	public SqlServerService getSqlServerService() {
 		return SqlServerService;
@@ -133,4 +266,5 @@ public class TopicAnalyController {
 	public void setSqlServerService(SqlServerService sqlServerService) {
 		SqlServerService = sqlServerService;
 	}
+	
 }

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>入院人次</title>
+<title>住院情况---费用预览</title>
 <style type="text/css">
 .s_p_part1{
 	width:80%;
@@ -71,7 +71,7 @@
 }
 .s_p_p4{
 	width:40%;
-	/* height:380px; */
+	height:380px;
 	float:left;
 	margin-left:1%;
 	border:3px solid;
@@ -93,6 +93,7 @@ function query(){
 	fill_myChart1();
 	fill_myChart2();
 	fill_myChart3();
+	fill_myChart4();
 }
 
 //填写科室
@@ -113,6 +114,7 @@ var fillHospitalDeps = function(){
 				fill_myChart1();
 				fill_myChart2();
 				fill_myChart3();
+				fill_myChart4();
 			} 
      }
      $.ajax(options1);
@@ -127,16 +129,40 @@ fillHospitalDeps();
 	
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation" id="head" style=" height:35px;line-height:35px; background-color:#87CEEB;text-align:right;padding-top:5px;padding-right:20px ">
        	<div>
+           <span class="text-primary">科室</span>
+            <select name="select" id="hospital_dep" class="">
+            	<option value="0">全部</option>
+            </select>
+       		
+       		<span class="text-primary">性别</span>
+            <select name="select" id="home_sex" class="">
+            	<option value="0">全部</option>
+             	<option value="1">男</option>
+             	<option value="2">女</option>
+            </select>
+            
+           	<span class="text-primary">年龄段</span>
+            <select name="select" id="home_age" class="xla_k">
+	            <option value="(0,200)">全部</option>
+	            <option value="(40,49)">40-49</option>
+	            <option value="(50,59)">50-59</option> 
+	            <option value="(60,69)">60-69</option>
+	            <option value="(60,79)">60-79</option> 
+	            <option value="(80,200)">80+</option>    
+           	</select>
+       		
+       		<span class="text-primary">病种</span>
+            <select name="select" id="home_bz" class="">
+            	<option value="1">缺血性卒中</option>
+             	<option value="2">出血性卒中</option>
+             	<option value="3">其他</option>
+            </select>
+            
             <span class="text-primary">时间范围</span>
-            <select name="select" id="home_time_opt" class="">
+            <select name="select" id="home_time" class="">
             	<option value="week">最近一周</option>
              	<option value="month">最近一月</option>
              	<option value="year">最近一年</option>
-            </select>
-            
-            <span class="text-primary">科室</span>
-            <select name="select" id="hospital_dep" class="">
-            	<option value="0">全部</option>
             </select>
             <button class="btn btn-danger" onclick="query()">查询</button>
       	</div>
@@ -144,25 +170,17 @@ fillHospitalDeps();
 
 	<div class="s_p.part1" style="margin-top:20px;">
 		<div class="s_p_p1">
-			<div id="head" style=" height:8%;line-height:35px;text-align:right;">
-	        	<div>
-		            <span class="text-primary">时间范围</span>
-		            <select name="select" id="part1_bz" class="">
-		            	<option value="1">缺血性卒中</option>
-		             	<option value="2">出血性卒中</option>
-		            </select>
-		            <button class="btn btn-danger" onclick="fill_myChart1()">查询</button>
-	       		</div>
-      		</div>
-			<div id="taskchartcontainera1" style="height: 92%; width: 100%;">
+			<div id="taskchartcontainera1" style="height: 100%; width: 100%;">
 				<span><i class='ace-icon fa fa-spinner fa-spin green bigger-300 '></i></span>
 			</div>
 			<script type="text/javascript">
 			var fill_myChart1 = function(){
 				myChart1 = echarts.init(document.getElementById('taskchartcontainera1'),'macarons');
-				var bingZhong = $('#part1_bz').val();
-			    var timeType = $('#home_time_opt').val();
+				var bingZhong = $('#home_bz').val();
+			    var timeType = $('#home_time').val();
 			   	var hospitalDeps = $('#hospital_dep').val();
+			   	var sex = $('#home_sex').val();
+			   	var age = $('#home_age').val();
 				
 			    myChart1.showLoading({text: "图表数据正在努力加载..."});
 			     
@@ -172,115 +190,72 @@ fillHospitalDeps();
 						data:{ 
 							bingZhong : bingZhong,
 							timeType : timeType,
-							hospitalDeps : hospitalDeps
+							hospitalDeps : hospitalDeps,
+							sex : sex,
+							age : age
        					}, 
-						url : 'inhospitalPatien_SexAgeConsist',
+						url : 'beInhospital_treatmentPayWay',
 						dataType : 'json',
 						success : function(data) {
 						 if (data) {
-							var keyarray = new Array();
-							var valuearray = new Array();
-							var v1 = new Array();
-							var v2 = new Array();
-							for(var key in data[0]){
-								if(key == 'XB')
-									continue;
-								keyarray.push(key);
-								v1.push(parseFloat((data[0][key] * 100).toFixed(2)));
-							}
+							var array=new Array();
+							for(var key in data)
+								array.push({name:key,value:new Number(data[key]*100).toFixed(2)});
 							
-							for(var key in data[1]){
-								if(key == 'XB')
-									continue;
-								v2.push(parseFloat((data[1][key] * 100).toFixed(2)));
-							}
-							valuearray.push(v1);
-							valuearray.push(v2);
-							console.log(keyarray);
-							console.log(valuearray);
 							option = {
-								    title : {
-								        text: '性别年龄构成',
-								        subtext: '入院人次'
-								    },
-								    tooltip : {
-								        trigger: 'axis',
-								    },
-								    legend: {
-								        data:['男','女']
-								    },
-								    toolbox: {
-								        show : true,
-								        feature : {
-								            mark : {show: true},
-								            dataView : {show: true, readOnly: false},
-								            magicType : {show: true, type: ['line', 'bar']},
-								            restore : {show: true},
-								            saveAsImage : {show: true}
-								        }
-								    },
-								    calculable : true,
-								    xAxis : [
-								        {
-								            type : 'category',
-								            boundaryGap : false,
-								            data :  keyarray
-								        }
-								    ],
-								    yAxis : [
-								        {
-								            type : 'value',
-								            axisLabel: {
-								            	formatter:'{value}'
-								            }
-								        }
-								    ],
-								    series : [
-								        {
-								            name:'男',
-								            type:'line',
-								            data: valuearray[0],
-								            markPoint : {
-								                data : [
-								                    {type : 'max', name: '最大值'},
-								                    {type : 'min', name: '最小值'}
-								                ]
-								            },
-								            markLine : {
-								                data : [
-								                    {type : 'average', name: '平均值'}
-								                ]
-								            },
-								     /*        itemStyle:{
-								            	normal:{
-								            		color:'#48D1CC'
-								            	}
-								            } */
-								        },
-								        {
-								            name:'女',
-								            type:'line',
-								            data: valuearray[1],
-								            markPoint : {
-								                data : [
-								                    {type : 'max', name: '最大值'},
-								                    {type : 'min', name: '最小值'}
-								                ]
-								            },
-								            markLine : {
-								                data : [
-								                    {type : 'average', name: '平均值'}
-								                ]
-								            },
-								       /*      itemStyle:{
-								            	normal:{
-								            		color:'#48D1CC'
-								            	}
-								            } */
-								        }
-								         
-								    ]
-								};
+									title : {
+										text : '付费方式',
+										subtext : '住院费用情况',
+										x : 'left'
+									},
+									tooltip : {
+										trigger : 'item',
+										formatter : "{a} <br/>{b} : {c} %"
+									},
+
+									toolbox : {
+										show : true,
+										feature : {
+											mark : {
+												show : false
+											},
+											dataView : {
+												show : true,
+												readOnly : false
+											},
+											magicType : {
+												show : true,
+												type : [
+														'pie',
+														'funnel' ],
+												option : {
+													funnel : {
+														x : '25%',
+														width : '50%',
+														funnelAlign : 'left',
+														max : 1548
+													}
+												}
+											},
+											restore : {
+												show : true
+											},
+											saveAsImage : {
+												show : true
+											}
+										}
+									},
+									calculable : true,
+									series : [ {
+										name : '付费方式',
+										type : 'pie',
+										radius : '55%',
+										center : [
+												'50%',
+												'60%' ],
+										data : array
+									} ]
+							};
 							
 							myChart1.hideLoading();
 							myChart1.setOption(option);
@@ -297,59 +272,48 @@ fillHospitalDeps();
 		</div>
 		
 		<div class="s_p_p2">
-			<div id="head" style="height:8%;line-height:35px;text-align:right;">
-	        	<div>
-		            <span class="text-primary">统计粒度</span>
-		            <select name="select" id="part2_showsize" class="">
-		            	<option value="day">按天统计</option>
-		            	<!-- <option value="week">按周统计</option>
-		             	<option value="month">按月统计</option>
-		             	<option value="quarter">按季统计</option>
-		             	<option value="year">按年统计</option> -->
-		            </select>
-		            <button class="btn btn-danger" onclick="fill_myChart2()">查询</button>
-	       		</div>
-	      	</div>
-			<div id="containera2" style="height: 92%; width: 100%;">
+			<div id="containera2" style="height: 100%; width: 100%;">
 				<i class='ace-icon fa fa-spinner fa-spin green bigger-300'></i>
 			 </div>
 			<script type="text/javascript">
 			var fill_myChart2 = function(){
 				 myChart2 = echarts.init(document.getElementById('containera2') ,'infographic');
-				 var showSize = $('#part2_showsize').val();
-				 var timeType = $('#home_time_opt').val();
+				 var bingZhong = $('#home_bz').val();
+				 var timeType = $('#home_time').val();
 				 var hospitalDeps = $('#hospital_dep').val();
+				 var sex = $('#home_sex').val();
+				 var age = $('#home_age').val();
 			     
 			     myChart2.showLoading({text: "图表数据正在努力加载..."});
-				 
 				 jQuery.ajax({
 						type : "GET",
 						contentType : 'application/x-www-form-urlencoded; charset=utf-8',
-						url : 'inhospitalPatienNum_bytime',
+						url : 'beInhospital_averageCost',
 						data : {
-							showSize:showSize,
-							timeType:timeType,
-							hospitalDeps:hospitalDeps
+							bingZhong : bingZhong,
+							timeType : timeType,
+							hospitalDeps : hospitalDeps,
+							sex : sex,
+							age : age
 						},
 						dataType : 'json',
 						success : function(data) {
 						 if (data) {
-							var size = $('#part2_showsize').text();
 							var keyarray = new Array();
 							var valuearray = new Array();
 							for(var key in data){
 								keyarray.push(key);
-								valuearray.push(parseFloat((data[key] * 100).toFixed(2)));
+								valuearray.push(parseFloat((data[key] * 1).toFixed(2)));
 							}
 								
 							option = {
 								title : {
-									text : '入院患者时间变化',
-									subtext : '入院人次',
+									text : '平均费用',
+									subtext : '住院情况',
 									x : 'left'
 								},
 								tooltip : {
-									trigger : 'item',
+									trigger : 'axis',
 									//formatter : "{a} <br/>{b} : {c} %"
 								},
 								toolbox: {
@@ -366,22 +330,22 @@ fillHospitalDeps();
 								xAxis : [
 									        {
 									            type : 'category',
-									            boundaryGap : false,
+									            /* boundaryGap : false, */
 									            data :  keyarray
 									        }
 									    ],
 							    yAxis : [
 							        {
 							            type : 'value',
-							            axisLabel: {
+							            /* axisLabel: {
 							            	formatter:'{value}'
-							            }
+							            } */
 							        }
 							    ],
 							    series : [
 							        {
-							            name:size,
-							            type:'line',
+							            name:'平均费用',
+							            type:'bar',
 							            data: valuearray,
 							            markPoint : {
 							                data : [
@@ -402,12 +366,11 @@ fillHospitalDeps();
 							        }
 							    ]
 							};
-							myChart2.hideLoading();
-							myChart2.setOption(option);
-								}
+								myChart2.hideLoading();
+								myChart2.setOption(option);
+							}
 							},
 							error : function() {
-	
 							}
 					});//end ajax 
 				}
@@ -418,55 +381,41 @@ fillHospitalDeps();
 	
 	<div class="s_p.part2">
 		<div class="s_p_p3" >
-			<div id="head" style=" height:8%;line-height:35px;text-align:right;">
-		        	<div>
-			            <span class="text-primary">性别</span>
-			            <select name="select" id="part3_sex" class="">
-			            	<option value="0">全部</option>
-			             	<option value="1">男</option>
-			             	<option value="2">女</option>
-			            </select>
-			           <span class="text-primary">年龄段</span>
-			            <select name="select" id="part3_age" class="xla_k">
-				            <option value="(0,200)">全部</option>
-				            <option value="(40,49)">40-49</option>
-				            <option value="(50,59)">50-59</option> 
-				            <option value="(60,69)">60-69</option>
-				            <option value="(60,79)">60-79</option> 
-				            <option value="(80,200)">80+</option>    
-			           </select>
-			           <button class="btn btn-danger" onclick="fill_myChart3()">查询</button>
-		       		</div>
-	      		</div>
-			<div id="taskchartcontainera3" style="height:92%; width: 100%; line-height:100%;">
+			<div id="taskchartcontainera3" style="height:100%; width: 100%; line-height:100%;">
 				<i class='ace-icon fa fa-spinner fa-spin green bigger-300'></i>
 			</div>
 			<script type="text/javascript">
 			var fill_myChart3 = function(){
 				myChart3 = echarts.init(document.getElementById('taskchartcontainera3'), 'infographic');
-				var paramMap = new Object();
-			    paramMap["age"] = $('#part3_age').val();
-			    paramMap["sex"] = $('#part3_sex').val()
-			    paramMap["timeType"] = $('#home_time_opt').val();
-			    paramMap["hospitalDeps"] = $('#hospital_dep').val();
+				 var bingZhong = $('#home_bz').val();
+				 var timeType = $('#home_time').val();
+				 var hospitalDeps = $('#hospital_dep').val();
+				 var sex = $('#home_sex').val();
+				 var age = $('#home_age').val();
 			     
 			    myChart3.showLoading({text: "图表数据正在努力加载..."});
 				jQuery.ajax({
 					type : "GET",
 					contentType : 'application/x-www-form-urlencoded; charset=utf-8',
-					url : '/healthcare/inhospitalPatienConsist',
-					data:paramMap,
+					url : '/healthcare/beInhospital_costConsist',
+					data:{
+						bingZhong : bingZhong,
+						timeType : timeType,
+						hospitalDeps : hospitalDeps,
+						sex : sex,
+						age : age
+					},
 					dataType : 'json',
 					success : function(data) {
 						 if (data) {
-								var array=new Array();
-								for(var key in data){
-									array.push({name:key,value:new Number(data[key] * 100).toFixed(2)});
+							var array = new Array();
+							for(var key in data){
+								array.push({name:key,value:new Number(data[key] * 100).toFixed(2)});
 						}
 						option = {
 							title : {
-								text : '入院患者病种构成',
-								subtext : '入院人次',
+								text : '费用构成',
+								subtext : '住院情况',
 								x : 'left'
 							},
 							tooltip : {
@@ -508,7 +457,7 @@ fillHospitalDeps();
 							},
 							calculable : true,
 							series : [ {
-								name : '病种比例',
+								name : '费用构成',
 								type : 'pie',
 								radius : '55%',
 								center : [
@@ -528,7 +477,111 @@ fillHospitalDeps();
 			}
 			</script>
 		</div>
-	
+		
+		<div class="s_p_p4" >
+			<div id="taskchartcontainera4" style="height:100%; width: 100%; line-height:100%;">
+				<i class='ace-icon fa fa-spinner fa-spin green bigger-300'></i>
+			</div>
+			<script type="text/javascript">
+			var fill_myChart4 = function(){
+				myChart4 = echarts.init(document.getElementById('taskchartcontainera4'), 'infographic');
+				 var bingZhong = $('#home_bz').val();
+				 var timeType = $('#home_time').val();
+				 var hospitalDeps = $('#hospital_dep').val();
+				 var sex = $('#home_sex').val();
+				 var age = $('#home_age').val();
+			     
+			    myChart4.showLoading({text: "图表数据正在努力加载..."});
+				jQuery.ajax({
+					type : "GET",
+					contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+					url : '/healthcare/beInhospital_sickbedCostByDay',
+					data:{
+						bingZhong : bingZhong,
+						timeType : timeType,
+						hospitalDeps : hospitalDeps,
+						sex : sex,
+						age : age
+					},
+					dataType : 'json',
+					success : function(data) {
+						 if (data) {
+							var keyarray = new Array();
+							var valuearray = new Array();
+							for(var key in data){
+								keyarray.push(key);
+								valuearray.push(parseFloat((data[key] * 1).toFixed(2)));
+							}
+							option = {
+								title : {
+									text : '每床日费用',
+									subtext : '住院情况',
+									x : 'left'
+								},
+								tooltip : {
+									trigger : 'axis',
+									//formatter : "{a} <br/>{b} : {c} %"
+								},
+								toolbox: {
+								        show : true,
+								        feature : {
+								            mark : {show: true},
+								            dataView : {show: true, readOnly: false},
+								            magicType : {show: true, type: ['line', 'bar']},
+								            restore : {show: true},
+								            saveAsImage : {show: true}
+								        }
+								},
+								calculable : true,
+								xAxis : [
+									        {
+									            type : 'category',
+									            /* boundaryGap : false, */
+									            data :  keyarray
+									        }
+									    ],
+							    yAxis : [
+							        {
+							            type : 'value',
+							            /* axisLabel: {
+							            	formatter:'{value}'
+							            } */
+							        }
+							    ],
+							    series : [
+							        {
+							            name:'每床日费用',
+							            type:'bar',
+							            data: valuearray,
+							            markPoint : {
+							                data : [
+							                    {type : 'max', name: '最大值'},
+							                    {type : 'min', name: '最小值'}
+							                ]
+							            },
+							            markLine : {
+							                data : [
+							                    {type : 'average', name: '平均值'}
+							                ]
+							            },
+							            itemStyle:{
+							            	normal:{
+							            		color:'#48D1CC'
+							            	}
+							            }
+							        }
+							    ]
+							};
+							myChart4.hideLoading();
+							myChart4.setOption(option);
+						}
+					},
+					error : function() {
+					}
+				}); 
+			}
+			</script>
+		</div>
 	</div>
 	
 	<div class="clear"></div>
