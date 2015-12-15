@@ -15,7 +15,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>数据分析</title>
+<title>主题分析</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -94,9 +94,10 @@
 		<div class="page-header-inner">
 			<!-- BEGIN LOGO -->
 			<div class="page-logo">
-				<a href="#" id="refreshalldatabaseinfo"> <img src="img/logo.png"
-					alt="logo" class="logo-default" />
+				<a href="/healthcare" id="refreshalldatabaseinfo"> <img src="img/change_logo_1.png"
+					alt="logo" class="" />
 				</a>
+				<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>	
 				<div class="menu-toggler sidebar-toggler"></div>
 			</div>
 			<!-- END LOGO -->
@@ -104,14 +105,14 @@
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
 					<li class="classic-menu-dropdown "><a href="userdatabaseview">元数据 </a></li>
-					<li class="classic-menu-dropdown"><a href="datasetanalysis" target="_blank"> 主题分析 </a></li>
-					<li class="classic-menu-dropdown"><a href="adminpanel/applydatatable" target="_blank"> 数据服务 </a></li>
-					<li class="classic-menu-dropdown"><a href="adminpanel/applyenvtable" target="_blank"> 虚拟计算 </a></li>
+					<li class="classic-menu-dropdown"><a href="topicanalysis" target="_blank"> 主题分析 </a></li>
+					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据服务 </a></li>
+					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟计算 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
 			<!-- BEGIN HEADER SEARCH BOX -->
-			<form class="search-form" action="#" method="GET">
+<!-- 			<form class="search-form" action="#" method="GET">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search..."
 						name="query"> <span class="input-group-btn"> <a
@@ -119,7 +120,7 @@
 							class="icon-magnifier"></i></a>
 					</span>
 				</div>
-			</form>
+			</form> -->
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 			<a href="javascript:;" class="menu-toggler responsive-toggler"

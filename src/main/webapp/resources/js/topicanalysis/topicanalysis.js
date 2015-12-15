@@ -66,4 +66,3 @@ $('#home_time_opt').change(function(){
 	getInhospitalAverageDays(home_time_opt);
 	getTreatmentAverageCost(home_time_opt);
 });
-
