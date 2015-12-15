@@ -6,6 +6,7 @@ public class BaseHospitalModel {
 	private Integer endCount;
 	private Integer dangerCount;
 	private String uull;
+	private String uuProvince;
 	public String getName() {
 		return name;
 	}
@@ -47,5 +48,17 @@ public class BaseHospitalModel {
 	 */
 	public void setUuCode(String uuCode) {
 		this.uuCode = uuCode;
+	}
+	/**
+	 * @return the uuProvince
+	 */
+	public String getUuProvince() {
+		return uuProvince;
+	}
+	/**
+	 * @param uuProvince the uuProvince to set
+	 */
+	public void setUuProvince(String uuProvince) {
+		this.uuProvince = uuProvince;
 	}
 }

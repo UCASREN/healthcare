@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>人群特征</title>
+<title>疾病负担</title>
 <style type="text/css">
 .s_p.part1 {
 	width: 80%;
@@ -148,6 +148,16 @@
 		</div>
 
 	</div>
+	<div class="s_p_p2">
+		<div id="taskchartcontainera4" style="height: 100%; width: 100%;">
+			<i class='ace-icon fa fa-spinner fa-spin green bigger-300'></i>
+
+		</div>
+		<script type="text/javascript">
+			
+		</script>
+
+	</div>
 	<div class="clear"></div>
 
 	<div class="s_p_part3">
@@ -178,6 +188,6 @@
 
 </body>
 <script src="resources/js/echarts-all.js"></script>
-<script src="resources/js/crowd_features/crowd_features.js"
+<script src="resources/js/disease_burden/disease_burden.js"
 	type="text/javascript"></script>
 </html>

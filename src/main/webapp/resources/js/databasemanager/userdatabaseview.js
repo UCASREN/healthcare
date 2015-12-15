@@ -20,6 +20,7 @@ var TableAjax_alldatabase = function () {
             src: $("#datatable_ajax_alldatabase"),
             onSuccess: function (grid) {
             	console.log(alldatabase_grid.getDataTable().ajax.json().recordsTotal);
+            	$("#datatable_ajax_alldatabase").show();
             	$("#showalldatabaseinfo_number").text("数据库的数目："+alldatabase_grid.getDataTable().ajax.json().recordsTotal);
             	
             },
@@ -54,6 +55,9 @@ var TableAjax_alldatabase = function () {
                     "targets": [ 1 ],
                     "visible": false,
                     "searchable":false
+                },{
+                    "targets": [ 3 ],
+                    "visible": false
                 },{
                     "targets": [ 4 ],
                     "visible": false
@@ -423,6 +427,7 @@ var TableAjax = function () {
         		});
         		//绑定所有事件
     			$("a[id^=databasetable_").click(function(){
+    			$("#showdetail").hide();
 				$("#showtableinfo").show();
             	$("#showdatabaseinfo").hide();
             	$("#showalldatabaseinfo").hide();
