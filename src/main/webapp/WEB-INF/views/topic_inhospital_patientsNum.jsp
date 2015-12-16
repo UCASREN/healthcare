@@ -150,6 +150,7 @@ fillHospitalDeps();
 		            <select name="select" id="part1_bz" class="">
 		            	<option value="1">缺血性卒中</option>
 		             	<option value="2">出血性卒中</option>
+		             	<option value="3">其他</option>
 		            </select>
 		            <button class="btn btn-danger" onclick="fill_myChart1()">查询</button>
 	       		</div>
@@ -186,13 +187,13 @@ fillHospitalDeps();
 								if(key == 'XB')
 									continue;
 								keyarray.push(key);
-								v1.push(parseFloat((data[0][key] * 100).toFixed(2)));
+								v1.push(parseFloat((data[0][key] * 1).toFixed(2)));
 							}
 							
 							for(var key in data[1]){
 								if(key == 'XB')
 									continue;
-								v2.push(parseFloat((data[1][key] * 100).toFixed(2)));
+								v2.push(parseFloat((data[1][key] * 1).toFixed(2)));
 							}
 							valuearray.push(v1);
 							valuearray.push(v2);

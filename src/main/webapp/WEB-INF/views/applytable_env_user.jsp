@@ -35,7 +35,7 @@ request.setCharacterEncoding("UTF-8");
 <link href="../resources/css/plugins.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/layout.css" rel="stylesheet" type="text/css"/>
 <!-- <link id="style_color" href="../resources/css/darkblue.css" rel="stylesheet" type="text/css"/>-->
-<link id="style_color" href="resources/css/themes/light2.css" rel="stylesheet" type="text/css" />
+<link id="style_color" href="../resources/css/themes/light2.css" rel="stylesheet" type="text/css" />
 <link href="../resources/css/custom.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/slider/style.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES 图标-->
@@ -68,14 +68,14 @@ request.setCharacterEncoding("UTF-8");
 		<!-- END LOGO -->
 		
 		<!-- BEGIN HORIZANTAL MENU -->
-		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
+		<!-- <div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 			<ul class="nav navbar-nav">
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/userdatabaseview">元数据 </a></li>
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/topicanalysis" target="_blank"> 主题分析 </a></li>
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/applydata/applytable" target="_blank"> 数据服务 </a></li>
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/applyenv/applytable" target="_blank"> 虚拟计算 </a></li>
 			</ul>
-		</div>
+		</div> -->
 		<!-- END HORIZANTAL MENU -->
 		
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -132,32 +132,30 @@ request.setCharacterEncoding("UTF-8");
 <div class="page-container">
 
 	<!-- BEGIN SIDEBAR -->
-	<!-- <div class="page-sidebar-wrapper">
-		DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing
-		DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed
+	<div class="page-sidebar-wrapper">
 		<div class="page-sidebar navbar-collapse collapse">
-		<ul class="page-sidebar-menu" data-keep-expanded="false"
-					data-auto-scroll="true" data-slide-speed="200">
-					<li><a href="/healthcare/userdatabaseview"> <i class="icon-home"></i> <span
-							class="title">元数据</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/topicanalysis"> <i class="icon-puzzle"></i> <span
-							class="title">主题分析</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
-							class="title">数据服务</span> <span class="arrow "></span>
-					</a></li>
-					<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
-							class="title">虚拟计算</span> <span class="arrow "></span>
-					</a></li>
-				</ul>
+			<ul class="page-sidebar-menu" data-keep-expanded="false"
+				data-auto-scroll="true" data-slide-speed="200">
+				<li><a href="/healthcare/userdatabaseview"> <i class="icon-home"></i> <span
+						class="title">元数据</span> <span class="arrow "></span>
+				</a></li>
+				<li><a href="/healthcare/topicanalysis"> <i class="icon-puzzle"></i> <span
+						class="title">主题分析</span> <span class="arrow "></span>
+				</a></li>
+				<li><a href="/healthcare/applydata/applytable"> <i class="icon-rocket"></i> <span
+						class="title">数据服务</span> <span class="arrow "></span>
+				</a></li>
+				<li><a href="/healthcare/applyenv/applytable"> <i class="icon-diamond"></i> <span
+						class="title">虚拟计算</span> <span class="arrow "></span>
+				</a></li>
+			</ul>
 		</div>
-	</div> -->
+	</div>
 	<!-- END SIDEBAR -->
 	
 	<!-- BEGIN CONTENT -->
 	<div class="page-content-wrapper">
-		<div class="page-content_1">
+		<div class="page-content">
 		
 			<!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
 			<div class="modal fade" id="large" tabindex="-1" role="dialog" aria-hidden="true">

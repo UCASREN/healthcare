@@ -32,7 +32,7 @@
 <link href="../resources/css/plugins.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/layout.css" rel="stylesheet" type="text/css"/>
 <!-- <link id="style_color" href="../resources/css/darkblue.css" rel="stylesheet" type="text/css"/> -->
-<link id="style_color" href="resources/css/themes/light2.css" rel="stylesheet" type="text/css" />
+<link id="style_color" href="../resources/css/themes/light2.css" rel="stylesheet" type="text/css" />
 <link href="../resources/css/custom.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/slider/style.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES 图标-->
@@ -65,14 +65,14 @@
 		<!-- END LOGO -->
 		
 		<!-- BEGIN HORIZANTAL MENU -->
-		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
+	<!-- 	<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 			<ul class="nav navbar-nav">
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/userdatabaseview">元数据 </a></li>
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/topicanalysis" target="_blank"> 主题分析 </a></li>
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/applydata/applytable" target="_blank"> 数据服务 </a></li>
 				<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="/healthcare/applyenv/applytable" target="_blank"> 虚拟计算 </a></li>
 			</ul>
-		</div>
+		</div> -->
 		<!-- END HORIZANTAL MENU -->
 		
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -129,9 +129,7 @@
 <div class="page-container">
 
 	<!-- BEGIN SIDEBAR -->
-	<!-- <div class="page-sidebar-wrapper">
-		DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing
-		DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed
+	<div class="page-sidebar-wrapper">
 		<div class="page-sidebar navbar-collapse collapse">
 			<ul class="page-sidebar-menu" data-keep-expanded="false"
 					data-auto-scroll="true" data-slide-speed="200">
@@ -150,12 +148,12 @@
 
 				</ul>
 		</div>
-	</div> -->
+	</div>
 	<!-- END SIDEBAR -->
 	
 	<!-- BEGIN CONTENT -->
 	<div class="page-content-wrapper">
-		<div class="page-content_1">
+		<div class="page-content">
 			<!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
 			<div class="modal fade draggable-modal" id="ajax" tabindex="-1" role="basic" aria-hidden="true">
 				<div class="modal-dialog">

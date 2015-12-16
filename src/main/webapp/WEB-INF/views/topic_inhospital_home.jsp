@@ -274,7 +274,7 @@
 	<script src="resources/js/demo.js" type="text/javascript"></script>
 	<script src="resources/js/components-pickers.js" type="text/javascript"></script>
 	<script src="resources/js/admin/adminpanel.js" type="text/javascript"></script>
-	<script src="resources/js/topicanalysis/topicanalysis.js" type="text/javascript"></script>
+	<script src="resources/js/topicanalysis/topicanalysis_home.js" type="text/javascript"></script>
 	<script>
 		jQuery(document).ready(function() {
 			Metronic.init(); // init metronic core components
