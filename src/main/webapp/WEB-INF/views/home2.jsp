@@ -110,7 +110,7 @@ function FileManagerClass(){
 					<a href=""><img alt="图标" class="pngfix" src="home/images/home/change_logo.png"
 						width="50px" height="50px" /><em><i
 							class="icons16 icons16-home-white" title="首页"></i></em></a>
-						<span style="color:#FFF;font-size:20px;font-weight:bold;">中国心脑血管病大数据平台</span>	
+						<span style="color:#FFF;font-size:20px;font-weight:bold;">中国心脑血管病临床大数据平台</span>	
 				</div>
 				<nav>
 					<!-- <ul>
