@@ -173,9 +173,9 @@
 		<div class="wrap">
 			<p class="subsite-btn  clearfix">
 				<a href="topicanalysis_hospital" target="_blank"> <span
-					class="icons48 icons48-it"></span> <b>住院数据</b></a> <a
+					class="icons48 icons48-it"></span><b>住院数据</b></a><a
 					href="#" target="_blank"> <span
-					class="icons48 icons48-estate"></span> <b>筛查数据</b></a>
+					class="icons48 icons48-estate"></span><b>筛查数据</b></a>
 			</p>
 		</div>
 	</div>
