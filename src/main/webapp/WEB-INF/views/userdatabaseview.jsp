@@ -224,7 +224,7 @@
 				<div id="showalldatabaseinfo" style="display: block;">
 					<p></p>
 					<div class="row">
-						<span id="showalldatabaseinfo_number"></span>
+						<span id="showalldatabaseinfo_number" style="padding-left:15px;font-size:16px;"></span>
 					</div>
 					<p></p>
 					<div class="row">
@@ -310,7 +310,7 @@
 				</div>
 				<p></p>
 				<div class="row">
-					<div class="col-md-7">
+					<div class="col-md-10">
 					<div id="showdatabaseinfo" style="display: none;">
 
 					<p></p>
@@ -363,7 +363,7 @@
 					</div>
 				</div>
 					</div>
-					<div class="col-md-5"></div>
+					<div class="col-md-2"></div>
 				</div>
 				
 				<div class="row">

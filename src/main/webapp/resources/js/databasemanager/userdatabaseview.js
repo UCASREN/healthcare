@@ -373,7 +373,7 @@ var TableAjax = function () {
         			appenddatabaselist="";
 	        		$(temp_databaseinfo_list).each(function (i,databaseinfo) {
 	        			//下拉列表数据填充
-	        			$("#database").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"("+databaseinfo.comments+")"+"</option>"); 
+	        			$("#database").append("<option value='"+databaseinfo.databaseid+"'>"+databaseinfo.name+"</option>"); //+"("+databaseinfo.comments+")"
 	        			var tablelist="";
 	        			$(databaseinfo.tablelist).each(function (j,tableinfo) {
 	        				tablelist=tablelist+"<li ><a href='#' id='databasetable_"+databaseinfo.databaseid+"_"+tableinfo.tableid+"'> <i class='fa fa-table'></i>"+tableinfo.name+"</a></li>";
@@ -426,7 +426,7 @@ var TableAjax = function () {
         		
         		});
         		//绑定所有事件
-    			$("a[id^=databasetable_").click(function(){
+    			$("a[id^=databasetable_]").click(function(){
     			$("#showdetail").hide();
 				$("#showtableinfo").show();
             	$("#showdatabaseinfo").hide();
@@ -474,7 +474,7 @@ var TableAjax = function () {
     				},
         			success : function(data) {
         				$(data).each(function (i,tableinfo) {
-        					$("#table").append("<option value='"+tableinfo.tableid+"'>"+tableinfo.name+"("+tableinfo.comments+")"+"</option>"); 
+        					$("#table").append("<option value='"+tableinfo.tableid+"'>"+tableinfo.name+"</option>"); //+"("+tableinfo.comments+")"
         		        });
         			}
         		});

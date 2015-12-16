@@ -93,11 +93,14 @@
       		
 			<div class="row" style="padding:10px 100px;">
 				<div class="col-md-4">
-					<div class="dashboard-stat blue-madison" style="height:280px;">
-						<div class="visual">
+					<div class="dashboard-stat blue-madison" style="height:288px;">
+						<div class="visual" style="height:249px;">
 							<i class="fa fa-briefcase fa-icon-medium"></i>
 						</div>
 						<div class="details">
+							<div class="desc" style="font-size:22px;">
+								2011年
+							</div>
 							<div class="desc">
 								覆盖范围
 							</div>
@@ -135,14 +138,20 @@
 								 加载中...
 							</div>
 						</div>
+						<a class="more" href="#" id="check_more_2011">
+						查看更多 <i class="m-icon-swapright m-icon-white"></i>
+						</a>
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div class="dashboard-stat red-intense" style="height:280px;">
-						<div class="visual">
+					<div class="dashboard-stat red-intense" style="height:288px;">
+						<div class="visual" style="height:249px;">
 							<i class="fa fa-briefcase fa-icon-medium"></i>
 						</div>
 						<div class="details">
+							<div class="desc" style="font-size:22px;">
+								2012年
+							</div>
 							<div class="desc">
 								覆盖范围
 							</div>
@@ -180,14 +189,20 @@
 								 加载中...
 							</div>
 						</div>
+						<a class="more" href="#" id="check_more_2012">
+						查看更多 <i class="m-icon-swapright m-icon-white"></i>
+						</a>
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div class="dashboard-stat green-haze" style="height:280px;">
-						<div class="visual">
+					<div class="dashboard-stat green-haze" style="height:288px;">
+						<div class="visual" style="height:249px;">
 							<i class="fa fa-briefcase fa-icon-medium"></i>
 						</div>
 						<div class="details">
+							<div class="desc" style="font-size:22px;">
+								2013年
+							</div>
 							<div class="desc">
 								覆盖范围
 							</div>
@@ -225,6 +240,9 @@
 								 加载中...
 							</div>
 						</div>
+						<a class="more" href="#" id="check_more_2013">
+						查看更多 <i class="m-icon-swapright m-icon-white"></i>
+						</a>
 					</div>
 				</div>
 			</div>

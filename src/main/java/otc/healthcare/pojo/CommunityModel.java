@@ -6,6 +6,7 @@ public class CommunityModel {
 	private String name;
 	private String upName;
 	private Integer endCount;
+	private Integer dangerCount;
 	private String uull;
 	public String getName() {
 		return name;
@@ -60,5 +61,17 @@ public class CommunityModel {
 	 */
 	public void setUuCode(String uuCode) {
 		this.uuCode = uuCode;
+	}
+	/**
+	 * @return the dangerCount
+	 */
+	public Integer getDangerCount() {
+		return dangerCount;
+	}
+	/**
+	 * @param dangerCount the dangerCount to set
+	 */
+	public void setDangerCount(Integer dangerCount) {
+		this.dangerCount = dangerCount;
 	}
 }

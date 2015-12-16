@@ -27,11 +27,17 @@ public class ScreenController {
 	@RequestMapping(value="cache_all")
 	@ResponseBody
 	public String cacheAll(HttpServletRequest request){
-		joinBaseHosiptalInfo(request);
+		System.out.println("缓存强力加载中");
+		joinBaseHospitalInfo(request);
+		System.out.println("缓存joinBaseHospitalInfo成功");
 		joinCommunityInfo(request);
+		System.out.println("缓存joinCommunityInfo成功");
 		provinceCityInfo(request);
+		System.out.println("缓存provinceCityInfo成功");
 		provinceInfo(request);
+		System.out.println("缓存provinceInfo成功");
 		yearInfo(request);
+		System.out.println("缓存yearInfo成功");
 		return "ok!";
 	}
 	@RequestMapping(value="hospital_distribution_base")
@@ -44,17 +50,19 @@ public class ScreenController {
 	}
 	@RequestMapping(value = "getjoinbasehospitalinfo")
 	@ResponseBody
-	public List<BaseHospitalModel> joinBaseHosiptalInfo(HttpServletRequest request) {
+	public List<BaseHospitalModel> joinBaseHospitalInfo(HttpServletRequest request) {
+		String check_year=getCheckYear(request);
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("joinbasehosiptalinfo") == null)
 			servletContext.setAttribute("joinbasehosiptalinfo", getMySQLService().getJoinBaseHosiptalInfo());
-		return (List<BaseHospitalModel>) servletContext.getAttribute("joinbasehosiptalinfo");
+		List<BaseHospitalModel> list=((Map<String, List<BaseHospitalModel>>)servletContext.getAttribute("joinbasehosiptalinfo")).get(check_year);
+		return list;
 	}
 	@RequestMapping(value = "getjoinbasehospitalfromprovinceinfo")
 	@ResponseBody
-	public List<BaseHospitalModel> joinBaseHosiptalFromProvinceInfo(@RequestParam(value = "provinceid", required = false) String id_province,
+	public List<BaseHospitalModel> joinBaseHospitalFromProvinceInfo(@RequestParam(value = "provinceid", required = false) String id_province,
 			HttpServletRequest request) {
-		List<BaseHospitalModel> list=joinBaseHosiptalInfo(request);
+		List<BaseHospitalModel> list=joinBaseHospitalInfo(request);
 		List<BaseHospitalModel> returnList=new ArrayList<BaseHospitalModel>();
 		for(BaseHospitalModel bhm:list){
 			if(bhm.getUuProvince()!=null&&bhm.getUuProvince().equals(id_province))
@@ -62,12 +70,27 @@ public class ScreenController {
 		}
 		return returnList;
 	}
+	@RequestMapping(value = "reset_check_year")
+	@ResponseBody
+	public String resetCheckYear(@RequestParam(value = "check_year", required = false) String check_year,
+			HttpServletRequest request) {
+		System.out.println("设置check_year"+check_year);
+		request.getSession().setAttribute("check_year", check_year);
+		return "success";
+	}
+	private String getCheckYear(HttpServletRequest request){
+		if(request.getSession().getAttribute("check_year")==null)
+			request.getSession().setAttribute("check_year","2011");
+		return (String) request.getSession().getAttribute("check_year");
+	}
 	@RequestMapping(value = "getjoincommunityinfo")
 	@ResponseBody
 	public List<CommunityModel> joinCommunityInfo(HttpServletRequest request) {
+		String check_year=getCheckYear(request);
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("joincommunityinfo") == null)
-			servletContext.setAttribute("joincommunityinfo", getMySQLService().getJoinCommunityInfo());
+			servletContext.setAttribute("joincommunityinfo", getMySQLService().getJoinCommunityInfo()); 
+		List<CommunityModel> list=((Map<String, List<CommunityModel>>)servletContext.getAttribute("joinbasehosiptalinfo")).get(check_year);
 		return (List<CommunityModel>) servletContext.getAttribute("joincommunityinfo");
 	}
 	@RequestMapping(value = "getjoincommunityinfofromaccode")
@@ -130,59 +153,65 @@ public class ScreenController {
 	@ResponseBody
 	public List<HashMap<String, String>> genderInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
-			@RequestParam(value = "community", required = false) String community){
-			 
-		return getMySQLService().getGenderInfo(provinceid,acCodeUp,community);
+			@RequestParam(value = "community", required = false) String community,HttpServletRequest request){
+		String check_year=getCheckYear(request);
+		return getMySQLService().getGenderInfo(provinceid,acCodeUp,community).get(check_year);
 	}
 	@RequestMapping(value="getageinfo")
 	@ResponseBody
 	public List<HashMap<String, String>> ageInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
-			@RequestParam(value = "community", required = false) String community){
-		return getMySQLService().getAgeInfo(provinceid,acCodeUp,community);
+			@RequestParam(value = "community", required = false) String community,HttpServletRequest request){
+		String check_year=getCheckYear(request);
+		return getMySQLService().getAgeInfo(provinceid,acCodeUp,community).get(check_year);
 	}
 	@RequestMapping(value="getregioninfo")
 	@ResponseBody
 	public List<HashMap<String, String>> regionInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
-			@RequestParam(value = "community", required = false) String community){
-		return getMySQLService().getRegionInfo(provinceid,acCodeUp,community);
+			@RequestParam(value = "community", required = false) String community,HttpServletRequest request){
+		String check_year=getCheckYear(request);
+		return getMySQLService().getRegionInfo(provinceid,acCodeUp,community).get(check_year);
 	}
 	@RequestMapping(value="getgenderstrokeinfo")
 	@ResponseBody
 	public List<HashMap<String, String>> genderStrokeInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
-			@RequestParam(value = "community", required = false) String community){
-			 
-		return getMySQLService().getGenderWithStrokeInfo(provinceid,acCodeUp,community);
+			@RequestParam(value = "community", required = false) String community,HttpServletRequest request){
+		String check_year=getCheckYear(request);	 
+		return getMySQLService().getGenderWithStrokeInfo(provinceid,acCodeUp,community).get(check_year);
 	}
 	@RequestMapping(value="getagestrokeinfo")
 	@ResponseBody
 	public List<HashMap<String, String>> ageStrokeInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
-			@RequestParam(value = "community", required = false) String community){
-		return getMySQLService().getAgeWithStrokeInfo(provinceid, acCodeUp, community);
+			@RequestParam(value = "community", required = false) String community,HttpServletRequest request){
+		String check_year=getCheckYear(request); 
+		return getMySQLService().getAgeWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 	@RequestMapping(value="getregionstrokeinfo")
 	@ResponseBody
 	public List<HashMap<String, String>> regionStrokeInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
-			@RequestParam(value = "community", required = false) String community){
-		return getMySQLService().getRegionWithStrokeInfo(provinceid, acCodeUp, community);
+			@RequestParam(value = "community", required = false) String community,HttpServletRequest request){
+		String check_year=getCheckYear(request);	 
+		return getMySQLService().getRegionWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 	@RequestMapping(value="geteducationstrokeinfo")
 	@ResponseBody
 	public List<HashMap<String, String>> educationStrokeInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
-			@RequestParam(value = "community", required = false) String community){
-		return getMySQLService().getEducationWithStrokeInfo(provinceid, acCodeUp, community);
+			@RequestParam(value = "community", required = false) String community,HttpServletRequest request){
+		String check_year=getCheckYear(request);
+		return getMySQLService().getEducationWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 	@RequestMapping(value="getgenderdangerfactorinfo")
 	@ResponseBody
 	public Map<String, List<HashMap<String, String>>> genderDangerFactorInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			@RequestParam(value = "dangertype", required = false) String dangertype,
-			@RequestParam(value = "ageclassification", required = false) String ageclassification){
-		return getMySQLService().getGenderDangerFactorInfo(provinceid, dangertype, ageclassification);
+			@RequestParam(value = "ageclassification", required = false) String ageclassification,HttpServletRequest request){
+		String check_year=getCheckYear(request);
+		return getMySQLService().getGenderDangerFactorInfo(provinceid, dangertype, ageclassification).get(check_year);
 	}
 	@RequestMapping(value="disease_burden")
 	public String diseaseBurden(){

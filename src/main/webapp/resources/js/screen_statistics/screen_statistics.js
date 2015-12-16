@@ -15,3 +15,18 @@ $.ajax({
 		 });
 	}
 });
+$("a[id^=check_more_]").click(function(){
+	var year=$(this).attr("id").substring(11);
+	$.ajax({
+		type : "get",//请求方式
+		url : "reset_check_year",//发送请求地址
+		dataType : "json",
+		data:{
+			check_year:year
+		},
+		success : function(data) {
+			console.log("设置成功！")
+		}
+	});
+	window.location="topicanalysis";
+});
