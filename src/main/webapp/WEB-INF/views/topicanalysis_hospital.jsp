@@ -15,13 +15,15 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>主题分析</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>主题分析---住院数据</title>
 <link rel="icon" href="home/icons/home/logo.ico" type="image/x-icon" />
+<meta http-equiv="X-Frame-Options" content="ALLOW-FROM"> 
+<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <meta content="" name="description" />
-<meta content="" name="author" />
+<meta content="" name="author" /> -->
+
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="resources/plugins/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
@@ -175,77 +177,51 @@
 				<!-- BEGIN SIDEBAR MENU1 -->
 				<ul class="page-sidebar-menu hidden-sm hidden-xs"
 					data-auto-scroll="true" data-slide-speed="200">
-					<li><a href="javascript:;" id="people_feature"> <i class="icon-basket"></i> <span
-							class="title">人口学特征</span> <span class="arrow "></span>
-					</a>
-					</li>
-					<li><a href="javascript:;" id="prevalence_rate"> <i class="icon-basket"></i> <span
-							class="title"> 脑卒中患病率 </span> <span class="arrow "></span>
-					</a>
+					
+					<!-- <li>
+						<a href="javascript:;" id="prevalence_rate"><i class="icon-basket"></i> 
+							<span class="title"> 脑卒中患病率 </span> <span class="arrow "></span>
+						</a>
 						<ul class="sub-menu">
 							<li><a href="javascript:;" id="prevalence_rate_l1"> <i class="icon-home"></i>
 									脑卒中患病率分布
 							</a></li>
-							<li><a href="javascript:;" id="prevalence_rate_l2"> <i
-									class="icon-basket"></i> 脑卒中患病率详情
+							<li><a href="javascript:;" id="prevalence_rate_l2"> <iclass="icon-basket"></i> 
+									脑卒中患病率详情
 							</a></li>
-						</ul></li>
-					<li><a href="javascript:;" id="danger_factor"> <i class="icon-basket"></i> <span
-							class="title"> 危险因素分布 </span> <span class="arrow "></span>
-					</a>
-						<ul class="sub-menu">
-							<li><a href="javascript:;" id="danger_factor_l1"> <i class="icon-home"></i>
-									全人群危险因素分布
-							</a></li>
-							<li><a href="javascript:;" id="danger_factor_l2"> <i
-									class="icon-basket"></i> 高危人群危险因素分布
-							</a></li>
-							<li><a href="javascript:;" id="danger_factor_l3"> <i
-									class="icon-basket"></i> 脑卒中人群危险因素分布
-							</a></li>
-						</ul></li>
-					<li><a href="javascript:;" id="treat_control"> <i class="icon-basket"></i> <span
-							class="title"> 治疗与控制率 </span> <span class="arrow "></span>
-					</a>
-					</li>
-					<li><a href="javascript:;" id="esrs_score"> <i class="icon-basket"></i> <span
-							class="title"> ESRS评分 </span> <span class="arrow "></span>
-					</a>
-					</li>
-					<li><a href="javascript:;" id="framinghan_danger_assess"> <i class="icon-basket"></i> <span
-							class="title"> Framinghan风险评估 </span> <span class="arrow "></span>
-					</a>
-					</li>
-					<li><a href="javascript:;" id="icvd_danger_assess"> <i class="icon-basket"></i> <span
-							class="title"> ICVD风险评估 </span> <span class="arrow "></span>
-					</a>
-					</li>
-					<li><a href="javascript:;" id="data_resource"> <i class="icon-basket"></i> <span
-							class="title"> 数据资源 </span> <span class="arrow "></span>
-					</a>
-						<ul class="sub-menu">
-							<li><a href="javascript:;" id="data_resource_inner"> <i class="icon-home"></i>
-									脑卒中数据资源
-							</a></li>
-						</ul></li>
-					<li><a href="javascript:;" id="cloud_label"> <i class="icon-basket"></i> <span
-							class="title"> 云标签 </span> <span class="arrow "></span>
-					</a>
-						<ul class="sub-menu">
-							<li><a href="javascript:;" id="cloud_label_l1"> <i class="icon-home"></i>
-									年度分析
-							</a></li>
-							<li><a href="javascript:;" id="cloud_label_l2"> <i
-									class="icon-basket"></i> 实时分析
-							</a></li>
-						</ul></li>
+						</ul>
+					</li> -->
 					
 					<!-- 住院数据 -->
-					<li><a href="javascript:;" id="inhospital_home"> <i class="icon-basket"></i> <span
+					<li>
+						<a href="javascript:void 0" id="topic_inhospital_home"> <i class="icon-basket"></i> <span
 							class="title">住院首页 </span> <span class="arrow"></span>
 						</a>
 					</li>
-						
+					
+					<li>
+						<a href="javascript:void 0" id="topic_inhospital_patientsNum"> <i class="icon-basket"></i> <span
+							class="title">入院人次</span> <span class="arrow"></span>
+						</a>
+					</li>
+					
+					<li>
+						<a href="javascript:void 0" id="topic_inhospital_approachAndillstate"> <i class="icon-basket"></i> <span
+							class="title">入院途径\病情 </span> <span class="arrow"></span>
+						</a>
+					</li>
+					
+					<li>
+						<a href="javascript:void 0" id="topic_outhospital_approachAndillstate"> <i class="icon-basket"></i> <span
+							class="title">离院途径\病情</span> <span class="arrow"></span>
+						</a>
+					</li>
+					
+					<li>
+						<a href="javascript:void 0" id="topic_beInhospital_costs"> <i class="icon-basket"></i> <span
+							class="title">住院费用</span> <span class="arrow"></span>
+						</a>
+					</li>
 						
 				</ul>
 			</div>
@@ -254,7 +230,7 @@
 		<!-- BEGIN CONTENT -->
 		<div class="page-content-wrapper">
 			<div class="page-content">
-				<iframe  id='main' src='' height=1000px  width="99%" frameborder="0" align="top"></iframe>
+				<iframe  id="main" src="/healthcare/topic_inhospital_home" scrolling="auto" height="1000px"  width="99%" frameborder="0" align="top"></iframe>
 			</div>
 		</div>
 		<!-- END CONTENT -->

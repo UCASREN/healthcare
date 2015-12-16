@@ -90,7 +90,7 @@
 		<div class="page-content">
 			<h3 class="page-title" style="padding:10px 100px;">住院首页 <small>主题分析</small></h3>
 			
-			<div id="head" style=" height:35px;line-height:35px;text-align:right;padding-top:5px;padding-right:300px ">
+			<div id="head" style=" height:35px;line-height:35px;text-align:right;padding-top:5px;padding-right:250px ">
 	        	<div>
 		            <span class="text-primary">时间范围</span>
 		            <select name="select" id="home_time_opt" class="">

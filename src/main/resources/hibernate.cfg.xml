@@ -6,8 +6,8 @@
     <session-factory>
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-        <property name="hibernate.connection.password">123456</property>
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@202.38.153.225:1521:XE</property>
+        <property name="hibernate.connection.password">cuiguangfan</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
         <property name="hibernate.connection.username">system</property>
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
         <property name="hibernate.search.autoregister_listeners">false</property>

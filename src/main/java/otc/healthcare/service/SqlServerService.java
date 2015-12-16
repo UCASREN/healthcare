@@ -234,7 +234,7 @@ public class SqlServerService implements IService {
 
 		String sql = "";
 		sql = String.format(
-				"SELECT SUM (CAST(ZFY AS DECIMAL)) / COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE	('%s'<=RYSJ) AND (RYSJ<'%s');",
+				"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END) / COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<'%s');",
 				t1, t2);
 
 		String TreatmentAverageCost_Num = "";
@@ -321,12 +321,23 @@ public class SqlServerService implements IService {
 		}
 		String sql = "";
 		sql = String.format(
-				"SELECT SUM(CASE WHEN CYZDBM = 'G45-G46.8'	OR CYZDBM = 'I63-I63.9'	OR CYZDBM = 'I65-I66.9'	OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3'	OR CYZDBM = 'I67.5'	OR CYZDBM = 'I67.6'	OR CYZDBM = 'I69.3-I69.398' THEN 1 ELSE	0	END) AS '缺血性卒中',"
-				+ "SUM(CASE WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' OR CYZDBM = 'I67.7' OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198'	OR CYZDBM = 'I69.2-I69.298' THEN 1 ELSE	0	END ) AS '出血性卒中',"
-				+ "SUM (CASE	WHEN CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9' AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2' AND CYZDBM != 'I67.3'	AND CYZDBM != 'I67.5' AND CYZDBM != 'I67.6'	AND CYZDBM != 'I69.3-I69.398' AND CYZDBM != 'I60-I61.9' "
-				+ "AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198'	AND CYZDBM != 'I69.2-I69.298' THEN 1 ELSE 0 END) AS '其他'"
+				"SELECT "
+				+ "SUM(CASE WHEN ('G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9') THEN 1 ELSE	0	END) AS '短暂性脑缺血发作',"
+				+ "SUM(CASE WHEN (('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')) THEN 1 ELSE 0 END ) AS '脑出血',"
+				+ "SUM(CASE WHEN (('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+				+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+				+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+				+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+				+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')) THEN 1 ELSE 0 END) AS '脑梗死',"
+				+ "SUM(CASE WHEN ('I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61') THEN 1 ELSE 0	END) AS '蛛网膜下腔出血'"
 				+ "FROM (SELECT * FROM TB_Inpatient_FirstPage WHERE('%s'<=RYSJ) AND (RYSJ<='%s') AND ('%s'='0' OR RYKBBM = '%s') ) AS a"
-				+ " WHERE (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s';",
+				+ " WHERE (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s';",
 				preDate, curDate, RYKBBM, RYKBBM, XB,XB, age1, age2);
 		
 		Map<String,String> map = new HashMap<String,String>();
@@ -371,18 +382,20 @@ public class SqlServerService implements IService {
 		String curDate = Calendar2String(getCurDate());
 		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
 		
-		if(bingZhong.equals("1")){//缺血卒中
+		if(bingZhong.equals("1")){//短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
-				"SELECT	XB,	SUM (CASE WHEN NL BETWEEN 0	AND 20 THEN	1 ELSE 0 END ) AS '[0-20]',	"
-				+ "SUM (CASE WHEN NL BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
-				+ "SUM ( CASE WHEN NL BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]',	"
-				+ "SUM ( CASE WHEN NL BETWEEN 61 AND 80 THEN 1 ELSE	0 END ) AS '[61-80]',	"
-				+ "SUM ( CASE WHEN NL BETWEEN 81 AND 100 THEN 1	ELSE 0 END ) AS '[81-100]',	"
-				+ "SUM ( CASE WHEN NL > 101 THEN 1 ELSE 0 END	) AS '[>101]' "
+				"SELECT	XB,	SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN	1 ELSE 0 END ) AS '[0-20]',	"
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+				+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]',	"
+				+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE	0 END ) AS '[61-80]',	"
+				+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1	ELSE 0 END ) AS '[81-100]',	"
+				+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END	) AS '[>101]' "
 				+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s'<= RYSJ) AND (RYSJ <= '%s')"
-				+ " AND (RYKBBM = '%s' or '%s'='0') ) AS a WHERE( CYZDBM = 'G45-G46.8'OR CYZDBM = 'I63-I63.9'OR CYZDBM = 'I65-I66.9'OR "
-				+ "CYZDBM = 'I67.2'OR CYZDBM = 'I67.3'OR CYZDBM = 'I67.5'OR CYZDBM = 'I67.6'OR CYZDBM = 'I69.3-I69.398')"
+				+ " AND (RYKBBM = '%s' or '%s'='0')) AS a WHERE"
+				+ "("
+				+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+				+ ")"
 				+ "GROUP BY	XB;",				
 				preDate, curDate, hospitalDeps, hospitalDeps);
 			
@@ -404,19 +417,27 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}else if(bingZhong.equals("2")){
+		}else if(bingZhong.equals("2")){//脑出血
 			String sql = "";
 			sql = String.format(
-				"SELECT	XB,	SUM ( CASE WHEN NL BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
-				+ "SUM (CASE WHEN NL BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
-				+ "SUM (CASE WHEN NL BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
-				+ "SUM (CASE WHEN NL BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
-				+ "SUM (CASE WHEN NL BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
-				+ "SUM (CASE WHEN NL > 101 THEN 1 ELSE 0 END) AS '[>101]' "
+				"SELECT	XB,	SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
 				+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
-				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE(CYZDBM = 'I60-I61.9'OR CYZDBM = 'I62.0-I62.03'OR "
-				+ "CYZDBM = 'I67.0'OR CYZDBM = 'I67.1'OR CYZDBM = 'I67.7'OR CYZDBM = 'I69.0'OR CYZDBM = 'I69.198'OR "
-				+ "CYZDBM = 'I69.2-I69.298') GROUP BY XB;",			 
+				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE"
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "				
+				+ "GROUP BY XB;",			 
 				preDate, curDate, hospitalDeps, hospitalDeps);
 			
 			try {
@@ -436,21 +457,59 @@ public class SqlServerService implements IService {
 				e.printStackTrace();
 			}
 			dbUtil.close();
-		}else if(bingZhong.equals("3")){
+		}else if(bingZhong.equals("3")){//脑梗死
 			String sql = "";
 			sql = String.format(
-				"SELECT	XB,	SUM ( CASE WHEN NL BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
-				+ "SUM (CASE WHEN NL BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
-				+ "SUM (CASE WHEN NL BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
-				+ "SUM (CASE WHEN NL BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
-				+ "SUM (CASE WHEN NL BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
-				+ "SUM (CASE WHEN NL > 101 THEN 1 ELSE 0 END) AS '[>101]' "
+				"SELECT	XB,	SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
 				+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
-				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE (	CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	"
-				+ "AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2' AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	"
-				+ "AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398' AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' "
-				+ "AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' "
-				+ "AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') GROUP BY XB;",		 
+				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE "
+				+ "("
+				+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+				+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+				+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+				+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+				+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+				+ ")"
+				+ "GROUP BY XB;",		 
+				preDate, curDate, hospitalDeps, hospitalDeps);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				ResultSetMetaData rsmd = res.getMetaData() ;
+				while (res.next()){
+					Map<String,String> map = new TreeMap<String,String>();
+					for(int i=1; i<=rsmd.getColumnCount(); i++){
+						if(res.getString(i)==null || res.getString(i).equals(""))
+							map.put(rsmd.getColumnName(i), "10");
+						else
+							map.put(rsmd.getColumnName(i), res.getString(i));
+					}
+					rs_list.add(map);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+		}else if(bingZhong.equals("4")){//蛛网膜下腔出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	XB,	SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
+				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
+				+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
+				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE "
+				+ "("
+				+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+				+ ")"
+				+ "GROUP BY XB;",		 
 				preDate, curDate, hospitalDeps, hospitalDeps);
 			
 			try {
@@ -602,60 +661,14 @@ public class SqlServerService implements IService {
 		String age1 = tmp[0];
 		String age2 = tmp[1];
 		
-		if(bingZhong.equals("1")){//缺血卒中
+		if(bingZhong.equals("1")){//短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
 				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
-				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY RYTJBM;",			
-				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
-			
-			try {
-				ResultSet res = dbUtil.query(sql);
-				while (res.next()){
-					if(res.getString(1)==null || res.getString(1).equals(""))
-						rs_map.put("null", res.getString(2));
-					else
-						rs_map.put(res.getString(1), res.getString(2));
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbUtil.close();
-			
-		}else if(bingZhong.equals("2")){
-			String sql = "";
-			sql = String.format(
-				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
-				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
-				+ "GROUP BY RYTJBM;",		
-				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
-			
-			try {
-				ResultSet res = dbUtil.query(sql);
-				while (res.next()){
-					if(res.getString(1)==null || res.getString(1).equals(""))
-						rs_map.put("null", res.getString(2));
-					else
-						rs_map.put(res.getString(1), res.getString(2));
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbUtil.close();
-			
-		}else{
-			String sql = "";
-			sql = String.format(
-				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
-				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
-				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
-				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+				+ ")"
 				+ "GROUP BY RYTJBM;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -672,7 +685,88 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}//end else
+		}else if(bingZhong.equals("2")){//脑出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "
+				+ "GROUP BY RYTJBM;",		
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("3")){//脑梗死
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+				+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+				+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+				+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+				+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+				+ ") "
+				+ "GROUP BY RYTJBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("4")){//蛛网膜下腔出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+				+ ") "
+				+ "GROUP BY RYTJBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+		}//end ifelse
 		
 		//无法查出数据，使用样本数据
 		if(rs_map.size() == 0){
@@ -727,15 +821,16 @@ public class SqlServerService implements IService {
 		String age1 = tmp[0];
 		String age2 = tmp[1];
 		
-		if(bingZhong.equals("1")){//缺血卒中
+		if(bingZhong.equals("1")){//短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
 				"SELECT	RYQKBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
-				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY RYQKBM;",			
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+				+ ")"
+				+ "GROUP BY RYQKBM;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
-			
 			try {
 				ResultSet res = dbUtil.query(sql);
 				while (res.next()){
@@ -749,13 +844,20 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}else if(bingZhong.equals("2")){
+		}else if(bingZhong.equals("2")){//脑出血
 			String sql = "";
 			sql = String.format(
 				"SELECT	RYQKBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
-				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "
 				+ "GROUP BY RYQKBM;",		
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -772,15 +874,42 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}else{
+		}else if(bingZhong.equals("3")){//脑梗死
 			String sql = "";
 			sql = String.format(
 				"SELECT	RYQKBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
-				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
-				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
-				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+				+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+				+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+				+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+				+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+				+ ") "
+				+ "GROUP BY RYQKBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("4")){//蛛网膜下腔出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	RYQKBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+				+ ") "
 				+ "GROUP BY RYQKBM;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -854,13 +983,14 @@ public class SqlServerService implements IService {
 		String age1 = tmp[0];
 		String age2 = tmp[1];
 		
-		if(bingZhong.equals("1")){//缺血卒中
+		if(bingZhong.equals("1")){//短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
 				"SELECT	LYFSBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
-				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY LYFSBM;",			
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+				+ ") GROUP BY LYFSBM;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
 			try {
@@ -876,13 +1006,20 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}else if(bingZhong.equals("2")){
+		}else if(bingZhong.equals("2")){//脑出血
 			String sql = "";
 			sql = String.format(
 				"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
-				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "
 				+ "GROUP BY LYFSBM;",		
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -899,15 +1036,42 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}else{
+		}else if(bingZhong.equals("3")){//脑梗死
 			String sql = "";
 			sql = String.format(
 				"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
-				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
-				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
-				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+				+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+				+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+				+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+				+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+				+ ") "
+				+ "GROUP BY LYFSBM;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("4")){//蛛网膜下腔出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+				+ ") "
 				+ "GROUP BY LYFSBM;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -983,13 +1147,15 @@ public class SqlServerService implements IService {
 		String age1 = tmp[0];
 		String age2 = tmp[1];
 		
-		if(bingZhong.equals("1")){//缺血卒中
+		if(bingZhong.equals("1")){//短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
 				"SELECT	CYBQ, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
-				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY CYBQ;",			
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+				+ ") "
+				+ "GROUP BY CYBQ;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
 			try {
@@ -1005,13 +1171,20 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}else if(bingZhong.equals("2")){
+		}else if(bingZhong.equals("2")){//脑出血
 			String sql = "";
 			sql = String.format(
 				"SELECT	CYBQ, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
-				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "
 				+ "GROUP BY CYBQ;",		
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -1028,15 +1201,44 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}else{
+		}else if(bingZhong.equals("3")){//脑梗死
 			String sql = "";
 			sql = String.format(
 				"SELECT	CYBQ, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
-				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
-				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
-				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "
+				+ "GROUP BY CYBQ;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("4")){//蛛网膜下腔出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	CYBQ, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+				+ ") "
 				+ "GROUP BY CYBQ;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -1115,52 +1317,14 @@ public class SqlServerService implements IService {
 		String age1 = tmp[0];
 		String age2 = tmp[1];
 		
-		if(bingZhong.equals("1")){//缺血卒中
+		if(bingZhong.equals("1")){//短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
 				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' OR CYZDBM = 'I67.3' "
-				+ "OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398') GROUP BY YLFKFS;",			
-				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
-			
-			try {
-				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbUtil.close();
-			
-		}else if(bingZhong.equals("2")){
-			String sql = "";
-			sql = String.format(
-				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03'	OR CYZDBM = 'I67.0'	OR CYZDBM = 'I67.1'	"
-				+ "OR CYZDBM = 'I67.7'	OR CYZDBM = 'I69.0'	OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298') "
-				+ "GROUP BY YLFKFS;",		
-				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
-			
-			try {
-				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbUtil.close();
-			
-		}else{
-			String sql = "";
-			sql = String.format(
-				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
-				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s' AND "
-				+ "(CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2'	"
-				+ "AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398'	"
-				+ "AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' "
-				+ "AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+				+ ")"
 				+ "GROUP BY YLFKFS;",			
 				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
 			
@@ -1173,7 +1337,77 @@ public class SqlServerService implements IService {
 			}
 			dbUtil.close();
 			
-		}//end else
+		}else if(bingZhong.equals("2")){//脑出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "
+				+ "GROUP BY YLFKFS;",		
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("3")){//脑梗死
+			String sql = "";
+			sql = String.format(
+				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+				+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+				+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+				+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+				+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+				+ ") "
+				+ "GROUP BY YLFKFS;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}else if(bingZhong.equals("4")){//蛛网膜下腔出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	YLFKFS, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
+				+ "("
+				+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+				+ ")"
+				+ "GROUP BY YLFKFS;",			
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				while (res.next())
+					rs_map.put(res.getString(1), res.getString(2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+			
+		}
 		
 		//无法查出数据，使用样本数据
 		if(rs_map.size() == 0){
@@ -1211,18 +1445,57 @@ public class SqlServerService implements IService {
 		String sql = "";
 		sql = String.format(
 			"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / COUNT (ZYH) AS '平均费用',"
-			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
-			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
-			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "
-			+ "OR CYZDBM = 'I67.7' OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' "
-			+ "ELSE '其他' END AS '病种'"
-			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
-			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
+			+ "CASE WHEN ("
+			+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+			+ ") THEN '短暂性脑缺血发作' "
+			+ "WHEN ("
+			+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+			+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+			+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+			+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+			+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+			+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+			+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+			+ ") THEN '脑出血' "
+			+ "WHEN ("
+			+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+			+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+			+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+			+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+			+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+			+ ") THEN '脑梗死' "
+			+ "WHEN ("
+			+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+			+ ") THEN '蛛网膜下腔出血' "
+			+ "ELSE '其他' "
+			+ "END AS '病种' "
+			+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s'"			
 			+ "GROUP BY "
-			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' "
-			+ "OR CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN	'缺血性卒中' "
-			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' OR CYZDBM = 'I67.7' "
-			+ "OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' ELSE '其他' END;",					
+			+ "CASE WHEN ("
+			+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+			+ ") THEN '短暂性脑缺血发作' "
+			+ "WHEN ("
+			+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+			+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+			+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+			+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+			+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+			+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+			+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+			+ ") THEN '脑出血' "
+			+ "WHEN ("
+			+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+			+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+			+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+			+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+			+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+			+ ") THEN '脑梗死' "
+			+ "WHEN ("
+			+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+			+ ") THEN '蛛网膜下腔出血' "
+			+ "ELSE '其他' "
+			+ "END;",					
 			preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
 		
 		Map<String,String> rs_map = new HashMap();
@@ -1237,8 +1510,10 @@ public class SqlServerService implements IService {
 		
 		//无法查出数据，使用样本数据
 		if(rs_map.size() == 0){
-			rs_map.put("缺血性卒中", "56");
-			rs_map.put("出血性卒中", "54");
+			rs_map.put("短暂性脑缺血发作", "56");
+			rs_map.put("脑出血", "56");
+			rs_map.put("脑梗死", "56");
+			rs_map.put("蛛网膜下腔出血", "54");
 			rs_map.put("其他", "74");
 		}
 		
@@ -1272,7 +1547,7 @@ public class SqlServerService implements IService {
 		}
 		return rs_map;
 	}
-	//费用构成---饼状图---（目前针对全部病种）
+	//费用构成---饼状图
 	public Map<String, String> getbeInhospital_costConsist(String bingZhong, String curDate, String preDate, String hospitalDeps, String sex,
 			String age) {
 		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
@@ -1282,47 +1557,174 @@ public class SqlServerService implements IService {
 				sqlserver_password);
 		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
 		
-		
-		
 		String[] tmp = age.substring(1, age.length()-1).split(",");
 		String age1 = tmp[0];
 		String age2 = tmp[1];
 		
-		String sql = "";
-		sql = String.format(
-			"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
-			+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
-			+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
-			+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
-			+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
-			+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
-			+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
-			+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
-			+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费'"
-			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
-			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
-			+ ") a",
-			preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
-		
 		Map<String,String> rs_map = new HashMap();
-		try {
-			ResultSet res = dbUtil.query(sql);
-			ResultSetMetaData rsmd = res.getMetaData() ;
-			while (res.next()){
-				for(int i=1; i<=rsmd.getColumnCount(); i++){
-					if(rsmd.getColumnName(i).equals("总费用"))
-						continue;
-					if(res.getString(i) == null || res.getString(i).equals("") || Double.valueOf(res.getString(i)) < 0)
-						rs_map.put(rsmd.getColumnName(i), "0");
-					else
-						rs_map.put(rsmd.getColumnName(i), res.getString(i));
+		if(bingZhong.equals("1")){//短暂性脑缺血发作
+			String sql = "";
+			sql = String.format(
+				"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
+				+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+				+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+				+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
+				+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
+				+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
+				+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+				+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
+				+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+				+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
+				+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"			
+				+ "("
+				+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+				+ ")"
+				+ ") a",
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				ResultSetMetaData rsmd = res.getMetaData() ;
+				while (res.next()){
+					for(int i=1; i<=rsmd.getColumnCount(); i++){
+						if(rsmd.getColumnName(i).equals("总费用"))
+							continue;
+						if(res.getString(i) == null || res.getString(i).equals("") || Double.valueOf(res.getString(i)) < 0)
+							rs_map.put(rsmd.getColumnName(i), "0");
+						else
+							rs_map.put(rsmd.getColumnName(i), res.getString(i));
+					}
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			dbUtil.close();
+		}else if(bingZhong.equals("2")){//脑出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
+				+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+				+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+				+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
+				+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
+				+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
+				+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+				+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
+				+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+				+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
+				+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"			
+				+ "("
+				+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+				+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+				+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+				+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+				+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+				+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+				+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+				+ ") "
+				+ ") a",
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				ResultSetMetaData rsmd = res.getMetaData() ;
+				while (res.next()){
+					for(int i=1; i<=rsmd.getColumnCount(); i++){
+						if(rsmd.getColumnName(i).equals("总费用"))
+							continue;
+						if(res.getString(i) == null || res.getString(i).equals("") || Double.valueOf(res.getString(i)) < 0)
+							rs_map.put(rsmd.getColumnName(i), "0");
+						else
+							rs_map.put(rsmd.getColumnName(i), res.getString(i));
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+		}else if(bingZhong.equals("3")){//脑梗死
+			String sql = "";
+			sql = String.format(
+				"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
+				+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+				+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+				+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
+				+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
+				+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
+				+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+				+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
+				+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+				+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
+				+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"			
+				+ "("
+				+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+				+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+				+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+				+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+				+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+				+ ") "
+				+ ") a",
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				ResultSetMetaData rsmd = res.getMetaData() ;
+				while (res.next()){
+					for(int i=1; i<=rsmd.getColumnCount(); i++){
+						if(rsmd.getColumnName(i).equals("总费用"))
+							continue;
+						if(res.getString(i) == null || res.getString(i).equals("") || Double.valueOf(res.getString(i)) < 0)
+							rs_map.put(rsmd.getColumnName(i), "0");
+						else
+							rs_map.put(rsmd.getColumnName(i), res.getString(i));
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+		}else if(bingZhong.equals("4")){//蛛网膜下腔出血
+			String sql = "";
+			sql = String.format(
+				"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
+				+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+				+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+				+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
+				+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
+				+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
+				+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+				+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
+				+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+				+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
+				+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
+				+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"			
+				+ "("
+				+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+				+ ")"
+				+ ") a",
+				preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				ResultSetMetaData rsmd = res.getMetaData() ;
+				while (res.next()){
+					for(int i=1; i<=rsmd.getColumnCount(); i++){
+						if(rsmd.getColumnName(i).equals("总费用"))
+							continue;
+						if(res.getString(i) == null || res.getString(i).equals("") || Double.valueOf(res.getString(i)) < 0)
+							rs_map.put(rsmd.getColumnName(i), "0");
+						else
+							rs_map.put(rsmd.getColumnName(i), res.getString(i));
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
 		}
-		dbUtil.close();
-		
 		return rs_map;
 	}
 	
@@ -1346,18 +1748,57 @@ public class SqlServerService implements IService {
 		String sql = "";
 		sql = String.format(
 			"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
-			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
-			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
-			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "
-			+ "OR CYZDBM = 'I67.7' OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' "
-			+ "ELSE	'其他' END AS '病种'"
+			+ "CASE WHEN ("
+			+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+			+ ") THEN '短暂性脑缺血发作' "
+			+ "WHEN ("
+			+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+			+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+			+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+			+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+			+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+			+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+			+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+			+ ") THEN '脑出血' "
+			+ "WHEN ("
+			+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+			+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+			+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+			+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+			+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+			+ ") THEN '脑梗死' "
+			+ "WHEN ("
+			+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+			+ ") THEN '蛛网膜下腔出血' "
+			+ "ELSE '其他' "
+			+ "END AS '病种' "
 			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
-			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
+			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s'"			
 			+ "GROUP BY "
-			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2' "
-			+ "OR CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN	'缺血性卒中' "
-			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' OR CYZDBM = 'I67.7' "
-			+ "OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' ELSE '其他' END;",					
+			+ "CASE WHEN ("
+			+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'"
+			+ ") THEN '短暂性脑缺血发作' "
+			+ "WHEN ("
+			+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
+			+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
+			+ "('I67.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.2') OR "
+			+ "('I67.7' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I67.8') OR "
+			+ "('I69.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.1') OR "
+			+ "('I69.198' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.199') OR "
+			+ "('I69.2' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I69.299')"
+			+ ") THEN '脑出血' "
+			+ "WHEN ("
+			+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
+			+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
+			+ "('I67.2' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.4') OR "
+			+ "('I67.5' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I67.7') OR "
+			+ "('I69.3' <= UPPER (CYZDBM) AND UPPER (CYZDBM) < 'I69.399')"
+			+ ") THEN '脑梗死' "
+			+ "WHEN ("
+			+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'"
+			+ ") THEN '蛛网膜下腔出血' "
+			+ "ELSE '其他' "
+			+ "END;",						
 			preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);	
 		
 		Map<String,String> rs_map = new HashMap();
@@ -1372,9 +1813,11 @@ public class SqlServerService implements IService {
 		
 		//无法查出数据，使用样本数据
 		if(rs_map.size() == 0){
-			rs_map.put("缺血性卒中", "442");
-			rs_map.put("出血性卒中", "544");
-			rs_map.put("其他", "141");
+			rs_map.put("短暂性脑缺血发作", "56");
+			rs_map.put("脑出血", "56");
+			rs_map.put("脑梗死", "56");
+			rs_map.put("蛛网膜下腔出血", "54");
+			rs_map.put("其他", "74");
 		}
 		
 		return rs_map;

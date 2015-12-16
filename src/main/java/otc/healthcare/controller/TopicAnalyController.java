@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,36 +29,46 @@ public class TopicAnalyController {
 	
 	@RequestMapping(value="/topicanalysis")
 	public String TopicAnalysis(){
-		return "topicanalysis";
+		return "topicanalysis_home";
+	}
+	
+	@RequestMapping(value="/topicanalysis_hospital")
+	public String topicanalysis_hospital(){
+		return "topicanalysis_hospital";
 	}
 	
 	//住院数据---首页
 	@RequestMapping(value="/topic_inhospital_home")
-	public String inhospital_home(){
+	public String inhospital_home(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "topic_inhospital_home";
 	}
 	
 	//入院情况---入院人次
 	@RequestMapping(value="/topic_inhospital_patientsNum")
-	public String inhospital_patientsNum(){
+	public String inhospital_patientsNum(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "topic_inhospital_patientsNum";
 	}
 	
 	//入院情况---入院途径、病情
 	@RequestMapping(value="/topic_inhospital_approachAndillstate")
-	public String inhospital_approachAndillstate(){
+	public String inhospital_approachAndillstate(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "topic_inhospital_approachAndillstate";
 	}
 	
 	//出院情况---出院方式、病情
 	@RequestMapping(value="/topic_outhospital_approachAndillstate")
-	public String outhospital_approachAndillstate(){
+	public String outhospital_approachAndillstate(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "topic_outhospital_approachAndillstate";
 	}
 	
 	//住院情况---住院费用
 	@RequestMapping(value="/topic_beInhospital_costs")
-	public String topic_beInhospital_costs(){
+	public String topic_beInhospital_costs(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "topic_beInhospital_costs";
 	}
 	
@@ -131,8 +143,13 @@ public class TopicAnalyController {
 			@RequestParam(value = "timeType", required = true) String timeType,
 			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps){
 		
-		List<Map<String,String>> rs_list = new ArrayList<Map<String,String>>(); 
-		rs_list = this.SqlServerService.getInhospitalPatienSexAgeConsist(bingZhong,timeType,hospitalDeps);
+		List<Map<String,String>> rs_list = this.SqlServerService.getInhospitalPatienSexAgeConsist(bingZhong,timeType,hospitalDeps);
+	
+		//将男和女的数量相加---得到总数
+		Map<String,String> map = new TreeMap<>();
+		for(String key : rs_list.get(0).keySet())
+			map.put(key, String.valueOf(Double.valueOf(rs_list.get(0).get(key))+Double.valueOf(rs_list.get(1).get(key))));
+		rs_list.add(map);
 		return rs_list;
 	}
 	

@@ -36,7 +36,7 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	text-align:center;
@@ -49,7 +49,7 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	line-height:300px;
@@ -59,7 +59,7 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;
@@ -73,7 +73,7 @@
 	width:40%;
 	/* height:380px; */
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;
@@ -148,9 +148,10 @@ fillHospitalDeps();
 	        	<div>
 		            <span class="text-primary">病种</span>
 		            <select name="select" id="part1_bz" class="">
-		            	<option value="1">缺血性卒中</option>
-		             	<option value="2">出血性卒中</option>
-		             	<option value="3">其他</option>
+		            	<option value="1">短暂性脑缺血发作</option>
+		             	<option value="2">脑出血</option>
+		             	<option value="3">脑梗死</option>		 
+		             	<option value="4">蛛网膜下腔出血</option>
 		            </select>
 		            <button class="btn btn-danger" onclick="fill_myChart1()">查询</button>
 	       		</div>
@@ -160,7 +161,7 @@ fillHospitalDeps();
 			</div>
 			<script type="text/javascript">
 			var fill_myChart1 = function(){
-				myChart1 = echarts.init(document.getElementById('taskchartcontainera1'),'macarons');
+				myChart1 = echarts.init(document.getElementById('taskchartcontainera1'));
 				var bingZhong = $('#part1_bz').val();
 			    var timeType = $('#home_time_opt').val();
 			   	var hospitalDeps = $('#hospital_dep').val();
@@ -183,22 +184,23 @@ fillHospitalDeps();
 							var valuearray = new Array();
 							var v1 = new Array();
 							var v2 = new Array();
+							var v3 = new Array();
 							for(var key in data[0]){
 								if(key == 'XB')
 									continue;
 								keyarray.push(key);
 								v1.push(parseFloat((data[0][key] * 1).toFixed(2)));
 							}
-							
 							for(var key in data[1]){
 								if(key == 'XB')
 									continue;
 								v2.push(parseFloat((data[1][key] * 1).toFixed(2)));
 							}
-							valuearray.push(v1);
-							valuearray.push(v2);
-							console.log(keyarray);
-							console.log(valuearray);
+							for(var key in data[2]){
+								if(key == 'XB')
+									continue;
+								v3.push(parseFloat((data[2][key] * 1).toFixed(2)));
+							}
 							option = {
 								    title : {
 								        text: '性别年龄构成',
@@ -208,7 +210,7 @@ fillHospitalDeps();
 								        trigger: 'axis',
 								    },
 								    legend: {
-								        data:['男','女']
+								        data:['男','女','全部']
 								    },
 								    toolbox: {
 								        show : true,
@@ -224,6 +226,9 @@ fillHospitalDeps();
 								    xAxis : [
 								        {
 								            type : 'category',
+								            axisLabel: {
+								            	rotate: 30,
+								            },
 								            boundaryGap : false,
 								            data :  keyarray
 								        }
@@ -240,7 +245,7 @@ fillHospitalDeps();
 								        {
 								            name:'男',
 								            type:'line',
-								            data: valuearray[0],
+								            data: v1,
 								            markPoint : {
 								                data : [
 								                    {type : 'max', name: '最大值'},
@@ -261,7 +266,28 @@ fillHospitalDeps();
 								        {
 								            name:'女',
 								            type:'line',
-								            data: valuearray[1],
+								            data: v2,
+								            markPoint : {
+								                data : [
+								                    {type : 'max', name: '最大值'},
+								                    {type : 'min', name: '最小值'}
+								                ]
+								            },
+								            markLine : {
+								                data : [
+								                    {type : 'average', name: '平均值'}
+								                ]
+								            },
+								       /*      itemStyle:{
+								            	normal:{
+								            		color:'#48D1CC'
+								            	}
+								            } */
+								        },
+								        {
+								            name:'全部',
+								            type:'line',
+								            data: v3,
 								            markPoint : {
 								                data : [
 								                    {type : 'max', name: '最大值'},
@@ -368,6 +394,9 @@ fillHospitalDeps();
 									        {
 									            type : 'category',
 									            boundaryGap : false,
+									            axisLabel: {
+									            	rotate: 30,
+									            },
 									            data :  keyarray
 									        }
 									    ],

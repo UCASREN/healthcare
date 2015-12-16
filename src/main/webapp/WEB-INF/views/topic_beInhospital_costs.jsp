@@ -7,9 +7,9 @@
 <title>住院情况---费用预览</title>
 <style type="text/css">
 .s_p_part1{
-	width:80%;
+	width:90%;
 	float:left;
-	margin-left:200px;
+	margin-left:20px;
 	margin-top:20px;
 	overflow:hidden;
 }
@@ -36,20 +36,16 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	text-align:center;
-	 
-	 
-	 
-	
 }
 .s_p_p2{
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	line-height:300px;
@@ -59,21 +55,17 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;
 	text-align:center;
-	 
-	 
-	 
-	 
 }
 .s_p_p4{
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;
@@ -153,9 +145,10 @@ fillHospitalDeps();
        		
        		<span class="text-primary">病种</span>
             <select name="select" id="home_bz" class="">
-            	<option value="1">缺血性卒中</option>
-             	<option value="2">出血性卒中</option>
-             	<option value="3">其他</option>
+            	<option value="1">短暂性脑缺血发作</option>
+             	<option value="2">脑出血</option>
+             	<option value="3">脑梗死</option>		 
+             	<option value="4">蛛网膜下腔出血</option>
             </select>
             
             <span class="text-primary">时间范围</span>
@@ -331,15 +324,18 @@ fillHospitalDeps();
 									        {
 									            type : 'category',
 									            /* boundaryGap : false, */
+									            axisLabel: {
+								            	rotate: 30,
+								            	},
 									            data :  keyarray
 									        }
 									    ],
 							    yAxis : [
 							        {
 							            type : 'value',
-							            /* axisLabel: {
+							            axisLabel: {
 							            	formatter:'{value}'
-							            } */
+							            }
 							        }
 							    ],
 							    series : [
@@ -537,7 +533,10 @@ fillHospitalDeps();
 									        {
 									            type : 'category',
 									            /* boundaryGap : false, */
-									            data :  keyarray
+									            data :  keyarray,
+									            axisLabel: {
+									            	rotate: 30,
+									            }
 									        }
 									    ],
 							    yAxis : [

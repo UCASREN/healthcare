@@ -11,6 +11,7 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta http-equiv="X-Frame-Options" content="ALLOW-FROM"> 
 <title>数据服务流程</title>
 <link rel="icon" href="/healthcare/img/logo.ico" type="image/x-icon" />
 
