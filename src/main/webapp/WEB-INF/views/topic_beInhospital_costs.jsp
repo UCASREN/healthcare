@@ -290,7 +290,7 @@ fillHospitalDeps();
 						contentType : 'application/x-www-form-urlencoded; charset=utf-8',
 						url : 'beInhospital_averageCost',
 						data : {
-							bingZhong : bingZhong,
+							/* bingZhong : bingZhong, */
 							timeType : timeType,
 							hospitalDeps : hospitalDeps,
 							sex : sex,

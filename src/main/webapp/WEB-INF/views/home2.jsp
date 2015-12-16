@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>医疗大数据分析平台</title>
+<title>中国心脑血管病临床大数据平台</title>
 <meta name="keywords" content="医疗,大数据,平台" />
 <meta name="description" content="包含数据集成及发布、流程申请、虚拟环境搭建等功能" />
 

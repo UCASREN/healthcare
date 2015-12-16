@@ -620,7 +620,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
 	<div class="page-footer-inner">
-		 2015 &copy; 医疗大数据分析平台 --- 中国科学院软件研究所
+		 2015 &copy; 中国心脑血管病临床大数据平台 --- 中国卒中数据中心
 	</div>
 	<div class="scroll-to-top">
 		<i class="icon-arrow-up"></i>

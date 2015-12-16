@@ -1210,7 +1210,7 @@ public class SqlServerService implements IService {
 		
 		String sql = "";
 		sql = String.format(
-			"SELECT SUM (CAST(ZFY AS DECIMAL)) / COUNT (ZYH) AS '平均费用', "
+			"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / COUNT (ZYH) AS '平均费用',"
 			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
 			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
 			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "
@@ -1245,12 +1245,13 @@ public class SqlServerService implements IService {
 		return rs_map;
 	}
 	
-	//住院情况 --- 费用构成---（药费、手术费、检查检验费用、其他费用） --- 饼状图
-	public Map<String, String> getbeInhospital_costConsist(String timeType, String hospitalDeps, String sex,
+	
+	//住院情况 --- 费用构成---（药费、手术费、检查检验费用、其他费用） --- 饼状图---（目前针对全部病种）
+	public Map<String, String> getbeInhospital_costConsist(String bingZhong, String timeType, String hospitalDeps, String sex,
 			String age) {
 		String curDate = Calendar2String(getCurDate());
 		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
-		Map<String,String> rs_map = getbeInhospital_costConsist(curDate, preDate, hospitalDeps, sex, age);
+		Map<String,String> rs_map = getbeInhospital_costConsist(bingZhong, curDate, preDate, hospitalDeps, sex, age);
 		
 		double sum = 0.0;
 		for(Entry<String, String> tmp : rs_map.entrySet()){
@@ -1262,17 +1263,17 @@ public class SqlServerService implements IService {
 			rs_map.put("手术费", "54");
 			rs_map.put("检查检验费", "89");
 			rs_map.put("其他费用", "74");
-			
+			sum = 56 + 54 + 89 + 74;
 		}
-		sum = 56 + 54 + 89 + 74;
+		
 		for(Entry<String, String> tmp : rs_map.entrySet()){
 			String key = tmp.getKey();
 			rs_map.put(key, String.valueOf(Double.valueOf(tmp.getValue())/sum) );
 		}
 		return rs_map;
 	}
-	
-	public Map<String, String> getbeInhospital_costConsist(String curDate, String preDate, String hospitalDeps, String sex,
+	//费用构成---饼状图---（目前针对全部病种）
+	public Map<String, String> getbeInhospital_costConsist(String bingZhong, String curDate, String preDate, String hospitalDeps, String sex,
 			String age) {
 		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
 		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
@@ -1289,10 +1290,15 @@ public class SqlServerService implements IService {
 		
 		String sql = "";
 		sql = String.format(
-			"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费 AS '其他费用' FROM (SELECT SUM (CAST(ZFY AS DECIMAL)) AS '总费用',	SUM ("
-			+ "CAST (XYF AS DECIMAL) + CAST (KJYWF AS DECIMAL) + CAST (ZCYF AS DECIMAL) + CAST (ZCYF1 AS DECIMAL) + CAST (BDBLZPF AS DECIMAL) + CAST (QDBLZPF AS DECIMAL) + CAST (NXYZLZPF AS DECIMAL) + "
-			+ "CAST (XBYZLZPF AS DECIMAL)) AS '药费',	SUM (CAST (SSF AS DECIMAL) + CAST (MAF AS DECIMAL) + CAST (SSZLF AS DECIMAL) + CAST (YCXYYCLF AS DECIMAL)) AS '手术费',"
-			+ "SUM (CAST (SYSZDF AS DECIMAL) + CAST (YXXZDF AS DECIMAL) + CAST (LCZDXMF AS DECIMAL)) AS '检查检验费'"
+			"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+			+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+			+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
+			+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
+			+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
+			+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+			+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
+			+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+			+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费'"
 			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
 			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
 			+ ") a",
@@ -1339,7 +1345,7 @@ public class SqlServerService implements IService {
 		
 		String sql = "";
 		sql = String.format(
-			"SELECT SUM (CAST(ZFY AS DECIMAL)) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
+			"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
 			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
 			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
 			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "
