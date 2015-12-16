@@ -46,7 +46,7 @@ request.setCharacterEncoding("UTF-8");
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a href="/healthcare" id=""> <img src="/healthcare/img/change_logo_1.png"
+			<a href="/healthcare" id="" style="margin-top: 7px;"> <img src="/healthcare/img/change_logo_1.png"
 				alt="logo" class="" />
 			</a>
 			<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	

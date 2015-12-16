@@ -98,7 +98,6 @@ public class MetadataController {
 		
 		String applyid = request.getParameter("upload_applyid");
 		
-		
 		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
 		for (int i = 0; i < files.size(); ++i) {
 			MultipartFile file = files.get(i);
@@ -118,7 +117,8 @@ public class MetadataController {
 				// 如果文件夹不存在则创建
 				if (!exitfile.exists() && !exitfile.isDirectory()) {
 					System.out.println("目录 "+realPath+" 不存在");
-					exitfile.mkdir();
+					if(exitfile.mkdir())
+						System.out.println("目录 "+realPath+" 创建完毕");
 				} else {
 					System.out.println("目录 "+realPath+" 存在");
 				}
