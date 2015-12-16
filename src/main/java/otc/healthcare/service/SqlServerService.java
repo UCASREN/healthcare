@@ -381,8 +381,8 @@ public class SqlServerService implements IService {
 				+ "SUM ( CASE WHEN NL BETWEEN 81 AND 100 THEN 1	ELSE 0 END ) AS '[81-100]',	"
 				+ "SUM ( CASE WHEN NL > 101 THEN 1 ELSE 0 END	) AS '[>101]' "
 				+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s'<= RYSJ) AND (RYSJ <= '%s')"
-				+ " AND (RYKBBM = '%s' or '%s'='0') ) AS a WHERE CYZDBM = 'G45-G46.8'OR CYZDBM = 'I63-I63.9'OR CYZDBM = 'I65-I66.9'OR "
-				+ "CYZDBM = 'I67.2'OR CYZDBM = 'I67.3'OR CYZDBM = 'I67.5'OR CYZDBM = 'I67.6'OR CYZDBM = 'I69.3-I69.398' "
+				+ " AND (RYKBBM = '%s' or '%s'='0') ) AS a WHERE( CYZDBM = 'G45-G46.8'OR CYZDBM = 'I63-I63.9'OR CYZDBM = 'I65-I66.9'OR "
+				+ "CYZDBM = 'I67.2'OR CYZDBM = 'I67.3'OR CYZDBM = 'I67.5'OR CYZDBM = 'I67.6'OR CYZDBM = 'I69.3-I69.398')"
 				+ "GROUP BY	XB;",				
 				preDate, curDate, hospitalDeps, hospitalDeps);
 			
@@ -414,9 +414,43 @@ public class SqlServerService implements IService {
 				+ "SUM (CASE WHEN NL BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
 				+ "SUM (CASE WHEN NL > 101 THEN 1 ELSE 0 END) AS '[>101]' "
 				+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
-				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE	CYZDBM = 'I60-I61.9'OR CYZDBM = 'I62.0-I62.03'OR "
+				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE(CYZDBM = 'I60-I61.9'OR CYZDBM = 'I62.0-I62.03'OR "
 				+ "CYZDBM = 'I67.0'OR CYZDBM = 'I67.1'OR CYZDBM = 'I67.7'OR CYZDBM = 'I69.0'OR CYZDBM = 'I69.198'OR "
-				+ "CYZDBM = 'I69.2-I69.298' GROUP BY	XB;",			 
+				+ "CYZDBM = 'I69.2-I69.298') GROUP BY XB;",			 
+				preDate, curDate, hospitalDeps, hospitalDeps);
+			
+			try {
+				ResultSet res = dbUtil.query(sql);
+				ResultSetMetaData rsmd = res.getMetaData() ;
+				while (res.next()){
+					Map<String,String> map = new TreeMap<String,String>();
+					for(int i=1; i<=rsmd.getColumnCount(); i++){
+						if(res.getString(i)==null || res.getString(i).equals(""))
+							map.put(rsmd.getColumnName(i), "10");
+						else
+							map.put(rsmd.getColumnName(i), res.getString(i));
+					}
+					rs_list.add(map);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbUtil.close();
+		}else if(bingZhong.equals("3")){
+			String sql = "";
+			sql = String.format(
+				"SELECT	XB,	SUM ( CASE WHEN NL BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
+				+ "SUM (CASE WHEN NL BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+				+ "SUM (CASE WHEN NL BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
+				+ "SUM (CASE WHEN NL BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
+				+ "SUM (CASE WHEN NL BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
+				+ "SUM (CASE WHEN NL > 101 THEN 1 ELSE 0 END) AS '[>101]' "
+				+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
+				+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE (	CYZDBM != 'G45-G46.8' AND CYZDBM != 'I63-I63.9'	"
+				+ "AND CYZDBM != 'I65-I66.9' AND CYZDBM != 'I67.2' AND CYZDBM != 'I67.3' AND CYZDBM != 'I67.5'	"
+				+ "AND CYZDBM != 'I67.6' AND CYZDBM != 'I69.3-I69.398' AND CYZDBM != 'I60-I61.9' AND CYZDBM != 'I62.0-I62.03' "
+				+ "AND CYZDBM != 'I67.0' AND CYZDBM != 'I67.1' AND CYZDBM != 'I67.7' AND CYZDBM != 'I69.0' "
+				+ "AND CYZDBM != 'I69.198' AND CYZDBM != 'I69.2-I69.298') GROUP BY XB;",		 
 				preDate, curDate, hospitalDeps, hospitalDeps);
 			
 			try {
@@ -439,7 +473,7 @@ public class SqlServerService implements IService {
 		}//end ifelse
 		
 		//无数据时候，模拟相应数据
-		if(rs_list.size() != 3){
+		if(rs_list.size() == 0){
 			rs_list = new ArrayList<Map<String,String>>();
 			for(int i=2; i<4; i++){
 				Map<String,String> map = new TreeMap<String,String>();
@@ -536,6 +570,8 @@ public class SqlServerService implements IService {
 		inhospital_approach_map.put("2", "门诊 ");
 		inhospital_approach_map.put("3", "其他医疗机构转入 ");
 		inhospital_approach_map.put("9", "其他 ");
+		inhospital_approach_map.put("－", "未知 1");
+		inhospital_approach_map.put("null", "未知2");
 		
 		Map<String, String> map = getInhospital_approach(bingZhong,hospitalDeps,sex,age,preDate,curDate);
 		Map<String, String> rs_map = new HashMap<>();
@@ -577,8 +613,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -596,8 +636,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -617,8 +661,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -647,6 +695,8 @@ public class SqlServerService implements IService {
 		inhospital_illstatus_map.put("2", "急诊 ");
 		inhospital_illstatus_map.put("3", "一般 ");
 		inhospital_illstatus_map.put("9", "其他 ");
+		inhospital_illstatus_map.put("null", "未知");
+
 		
 		Map<String, String> map = getInhospital_illstatus(bingZhong,hospitalDeps,sex,age,preDate,curDate);
 		Map<String, String> rs_map = new HashMap<>();
@@ -688,8 +738,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -707,8 +761,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -728,8 +786,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -760,7 +822,9 @@ public class SqlServerService implements IService {
 		outhospital_approach_map.put("4", "非医嘱离院 ");
 		outhospital_approach_map.put("5", "死亡 ");
 		outhospital_approach_map.put("6", "其他 ");
-		
+		outhospital_approach_map.put("null", "未知1");
+		outhospital_approach_map.put("0", "未知2");
+
 		Map<String, String> map = getOuthospital_approach(bingZhong,hospitalDeps,sex,age,preDate,curDate);
 		Map<String, String> rs_map = new HashMap<>();
 		double sum = 0.0;
@@ -801,8 +865,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -820,8 +888,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -841,8 +913,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -876,6 +952,7 @@ public class SqlServerService implements IService {
 		outhospital_illstatus_map.put("4", "恶化");
 		outhospital_illstatus_map.put("5", "死亡");
 		outhospital_illstatus_map.put("6", "其他 ");
+		outhospital_illstatus_map.put("null", "未知");
 		
 		Map<String, String> map = getOuthospital_illstatus(bingZhong,hospitalDeps,sex,age,preDate,curDate);
 		Map<String, String> rs_map = new HashMap<>();
@@ -917,8 +994,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -936,8 +1017,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -957,8 +1042,12 @@ public class SqlServerService implements IService {
 			
 			try {
 				ResultSet res = dbUtil.query(sql);
-				while (res.next())
-					rs_map.put(res.getString(1), res.getString(2));
+				while (res.next()){
+					if(res.getString(1)==null || res.getString(1).equals(""))
+						rs_map.put("null", res.getString(2));
+					else
+						rs_map.put(res.getString(1), res.getString(2));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -1121,12 +1210,12 @@ public class SqlServerService implements IService {
 		
 		String sql = "";
 		sql = String.format(
-			"SELECT SUM (CAST(ZFY AS DECIMAL)) / COUNT (ZYH) AS '平均费用', "
+			"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / COUNT (ZYH) AS '平均费用',"
 			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
 			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
 			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "
 			+ "OR CYZDBM = 'I67.7' OR CYZDBM = 'I69.0' OR CYZDBM = 'I69.198' OR CYZDBM = 'I69.2-I69.298' THEN '出血性卒中' "
-			+ "ELSE	'其他' END AS '病种'"
+			+ "ELSE '其他' END AS '病种'"
 			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
 			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
 			+ "GROUP BY "
@@ -1156,12 +1245,13 @@ public class SqlServerService implements IService {
 		return rs_map;
 	}
 	
-	//住院情况 --- 费用构成---（药费、手术费、检查检验费用、其他费用） --- 饼状图
-	public Map<String, String> getbeInhospital_costConsist(String timeType, String hospitalDeps, String sex,
+	
+	//住院情况 --- 费用构成---（药费、手术费、检查检验费用、其他费用） --- 饼状图---（目前针对全部病种）
+	public Map<String, String> getbeInhospital_costConsist(String bingZhong, String timeType, String hospitalDeps, String sex,
 			String age) {
 		String curDate = Calendar2String(getCurDate());
 		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
-		Map<String,String> rs_map = getbeInhospital_costConsist(curDate, preDate, hospitalDeps, sex, age);
+		Map<String,String> rs_map = getbeInhospital_costConsist(bingZhong, curDate, preDate, hospitalDeps, sex, age);
 		
 		double sum = 0.0;
 		for(Entry<String, String> tmp : rs_map.entrySet()){
@@ -1173,17 +1263,17 @@ public class SqlServerService implements IService {
 			rs_map.put("手术费", "54");
 			rs_map.put("检查检验费", "89");
 			rs_map.put("其他费用", "74");
-			
+			sum = 56 + 54 + 89 + 74;
 		}
-		sum = 56 + 54 + 89 + 74;
+		
 		for(Entry<String, String> tmp : rs_map.entrySet()){
 			String key = tmp.getKey();
 			rs_map.put(key, String.valueOf(Double.valueOf(tmp.getValue())/sum) );
 		}
 		return rs_map;
 	}
-	
-	public Map<String, String> getbeInhospital_costConsist(String curDate, String preDate, String hospitalDeps, String sex,
+	//费用构成---饼状图---（目前针对全部病种）
+	public Map<String, String> getbeInhospital_costConsist(String bingZhong, String curDate, String preDate, String hospitalDeps, String sex,
 			String age) {
 		String sqlserver_url = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_URL);
 		String sqlserver_username = hcConfiguration.getProperty(HealthcareConfiguration.SQLSERVER_USERNAME);
@@ -1200,10 +1290,15 @@ public class SqlServerService implements IService {
 		
 		String sql = "";
 		sql = String.format(
-			"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费 AS '其他费用' FROM (SELECT SUM (CAST(ZFY AS DECIMAL)) AS '总费用',	SUM ("
-			+ "CAST (XYF AS DECIMAL) + CAST (KJYWF AS DECIMAL) + CAST (ZCYF AS DECIMAL) + CAST (ZCYF1 AS DECIMAL) + CAST (BDBLZPF AS DECIMAL) + CAST (QDBLZPF AS DECIMAL) + CAST (NXYZLZPF AS DECIMAL) + "
-			+ "CAST (XBYZLZPF AS DECIMAL)) AS '药费',	SUM (CAST (SSF AS DECIMAL) + CAST (MAF AS DECIMAL) + CAST (SSZLF AS DECIMAL) + CAST (YCXYYCLF AS DECIMAL)) AS '手术费',"
-			+ "SUM (CAST (SYSZDF AS DECIMAL) + CAST (YXXZDF AS DECIMAL) + CAST (LCZDXMF AS DECIMAL)) AS '检查检验费'"
+			"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+			+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+			+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
+			+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
+			+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
+			+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+			+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
+			+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+			+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费'"
 			+ " FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "			
 			+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND NL BETWEEN '%s' AND '%s'"			
 			+ ") a",
@@ -1250,7 +1345,7 @@ public class SqlServerService implements IService {
 		
 		String sql = "";
 		sql = String.format(
-			"SELECT SUM (CAST(ZFY AS DECIMAL)) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
+			"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
 			+ "CASE WHEN CYZDBM = 'G45-G46.8' OR CYZDBM = 'I63-I63.9' OR CYZDBM = 'I65-I66.9' OR CYZDBM = 'I67.2'OR "
 			+ "CYZDBM = 'I67.3' OR CYZDBM = 'I67.5' OR CYZDBM = 'I67.6' OR CYZDBM = 'I69.3-I69.398' THEN '缺血性卒中' "
 			+ "WHEN CYZDBM = 'I60-I61.9' OR CYZDBM = 'I62.0-I62.03' OR CYZDBM = 'I67.0' OR CYZDBM = 'I67.1' "

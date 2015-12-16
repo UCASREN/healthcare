@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>医疗大数据分析平台</title>
+<title>中国心脑血管病临床大数据平台</title>
 <meta name="keywords" content="医疗,大数据,平台" />
 <meta name="description" content="包含数据集成及发布、流程申请、虚拟环境搭建等功能" />
 
@@ -110,7 +110,7 @@ function FileManagerClass(){
 					<a href=""><img alt="图标" class="pngfix" src="home/images/home/change_logo.png"
 						width="50px" height="50px" /><em><i
 							class="icons16 icons16-home-white" title="首页"></i></em></a>
-						<span style="color:#FFF;font-size:20px;font-weight:bold;">中国心脑血管病大数据平台</span>	
+						<span style="color:#FFF;font-size:20px;font-weight:bold;">中国心脑血管病临床大数据平台</span>	
 				</div>
 				<nav>
 					<!-- <ul>

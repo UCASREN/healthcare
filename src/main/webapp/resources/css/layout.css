@@ -53,8 +53,10 @@ Page Header
   border: 0px;
   padding: 0px;
   box-shadow: none;
-  height: 46px;
-  min-height: 46px;
+  height: 60px;
+  min-height: 60px;
+  /*  height: 46px; */
+  /* min-height: 46px; */
   filter: none;
   background-image: none;
   /* Fixed header */
@@ -69,17 +71,30 @@ Page Header
 .page-header.navbar.navbar-static-top {
   z-index: 9995;
 }
-.page-header.navbar .page-logo {
-  float: left;
+.page-header.navbar .page-logo span {
+  	float: left;
     display: block;
-    height: 46px;
-    line-height: 46px;
+    height: 60px;
+    line-height: 60px;
+/*     padding-left: 20px; */
+    padding-right: 20px;
+    color: #F5F7FC;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.page-header.navbar .page-logo {
+  	float: left;
+    display: block;
+    line-height:55px;
+    height: 60px;
     padding-left: 20px;
     padding-right: 20px;
     color: #F5F7FC;
     font-size: 20px;
     font-weight: bold;
 }
+
 .page-sidebar-closed.page-sidebar-closed-hide-logo .page-header.navbar .page-logo {
   padding: 0;
 }
@@ -493,9 +508,10 @@ Horizontal Menu
   position: relative;
 }
 .page-header.navbar .hor-menu {
-  margin: 0 0 0 -17px;
+  margin: 0 0 0 0px;
   margin: 0;
   float: left;
+  height:60px;
 }
 .page-header.navbar .hor-menu .navbar-nav {
   position: static;
@@ -570,9 +586,13 @@ Horizontal Menu
   display: none !important;
 }
 .page-header.navbar .hor-menu .navbar-nav > li > a {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   padding: 13px 13px;
+  /* font-weight:bold; */
+  font-family:SimHei;
+  height:60px;
+  line-height: 33px;
 }
 .page-header.navbar .hor-menu .navbar-nav > li > a:focus {
   background: none !important;
@@ -869,7 +889,7 @@ Page container
   clear: both;
 }
 .page-header-fixed .page-container {
-  margin-top: 75px;
+  margin-top:60px;
 }
 .page-footer-fixed.page-footer-fixed-mobile .page-container {
   margin-bottom: 20px !important;
@@ -2223,11 +2243,22 @@ Page content
     width: 100%;
   }
   .page-content-wrapper .page-content {
+  /*   margin-left: 50px;
+    margin-right: 50px; */
     margin-left: 235px;
     margin-top: 0px;
     min-height: 600px;
     padding: 25px 20px 10px 20px;
   }
+  
+   .page-content-wrapper .page-content_1 {
+  	margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 0px;
+    min-height: 600px;
+    padding: 25px 20px 10px 20px;
+  }
+  
   .page-content-wrapper .page-content.no-min-height {
     min-height: auto;
   }

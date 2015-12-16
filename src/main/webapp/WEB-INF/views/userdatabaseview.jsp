@@ -17,6 +17,8 @@
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <meta content="" name="description" />
 <meta content="" name="author" />
+<link rel="icon" href="home/icons/home/logo.ico" type="image/x-icon" />
+
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="resources/plugins/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
@@ -98,7 +100,7 @@
 				<a href="#" id="refreshalldatabaseinfo"> <img src="img/change_logo_1.png"
 					alt="logo" class="" />
 				</a>
-				<span style="color:#FFF;font-weight:bold;">中国心脑血管病大数据平台</span>	
+				<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	
 				<!-- <div class="menu-toggler sidebar-toggler" style="margin:4px 15px 0px 0px;"></div> -->
 			</div>
 			<!-- END LOGO -->

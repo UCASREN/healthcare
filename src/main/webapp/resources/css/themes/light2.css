@@ -244,6 +244,7 @@ Page Header
 .page-header.navbar .hor-menu.hor-menu-light .navbar-nav {
   /* Mega menu content */
   /* Classic menu */
+  height:60px;
 }
 .page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li.mega-menu-dropdown > .dropdown-menu {
   box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
@@ -260,6 +261,7 @@ Page Header
 .page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li > a:hover {
   color: #3b3b3b;
   background: #eeeeee;
+  height:60px;
 }
 .page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li > a:hover > i {
   color: #959595;

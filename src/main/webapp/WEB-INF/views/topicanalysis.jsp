@@ -17,6 +17,7 @@
 <meta charset="utf-8" />
 <title>主题分析</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="icon" href="home/icons/home/logo.ico" type="image/x-icon" />
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <meta content="" name="description" />
@@ -63,8 +64,8 @@
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/layout.css" rel="stylesheet" type="text/css" />
-<link id="style_color" href="resources/css/darkblue.css"
-	rel="stylesheet" type="text/css" />
+<!-- <link id="style_color" href="resources/css/darkblue.css" rel="stylesheet" type="text/css" />-->
+<link id="style_color" href="resources/css/themes/light2.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 <!-- BEGIN DIV STYLES -->
@@ -86,28 +87,27 @@
 <!-- END DIV STYLES -->
 </head>
 <!-- BEGIN BODY -->
-<body
-	class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo">
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo">
 	<!-- BEGIN HEADER -->
-	<div class="page-header -i navbar navbar-fixed-top">
+	<div class="page-header -i navbar navbar-fixed-top" style='background-color:#2c79a2;'>
 		<!-- BEGIN HEADER INNER -->
 		<div class="page-header-inner">
 			<!-- BEGIN LOGO -->
 			<div class="page-logo">
-				<a href="/healthcare" id="refreshalldatabaseinfo"> <img src="img/change_logo_1.png"
+				<a href="/healthcare" id=""> <img src="img/change_logo_1.png"
 					alt="logo" class="" />
 				</a>
-				<span style="color:#FFF;font-size:15px;font-weight:bold;">中国心脑血管病<br>大数据平台</span>	
-				<div class="menu-toggler sidebar-toggler"></div>
+				<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	
+				<!-- <div class="menu-toggler sidebar-toggler"></div> -->
 			</div>
 			<!-- END LOGO -->
 			<!-- BEGIN HORIZANTAL MENU -->
 			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="userdatabaseview">元数据 </a></li>
-					<li class="classic-menu-dropdown"><a href="topicanalysis" target="_blank"> 主题分析 </a></li>
-					<li class="classic-menu-dropdown"><a href="applydata/applytable" target="_blank"> 数据服务 </a></li>
-					<li class="classic-menu-dropdown"><a href="applyenv/applytable" target="_blank"> 虚拟计算 </a></li>
+					<li class="classic-menu-dropdown" style="height:60px;"><a style="color:#c6cfda;" href="userdatabaseview">元数据 </a></li>
+					<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="topicanalysis" target="_blank"> 主题分析 </a></li>
+					<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="applydata/applytable" target="_blank"> 数据服务 </a></li>
+					<li class="classic-menu-dropdown"><a style="color:#c6cfda;" href="applyenv/applytable" target="_blank"> 虚拟计算 </a></li>
 				</ul>
 			</div>
 			<!-- END HORIZANTAL MENU -->
@@ -123,8 +123,7 @@
 			</form> -->
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
-			<a href="javascript:;" class="menu-toggler responsive-toggler"
-				data-toggle="collapse" data-target=".navbar-collapse"> </a>
+			<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
 					
 			<div class="top-menu">
@@ -243,7 +242,7 @@
 					
 					<!-- 住院数据 -->
 					<li><a href="javascript:;" id="inhospital_home"> <i class="icon-basket"></i> <span
-							class="title">住院首页 </span> <span class="arrow "></span>
+							class="title">住院首页 </span> <span class="arrow"></span>
 						</a>
 					</li>
 						
@@ -321,17 +320,164 @@
 	<script src="resources/js/quick-sidebar.js" type="text/javascript"></script>
 	<script src="resources/js/demo.js" type="text/javascript"></script>
 	<script src="resources/js/components-pickers.js" type="text/javascript"></script>
-	<script src="resources/js/datasetanalysis/datasetanalysis.js" type="text/javascript"></script>
-	<script>
-		jQuery(document).ready(function() {
-			Metronic.init(); // init metronic core components
-			Layout.init(); // init current layout
-			QuickSidebar.init(); // init quick sidebar
-			Demo.init(); // init demo features
-			ComponentsPickers.init();
-		});
-	</script>
-	<!-- END JAVASCRIPTS -->
+<!-- 	<script src="resources/js/datasetanalysis/datasetanalysis.js" type="text/javascript"></script>-->	
+<script>
+	jQuery(document).ready(function() {
+		Metronic.init(); // init metronic core components
+		Layout.init(); // init current layout
+		QuickSidebar.init(); // init quick sidebar
+		Demo.init(); // init demo features
+		ComponentsPickers.init();
+	});
+</script>
+<script>
+    $().ready(function() {
+    	$('#whole_danger_factor').click(function(){
+        	$('#main').attr('src', '<%=basePath%>' + "service_whole_danger_factor");
+        	$('#content_page').text("全人群危险因素分布");
+        });
+        $('#total_danger_factor').click(function(){
+        	$('#main').attr('src', '<%=basePath%>' + "service_danger_factor");
+        	$('#content_page').text("脑卒中人群危险因素分布");
+        });
+        $('#dashboard').click(function(){
+       	 
+        	$('#main').attr('src', '<%=basePath%>' + "service_dashboard");
+        	$('#content_page').text("脑卒中患病率分布");
+        });
+        $('#high_danger_factor').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'service_high_danger_factor');
+        	$('#content_page').text("高危人群危险因素分布");
+        
+        });
+        $('#content_page').click(function(){
+        	var con=$('#content_page').text();
+        	if(con.indexOf("高危人群危险因素分布") !=-1){
+        		$('#main').attr('src','<%=basePath%>' + 'service_high_danger_factor');
+        	}
+        	else if(con.indexOf("脑卒中人群危险因素分布") != -1){
+        		$('#main').attr('src', '<%=basePath%>' + "service_danger_factor");
+        	}
+        	else if(con.indexOf("全人群危险因素分布") != -1){
+        		$('#main').attr('src', '<%=basePath%>' + "service_whole_danger_factor");
+        	}
+        	else if(con.indexOf("脑卒中患病率详情")!=-1){
+        		$('#main').attr('src','<%=basePath%>service_stroke_patient');
+        	}
+        	else if(con.indexOf("人口学特征")!=-1){
+        		$('#main').attr('src','<%=basePath%>people_features');
+        	}
+        	else if(con.indexOf("治疗与控制率")!=-1){
+        		$('#main').attr('src','<%=basePath%>treat_control');
+        	}
+        	else if(con.indexOf("ESRS评分")!=-1){
+        		$('#main').attr('src','<%=basePath%>ESRS_score');
+        	}
+
+        	else if(con.indexOf("脑卒中数据资源")!=-1){
+        		$('#main').attr('src','<%=basePath%>dataResource/stroke_data');
+        	}
+        	else if(con.indexOf("脑卒中患病率分布")!=-1){
+        		$('#main').attr('src','<%=basePath%>service_dashboard');
+        	}
+        	else if(con.indexOf("年度分析")!=-1){
+        		$('#main').attr('src','<%=basePath%>year_analyse');
+        	}
+        	else if(con.indexOf("实时分析")!=-1){
+        		$('#main').attr('src','<%=basePath%>real_time');
+        	}
+        	else if(con.indexOf("用户信息录入")!=-1){
+        		$('#main').attr('src','<%=basePath%>user_info_add');
+        	}
+        	else if(con.indexOf("超重计算")!=-1){
+        		$('#main').attr('src','<%=basePath%>overweight_calculate');
+        	}else if(con.indexOf("参与机构分布")!=-1){
+        		$('#main').attr('src','<%=basePath%>hospital_distribution');
+        	}
+        	
+        });
+        $('#tasktracker_font_color1').click(function(){
+        	$('#main').attr('src','<%=basePath%>get_tasktracker');
+        	
+        });
+        $('#home').click(function(){
+        	$('#main').attr('src','<%=basePath%>service_dashboard');
+        	
+        });
+        $('#stroke_patient').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'service_stroke_patient');
+        	$('#content_page').text("脑卒中患病率详情");
+        	
+        });
+        $('#people_features').click(function(){
+        	$('#main').attr('src', '<%=basePath%>' + "people_features");
+        	$('#content_page').text("人口学特征");
+        	
+        });
+ 
+        $('#treat_control').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'treat_control');
+        	$('#content_page').text("治疗与控制率");
+        	 
+        	
+        });
+        $('#esrs_score').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'ESRS_score');
+        	$('#content_page').text("ESRS评分");
+        	 
+        	
+        });
+        $('#framinghan_score').click(function(){
+                	$('#main').attr('src','<%=basePath%>' + 'Framinghan_score');
+                	$('#content_page').text("Framinghan风险评估");
+        });
+        $('#icvd_score').click(function(){
+                    $('#main').attr('src','<%=basePath%>' + 'ICVD_score');
+                    $('#content_page').text("ICVD风险评估");
+        });
+        $('#stroke_data').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'dataResource/stroke_data');
+        	$('#content_page').text("脑卒中数据资源");
+        	 
+        	
+        });
+        $('#year_analyse').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'year_analyse');
+        	$('#content_page').text("年度分析");
+        	 
+        	
+        });
+        $('#real_time').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'real_time');
+        	$('#content_page').text("实时分析");
+        	 
+        	
+        });
+        $('#user_info_add').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'user_info_add');
+        	$('#content_page').text("用户信息录入");
+        	 
+        });
+        
+        $('#join_institution').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'hospital_distribution');
+        	$('#content_page').text("用户信息录入");
+        	 
+        });
+        $('#overweight_calculate').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'overweight_calculate');
+        	$('#content_page').text("超重计算");
+        });
+        
+        $('#inhospital_patientsNum').click(function(){
+        	$('#main').attr('src','<%=basePath%>' + 'inhospital_patientsNum');
+        	$('#content_page').text("住院人次");
+        });
+        
+    }); // end ready
+</script>
+
+<!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
 </html>

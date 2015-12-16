@@ -204,7 +204,7 @@ public class TopicAnalyController {
 		return map;
 	}
 	
-	//住院费用 --- 筛选项：科室、性别、年龄、病种、时间范围
+	//住院费用 ---付费方式--- 筛选项：科室、性别、年龄、病种、时间范围
 	@RequestMapping(value="/beInhospital_treatmentPayWay")
 	@ResponseBody
 	public Map<String,String> getbeInhospital_treatmentPayWay(
@@ -218,11 +218,10 @@ public class TopicAnalyController {
 		return map;
 	}
 	
-	//住院费用---平均费用---筛选项：科室、性别、年龄、病种、时间范围
+	//住院费用---平均费用---  X轴：病种      Y轴：平均费用
 	@RequestMapping(value="/beInhospital_averageCost")
 	@ResponseBody
 	public Map<String,String> getbeInhospital_averageCost(
-			@RequestParam(value = "bingZhong", required = true) String bingZhong,
 			@RequestParam(value = "timeType", required = true) String timeType,
 			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
 			@RequestParam(value = "sex", required = true) String sex,
@@ -232,16 +231,17 @@ public class TopicAnalyController {
 		return map;
 	}
 	
-	//费用构成（药费、手术费、检查检验费用、其他费用）
+	//费用构成（药费、手术费、检查检验费用、其他费用）--- 筛选项：科室、性别、年龄、病种、时间范围（饼图）
 	@RequestMapping(value="/beInhospital_costConsist")
 	@ResponseBody
 	public Map<String,String> getbeInhospital_costConsist(
+			@RequestParam(value = "bingZhong", required = true) String bingZhong,
 			@RequestParam(value = "timeType", required = true) String timeType,
 			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps,
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getbeInhospital_costConsist(timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.SqlServerService.getbeInhospital_costConsist(bingZhong,timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	

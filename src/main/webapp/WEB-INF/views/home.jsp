@@ -12,14 +12,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>医疗大数据分析平台</title>
+<title>中国心脑血管病临床大数据平台</title>
 <meta name="keywords" content="医疗,大数据,平台" />
 <meta name="description" content="包含数据集成及发布、流程申请、虚拟环境搭建等功能" />
 
 <!--#set var='compatible' value=''-->
 <meta http-equiv="X-UA-Compatible"
 	content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-<link rel="icon" href="home/icons/home/home.ico" type="image/x-icon" />
+<link rel="icon" href="home/icons/home/logo.ico" type="image/x-icon" />
 
 <!-- <script>
 function FileManagerClass(){
@@ -93,10 +93,12 @@ function FileManagerClass(){
 		<div class="header">
 			<div class="wrap">
 				<div class="logo">
-					<a href=""><img alt="图标" class="pngfix"
-						src="home/images/home/change_logo.png" width="50px" height="50px" /><em><i
-							class="icons16 icons16-home-white" title="首页"></i></em></a> <span
-						style="color: #FFF; font-size: 20px; font-weight: bold;">中国心脑血管病大数据平台</span>
+					<a href="">
+						<img alt="图标" class="pngfix" src="home/images/home/change_logo.png" width="50px" height="50px" />
+						<!-- <em><i class="icons16 icons16-home-white" title="首页"></i></em> -->
+					</a> 
+					<!-- <span style="color: #FFF; font-size: 20px; font-weight: bold;">中国心脑血管病临床大数据平台</span> -->
+					<span style="color:#FFF;font-size: 20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	
 				</div>
 				<nav>
 					<!-- <ul>

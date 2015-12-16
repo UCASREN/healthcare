@@ -511,6 +511,8 @@ var FormWizard = function () {
             	$('#allUseField').val(tmp);
             });
             
+            $('.applytime').hide();
+            
             $("#projectApply").on('ifUnchecked', function(event){
            	 	$('#form_wizard_1 .projectItems').hide();
            	 	$('#form_wizard_1 #submit_form_projectName').val("无");

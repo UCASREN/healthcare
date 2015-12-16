@@ -43,5 +43,5 @@ $("#cloud_label_l2").click(function(){
 
 //住院数据
 $("#inhospital_home").click(function(){
-	$('#main').attr('src', '/healthcare/' + "inhospital_home");
+	$('#main').attr('src', '/healthcare/' + "topic_inhospital_home");
 });

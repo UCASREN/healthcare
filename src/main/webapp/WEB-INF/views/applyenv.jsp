@@ -12,6 +12,7 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <title>虚拟计算流程</title>
+<link rel="icon" href="/healthcare/img/logo.ico" type="image/x-icon" />
 
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/> -->
@@ -33,12 +34,78 @@ request.setCharacterEncoding("UTF-8");
 <link href="../resources/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/plugins.css" rel="stylesheet" type="text/css"/>
 <link href="../resources/css/layout.css" rel="stylesheet" type="text/css"/>
-<link id="style_color" href="../resources/css/themes/darkblue.css" rel="stylesheet" type="text/css"/>
+<!-- <link id="style_color" href="../resources/css/themes/darkblue.css" rel="stylesheet" type="text/css"/> -->
+<link id="style_color" href="../resources/css/themes/light2.css" rel="stylesheet" type="text/css"/> 
 <link href="../resources/css/custom.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
-<div class="page-container">
+
+<!-- BEGIN HEADER -->
+<div class="page-header -i navbar navbar-fixed-top" style='background-color:#2c79a2;'>
+	<!-- BEGIN HEADER INNER -->
+	<div class="page-header-inner">
+		<!-- BEGIN LOGO -->
+		<div class="page-logo">
+			<a href="/healthcare" id=""> <img src="/healthcare/img/change_logo_1.png"
+				alt="logo" class="" />
+			</a>
+			<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	
+			<!-- <div class="menu-toggler sidebar-toggler"></div> -->
+		</div>
+		<!-- END LOGO -->
+		
+		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+		</a>
+		<!-- END RESPONSIVE MENU TOGGLER -->
+		
+			<div class="top-menu">
+				<ul class="nav navbar-nav pull-right">
+					<li class="dropdown dropdown-user">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> 
+							<img alt="" class="img-circle" src="/healthcare/img/avatar3_small.jpg" />
+							<span class="username username-hide-on-mobile"><sec:authentication property="name" /></span> <i class="fa fa-angle-down"></i>
+						</a>
+						
+						<ul class="dropdown-menu dropdown-menu-default">
+							<li><a href="userpanel" target="_blank"> <i
+									class="icon-user"></i> 我的账户
+							</a></li>
+							<li><a href="/healthcare/applydata/applytable" target="_blank"> <i
+									class="icon-envelope-open"></i> 数据服务 <span
+									class="badge badge-danger"> 3 </span>
+							</a></li>
+							<li><a href="/healthcare/applyenv/applytable"> <i class="icon-rocket"></i>
+									虚拟计算<span class="badge badge-success"> 7 </span>
+							</a></li>
+							
+							<li class="divider"></li>
+							<li><a href="javascript:;"> <i class="icon-lock"></i> 锁屏
+							</a></li>
+							
+							<c:url value="/logout" var="logoutUrl" />
+							<li><a href="#" id="logoutbutton"> <i class="icon-key"></i>
+									登出
+							</a>
+							<form action="${logoutUrl}" method="post" style="display: none;" id="logoutform">
+									<input name="${_csrf.parameterName}" value="${_csrf.token}" />
+							</form></li>
+						</ul>
+						
+					</li>
+				</ul>
+			</div>
+		
+	</div>
+	<!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
+
+<div class="clearfix">
+</div>
+
+<div class="page-container" style="margin-top:43px;">
 
 	<!-- BEGIN SIDEBAR -->
 	<div class="page-sidebar-wrapper">
@@ -344,12 +411,12 @@ request.setCharacterEncoding("UTF-8");
 													</div>
 												</div>
 												<div class="form-group" style="margin-bottom:20px;margin-top:10px">
-													<label class="control-label col-md-3">申请课题情况 <span class="required">
+													<label class="control-label col-md-3">支持课题情况 <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-4" style="margin-top: 8px;">
 														<input type="checkbox" class="icheck" data-checkbox="icheckbox_flat-blue" id="projectApply"
-															checked="checked" name="projectApply" value="projectApply" data-title="已申请课题 " >已申请课题 </label>
+															checked="checked" name="projectApply" value="projectApply" data-title="已申请课题 " >支持课题 </label>
 													</div>
 												</div>
 												<div class="form-group projectItems" style="margin-bottom:0px">
@@ -384,7 +451,7 @@ request.setCharacterEncoding("UTF-8");
 														</span>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group applytime" style="margin-bottom:0px">
 													<label class="control-label col-md-3">申请时间(DD/MM/YYYY)</label>
 													<div class="col-md-4">
 														<div class="input-group input-medium date date-picker" data-date-format="yyyy/mm/dd" data-date-start-date="+0d">
@@ -503,7 +570,7 @@ request.setCharacterEncoding("UTF-8");
 														</p>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group applytime" style="margin-bottom:0px">
 													<label class="control-label col-md-3">申请时间(MM/YYYY)：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="applyDate">
@@ -553,7 +620,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
 	<div class="page-footer-inner">
-		 2015 &copy; 医疗大数据分析平台 --- 中国科学院软件研究所
+		 2015 &copy; 中国心脑血管病临床大数据平台 --- 中国卒中数据中心
 	</div>
 	<div class="scroll-to-top">
 		<i class="icon-arrow-up"></i>
