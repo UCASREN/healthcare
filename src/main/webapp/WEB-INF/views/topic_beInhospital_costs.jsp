@@ -153,9 +153,10 @@ fillHospitalDeps();
        		
        		<span class="text-primary">病种</span>
             <select name="select" id="home_bz" class="">
-            	<option value="1">缺血性卒中</option>
-             	<option value="2">出血性卒中</option>
-             	<option value="3">其他</option>
+            	<option value="1">短暂性脑缺血发作</option>
+             	<option value="2">脑出血</option>
+             	<option value="3">脑梗死</option>		 
+             	<option value="4">蛛网膜下腔出血</option>
             </select>
             
             <span class="text-primary">时间范围</span>
