@@ -161,7 +161,7 @@ fillHospitalDeps();
 			</div>
 			<script type="text/javascript">
 			var fill_myChart1 = function(){
-				myChart1 = echarts.init(document.getElementById('taskchartcontainera1'),'macarons');
+				myChart1 = echarts.init(document.getElementById('taskchartcontainera1'));
 				var bingZhong = $('#part1_bz').val();
 			    var timeType = $('#home_time_opt').val();
 			   	var hospitalDeps = $('#hospital_dep').val();
@@ -226,6 +226,9 @@ fillHospitalDeps();
 								    xAxis : [
 								        {
 								            type : 'category',
+								            axisLabel: {
+								            	rotate: 30,
+								            },
 								            boundaryGap : false,
 								            data :  keyarray
 								        }
@@ -391,6 +394,9 @@ fillHospitalDeps();
 									        {
 									            type : 'category',
 									            boundaryGap : false,
+									            axisLabel: {
+									            	rotate: 30,
+									            },
 									            data :  keyarray
 									        }
 									    ],

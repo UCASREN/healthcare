@@ -332,15 +332,18 @@ fillHospitalDeps();
 									        {
 									            type : 'category',
 									            /* boundaryGap : false, */
+									            axisLabel: {
+								            	rotate: 30,
+								            	},
 									            data :  keyarray
 									        }
 									    ],
 							    yAxis : [
 							        {
 							            type : 'value',
-							            /* axisLabel: {
+							            axisLabel: {
 							            	formatter:'{value}'
-							            } */
+							            }
 							        }
 							    ],
 							    series : [
@@ -538,7 +541,10 @@ fillHospitalDeps();
 									        {
 									            type : 'category',
 									            /* boundaryGap : false, */
-									            data :  keyarray
+									            data :  keyarray,
+									            axisLabel: {
+									            	rotate: 30,
+									            }
 									        }
 									    ],
 							    yAxis : [
