@@ -30,3 +30,10 @@ word在线预览:
 虚拟计算环境：
    
    	手动安装mvn本地库，oncecloud
+   	
+数据库：
+	增大游标数量（过多执行的sql导致createStatement和prepareStatement被重复执行，直到cursor被耗尽）：
+		 输入以下命令, 修改 oracle 最大游标数为 1000
+		alter system set open_cursors=1000 scope=both;
+	查看最大游标数是否已修改成功
+		show parameter open_cursors;

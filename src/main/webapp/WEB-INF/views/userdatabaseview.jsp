@@ -178,13 +178,13 @@
 				<ul class="page-sidebar-menu hidden-sm hidden-xs"
 					data-auto-scroll="true" data-slide-speed="200"
 					>
-					<li>
+					<li class="open">
 					<a href="javascript:;">
 					<i class="icon-folder"></i>
 					<span class="title">元数据类别</span>
-					<span class="arrow "></span>
+					<span class="arrow open"></span>
 					</a>
-					<ul class="sub-menu" id="allclassificationlist">
+					<ul class="sub-menu" id="allclassificationlist" style="display:block;">
 					
 					</ul>
 					</li>

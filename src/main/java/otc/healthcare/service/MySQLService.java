@@ -1,10 +1,13 @@
 package otc.healthcare.service;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +23,7 @@ import otc.healthcare.util.HealthcareConfiguration;
 public class MySQLService implements IService {
 	@Autowired
 	private HealthcareConfiguration hcConfiguration;
-
+	private static Map<String,List<String>> yearMap;
 	public List<BaseHospitalModel> getJoinBaseHosiptalInfo() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
@@ -197,7 +200,30 @@ public class MySQLService implements IService {
 		}
 		return cityMap;
 	}
-
+	public Map<String,ArrayList<String>> getYearAcid(){
+		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		Map<String,ArrayList<String>> yearMap=new HashMap<String,ArrayList<String>>();
+		String[] yearArray = new String[] { "2011", "2012", "2013" };
+		for(String year:yearArray){
+			ArrayList<String> list=new ArrayList<String>();
+			ResultSet res = dbUtil.query("Select acid from acid"+year);
+			try {
+				while(res.next()){
+					list.add(res.getString(1));
+				}
+				res.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			yearMap.put(year, list);
+		}
+		return yearMap;
+	}
 	public Map<String, YearStatisticsModel> getYearInfo() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
@@ -206,59 +232,47 @@ public class MySQLService implements IService {
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, YearStatisticsModel> map = new HashMap<String, YearStatisticsModel>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
-		String[] yearArraySQL = new String[] { "(uuProYear LIKE '%2011%')",
-				"(uuProYear LIKE '%2011%') or (uuProYear LIKE '%2012%')",
-				"(uuProYear LIKE '%2011%') or (uuProYear LIKE '%2012%') or (uuProYear LIKE '%2013%')" };
+		Map<String,ArrayList<String>> yearMap=getYearAcid();
 		try {
-			for (int i = 0; i < yearArray.length; i++) {
+			for(int i=0;i<yearArray.length;i++){
 				YearStatisticsModel ysm = new YearStatisticsModel();
-				ResultSet res = dbUtil
-						.query("SELECT COUNT(DISTINCT uuProvince) FROM UserUnit WHERE " + yearArraySQL[i]);
-				if (res.next()) {
-					ysm.setProvinceCount(res.getInt(1));
+				Set<String> citySet=new HashSet<String>();
+				Set<String> provinceSet=new HashSet<String>();
+				Set<String> joinBaseHospitalSet=new HashSet<String>();
+				Set<String> joinCommunitySet=new HashSet<String>();
+				ResultSet res=dbUtil.query("select distinct userunit.uuCode,uuCity,uuProvince,uuType from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"+yearArray[i]
+						+" on "+"acid"+yearArray[i]+".acid=archivescases.acid");
+				while(res.next()){
+					citySet.add(res.getString(2));
+					provinceSet.add(res.getString(3));
+					if(res.getString(3).equals("3000"))
+						joinBaseHospitalSet.add(res.getString(1));
+					else if(res.getString(3).equals("5000")||res.getString(3).equals("6000"))
+						joinCommunitySet.add(res.getString(1));
 				}
-				res = dbUtil.query("SELECT COUNT(DISTINCT uuCity) FROM UserUnit WHERE " + yearArraySQL[i]);
-				if (res.next()) {
-					ysm.setCityCount(res.getInt(1));
-				}
-				res = dbUtil.query(
-						"SELECT COUNT(DISTINCT uuCode) FROM UserUnit WHERE " + yearArraySQL[i] + " and uuType=3000");
-				if (res.next()) {
-					ysm.setJoinBaseHospitalCount(res.getInt(1));
-				}
-				res = dbUtil.query("SELECT DISTINCT uuCode FROM UserUnit WHERE " + yearArraySQL[i]
-						+ " and (uuType=5000 or uuType=6000)");
-				List<String> uuCodeList = new ArrayList<String>();
-				while (res.next()) {
-					uuCodeList.add(res.getString(1));
-				}
-				ysm.setJoinCommunityCount(uuCodeList.size());
-				int count = 0;
-				for (String uuCode : uuCodeList) {
-					res = dbUtil.query("SELECT COUNT(*) FROM ArchivesCases WHERE acEndState=1 and uuCode=" + uuCode);
-					if (res.next()) {
-						count += res.getInt(1);
-					}
-				}
-				ysm.setEndCount(count);
-				count = 0;
-				for (String uuCode : uuCodeList) {
-					res = dbUtil.query("SELECT COUNT(*) FROM ArchivesCases WHERE acStatus=3 and uuCode=" + uuCode);
-					if (res.next()) {
-						count += res.getInt(1);
-					}
-				}
-				ysm.setDangerCount(count);
-				count = 0;
-				for (String uuCode : uuCodeList) {
-					res = dbUtil.query("SELECT COUNT(*) FROM ArchivesCases WHERE acStatus=5 and uuCode=" + uuCode);
-					if (res.next()) {
-						count += res.getInt(1);
-					}
-				}
-				ysm.setStrokeCount(count);
-				map.put(yearArray[i], ysm);
+				ysm.setCityCount(citySet.size());
+				ysm.setProvinceCount(provinceSet.size());
+				ysm.setJoinBaseHospitalCount(joinBaseHospitalSet.size());
+				ysm.setJoinCommunityCount(joinCommunitySet.size());
+				res.close();
+				res=dbUtil.query("select count(*) from archivescases join acid"+yearArray[i]
+						+" on "+"acid"+yearArray[i]+".acid=archivescases.acid where archivescases.acEndState=1");
+				if(res.next())
+					ysm.setEndCount(res.getInt(1));
+				res.close();
+				res=dbUtil.query("select count(*) from archivescases join acid"+yearArray[i]
+						+" on "+"acid"+yearArray[i]+".acid=archivescases.acid where archivescases.acEndState=3");
+				if(res.next())
+					ysm.setDangerCount(res.getInt(1));
+				res.close();
+				res=dbUtil.query("select count(*) from archivescases join acid"+yearArray[i]
+						+" on "+"acid"+yearArray[i]+".acid=archivescases.acid where archivescases.acEndState=5");
+				if(res.next())
+					ysm.setStrokeCount(res.getInt(1));
+				res.close();
 			}
+			
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -745,6 +759,20 @@ public class MySQLService implements IService {
 	 */
 	public void setHcConfiguration(HealthcareConfiguration hcConfiguration) {
 		this.hcConfiguration = hcConfiguration;
+	}
+
+	/**
+	 * @return the yearMap
+	 */
+	public static Map<String,List<String>> getYearMap() {
+		return yearMap;
+	}
+
+	/**
+	 * @param yearMap the yearMap to set
+	 */
+	public static void setYearMap(Map<String,List<String>> yearMap) {
+		MySQLService.yearMap = yearMap;
 	}
 
 }
