@@ -23,9 +23,9 @@ import otc.healthcare.util.HealthcareConfiguration;
 public class MySQLService implements IService {
 	@Autowired
 	private HealthcareConfiguration hcConfiguration;
-	private static Map<String, List<String>> yearMap;
+	private Map<String, HashMap<String, String>> yearMap;
 
-	public Map<String, HashSet<BaseHospitalModel>> getJoinBaseHosiptalInfo() {
+	public Map<String, List<BaseHospitalModel>> getJoinBaseHosiptalInfo() {
 		System.out.println("正在获取基地医院数据");
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
@@ -33,44 +33,52 @@ public class MySQLService implements IService {
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		DBUtil dbUtil_inner = new DBUtil(connectionFactory.getInstance().getConnection());
-		Map<String, HashSet<BaseHospitalModel>> map = new HashMap<String, HashSet<BaseHospitalModel>>();
+		Map<String, List<BaseHospitalModel>> map = new HashMap<String, List<BaseHospitalModel>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
 			for (int i = 0; i < yearArray.length; i++) {
-				HashSet<BaseHospitalModel> list = new HashSet<BaseHospitalModel>();
+				System.out.println(yearArray[i]);
+				List<BaseHospitalModel> list = new ArrayList<BaseHospitalModel>();
 				ResultSet res = dbUtil
-						.query("select distinct userunit.uuCode,uuName,uull,uuCity,uuProvince,archivescases.acid from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"
+						.query("select distinct userunit.uuCode,uuName,uull,uuProvince from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"
 								+ yearArray[i] + " on " + "acid" + yearArray[i]
 								+ ".acid=archivescases.acid where userunit.uuType=3000");
 				while (res.next()) {
-					System.out.print(".");
 					BaseHospitalModel bhm = new BaseHospitalModel();
+					System.out.println("筛选" + res.getString(1));
 					bhm.setUuCode(res.getString(1));
 					bhm.setName(res.getString(2));
 					bhm.setUull(res.getString(3));
-					bhm.setUuProvince(res.getString(5));
-					ResultSet res_inner = dbUtil_inner
-							.query("SELECT COUNT(*) FROM ArchivesCases WHERE acEndState=1 and acCodeUp="
-									+ res.getString(1) + " and acid=" + res.getString(6));
-					if (res_inner.next()) {
-						bhm.setEndCount(res_inner.getInt(1));
-					}
-					res_inner.close();
-					res_inner = dbUtil_inner.query("SELECT COUNT(*) FROM ArchivesCases WHERE acStatus=3 and acCodeUp="
-							+ res.getString(1) + " and acid=" + res.getString(6));
-					if (res_inner.next()) {
-						bhm.setDangerCount(res_inner.getInt(1));
-					}
-					res_inner.close();
-					res_inner = dbUtil_inner.query("SELECT COUNT(*) FROM ArchivesCases WHERE acStatus=3 and uuCode="
-							+ res.getString(1) + " and acid=" + res.getString(6));
-					if (res_inner.next()) {
-						bhm.setDangerCount(bhm.getDangerCount() + res_inner.getInt(1));
-					}
-					res_inner.close();
+					bhm.setUuProvince(res.getString(4));
+
 					list.add(bhm);
 				}
 				res.close();
+				System.out.println("筛选endCount和DangerCount");
+				ResultSet res1 = dbUtil
+						.query("select archivescases.uuCode,acEndState,acStatus from archivescases join (select distinct userunit.uuCode from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"
+								+ yearArray[i] + " on " + "acid" + yearArray[i]
+								+ ".acid=archivescases.acid where userunit.uuType=3000) as tempt where tempt.uuCode=archivescases.acCodeUp");
+				Map<String, Integer> uuCodeEndCountMap = new HashMap<String, Integer>();
+				Map<String, Integer> uuCodeDangerCountMap = new HashMap<String, Integer>();
+				while (res1.next()) {
+					// acEndState=1
+					if (!uuCodeEndCountMap.containsKey(res1.getString(1)))
+						uuCodeEndCountMap.put(res1.getString(1), 0);
+					if (res1.getString(2).equals("1"))
+						uuCodeEndCountMap.put(res1.getString(1), uuCodeEndCountMap.get(res1.getString(1)) + 1);
+					// acStatus=3
+					if (!uuCodeDangerCountMap.containsKey(res1.getString(1)))
+						uuCodeDangerCountMap.put(res1.getString(1), 0);
+					if (res1.getString(3).equals("3"))
+						uuCodeDangerCountMap.put(res1.getString(1), uuCodeDangerCountMap.get(res1.getString(1)) + 1);
+				}
+				res1.close();
+				System.out.println("设置endCount和DangerCount");
+				for (BaseHospitalModel bhm : list) {
+					bhm.setEndCount(uuCodeEndCountMap.get(bhm.getUuCode()));
+					bhm.setDangerCount(uuCodeDangerCountMap.get(bhm.getUuCode()));
+				}
 				map.put(yearArray[i], list);
 			}
 
@@ -82,7 +90,7 @@ public class MySQLService implements IService {
 		return map;
 	}
 
-	public Map<String, HashSet<CommunityModel>> getJoinCommunityInfo() {
+	public Map<String, List<CommunityModel>> getJoinCommunityInfo() {
 		System.out.println("正在获取社区数据");
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
@@ -90,52 +98,60 @@ public class MySQLService implements IService {
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		DBUtil dbUtil_inner = new DBUtil(connectionFactory.getInstance().getConnection());
-		Map<String, HashSet<CommunityModel>> map = new HashMap<String, HashSet<CommunityModel>>();
+		Map<String, List<CommunityModel>> map = new HashMap<String, List<CommunityModel>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
 			for (int i = 0; i < yearArray.length; i++) {
-				HashSet<CommunityModel> list = new HashSet<CommunityModel>();
+				System.out.println(yearArray[i]);
+				List<CommunityModel> list = new ArrayList<CommunityModel>();
 				ResultSet res = dbUtil
-						.query("select distinct userunit.uuCode,uuName,uull,acCodeUp,archivescases.acid from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"
+						.query("select distinct userunit.uuCode,uuName,uull,acCodeUp from userunit join archivescases on userunit.uuCode=archivescases.uuCode join acid"
 								+ yearArray[i] + " on " + "acid" + yearArray[i]
 								+ ".acid=archivescases.acid where userunit.uuType=5000 or userunit.uuType=6000");
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					CommunityModel cm = new CommunityModel();
+					System.out.println("筛选" + res.getString(1));
 					cm.setUuCode(res.getString(1));
 					cm.setName(res.getString(2));
 					cm.setUull(res.getString(3));
 					cm.setAcCodeUp(res.getString(4));
+					System.out.println("获取上级单位");
 					ResultSet res_inner = dbUtil_inner
 							.query("SELECT DISTINCT uuName from UserUnit where uuCode=" + res.getString(4));
 					if (res_inner.next()) {
 						cm.setUpName(res_inner.getString(1));
 					}
 					res_inner.close();
-					res_inner = dbUtil_inner.query("SELECT COUNT(*) FROM ArchivesCases WHERE acEndState=1 and acCodeUp="
-							+ res.getString(1) + " and acid=" + res.getString(6));
-					if (res_inner.next()) {
-						cm.setEndCount(res_inner.getInt(1));
-					}
-					res_inner.close();
-					res_inner = dbUtil_inner.query("SELECT COUNT(*) FROM ArchivesCases WHERE acStatus=3 and acCodeUp="
-							+ res.getString(1) + " and acid=" + res.getString(6));
-					if (res_inner.next()) {
-						cm.setDangerCount(res_inner.getInt(1));
-					}
-					res_inner.close();
-					res_inner = dbUtil_inner.query("SELECT COUNT(*) FROM ArchivesCases WHERE acStatus=3 and uuCode="
-							+ res.getString(1) + " and acid=" + res.getString(6));
-					if (res_inner.next()) {
-						cm.setDangerCount(cm.getDangerCount() + res_inner.getInt(1));
-					}
-					res_inner.close();
 					list.add(cm);
 				}
-				res.close();
+				System.out.println("筛选endCount和DangerCount");
+				ResultSet res1 = dbUtil
+						.query("select archivescases.uuCode,acEndState,acStatus from archivescases join (select distinct userunit.uuCode from userunit join archivescases on userunit.uuCode=archivescases.uuCode join acid"
+								+ yearArray[i] + " on " + "acid" + yearArray[i]
+								+ ".acid=archivescases.acid where userunit.uuType=5000 or userunit.uuType=6000) as tempt where tempt.uuCode=archivescases.uuCode");
+				Map<String, Integer> uuCodeEndCountMap = new HashMap<String, Integer>();
+				Map<String, Integer> uuCodeDangerCountMap = new HashMap<String, Integer>();
+				while (res1.next()) {
+					// acEndState=1
+					if (!uuCodeEndCountMap.containsKey(res1.getString(1)))
+						uuCodeEndCountMap.put(res1.getString(1), 0);
+					if (res1.getString(2).equals("1"))
+						uuCodeEndCountMap.put(res1.getString(1), uuCodeEndCountMap.get(res1.getString(1)) + 1);
+					// acStatus=3
+					if (!uuCodeDangerCountMap.containsKey(res1.getString(1)))
+						uuCodeDangerCountMap.put(res1.getString(1), 0);
+					if (res1.getString(3).equals("3"))
+						uuCodeDangerCountMap.put(res1.getString(1), uuCodeDangerCountMap.get(res1.getString(1)) + 1);
+				}
+				res1.close();
+				System.out.println("设置endCount和DangerCount");
+				for (CommunityModel cm : list) {
+					cm.setEndCount(uuCodeEndCountMap.get(cm.getUuCode()));
+					cm.setDangerCount(uuCodeDangerCountMap.get(cm.getUuCode()));
+				}
 				map.put(yearArray[i], list);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -157,7 +173,7 @@ public class MySQLService implements IService {
 		try {
 			ResultSet res = dbUtil.query("SELECT DISTINCT neCode,neName FROM GB_native WHERE neCode LIKE '____0000'");
 			while (res.next()) {
-				System.out.print(".");
+				// System.out.print(".");
 				String neCode = res.getString(1);
 				String neName = res.getString(2);
 				if (neCode.indexOf("000000") != -1
@@ -191,7 +207,7 @@ public class MySQLService implements IService {
 		try {
 			ResultSet res = dbUtil.query("SELECT DISTINCT neCode,neName FROM GB_native WHERE neCode LIKE '__000000'");
 			while (res.next()) {
-				System.out.print(".");
+				// System.out.print(".");
 				String neCode = res.getString(1);
 				String neName = res.getString(2);
 				if (neCode.indexOf("000000") != -1) {
@@ -217,7 +233,7 @@ public class MySQLService implements IService {
 			ResultSet res = dbUtil
 					.query("SELECT DISTINCT neCode,neName FROM GB_native WHERE neCode LIKE '" + provinceId + "__0000'");
 			while (res.next()) {
-				System.out.print(".");
+				// System.out.print(".");
 				String neCode = res.getString(1);
 				String neName = res.getString(2);
 				if (neCode.indexOf("000000") == -1) {
@@ -232,28 +248,27 @@ public class MySQLService implements IService {
 		return cityMap;
 	}
 
-	// unused
-	public Map<String, ArrayList<String>> getYearAcid() {
+	public Map<String, HashMap<String, String>> getYearAcid() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
 				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
-		Map<String, ArrayList<String>> yearMap = new HashMap<String, ArrayList<String>>();
+		Map<String, HashMap<String, String>> yearMap = new HashMap<String, HashMap<String, String>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		for (String year : yearArray) {
-			ArrayList<String> list = new ArrayList<String>();
+			HashMap<String, String> tempmap = new HashMap<String, String>();
 			ResultSet res = dbUtil.query("Select acid from acid" + year);
 			try {
 				while (res.next()) {
-					System.out.print(".");
-					list.add(res.getString(1));
+					// System.out.print(".");
+					tempmap.put(res.getString(1), "1");
 				}
 				res.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			yearMap.put(year, list);
+			yearMap.put(year, tempmap);
 		}
 		return yearMap;
 	}
@@ -277,12 +292,21 @@ public class MySQLService implements IService {
 						.query("select distinct userunit.uuCode,uuCity,uuProvince,uuType from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"
 								+ yearArray[i] + " on " + "acid" + yearArray[i] + ".acid=archivescases.acid");
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					citySet.add(res.getString(2));
 					provinceSet.add(res.getString(3));
 					if (res.getString(4).equals("3000"))
 						joinBaseHospitalSet.add(res.getString(1));
-					else if (res.getString(4).equals("5000") || res.getString(4).equals("6000"))
+				}
+				res.close();
+				res = dbUtil
+						.query("select distinct userunit.uuCode,uuCity,uuProvince,acHType from userunit join archivescases on userunit.uuCode=archivescases.uuCode join acid"
+								+ yearArray[i] + " on " + "acid" + yearArray[i] + ".acid=archivescases.acid");
+				while (res.next()) {
+					// System.out.print(".");
+					citySet.add(res.getString(2));
+					provinceSet.add(res.getString(3));
+					if (res.getString(4).equals("5000") || res.getString(4).equals("6000"))
 						joinCommunitySet.add(res.getString(1));
 				}
 				ysm.setCityCount(citySet.size());
@@ -345,7 +369,7 @@ public class MySQLService implements IService {
 						+ "'='') GROUP BY aSex, a.total";
 				ResultSet res = dbUtil.query(sql);
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("gender", res.getString(1));
 					map.put("percentage", res.getString(2));
@@ -378,17 +402,17 @@ public class MySQLService implements IService {
 				String sql = "SELECT " + "(CASE aSex " + "	WHEN '1' THEN " + "		'男' " + "	WHEN '2' THEN "
 						+ "		'女' " + "	END " + ") AS gender, "
 						+ "	SUM(IF(dfstroke = 1, 1, 0)) / COUNT(1) AS percentage " + "FROM Archives "
-						+ "JOIN ArchivesCases ON Archives.aid = ArchivesCases.aid "
-						+ "JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
+						+ "JOIN ArchivesCases ON Archives.aid = ArchivesCases.aid " + "JOIN acid" + yearArray[i]
+						+ " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 						+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
-						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode "
-						+ "JOIN DangerFactors"+yearArray[i]+" ON Archives.aid = DangerFactors"+yearArray[i]+".aid " + "WHERE "
+						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "JOIN DangerFactors"
+						+ yearArray[i] + " ON Archives.aid = DangerFactors" + yearArray[i] + ".aid " + "WHERE "
 						+ "	GB_native.necode = '" + province + "' or '" + province + "'='' "
 						+ "AND ArchivesCases.accodeup = '" + acCodeUp + "' or ''='' " + "AND ArchivesCases.uucode = '"
 						+ community + "' or '" + community + "'='' " + "GROUP BY aSex";
 				ResultSet res = dbUtil.query(sql);
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("gender", res.getString(1));
 					map.put("percentage", res.getString(2));
@@ -443,7 +467,7 @@ public class MySQLService implements IService {
 						+ "AND (ArchivesCases.uucode = '" + community + "' or '" + community + "'='')" + "GROUP BY "
 						+ "	age, " + "	a.total");
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("age", res.getString(1));
 					map.put("percentage", res.getString(2));
@@ -484,8 +508,8 @@ public class MySQLService implements IService {
 						+ "FROM Archives " + "JOIN ArchivesCases ON Archives.aid = ArchivesCases.aid " + " JOIN acid"
 						+ yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 						+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
-						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode "
-						+ "JOIN DangerFactors"+yearArray[i]+" ON Archives.aid = DangerFactors"+yearArray[i]+".aid " + "WHERE "
+						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "JOIN DangerFactors"
+						+ yearArray[i] + " ON Archives.aid = DangerFactors" + yearArray[i] + ".aid " + "WHERE "
 						+ "	GB_native.necode = '" + province + "' or '" + province + "'='' "
 						+ "AND ArchivesCases.accodeup = '" + acCodeUp + "' or '" + acCodeUp + "'='' "
 						+ "AND ArchivesCases.uucode = '" + community + "' or '" + community + "'='' " + "GROUP BY ( "
@@ -499,7 +523,7 @@ public class MySQLService implements IService {
 						+ "			'70-74' " + "		WHEN acAge >= 75 " + "		AND acAge <= 79 THEN "
 						+ "			'75-79' " + "		WHEN acAge >= 80 THEN " + "			'80+' " + "		END)");
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("age", res.getString(1));
 					map.put("percentage", res.getString(2));
@@ -548,7 +572,7 @@ public class MySQLService implements IService {
 						+ "'='') AND (ArchivesCases.uucode = '" + community + "' or '" + community + "'='') GROUP BY "
 						+ "	acType, " + "	a.total");
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("region", res.getString(1));
 					map.put("percentage", res.getString(2));
@@ -583,14 +607,14 @@ public class MySQLService implements IService {
 						+ "JOIN ArchivesCases ON Archives.aid = ArchivesCases.aid " + " JOIN acid" + yearArray[i]
 						+ " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 						+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
-						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode "
-						+ "JOIN DangerFactors"+yearArray[i]+" ON Archives.aid = DangerFactors"+yearArray[i]+".aid " + "WHERE "
+						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "JOIN DangerFactors"
+						+ yearArray[i] + " ON Archives.aid = DangerFactors" + yearArray[i] + ".aid " + "WHERE "
 						+ "	(GB_native.necode = '" + province + "' or '" + province + "'='' )"
 						+ "AND (ArchivesCases.accodeup = '" + acCodeUp + "' or '" + acCodeUp + "'='' )"
 						+ "AND (ArchivesCases.uucode = '" + community + "' or '" + community + "'='' )"
 						+ "GROUP BY acType");
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("region", res.getString(1));
 					map.put("percentage", res.getString(2));
@@ -619,24 +643,24 @@ public class MySQLService implements IService {
 		try {
 			for (int i = 0; i < yearArray.length; i++) {
 				List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-				ResultSet res = dbUtil.query("SELECT " + "(CASE aEdu " + "	WHEN '1' THEN " + "		'小学' "
+				ResultSet res = dbUtil.query("SELECT " + "(CASE acEdu " + "	WHEN '1' THEN " + "		'小学' "
 						+ "	WHEN '2' THEN " + "		'初中' " + "	WHEN '3' THEN " + "		'高中' " + "	WHEN '4' THEN "
 						+ "		'大专大学' " + "	WHEN '5' THEN " + "		'硕士及以上' " + "	ELSE " + "		'未知' "
 						+ "	END " + ") AS Education, " + "SUM(IF(dfstroke = 1, 1, 0)) / COUNT(1) AS percentage "
 						+ "FROM " + "	Archives " + "JOIN ArchivesCases ON Archives.aid = ArchivesCases.aid "
 						+ " JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 						+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
-						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode "
-						+ "JOIN DangerFactors"+yearArray[i]+" ON Archives.aid = DangerFactors"+yearArray[i]+".aid " + "WHERE "
+						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "JOIN DangerFactors"
+						+ yearArray[i] + " ON Archives.aid = DangerFactors" + yearArray[i] + ".aid " + "WHERE "
 						+ "	(GB_native.necode = '" + province + "' or '" + province + "'='' )"
 						+ "AND (ArchivesCases.accodeup = '" + acCodeUp + "' or '" + acCodeUp + "'='' )"
 						+ "AND (ArchivesCases.uucode = '" + community + "' or '" + community + "'='' )" + "GROUP BY "
-						+ "	( " + "		CASE aEdu " + "		WHEN '1' THEN " + "			'小学' " + "		WHEN '2' THEN "
-						+ "			'初中' " + "		WHEN '3' THEN " + "			'高中' " + "		WHEN '4' THEN "
-						+ "			'大专大学' " + "		WHEN '5' THEN " + "			'硕士及以上' " + "		ELSE "
-						+ "			'未知' " + "		END " + "	)");
+						+ "	( " + "		CASE acEdu " + "		WHEN '1' THEN " + "			'小学' "
+						+ "		WHEN '2' THEN " + "			'初中' " + "		WHEN '3' THEN " + "			'高中' "
+						+ "		WHEN '4' THEN " + "			'大专大学' " + "		WHEN '5' THEN " + "			'硕士及以上' "
+						+ "		ELSE " + "			'未知' " + "		END " + "	)");
 				while (res.next()) {
-					System.out.print(".");
+					// System.out.print(".");
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("region", res.getString(1));
 					map.put("percentage", res.getString(2));
@@ -672,10 +696,11 @@ public class MySQLService implements IService {
 					tempPartSql += " or " + dangertype + "=9";
 				for (String sex : sexArray) {
 					if (ageclassification.equals("1")) {
-						sql = "SELECT " + "	acAge AS age ,COUNT(1) AS agecount " + "FROM " + "DangerFactors"+yearArray[i]
-								+ " JOIN Archives ON DangerFactors"+yearArray[i]+".aid = Archives.aid "
-								+ "JOIN ArchivesCases ON DangerFactors"+yearArray[i]+".aid = ArchivesCases.aid "
-								+ "JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
+						sql = "SELECT " + "	acAge AS age ,COUNT(1) AS agecount " + "FROM " + "DangerFactors"
+								+ yearArray[i] + " JOIN Archives ON DangerFactors" + yearArray[i]
+								+ ".aid = Archives.aid " + "JOIN ArchivesCases ON DangerFactors" + yearArray[i]
+								+ ".aid = ArchivesCases.aid " + "JOIN acid" + yearArray[i]
+								+ " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 								+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
 								+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "WHERE "
 								+ "	(aSex = '" + sex + "' or '" + sex + "'='') AND " + tempPartSql + "  "
@@ -692,9 +717,9 @@ public class MySQLService implements IService {
 								+ "		'65-69' " + "	WHEN acAge >= 70 " + "	AND acAge <= 74 THEN "
 								+ "		'70-74' " + "	WHEN acAge >= 75 " + "	AND acAge <= 79 THEN "
 								+ "		'75-79' " + "	WHEN acAge >= 80 THEN " + "		'80+' " + "	END "
-								+ ") AS age,COUNT(1) AS agecount " + "FROM DangerFactors"+yearArray[i]
-								+ " JOIN Archives ON DangerFactors"+yearArray[i]+".aid = Archives.aid "
-								+ "JOIN ArchivesCases ON DangerFactors"+yearArray[i]+".aid = ArchivesCases.aid "
+								+ ") AS age,COUNT(1) AS agecount " + "FROM DangerFactors" + yearArray[i]
+								+ " JOIN Archives ON DangerFactors" + yearArray[i] + ".aid = Archives.aid "
+								+ "JOIN ArchivesCases ON DangerFactors" + yearArray[i] + ".aid = ArchivesCases.aid "
 								+ "JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 								+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
 								+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "WHERE "
@@ -717,9 +742,9 @@ public class MySQLService implements IService {
 								+ "		'50-59' " + "	WHEN acAge >= 60 " + "	AND acAge <= 69 THEN "
 								+ "		'60-69' " + "	WHEN acAge >= 70 " + "	AND acAge <= 79 THEN "
 								+ "		'70-79' " + "	WHEN acAge >= 80 THEN " + "		'80+' " + "	END " + ") AS age, "
-								+ "COUNT(1) AS agecount " + "FROM " + "	DangerFactors"+yearArray[i]
-								+ " JOIN Archives ON DangerFactors"+yearArray[i]+".aid = Archives.aid "
-								+ "JOIN ArchivesCases ON DangerFactors"+yearArray[i]+".aid = ArchivesCases.aid "
+								+ "COUNT(1) AS agecount " + "FROM " + "	DangerFactors" + yearArray[i]
+								+ " JOIN Archives ON DangerFactors" + yearArray[i] + ".aid = Archives.aid "
+								+ "JOIN ArchivesCases ON DangerFactors" + yearArray[i] + ".aid = ArchivesCases.aid "
 								+ "JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 								+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
 								+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "WHERE "
@@ -735,7 +760,7 @@ public class MySQLService implements IService {
 					List<HashMap<String, String>> tempList = new ArrayList<HashMap<String, String>>();
 					ResultSet res = dbUtil.query(sql);
 					while (res.next()) {
-						System.out.print(".");
+						// System.out.print(".");
 						Map<String, String> tempmap = new HashMap<String, String>();
 						tempmap.put("age", res.getString(1));
 						tempmap.put("count", res.getString(2));
@@ -773,10 +798,11 @@ public class MySQLService implements IService {
 					tempPartSql += " or " + dangertype + "=9";
 				for (String region : regionArray) {
 					if (ageclassification.equals("1")) {
-						sql = "SELECT " + "	acAge AS age ,COUNT(1) AS agecount " + "FROM " + "DangerFactors"+yearArray[i]
-								+ " JOIN Archives ON DangerFactors"+yearArray[i]+".aid = Archives.aid "
-								+ "JOIN ArchivesCases ON DangerFactors"+yearArray[i]+".aid = ArchivesCases.aid "
-								+ "JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
+						sql = "SELECT " + "	acAge AS age ,COUNT(1) AS agecount " + "FROM " + "DangerFactors"
+								+ yearArray[i] + " JOIN Archives ON DangerFactors" + yearArray[i]
+								+ ".aid = Archives.aid " + "JOIN ArchivesCases ON DangerFactors" + yearArray[i]
+								+ ".aid = ArchivesCases.aid " + "JOIN acid" + yearArray[i]
+								+ " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 								+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
 								+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "WHERE "
 								+ "	(acType = '" + region + "' or '" + region + "'='') AND " + tempPartSql + "  "
@@ -793,9 +819,9 @@ public class MySQLService implements IService {
 								+ "		'65-69' " + "	WHEN acAge >= 70 " + "	AND acAge <= 74 THEN "
 								+ "		'70-74' " + "	WHEN acAge >= 75 " + "	AND acAge <= 79 THEN "
 								+ "		'75-79' " + "	WHEN acAge >= 80 THEN " + "		'80+' " + "	END "
-								+ ") AS age,COUNT(1) AS agecount " + "FROM DangerFactors"+yearArray[i]
-								+ "JOIN Archives ON DangerFactors"+yearArray[i]+".aid = Archives.aid "
-								+ "JOIN ArchivesCases ON DangerFactors"+yearArray[i]+".aid = ArchivesCases.aid "
+								+ ") AS age,COUNT(1) AS agecount " + "FROM DangerFactors" + yearArray[i]
+								+ "JOIN Archives ON DangerFactors" + yearArray[i] + ".aid = Archives.aid "
+								+ "JOIN ArchivesCases ON DangerFactors" + yearArray[i] + ".aid = ArchivesCases.aid "
 								+ "JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 								+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
 								+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "WHERE "
@@ -818,9 +844,9 @@ public class MySQLService implements IService {
 								+ "		'50-59' " + "	WHEN acAge >= 60 " + "	AND acAge <= 69 THEN "
 								+ "		'60-69' " + "	WHEN acAge >= 70 " + "	AND acAge <= 79 THEN "
 								+ "		'70-79' " + "	WHEN acAge >= 80 THEN " + "		'80+' " + "	END " + ") AS age, "
-								+ "COUNT(1) AS agecount " + "FROM " + "	DangerFactors"+yearArray[i]
-								+ " JOIN Archives ON DangerFactors"+yearArray[i]+".aid = Archives.aid "
-								+ "JOIN ArchivesCases ON DangerFactors"+yearArray[i]+".aid = ArchivesCases.aid "
+								+ "COUNT(1) AS agecount " + "FROM " + "	DangerFactors" + yearArray[i]
+								+ " JOIN Archives ON DangerFactors" + yearArray[i] + ".aid = Archives.aid "
+								+ "JOIN ArchivesCases ON DangerFactors" + yearArray[i] + ".aid = ArchivesCases.aid "
 								+ "JOIN acid" + yearArray[i] + " ON ArchivesCases.acid=acid" + yearArray[i] + ".acid "
 								+ "JOIN UserUnit ON Archives.uucode = UserUnit.uucode "
 								+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "WHERE "
@@ -836,7 +862,7 @@ public class MySQLService implements IService {
 					List<HashMap<String, String>> tempList = new ArrayList<HashMap<String, String>>();
 					ResultSet res = dbUtil.query(sql);
 					while (res.next()) {
-						System.out.print(".");
+						// System.out.print(".");
 						Map<String, String> tempmap = new HashMap<String, String>();
 						tempmap.put("age", res.getString(1));
 						tempmap.put("count", res.getString(2));
@@ -846,6 +872,52 @@ public class MySQLService implements IService {
 					res.close();
 				}
 				returnMap.put(yearArray[i], map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbUtil.close();
+		}
+		return returnMap;
+	}
+
+	public HashMap<String, HashMap<String, String>> getBeIllMapData() {
+		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		HashMap<String, HashMap<String, String>> returnMap = new HashMap<String, HashMap<String, String>>();
+		String[] yearArray = new String[] { "2011", "2012", "2013" };
+		String[] provinceMap = { "11000000_北京", "12000000_天津", "13000000_河北", "14000000_山西", "15000000_内蒙古",
+				"21000000_辽宁", "22000000_吉林", "23000000_黑龙江", "31000000_上海", "32000000_江苏", "33000000_浙江",
+				"34000000_安徽", "35000000_福建", "36000000_江西", "37000000_山东", "41000000_河南", "42000000_湖北", "43000000_湖南",
+				"44000000_广东", "45000000_广西", "46000000_海南", "50000000_重庆", "51000000_四川", "52000000_贵州", "53000000_云南",
+				"54000000_西藏", "61000000_陕西", "62000000_甘肃", "63000000_青海", "64000000_宁夏", "65000000_新疆",
+				"66000000_建设兵团" };
+		try {
+			for (int i = 0; i < yearArray.length; i++) {
+				System.out.println(yearArray[i]);
+				HashMap<String, String> tempMap = new HashMap<String, String>();
+				for (int j = 0; j < provinceMap.length; j++) {
+					String provinceId = provinceMap[j].split("_")[0];
+					String provinceName = provinceMap[j].split("_")[1];
+					System.out.println("省份：" + provinceName);
+					ResultSet res = dbUtil.query("SELECT GB_native.necode, SUM(IF(dfstroke=1,1,0)) / COUNT(1) "
+							+ "FROM DangerFactors" + yearArray[i] + " JOIN Archives ON DangerFactors" + yearArray[i]
+							+ ".aid = Archives.aid " + "JOIN ArchivesCases ON DangerFactors" + yearArray[i]
+							+ ".aid = ArchivesCases.aid JOIN "
+							+ "UserUnit ON Archives.uucode = UserUnit.uucode JOIN GB_native "
+							+ "ON UserUnit.uuprovince = GB_native.necode " + "join acid" + yearArray[i] + " on "
+							+ "acid" + yearArray[i] + ".acid=archivescases.acid " + " WHERE GB_native.necode = '"
+							+ provinceId + "'");
+					if (res.next()) {
+						System.out.print(provinceName + ":" + res.getString(2));
+						tempMap.put(provinceName, res.getString(2));
+					}
+					res.close();
+				}
+				returnMap.put(yearArray[i], tempMap);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -891,7 +963,9 @@ public class MySQLService implements IService {
 	/**
 	 * @return the yearMap
 	 */
-	public static Map<String, List<String>> getYearMap() {
+	public Map<String, HashMap<String, String>> getYearMap() {
+		if (yearMap == null)
+			yearMap = this.getYearAcid();
 		return yearMap;
 	}
 
@@ -899,8 +973,8 @@ public class MySQLService implements IService {
 	 * @param yearMap
 	 *            the yearMap to set
 	 */
-	public static void setYearMap(Map<String, List<String>> yearMap) {
-		MySQLService.yearMap = yearMap;
+	public void setYearMap(Map<String, HashMap<String, String>> yearMap) {
+		this.yearMap = yearMap;
 	}
 
 }

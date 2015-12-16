@@ -54,14 +54,23 @@ public class ExcelUtil {
 			tableInfo.setFieldlist(new ArrayList<FieldInfo>());
 			for (int j = rowStart + 4; j <=rowEnd; j++) {// 从相对位置的第4行开始
 				FieldInfo fieldInfo = new FieldInfo();
-				sheet.getRow(j).getCell(0).setCellType(Cell.CELL_TYPE_STRING);
-				sheet.getRow(j).getCell(1).setCellType(Cell.CELL_TYPE_STRING);
-				sheet.getRow(j).getCell(2).setCellType(Cell.CELL_TYPE_STRING);
-				sheet.getRow(j).getCell(3).setCellType(Cell.CELL_TYPE_STRING);
-				fieldInfo.setName(sheet.getRow(j).getCell(0).getStringCellValue());
-				fieldInfo.setZhcnname(sheet.getRow(j).getCell(1).getStringCellValue());
-				fieldInfo.setComments(sheet.getRow(j).getCell(2).getStringCellValue());
-				fieldInfo.setDatadictionary(sheet.getRow(j).getCell(3).getStringCellValue());
+				if(sheet.getRow(j).getCell(0)!=null){
+					sheet.getRow(j).getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+					fieldInfo.setName(sheet.getRow(j).getCell(0).getStringCellValue());
+				}
+				if(sheet.getRow(j).getCell(1)!=null){
+					sheet.getRow(j).getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+					fieldInfo.setZhcnname(sheet.getRow(j).getCell(1).getStringCellValue());
+				}
+				if(sheet.getRow(j).getCell(2)!=null){
+					sheet.getRow(j).getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+					fieldInfo.setComments(sheet.getRow(j).getCell(2).getStringCellValue());
+				}
+				
+				if(sheet.getRow(j).getCell(3)!=null){
+					sheet.getRow(j).getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+					fieldInfo.setDatadictionary(sheet.getRow(j).getCell(3).getStringCellValue());
+				}
 				tableInfo.getFieldlist().add(fieldInfo);// 将属于这个表的列信息加入
 			}
 			tableInfoList.add(tableInfo);
