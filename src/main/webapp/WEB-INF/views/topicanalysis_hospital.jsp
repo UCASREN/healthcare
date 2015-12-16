@@ -15,7 +15,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>主题分析</title>
+<title>主题分析---住院数据</title>
 <link rel="icon" href="home/icons/home/logo.ico" type="image/x-icon" />
 <meta http-equiv="X-Frame-Options" content="ALLOW-FROM"> 
 <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -194,31 +194,31 @@
 					
 					<!-- 住院数据 -->
 					<li>
-						<a href="" id="inhospital_home"> <i class="icon-basket"></i> <span
+						<a href="javascript:void 0" id="topic_inhospital_home"> <i class="icon-basket"></i> <span
 							class="title">住院首页 </span> <span class="arrow"></span>
 						</a>
 					</li>
 					
 					<li>
-						<a href="" id="topic_inhospital_patientsNum"> <i class="icon-basket"></i> <span
+						<a href="javascript:void 0" id="topic_inhospital_patientsNum"> <i class="icon-basket"></i> <span
 							class="title">入院人次</span> <span class="arrow"></span>
 						</a>
 					</li>
 					
 					<li>
-						<a href="" id="topic_inhospital_approachAndillstate"> <i class="icon-basket"></i> <span
+						<a href="javascript:void 0" id="topic_inhospital_approachAndillstate"> <i class="icon-basket"></i> <span
 							class="title">入院途径\病情 </span> <span class="arrow"></span>
 						</a>
 					</li>
 					
 					<li>
-						<a href="" id="topic_outhospital_approachAndillstate"> <i class="icon-basket"></i> <span
+						<a href="javascript:void 0" id="topic_outhospital_approachAndillstate"> <i class="icon-basket"></i> <span
 							class="title">离院途径\病情</span> <span class="arrow"></span>
 						</a>
 					</li>
 					
 					<li>
-						<a href="" id="topic_beInhospital_costs"> <i class="icon-basket"></i> <span
+						<a href="javascript:void 0" id="topic_beInhospital_costs"> <i class="icon-basket"></i> <span
 							class="title">住院费用</span> <span class="arrow"></span>
 						</a>
 					</li>
@@ -230,7 +230,7 @@
 		<!-- BEGIN CONTENT -->
 		<div class="page-content-wrapper">
 			<div class="page-content">
-				<iframe  id="main" src="/healthcare/topic_inhospital_home" scrolling="no" height="1000px"  width="99%" frameborder="0" align="top"></iframe>
+				<iframe  id="main" src="/healthcare/topic_inhospital_home" scrolling="auto" height="1000px"  width="99%" frameborder="0" align="top"></iframe>
 			</div>
 		</div>
 		<!-- END CONTENT -->

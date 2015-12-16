@@ -29,7 +29,12 @@ public class TopicAnalyController {
 	
 	@RequestMapping(value="/topicanalysis")
 	public String TopicAnalysis(){
-		return "topicanalysis";
+		return "topicanalysis_home";
+	}
+	
+	@RequestMapping(value="/topicanalysis_hospital")
+	public String topicanalysis_hospital(){
+		return "topicanalysis_hospital";
 	}
 	
 	//住院数据---首页

@@ -36,7 +36,7 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	text-align:center;
@@ -49,7 +49,7 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	line-height:300px;
@@ -59,7 +59,7 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;
@@ -69,7 +69,7 @@
 	width:40%;
 	/* height:380px; */
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;

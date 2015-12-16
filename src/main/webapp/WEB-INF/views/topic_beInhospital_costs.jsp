@@ -7,9 +7,9 @@
 <title>住院情况---费用预览</title>
 <style type="text/css">
 .s_p_part1{
-	width:80%;
+	width:90%;
 	float:left;
-	margin-left:200px;
+	margin-left:20px;
 	margin-top:20px;
 	overflow:hidden;
 }
@@ -36,20 +36,16 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	text-align:center;
-	 
-	 
-	 
-	
 }
 .s_p_p2{
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	line-height:300px;
@@ -59,21 +55,17 @@
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:10%;
+	margin-left:5%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;
 	text-align:center;
-	 
-	 
-	 
-	 
 }
 .s_p_p4{
 	width:40%;
 	height:380px;
 	float:left;
-	margin-left:1%;
+	margin-left:7%;
 	border:3px solid;
 	border-color:#cccccc;
 	margin-top:20px;

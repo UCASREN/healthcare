@@ -57,7 +57,6 @@
 
 <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN THEME STYLES -->
-
 <link href="resources/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/layout.css" rel="stylesheet" type="text/css" />
 <link id="style_color" href="resources/css/themes/light2.css"

@@ -234,7 +234,7 @@ public class SqlServerService implements IService {
 
 		String sql = "";
 		sql = String.format(
-				"SELECT SUM (CAST(ZFY AS DECIMAL)) / COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE	('%s'<=RYSJ) AND (RYSJ<'%s');",
+				"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END) / COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<'%s');",
 				t1, t2);
 
 		String TreatmentAverageCost_Num = "";
@@ -385,7 +385,7 @@ public class SqlServerService implements IService {
 		if(bingZhong.equals("1")){//短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
-				"SELECT	XB,	SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0	AND 20 THEN	1 ELSE 0 END ) AS '[0-20]',	"
+				"SELECT	XB,	SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN	1 ELSE 0 END ) AS '[0-20]',	"
 				+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
 				+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]',	"
 				+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE	0 END ) AS '[61-80]',	"
