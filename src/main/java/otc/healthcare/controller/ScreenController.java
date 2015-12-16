@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,12 +45,14 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "hospital_distribution_base")
-	public String hospitalDistributionBase() {
+	public String hospitalDistributionBase(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "hospital_distribution_base";
 	}
 
 	@RequestMapping(value = "hospital_distribution_community")
-	public String hospitalDistributionCommunity() {
+	public String hospitalDistributionCommunity(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "hospital_distribution_community";
 	}
 
@@ -159,7 +162,8 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "crowd_features")
-	public String stroke_patient() {
+	public String stroke_patient(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "crowd_features";
 	}
 
@@ -266,7 +270,8 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "disease_burden")
-	public String diseaseBurden() {
+	public String diseaseBurden(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "disease_burden";
 	}
 
@@ -276,13 +281,19 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "danger_factor")
-	public String dangerFactor() {
+	public String dangerFactor(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "danger_factor";
 	}
 
 	@RequestMapping(value = "be_ill_map")
-	public String beIllMap() {
+	public String beIllMap(HttpServletResponse response){
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "beillmap";
+	}
+	@RequestMapping(value = "topicanalysis_screen")
+	public String topicanalysisScreen() {
+		return "topicanalysis_screen";
 	}
 
 	/**

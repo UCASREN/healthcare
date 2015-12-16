@@ -164,25 +164,25 @@
 		<h3 class="header smaller lighter red">图表说明</h3>
 
 		<div class="well">
-			<h4 class="green smaller lighter">人群性别分布</h4>
+			<h4 class="green smaller lighter">不同性别患病率</h4>
 
 		</div>
 		<hr
 			style="margin: 0px; height: 1px; border: 0px; background-color: #D5D5D5; color: #D5D5D5;" />
 		<div class="well well-lg">
-			<h4 class="blue">人群城乡分布</h4>
+			<h4 class="blue">不同年龄患病率</h4>
 
 		</div>
 		<hr
 			style="margin: 0px; height: 1px; border: 0px; background-color: #D5D5D5; color: #D5D5D5;" />
 		<div class="well well-lg">
-			<h4 class="green smaller lighter">人群年龄分布</h4>
+			<h4 class="green smaller lighter">分城乡患病率</h4>
 
 		</div>
 		<hr
 			style="margin: 0px; height: 1px; border: 0px; background-color: #D5D5D5; color: #D5D5D5;" />
 		<div class="well well-lg">
-			<h4 class="blue">人群构成与六普人口构成差异比较</h4>
+			<h4 class="blue">不同受教育程度患病率</h4>
 		</div>
 	</div>
 

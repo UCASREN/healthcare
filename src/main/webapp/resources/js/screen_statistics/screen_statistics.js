@@ -26,7 +26,7 @@ $("a[id^=check_more_]").click(function(){
 		},
 		success : function(data) {
 			console.log("设置成功！")
-			window.location="topicanalysis";
+			window.location="topicanalysis_screen";
 		}
 	});
 	
