@@ -25,6 +25,8 @@ public class HealthcareConfiguration {
 	public static final String MYSQL_DB_USERNAME = "mysql_db_username";
 	public static final String MYSQL_DB_PASSWORD = "mysql_db_password";
 
+	public static final String VM_IP = "vm_ip";
+	public static final String VM_USERNAME = "vm_username";
 	
 	private Properties properties;
 
