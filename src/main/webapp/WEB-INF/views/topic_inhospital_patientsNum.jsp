@@ -366,7 +366,7 @@ fillHospitalDeps();
 							var valuearray = new Array();
 							for(var key in data){
 								keyarray.push(key);
-								valuearray.push(parseFloat((data[key] * 100).toFixed(2)));
+								valuearray.push(parseFloat((data[key] * 1).toFixed(2)));
 							}
 								
 							option = {
@@ -564,7 +564,7 @@ fillHospitalDeps();
 	<div class="clear"></div>
      
     <div class="s_p_part3">
-    	<h3 class="header smaller lighter red">图表说明</h3>
+    	<!-- <h3 class="header smaller lighter red">图表说明</h3>
 
 		<div class="well">
 			<h4 class="green smaller lighter">40岁以上人群的年龄频数分布</h4>
@@ -579,7 +579,7 @@ fillHospitalDeps();
 		<div class="well well-lg">
 			<h4 class="green smaller lighter">40岁以上人群的城乡频数分布</h4>
 			40岁以上人群按照城乡的频数分布
-		</div>
+		</div> -->
 	</div>
          
     

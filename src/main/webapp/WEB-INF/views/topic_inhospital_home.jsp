@@ -112,13 +112,13 @@
 								住院人次:
 							</div>
 							<div id="inHospital_num" class="desc">
-								 xx
+								 --
 							</div>
 							<div class="desc">
 								 环比增幅:
 							</div>
 							<div id="inHospital_rate" class="desc">
-								 xx
+								 --
 							</div>
 						</div>
 					</div>
@@ -133,13 +133,13 @@
 								平均住院天数:
 							</div>
 							<div id="inhospitalAverageDays_num" class="desc">
-								 xx
+								 --
 							</div>
 							<div class="desc">
 								环比增幅:
 							</div>
 							<div id="inhospitalAverageDays_rate" class="desc">
-								 xx
+								 --
 							</div>
 						</div>
 					</div>
@@ -154,13 +154,13 @@
 								平均医疗费用:
 							</div>
 							<div id="treatmentAverageCost_num" class="desc">
-								 xx
+								 --
 							</div>
 							<div class="desc">
 								环比增幅:
 							</div>
 							<div id="treatmentAverageCost_rate" class="desc">
-								 xx
+								 --
 							</div>
 						</div>
 					</div>
@@ -175,13 +175,13 @@
 								手术例数:
 							</div>
 							<div id="" class="desc">
-								 xx
+								 --
 							</div>
 							<div class="desc">
 								环比增幅:
 							</div>
 							<div id="" class="desc">
-								 xx
+								 --
 							</div>
 						</div>
 					</div>
@@ -196,13 +196,13 @@
 								治愈率:
 							</div>
 							<div id="" class="desc">
-								 xx
+								 --
 							</div>
 							<div class="desc">
 								环比增幅:
 							</div>
 							<div id="" class="desc">
-								 xx
+								 --
 							</div>
 						</div>
 					</div>
