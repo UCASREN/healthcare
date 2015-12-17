@@ -23,7 +23,7 @@ word在线预览:
 	
 解锁：
 
-	conn sys/sys as sysdba; //以DBA的身份登录
+	 conn sys/sys as sysdba; //以DBA的身份登录
     alter user system account unlock;// 然后解锁
     
     

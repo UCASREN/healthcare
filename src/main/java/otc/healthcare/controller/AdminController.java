@@ -233,7 +233,7 @@ public class AdminController {
 	      	  	String uuid8 = vmid.substring(0, 7) ;  //截取vmid前8位
 	      	  	String vmurl;
 	           
-	      	  	vmurl = "http://133.133.135.11:8989/novnc/console.html?id=" + uuid8;
+	      	  	vmurl = "http://202.38.153.226:8989/novnc/console.html?id=" + uuid8;
 	      	  	String sql2 = "" ;
 	      	  	sql2 = String.format("update HC_APPLYENV set ENV_URL = '%s' where hc_username= '%s' ", vmurl,user);
 	      	  	stmt2.executeUpdate(sql2);
@@ -343,7 +343,7 @@ public class AdminController {
 		if(authority.equals("ROLE_ADMIN")){
 			this.oracleService.changeApplyEnvStatus(applydataid,"3");
 			//以下部分应该是新的界面中，分配按钮对应的内荣，这里仅仅是为了测试
-			this.oracleService.updateEnvUrlByApplyID(applydataid,"http://133.133.135.11:8989/novnc/console.html?id=bda2af74");
+			this.oracleService.updateEnvUrlByApplyID(applydataid,"http://202.38.153.226:8989/novnc/console.html?id=aa2e9f8c");
 			this.oracleService.changeApplyEnvStatus(applydataid,"4");
 		}
 		
