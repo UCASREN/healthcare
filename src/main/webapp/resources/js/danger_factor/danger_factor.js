@@ -26,7 +26,7 @@ function query() {
 		},
 		success : function(data) {
 			if (data) {
-				line_all_data=data[""];
+				line_all_data=data["all"];
 				line_man_data=data["1"];
 				line_woman_data=data["2"];
 				
@@ -38,19 +38,19 @@ function query() {
 					var temp_map = this;
 					if(temp_map["age"]!=null){
 						keyarray.push(temp_map["age"]);//x轴坐标点只做一次就行了
-						line_all_valuearray.push(temp_map["agecount"]);
+						line_all_valuearray.push(temp_map["count"]);
 					}
 				});
 				$(line_man_data).each(function() {
 					var temp_map = this;
 					if(temp_map["age"]!=null){
-						line_man_valuearray.push(temp_map["agecount"]);
+						line_man_valuearray.push(temp_map["count"]);
 					}
 				});
 				$(line_woman_data).each(function() {
 					var temp_map = this;
 					if(temp_map["age"]!=null){
-						line_woman_valuearray.push(temp_map["agecount"]);
+						line_woman_valuearray.push(temp_map["count"]);
 					}
 				});
 				
@@ -88,7 +88,7 @@ function query() {
 					        {
 					            type : 'value',
 					            axisLabel : {
-					                formatter: '{value} %'
+					                formatter: '{value}'
 					            }
 					        }
 					    ],

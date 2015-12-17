@@ -37,6 +37,7 @@
 <link href="resources/plugins/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="resources/css/ace.min.css" />
+<script src="resources/js/echarts-all.js"></script>
 </head>
 <body class="body">
 	<div class="s_p_part1">
@@ -55,7 +56,7 @@
 						 
 						for(var key in data){
 						   
-					 		arraydata.push({name:key,value:data[key]});
+					 		arraydata.push({name:key,value:parseFloat(data[key])});
 					 		
 						} 
 						console.log(arraydata);
@@ -76,7 +77,7 @@
 
 			dataRange: {
 			    min: 0,
-			    max: data['max_value'],
+			    max: parseFloat(data['max_value']),
 			    x: 'left',
 			    y: 'bottom',
 			    text:['高','低'],           // 文本，默认为数值文本
@@ -142,5 +143,4 @@
 
 	</div>
 </body>
-<script src="resources/js/echarts-all.js"></script>
 </html>

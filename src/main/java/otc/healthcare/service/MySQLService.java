@@ -182,7 +182,8 @@ public class MySQLService implements IService {
 					provinceCityMap.put(neCode.substring(0, 2) + "_" + neName, new ArrayList());
 				} else if (neCode.indexOf("0000") != -1) {
 					cityMap.put(neCode.substring(0, 4), neName);
-					provinceCityMap.get(neCode.substring(0, 2) + "_" + provinceMap.get(neCode.substring(0, 2)))
+					if(provinceCityMap.containsKey(neCode.substring(0, 2) + "_" + provinceMap.get(neCode.substring(0, 2))))
+						provinceCityMap.get(neCode.substring(0, 2) + "_" + provinceMap.get(neCode.substring(0, 2)))
 							.add(neCode.substring(0, 4) + "_" + neName);
 				}
 			}
@@ -762,11 +763,18 @@ public class MySQLService implements IService {
 					while (res.next()) {
 						// System.out.print(".");
 						Map<String, String> tempmap = new HashMap<String, String>();
-						tempmap.put("age", res.getString(1));
+						if( res.getString(1)==null){
+							tempmap.put("age", "40以下");
+						}else{
+							tempmap.put("age", res.getString(1));
+						}
 						tempmap.put("count", res.getString(2));
 						tempList.add((HashMap<String, String>) tempmap);
 					}
-					map.put(sex, tempList);
+					if(sex.equals(""))
+						map.put("all", tempList);
+					else
+						map.put(sex, tempList);
 					res.close();
 				}
 				returnMap.put(yearArray[i], map);
