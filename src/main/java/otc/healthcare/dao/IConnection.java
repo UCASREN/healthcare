@@ -8,11 +8,11 @@ public interface IConnection {
 
 	public void closeConnection();
 
-//	public List<String> showDatabases();
+	// public List<String> showDatabases();
 
 	public List<String> showTables();
-	
-//	public List<String> showTables(String databaseName);
+
+	// public List<String> showTables(String databaseName);
 
 	public List<String> showFields(String tableName);
 }

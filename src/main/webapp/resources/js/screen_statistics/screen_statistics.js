@@ -20,13 +20,14 @@ $("a[id^=check_more_]").click(function(){
 	$.ajax({
 		type : "get",//请求方式
 		url : "reset_check_year",//发送请求地址
-		dataType : "json",
+		dataType : "text",
 		data:{
 			check_year:year
 		},
 		success : function(data) {
 			console.log("设置成功！")
+			window.location="topicanalysis";
 		}
 	});
-	window.location="topicanalysis";
+	
 });

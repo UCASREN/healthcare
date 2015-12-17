@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>住院首页</title>
+<title>筛查数据首页</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -93,8 +93,8 @@
       		
 			<div class="row" style="padding:10px 100px;">
 				<div class="col-md-4">
-					<div class="dashboard-stat blue-madison" style="height:288px;">
-						<div class="visual" style="height:249px;">
+					<div class="dashboard-stat blue-madison" style="height:317px;">
+						<div class="visual" style="height:278px;">
 							<i class="fa fa-briefcase fa-icon-medium"></i>
 						</div>
 						<div class="details">
@@ -144,8 +144,8 @@
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div class="dashboard-stat red-intense" style="height:288px;">
-						<div class="visual" style="height:249px;">
+					<div class="dashboard-stat red-intense" style="height:317px;">
+						<div class="visual" style="height:278px;">
 							<i class="fa fa-briefcase fa-icon-medium"></i>
 						</div>
 						<div class="details">
@@ -195,8 +195,8 @@
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div class="dashboard-stat green-haze" style="height:288px;">
-						<div class="visual" style="height:249px;">
+					<div class="dashboard-stat green-haze" style="height:317px;">
+						<div class="visual" style="height:278px;">
 							<i class="fa fa-briefcase fa-icon-medium"></i>
 						</div>
 						<div class="details">
