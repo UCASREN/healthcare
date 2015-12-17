@@ -899,6 +899,7 @@ public class MySQLService implements IService {
 			for (int i = 0; i < yearArray.length; i++) {
 				System.out.println(yearArray[i]);
 				HashMap<String, String> tempMap = new HashMap<String, String>();
+				Double max=0.0;
 				for (int j = 0; j < provinceMap.length; j++) {
 					String provinceId = provinceMap[j].split("_")[0];
 					String provinceName = provinceMap[j].split("_")[1];
@@ -913,7 +914,12 @@ public class MySQLService implements IService {
 							+ provinceId + "'");
 					if (res.next()) {
 						System.out.print(provinceName + ":" + res.getString(2));
-						tempMap.put(provinceName, res.getString(2));
+						if(res.getString(2)!=null){
+							tempMap.put(provinceName, res.getString(2));
+							if(Double.parseDouble( res.getString(2))>max){
+								tempMap.put("max_value", res.getString(2));
+							}
+						}
 					}
 					res.close();
 				}

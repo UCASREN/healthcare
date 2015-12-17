@@ -278,17 +278,17 @@
 					<hr>
 					<div class="media">
 						<div class="media-left">
-							<div class="color-swatch brand-success bg-primary" style="width:150px;height:150px;text-align:center;line-height:150px; ">描述</div>
+							<div class="color-swatch brand-success bg-primary" style="width:150px;height:130px;text-align:center;line-height:130px;font-size:16px;background:#E5FAE0;color:#000; ">描述*</div>
 						</div>
-						<div class="media-body highlight">
+						<div class="media-body highlight" style="line-height:25px;">
 							<div id="showdetail_description"></div>
 						</div>
 					</div>
 					<div class="media">
 						<div class="media-left">
-							<div class="color-swatch brand-info bg-danger" style="width:150px;height:150px;text-align:center;line-height:150px; ">负责单位信息</div>
+							<div class="color-swatch brand-info bg-danger" style="width:150px;height:150px;text-align:center;line-height:150px;font-size:16px;background:#F5E3C6;  ">负责单位信息*</div>
 						</div>
-						<div class="media-body highlight" >
+						<div class="media-body highlight" style="line-height:25px;">
 							<div id="showdetail_resinstitution"></div>
 							<div id="showdetail_resaddress"></div>
 							<div id="showdetail_respostalcode"></div>
@@ -298,9 +298,9 @@
 					</div>
 					<div class="media">
 						<div class="media-left">
-							<div class="color-swatch brand-warning bg-info" style="width:150px;height:150px;text-align:center;line-height:150px; ">其他信息</div>
+							<div class="color-swatch brand-warning bg-info" style="width:150px;height:94px;text-align:center;line-height:94px;font-size:16px; background:#E8F7FC">其他信息*</div>
 						</div>
-						<div class="media-body highlight">
+						<div class="media-body highlight" style="line-height:25px;">
 							<div id="showdetail_identifier"></div>
 							<div id="showdetail_keywords"></div>
 							<div id="showdetail_language"></div>

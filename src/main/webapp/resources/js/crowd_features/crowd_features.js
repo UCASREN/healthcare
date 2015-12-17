@@ -308,7 +308,7 @@ function query() {
 					    yAxis : [
 					        {
 					            type : 'value',
-					            axisLabel: {formatter:'{value} %',}
+					            axisLabel: {formatter:'{value}',}
 					        }
 					    ],
 					    series : [
