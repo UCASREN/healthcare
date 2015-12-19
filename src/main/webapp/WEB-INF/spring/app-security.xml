@@ -8,10 +8,13 @@
 	<http auto-config="true" use-expressions="true" disable-url-rewriting="false">
 		<remember-me key="healthcare" remember-me-parameter="remember-me" />
 		<intercept-url pattern="/login" access="permitAll"/>
+		<intercept-url pattern="/topicanalysis" access="permitAll"/>
 		<!-- <intercept-url pattern="/*" access="permitAll"/> -->
 		<intercept-url pattern="/adminpanel" access="hasAnyRole('ADMIN','SU1','SU2')"/>
 		<intercept-url pattern="/adminpanel/*" access="hasAnyRole('ADMIN','SU1','SU2')"/>
 		<intercept-url pattern="/databasemanager" access="hasRole('ADMIN')"/>
+		<intercept-url pattern="/applydata/*" access="hasAnyRole('ADMIN','USER','SU1','SU2')"/>
+		<intercept-url pattern="/applyenv/*" access="hasAnyRole('ADMIN','USER','SU1','SU2')"/>
 		<intercept-url pattern="/*" access="hasAnyRole('ADMIN','USER','SU1','SU2')"/>
 		<form-login login-page="/login" authentication-success-handler-ref="healthcareAuthenticationSuccessHandler"/>
 		<logout logout-success-url="/"  logout-url="/logout"  />
