@@ -168,17 +168,26 @@
 	
 	<div class="clearfix"></div>
 	
-	<!-- 两个分析 -->
-	<div class="box">
-		<div class="wrap">
-			<p class="subsite-btn  clearfix">
-				<a href="topicanalysis_hospital" target="_blank"> <span
-					class="icons48 icons48-it"></span><b>住院数据</b></a><a
-					href="year_info" target="_blank"> <span
-					class="icons48 icons48-estate"></span><b>筛查数据</b></a>
-			</p>
-		</div>
-	</div>
+	<div class="container marketing " style="margin-top:104px;">
+  <div class="row">
+    <div class="col-lg-6"> <img class="img-thumbnail" src="resources/img/zysj.jpg" alt="Generic placeholder image" height="240" width="340">
+      <h2>住院数据</h2>
+      <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis 
+        euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi 
+        leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo
+        cursus magna.</p>
+      <p><a class="btn btn-default" href="topicanalysis_hospital" role="button">点击进入 »</a></p>
+    </div>
+    <div class="col-lg-6"> <img class="img-thumbnail" src="resources/img/scsj.jpg" alt="Generic placeholder image" height="240" width="340">
+      <h2>筛查数据</h2>
+      <p>Duis mollis, est non commodo luctus, nisi erat porttitor 
+        ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus 
+        sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor 
+        mauris condimentum nibh.</p>
+      <p><a class="btn btn-default" href="year_info" role="button">点击进入 »</a></p>
+    </div>
+  </div>
+</div>
 
 </body>
 

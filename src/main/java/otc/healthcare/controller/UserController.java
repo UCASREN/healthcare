@@ -30,7 +30,7 @@ public class UserController {
 
 	@RequestMapping("/login")
 	public String login() {
-		return "home";
+		return "login";
 	}
 
 	@RequestMapping("/updateshoppingcart")

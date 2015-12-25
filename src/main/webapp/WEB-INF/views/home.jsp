@@ -20,43 +20,6 @@
 <meta http-equiv="X-UA-Compatible"
 	content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
 <link rel="icon" href="home/icons/home/logo.ico" type="image/x-icon" />
-
-<!-- <script>
-function FileManagerClass(){
-		return this.root="http://s.lietou-static.com/",
-		   	   this.base="http://core.pc.lietou-static.com",
-		       this.cache={},
-		       this.alis={},
-		       this.init(),this
-	}
-	
-	FileManagerClass.prototype.init=function(){
-		return document.write(unescape('%3Cscript src="'+this.base+'/js/common/cdntest.js" type="text/javascript"%3E%3C/script%3E')),this
-	},
-	FileManagerClass.prototype.fetchCDN=function(){
-		return this
-	},
-	FileManagerClass.prototype.extname=function(t){
-		return(/(\.[^\\\/\.]+)$/g.exec(t)||[0,""])[1]
-		},
-	FileManagerClass.prototype.prefix=function(t){
-			var e=this;
-			return t=t.replace(/^\//,this.root),t.replace(/https?:\/\/(.*)\.lietou-static\.com/,function(t,s){return e.alis[s]===!1?"s"===s?t.replace(s,"i."+s):t.replace(".pc.",".ipc."):t})},
-	FileManagerClass.prototype.get=function(){
-				var t,e,s,i=arguments;for(s=0;s<i.length;s++)e=this.prefix(i[s]),this.cache[e]||(this.cache[e]=!0,t=this.extname(e),".css"===t?document.write(unescape('%3Clink href="'+e+'" rel="stylesheet" type="text/css"/%3E')):".js"===t&&document.write(unescape('%3Cscript src="'+e+'"%3E%3C/script%3E')));return this};
-				var FileManager=new FileManagerClass;
-</script>
-
-<script>
-	FileManager.get('http://core.pc.lietou-static.com/revs/css/port/www/common_6e2f763e.css',
-			'http://www.pc.lietou-static.com/revs/v1/css/public_eb211bd4.css',
-			'http://core.pc.lietou-static.com/revs/js/common/jquery-1.7.1.min_c7e0488b.js',
-			'http://core.pc.lietou-static.com/revs/js/common/lt.core_a59af84a.js',
-			'http://core.pc.lietou-static.com/revs/js/port/www/plugins/jquery.artDialog_d121c362.js',
-			'http://core.pc.lietou-static.com/revs/js/common/plugins/jquery.loadingui_6a6316c4.js',
-			'http://core.pc.lietou-static.com/revs/js/common/plugins/jquery.tipsui_03bbd011.js',
-			'http://www.pc.lietou-static.com/revs/v1/js/lt.apps_f462ac2c.js');
-</script> -->
 <link rel="stylesheet" href="home/style/home/common_6e2f763e.css" />
 <link rel="stylesheet" href="home/style/home/public_eb211bd4.css" />
 <link rel="stylesheet" href="home/style/home/footer_47d2c33b.css" />
@@ -163,17 +126,15 @@ function FileManagerClass(){
 	</div>
 	<sec:authorize access="!hasAnyRole('USER','ADMIN','SU1','SU2')">
 		<div class="wrap relative">
-			<div class="form-box">
+			<%-- <div class="form-box">
 				<div class="form-title"></div>
 
 				<div class="form-content" data-flag="0">
 					<div class="candidate" style="left: 0px;">
-						<!-- 经理人登录  -->
-						<form action="javascripts:;" method="post" class="login-box"
+						<!-- <form action="javascripts:;" method="post" class="login-box"
 							lt-plugins-valid="0.7450230794493109"
-							style="left: -292px; display: none;"></form>
+							style="left: -292px; display: none;"></form> -->
 
-						<!-- 经理人注册 -->
 						<form action="" method="post" class="register-box"
 							lt-plugins-valid="0.698662273818627" style="left: 0px;">
 							<input type="hidden" name="isMd5" value="1"> <input
@@ -195,26 +156,14 @@ function FileManagerClass(){
 								<label><input type="checkbox" id="remember-me"
 									name="remember-me" checked="checked" autocomplete="off"
 									style="display: none;">&nbsp;下次自动登录</label>
-								<!-- 
-								<a class="regbtn"
-									href="javascript:;" title="注册" data-selector="switchRegister">立即注册</a> 
-								<a href="javascript:;" target="_blank">忘记密码？</a>
-							-->
 							</div>
-							<!-- 	<div class="connect-login">
-								<a href="javascript:;">使用其他方式登录</a>
-								 <a class="icon-24 icon-24-account-qq" href="#"
-									target="_blank"></a> <a class="icon-24 icon-24-account-weixin"
-									href="#" target="_blank"></a> <a
-									class="icon-24 icon-24-account-weibo" href="#" target="_blank"></a>
-							</div> -->
 
 						</form>
 
 					</div>
 
 				</div>
-			</div>
+			</div> --%>
 		</div>
 	</sec:authorize>
 

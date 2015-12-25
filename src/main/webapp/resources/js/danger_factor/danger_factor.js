@@ -64,7 +64,7 @@ function query() {
 					        trigger: 'axis'
 					    },
 					    legend: {
-					        data:['变化曲线']
+					        data:['全部','男','女']
 					    },
 					    toolbox: {
 					        show : true,
@@ -88,7 +88,7 @@ function query() {
 					        {
 					            type : 'value',
 					            axisLabel : {
-					                formatter: '{value}'
+					                formatter: '{value}%'
 					            }
 					        }
 					    ],

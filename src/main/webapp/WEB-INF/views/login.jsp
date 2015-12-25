@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page pageEncoding="UTF-8"%>
-
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -29,7 +30,7 @@
 <link href="resources/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
 <link href="resources/css/plugins.css" rel="stylesheet" type="text/css"/>
 <link href="resources/css/layout.css" rel="stylesheet" type="text/css"/>
-<link href="resources/css/darkblue.css" rel="stylesheet" type="text/css" id="style_color"/>
+<link href="resources/css/light2.css" rel="stylesheet" type="text/css" id="style_color"/>
 <link href="resources/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
 
@@ -60,11 +61,11 @@
 		<div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 			<label class="control-label visible-ie8 visible-ie9">用户名</label>
-			<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" id="username" name="username"/>
+			<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" id="username" name="username"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">密码</label>
-			<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" id="password" name="password"/>
+			<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" id="password" name="password"/>
 		</div>
 		<div class="form-actions">
 			<button type="submit" class="btn btn-success uppercase">登录</button>
@@ -148,7 +149,7 @@
 	<!-- END REGISTRATION FORM -->
 </div>
 <div class="copyright">
-	 2015 © otcaix.
+	 2015 © 中国心脑血管病网.
 </div>
 <!-- END LOGIN -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->

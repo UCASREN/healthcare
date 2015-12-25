@@ -7,6 +7,8 @@
 	
 	<http auto-config="true" use-expressions="true" disable-url-rewriting="false">
 		<remember-me key="healthcare" remember-me-parameter="remember-me" />
+		<intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/topicanalysis" access="permitAll"/>
 		<intercept-url pattern="/login" access="permitAll"/>
 		<!-- <intercept-url pattern="/*" access="permitAll"/> -->
 		<intercept-url pattern="/adminpanel" access="hasAnyRole('ADMIN','SU1','SU2')"/>

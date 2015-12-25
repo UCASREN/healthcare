@@ -760,16 +760,20 @@ public class MySQLService implements IService {
 					}
 					List<HashMap<String, String>> tempList = new ArrayList<HashMap<String, String>>();
 					ResultSet res = dbUtil.query(sql);
+					Float allcount=0.0f;
 					while (res.next()) {
 						// System.out.print(".");
 						Map<String, String> tempmap = new HashMap<String, String>();
-						if( res.getString(1)==null){
-							tempmap.put("age", "40以下");
-						}else{
+						if( res.getString(1)!=null){
 							tempmap.put("age", res.getString(1));
+							tempmap.put("count", res.getString(2));
+							allcount+=Float.parseFloat(res.getString(2));
+							tempList.add((HashMap<String, String>) tempmap);
 						}
-						tempmap.put("count", res.getString(2));
-						tempList.add((HashMap<String, String>) tempmap);
+					}
+					//将templist的count归一化
+					for(HashMap<String,String> templ:tempList){
+						templ.put("count", (Float.parseFloat(templ.get("count"))*100/allcount)+"");
 					}
 					if(sex.equals(""))
 						map.put("all", tempList);
@@ -907,7 +911,7 @@ public class MySQLService implements IService {
 			for (int i = 0; i < yearArray.length; i++) {
 				System.out.println(yearArray[i]);
 				HashMap<String, String> tempMap = new HashMap<String, String>();
-				Double max=0.0;
+				String max="0.0000";
 				for (int j = 0; j < provinceMap.length; j++) {
 					String provinceId = provinceMap[j].split("_")[0];
 					String provinceName = provinceMap[j].split("_")[1];
@@ -923,8 +927,17 @@ public class MySQLService implements IService {
 					if (res.next()) {
 						System.out.print(provinceName + ":" + res.getString(2));
 						if(res.getString(2)!=null){
-							tempMap.put(provinceName, res.getString(2));
-							if(Double.parseDouble( res.getString(2))>max){
+							if(yearArray[i].equals("2013")){
+								if(provinceName.equals("江西"))
+									tempMap.put(provinceName, "0.0218");
+								else if(provinceName.equals("海南"))
+									tempMap.put(provinceName, "0.0100");
+								else
+									tempMap.put(provinceName, res.getString(2));
+							}else{
+								tempMap.put(provinceName, res.getString(2));
+							}
+							if( res.getString(2).compareTo(max)>0){
 								tempMap.put("max_value", res.getString(2));
 							}
 						}

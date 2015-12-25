@@ -53,10 +53,12 @@
 				success : function(data) {
 				 if (data) {
 						var arraydata=new Array();
-						 
+						 var valuemax=0.0;
 						for(var key in data){
-						   
-					 		arraydata.push({name:key,value:parseFloat(data[key])});
+						   if(parseFloat(parseFloat(data['max_value'])*100.0)>valuemax){
+							   valuemax=parseFloat(parseFloat(data['max_value'])*100.0);
+						   }
+					 		arraydata.push({name:key,value:parseFloat(parseFloat(parseFloat(data[key])*100.0).toFixed(2))});
 					 		
 						} 
 						console.log(arraydata);
@@ -77,7 +79,7 @@
 
 			dataRange: {
 			    min: 0,
-			    max: parseFloat(data['max_value']),
+			    max: valuemax,
 			    x: 'left',
 			    y: 'bottom',
 			    text:['高','低'],           // 文本，默认为数值文本
@@ -143,4 +145,5 @@
 
 	</div>
 </body>
+
 </html>

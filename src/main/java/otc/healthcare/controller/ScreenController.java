@@ -1,5 +1,6 @@
 package otc.healthcare.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import otc.healthcare.pojo.BaseHospitalModel;
 import otc.healthcare.pojo.CommunityModel;
@@ -254,7 +257,19 @@ public class ScreenController {
 			@RequestParam(value = "ageclassification", required = false) String ageclassification,
 			HttpServletRequest request) {
 		String check_year = getCheckYear(request);
+//		ObjectMapper objectMapper=new ObjectMapper();
+//		
+//		String str="{\"all\":[{\"count\":\"4\",\"age\":\"40-44\"},{\"count\":\"1059\",\"age\":\"45-49\"},{\"count\":\"1381\",\"age\":\"50-54\"},{\"count\":\"1619\",\"age\":\"55-59\"},{\"count\":\"1527\",\"age\":\"60-64\"},{\"count\":\"1263\",\"age\":\"65-69\"},{\"count\":\"862\",\"age\":\"70-74\"},{\"count\":\"595\",\"age\":\"75-79\"},{\"count\":\"356\",\"age\":\"80+\"}],\"1\":[{\"count\":\"2\",\"age\":\"40-44\"},{\"count\":\"523\",\"age\":\"45-49\"},{\"count\":\"608\",\"age\":\"50-54\"},{\"count\":\"608\",\"age\":\"55-59\"},{\"count\":\"557\",\"age\":\"60-64\"},{\"count\":\"506\",\"age\":\"65-69\"},{\"count\":\"343\",\"age\":\"70-74\"},{\"count\":\"265\",\"age\":\"75-79\"},{\"count\":\"156\",\"age\":\"80+\"}],\"2\":[{\"count\":\"2\",\"age\":\"40-44\"},{\"count\":\"536\",\"age\":\"45-49\"},{\"count\":\"773\",\"age\":\"50-54\"},{\"count\":\"1011\",\"age\":\"55-59\"},{\"count\":\"970\",\"age\":\"60-64\"},{\"count\":\"757\",\"age\":\"65-69\"},{\"count\":\"519\",\"age\":\"70-74\"},{\"count\":\"330\",\"age\":\"75-79\"},{\"count\":\"200\",\"age\":\"80+\"}]}";
+//		Map<String, List<HashMap<String, String>>> maps = null;
+//		try {
+//			maps = objectMapper.readValue(str, Map.class);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return maps;
 		return getMySQLService().getGenderDangerFactorInfo(provinceid, dangertype, ageclassification).get(check_year);
+	  
 	}
 
 	@RequestMapping(value = "get_beillmap_data")
