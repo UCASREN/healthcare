@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%request.setCharacterEncoding("UTF-8");   %>
-
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <!-- BEGIN HEAD -->
@@ -80,7 +81,7 @@
 		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
 		</a>
 		<!-- END RESPONSIVE MENU TOGGLER -->
-		
+			<sec:authorize access="hasAnyRole('USER','ADMIN','SU1','SU2')">
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown dropdown-user">
@@ -117,7 +118,7 @@
 					</li>
 				</ul>
 			</div>
-		
+		</sec:authorize>
 	</div>
 	<!-- END HEADER INNER -->
 </div>

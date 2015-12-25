@@ -82,7 +82,7 @@ request.setCharacterEncoding("UTF-8");
 		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
 		</a>
 		<!-- END RESPONSIVE MENU TOGGLER -->
-		
+		<sec:authorize access="hasAnyRole('USER','ADMIN','SU1','SU2')">
 		<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown dropdown-user"><a href="javascript:;"
@@ -119,7 +119,7 @@ request.setCharacterEncoding("UTF-8");
 
 				</ul>
 			</div>
-		
+		</sec:authorize>
 	</div>
 	<!-- END HEADER INNER -->
 </div>
