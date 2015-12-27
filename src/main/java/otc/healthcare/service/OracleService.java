@@ -1216,6 +1216,7 @@ public class OracleService implements IService {
 
 			String hc_userDemandType = req.getParameter("userDemandType");
 			String hc_userDemand = req.getParameter("userDemand");
+			String hc_dataExportType = req.getParameter("dataExportType");
 
 			String hc_useFields = req.getParameter("allUseField");//
 			String hc_projectName = req.getParameter("projectName");
@@ -1240,6 +1241,7 @@ public class OracleService implements IService {
 
 			hc_applydata.setDemandtype(hc_userDemandType);
 			hc_applydata.setDemand(hc_userDemand);
+			hc_applydata.setDataExportType(hc_dataExportType);
 
 			hc_applydata.setProUsefield(hc_useFields);
 			hc_applydata.setProName(hc_projectName);
@@ -1270,7 +1272,8 @@ public class OracleService implements IService {
 
 		String hc_userDemandType = req.getParameter("userDemandType");
 		String hc_userDemand = req.getParameter("userDemand");
-
+		String hc_dataExportType = req.getParameter("dataExportType");
+		
 		String hc_useFields = req.getParameter("allUseField");//
 		String hc_projectName = req.getParameter("projectName");
 		String hc_projectChairman = req.getParameter("projectChairman");
@@ -1294,7 +1297,8 @@ public class OracleService implements IService {
 
 		hc_applydata.setDemandtype(hc_userDemandType);
 		hc_applydata.setDemand(hc_userDemand);
-
+		hc_applydata.setDataExportType(hc_dataExportType);
+		
 		hc_applydata.setProUsefield(hc_useFields);
 		hc_applydata.setProName(hc_projectName);
 		hc_applydata.setProChair(hc_projectChairman);
@@ -1420,7 +1424,8 @@ public class OracleService implements IService {
 
 			String hc_userDemandType = req.getParameter("userDemandType");
 			String hc_userDemand = req.getParameter("userDemand");
-
+			String hc_dataExportType = req.getParameter("dataExportType");
+			
 			String hc_useFields = req.getParameter("allUseField");//
 			String hc_projectName = req.getParameter("projectName");
 			String hc_projectChairman = req.getParameter("projectChairman");
@@ -1443,6 +1448,7 @@ public class OracleService implements IService {
 
 			hc_applyenv.setDemandtype(hc_userDemandType);
 			hc_applyenv.setDemand(hc_userDemand);
+			hc_applyenv.setDataExportType(hc_dataExportType);
 
 			hc_applyenv.setProUsefield(hc_useFields);
 			hc_applyenv.setProName(hc_projectName);
@@ -1470,8 +1476,9 @@ public class OracleService implements IService {
 
 		String hc_userDemandType = req.getParameter("userDemandType");
 		String hc_userDemand = req.getParameter("userDemand");
+		String hc_dataExportType = req.getParameter("dataExportType");
 
-		String hc_useFields = req.getParameter("allUseField");//
+		String hc_useFields = req.getParameter("allUseField");
 		String hc_projectName = req.getParameter("projectName");
 		String hc_projectChairman = req.getParameter("projectChairman");
 		String hc_projectSource = req.getParameter("projectSource");
@@ -1493,7 +1500,8 @@ public class OracleService implements IService {
 
 		hc_applyenv.setDemandtype(hc_userDemandType);
 		hc_applyenv.setDemand(hc_userDemand);
-
+		hc_applyenv.setDataExportType(hc_dataExportType);
+		
 		hc_applyenv.setProUsefield(hc_useFields);
 		hc_applyenv.setProName(hc_projectName);
 		hc_applyenv.setProChair(hc_projectChairman);

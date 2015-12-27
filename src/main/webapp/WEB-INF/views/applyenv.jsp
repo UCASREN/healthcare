@@ -179,7 +179,7 @@ request.setCharacterEncoding("UTF-8");
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="/healthcare/applyenv/createdataword" class="form-horizontal" id="submit_form" method="POST" accept-charset="UTF-8">
+							<form action="" class="form-horizontal" id="submit_form" method="POST" accept-charset="UTF-8">
 							 	<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 								<div class="form-wizard">
 									<div class="form-body">
@@ -302,16 +302,16 @@ request.setCharacterEncoding("UTF-8");
 													<label class="control-label col-md-3">需求类别 <span class="required">
 													* </span>
 													</label>
-													<div class="col-md-4">
+													<div class="col-md-4" style="padding-top:6px">
 														<div class="icheck-list">
-															<label>
+															<!-- <label>
 																<input type="radio" name="userDemandType" class="icheck" value="数据分析需求" 
-																data-title="数据分析需求" data-radio="iradio_flat-blue">
+																data-title="数据分析需求" data-radio="iradio_flat-blue" checked>
 																数据分析需求 
-															</label>
+															</label> -->
 															<label>
 																<input type="radio" name="userDemandType" class="icheck" value="数据使用需求" 
-																data-title="数据使用需求" data-radio="iradio_flat-blue">
+																data-title="数据使用需求" data-radio="iradio_flat-blue" checked>
 																数据使用需求 
 															</label>
 														</div>
@@ -319,7 +319,7 @@ request.setCharacterEncoding("UTF-8");
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="margin-bottom:0px">
+												<div class="form-group">
 													<label class="control-label col-md-3">需求说明<span class="required">
 													* </span>
 													</label>
@@ -327,6 +327,29 @@ request.setCharacterEncoding("UTF-8");
 														<textarea class="form-control" cols="15" rows="4" name="userDemand" id="submit_form_userDemand"></textarea>
 													</div>
 												</div>
+												
+												<div class="form-group" style="margin-top:10px;margin-bottom:0px">
+													<label class="control-label col-md-3">数据格式<span class="required">
+													* </span> 
+													</label>
+													<div class="col-md-4">
+														<div class="icheck-list">
+															<label>
+																<input type="radio" name="dataExportType" class="icheck" value="文本(CSV)" 
+																data-title="文本(CSV)" data-radio="iradio_flat-blue">
+																文本(CSV) 
+															</label>
+															<label>
+																<input type="radio" name="dataExportType" class="icheck" value="Excel" 
+																data-title="Excel" data-radio="iradio_flat-blue">
+																Excel 
+															</label>
+														</div>
+														<div id="form_demand_error">
+														</div>
+													</div>
+												</div>
+												
 												<div class="form-group" style="margin-top:3px">
 													<hr class="col-md-12"/>
 													<label class="control-label col-md-3">选择数据</label>
@@ -527,6 +550,13 @@ request.setCharacterEncoding("UTF-8");
 													</div>
 												</div>
 												<div class="form-group" style="margin-bottom:0px">
+													<label class="control-label col-md-3">数据格式：</label>
+													<div class="col-md-4">
+														<p class="form-control-static" data-display="dataExportType">
+														</p>
+													</div>
+												</div>
+												<div class="form-group" style="margin-bottom:0px">
 													<label class="control-label col-md-3">需求说明：</label>
 													<div class="col-md-4">
 														<p class="form-control-static" data-display="userDemand">
@@ -600,7 +630,7 @@ request.setCharacterEncoding("UTF-8");
 												<a href="javascript:;" class="btn green button-submit">
 												提交 <i class="m-icon-swapright m-icon-white"></i>
 												</a>
-												<a href="/healthcare/apply/wordonline" target="_blank" class="btn purple button-wordPreview">Word预览 </a>
+												<a href="javascript:;" target="_blank" class="btn purple button-wordPreview">Word预览 </a>
 											</div>
 										</div>
 									</div>

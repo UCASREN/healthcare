@@ -73,15 +73,17 @@ public class WordService implements IService{
 	public void createWordFromFtl(HttpServletRequest req, HttpServletResponse resp, String f_path_name, String applyType){
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		getData(req , dataMap, applyType);
-	    createDoc(dataMap, "apply",f_path_name); 
+	    createDoc(dataMap, "apply", f_path_name); 
         System.out.println("加载word模版成功，生成word文件！");
 	}
 
 	
 	/**
-	 * DOC  xml--->doc
+	 * DOC格式转换(xml--->doc)
 	 * 将freemarker生成的xml格式文档，转换为doc格式
-	 * @param servletContext2 
+	 * 使用jacob转换格式
+	 * 
+	 * @param servletContext
 	 * @param fileName 
 	 */
 	public void changeDocFormat(File openFile, ServletContext servletContext) {
@@ -137,17 +139,14 @@ public class WordService implements IService{
 		Template t = null;
 		try {
 			t = configuration.getTemplate("/hc_docftl/"+TemplateName+".ftl");
+			
 		} catch (TemplateNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedTemplateNameException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return t;
@@ -192,9 +191,9 @@ public class WordService implements IService{
 			String applydata = req.getParameter("applydata");
 			dataMap.put("hc_UserDemand",hc_userDemand+"                   "+applydata);
 		}else{
-			dataMap.put("hc_UserDemand",hc_userDemand);
+			String applydata = req.getParameter("applydata");
+			dataMap.put("hc_UserDemand",hc_userDemand+"                   "+applydata);
 		}
-		
 		
 		//project info(5)
 		String[] useFields = hc_useFields.split(",");
@@ -266,6 +265,7 @@ public class WordService implements IService{
 			File openFile = new File(hc_docPath + "\\" + name);
 			changeDocFormat( openFile,  servletContext);
 		}
+		
 		//开始转换
 		docConvertUtil docUtil = new docConvertUtil(docName,swfPath);
 		String swfFilePath = docUtil.conver(swftoolPath);

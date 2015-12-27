@@ -129,6 +129,10 @@ var FormWizard = function () {
             	else if(hc_doc.demandtype == '数据使用需求')
             		$('#form_wizard_1 input[data-title="数据使用需求"]').iCheck('check');
             	$('#submit_form_userDemand').val(hc_doc.demand);
+            	if(hc_doc.dataExportType == '文本(CSV)')
+            		$('#form_wizard_1 input[data-title="文本(CSV)"]').iCheck('check');
+            	else if(hc_doc.dataExportType == 'Excel')
+            		$('#form_wizard_1 input[data-title="Excel"]').iCheck('check');
             	
             	arr = hc_doc.proUsefield.split(",");
             	console.log(arr)
@@ -215,6 +219,9 @@ var FormWizard = function () {
                     userDemandType:{
                     	required: true,
                     },
+                    dataExportType:{
+                    	required: true,
+                    },
                     userDemand: {
                         required: true
                     },
@@ -288,13 +295,14 @@ var FormWizard = function () {
                     }
                 },
 
-              /*  //处理提交信息
-                submitHandler: function (form) {
-                    //success.show();
-                    //error.hide();
-                    //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
-                	//form.submit();
-                }*/
+                //处理提交信息
+//                submitHandler: function (form) {
+//                    success.show();
+//                    error.hide();
+               	 	//add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
+              
+//                    form.submit();
+//                }
 
             });
 
@@ -341,7 +349,7 @@ var FormWizard = function () {
                 if (current >= total) {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
-                    $('#form_wizard_1').find('.button-wordPreview').hide();
+                    $('#form_wizard_1').find('.button-wordPreview').show();
                     displayConfirm();
                 } else {
                 	$('#shoppanel').show();
@@ -399,18 +407,36 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
             
             $('#form_wizard_1 .button-submit').click(function () {
-                alert('提交成功，我们会尽快进行审核，请耐心等待！');
+            	alert('提交成功，我们会尽快进行审核，请耐心等待！');
+            	
             	if($('#others').val() != ""){
             		var allUseField_tmp = $('#allUseField').val();
                	 	$('#allUseField').val(allUseField_tmp.substring(0,allUseField_tmp.length-1)+""+$('#others').val());
             	}
-            	form.submit();
-//              $('#submit_form').submit(); 
+            
+	            $('#submit_form').attr("action","/healthcare/applyenv/createdataword");
+	            $('#submit_form').submit(); 
+//	          	form.submit();
             }).hide();
             
+            //预览
             $('#form_wizard_1 .button-wordPreview').click(function () {
-                alert('word文档预览');
-                //window.open ("/healthcare/", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+            	if(!confirm('确定文档预览？\n（这需要等待一段时间）'))
+            		return false;
+                //表单异步提交
+        		var ajax_url = "/healthcare/applydata/firstwordonline"; //表单目标 
+        		var ajax_type = $('#submit_form').attr('method'); //提交方法 
+        		var ajax_data = $('#submit_form').serialize(); //表单数据 
+            		
+        		$.ajax({
+        		url: ajax_url,
+        		data: ajax_data,
+        		type: ajax_type,
+        		success: function(data){
+                    window.open ("/healthcare/applyenv/first_documentView", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        		}
+        		});
+                		
             }).hide();
             
             $('#db_select').click(function(){
@@ -528,8 +554,8 @@ var FormWizard = function () {
         	 	$('#form_wizard_1 #submit_form_projectUndertaking').val("");
         		$('#form_wizard_1 .projectItems').show();
             });
-        }
-
+            
+        }//end init
     };
 
 }();

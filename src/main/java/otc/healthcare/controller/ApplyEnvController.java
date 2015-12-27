@@ -279,5 +279,28 @@ public class ApplyEnvController {
 		return "documentView";
 	}
 	
+	@RequestMapping(value = "/firstwordonline", method = RequestMethod.POST)
+	@ResponseBody
+	public String firstShowDocWordOnline(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			req. setCharacterEncoding("UTF-8");
+			String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
+			String f_name = UUID.randomUUID() + ".doc";
+			String f_path_name = docPath + "/" + f_name;
+			this.WordService.createWordFromFtl(req, resp, f_path_name, "env");
+			
+			this.WordService.docConvert(req, f_name);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "firstwordonline_success";
+	}
+	
+
+	@RequestMapping(value = "/first_documentView", method = RequestMethod.GET)
+	public String showDocWordOnline(HttpServletRequest req, HttpServletResponse resp) {
+		return "documentView";
+	}
+	
 	
 }

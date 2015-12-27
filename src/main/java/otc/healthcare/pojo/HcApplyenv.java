@@ -32,7 +32,8 @@ public class HcApplyenv implements java.io.Serializable {
 	private String applyRejectReason;
 	private String envUrl;
 	private String applyData;
-	
+	private String dataExportType;
+
 	public HcApplyenv() {
 	}
 
@@ -45,7 +46,7 @@ public class HcApplyenv implements java.io.Serializable {
 	public HcApplyenv(BigDecimal idApplydata, String hcUsername, String docName, String name, String department,
 			String address, String tel, String email, String demandtype, String demand, String proName, String proChair,
 			String proSource, String proUndertake, String proRemark, String proUsefield, String flagApplydata,
-			String applyTime, String applyRejectReason,String applyData) {
+			String applyTime, String applyRejectReason, String applyData, String dataExportType) {
 		this.idApplydata = idApplydata;
 		this.hcUsername = hcUsername;
 		this.docName = docName;
@@ -66,6 +67,7 @@ public class HcApplyenv implements java.io.Serializable {
 		this.applyTime = applyTime;
 		this.applyRejectReason = applyRejectReason;
 		this.applyData = applyData;
+		this.dataExportType = dataExportType;
 	}
 
 	public BigDecimal getIdApplydata() {
@@ -234,6 +236,14 @@ public class HcApplyenv implements java.io.Serializable {
 
 	public void setApplyData(String applyData) {
 		this.applyData = applyData;
+	}
+
+	public String getDataExportType() {
+		return dataExportType;
+	}
+
+	public void setDataExportType(String dataExportType) {
+		this.dataExportType = dataExportType;
 	}
 
 }

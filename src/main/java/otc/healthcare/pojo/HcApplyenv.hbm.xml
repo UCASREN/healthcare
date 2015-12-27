@@ -100,5 +100,8 @@
         <property name="applyData" type="string">
             <column name="APPLY_DATA" length="4000" />
         </property>
+         <property name="dataExportType" type="string">
+            <column name="APPLY_DATA_EXPORT_TYPE" length="255" />
+        </property>
     </class>
 </hibernate-mapping>

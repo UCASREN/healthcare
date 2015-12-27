@@ -129,7 +129,7 @@ public class ApplyDataController {
 				String f_path_name = docPath + "/" + f_name;
 				this.oracleService.insertApplyData(req, f_name, false);
 				this.WordService.createWordFromFtl(req, resp, f_path_name, "data");
-			}else{
+			}else{//编辑
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_path_name = docPath + "/" + docid;
 				this.oracleService.insertApplyData(req, docid, true);
@@ -285,5 +285,26 @@ public class ApplyDataController {
 		return "documentView";
 	}
 	
+	@RequestMapping(value = "/firstwordonline", method = RequestMethod.POST)
+	@ResponseBody
+	public String firstShowDocWordOnline(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			req. setCharacterEncoding("UTF-8");
+			String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
+			String f_name = UUID.randomUUID() + ".doc";
+			String f_path_name = docPath + "/" + f_name;
+			this.WordService.createWordFromFtl(req, resp, f_path_name, "data");
+			
+			this.WordService.docConvert(req, f_name);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "firstwordonline_success";
+	}
+	
 
+	@RequestMapping(value = "/first_documentView", method = RequestMethod.GET)
+	public String showDocWordOnline(HttpServletRequest req, HttpServletResponse resp) {
+		return "documentView";
+	}
 }
