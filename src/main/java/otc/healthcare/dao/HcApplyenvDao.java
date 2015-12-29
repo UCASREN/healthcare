@@ -1,6 +1,14 @@
 package otc.healthcare.dao;
 // default package
-// Generated 2015-9-15 15:54:40 by Hibernate Tools 4.0.0
+// Generated 2015-12-29 16:34:07 by Hibernate Tools 4.0.0
+
+import java.util.List;
+import javax.naming.InitialContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.LockMode;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Example;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,17 +30,11 @@ import otc.healthcare.pojo.HcApplyenv;
  * @see .HcApplyenv
  * @author Hibernate Tools
  */
-@Transactional
 public class HcApplyenvDao {
 
 	private static final Log log = LogFactory.getLog(HcApplyenvDao.class);
 
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
+	private final SessionFactory sessionFactory = getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
 		try {
@@ -98,6 +100,7 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
+
 	
 	//通过序列得到---不用这个
 	public HcApplyenv findById(java.math.BigDecimal id) {
@@ -240,6 +243,4 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
-	
-	
 }

@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2015-9-8 15:14:40 by Hibernate Tools 4.0.0 -->
+<!-- Generated 2015-12-29 16:36:34 by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="otc.healthcare.pojo.HcApplydata" table="HC_APPLYDATA" schema="SYSTEM">
-        <id name="idApplydata" type="big_decimal">
-            <column name="ID_APPLYDATA" precision="22" scale="0" />
-             <generator class="sequence">
-    			<param name="sequence">APPLYDATA_ID</param>    
-   			</generator>
+    <class name="HcApplydata" table="hc_applydata" catalog="healthcare">
+        <id name="idApplydata" type="java.lang.Long">
+            <column name="ID_APPLYDATA" />
+            <generator class="identity" />
         </id>
         <property name="hcUsername" type="string">
             <column name="HC_USERNAME" not-null="true">
@@ -51,7 +49,7 @@
             </column>
         </property>
         <property name="demand" type="string">
-            <column name="DEMAND" length="4000">
+            <column name="DEMAND" length="65535">
                 <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#211;&#195;&#187;&#167;&#208;&#232;&#199;&#243;&#195;&#247;&#207;&#184;</comment>
             </column>
         </property>
@@ -76,7 +74,7 @@
             </column>
         </property>
         <property name="proRemark" type="string">
-            <column name="PRO_REMARK" length="4000">
+            <column name="PRO_REMARK" length="65535">
                 <comment>&#201;&#234;&#199;&#235;&#177;&#237;&#207;&#238;&#196;&#191;&#211;&#166;&#211;&#195;&#203;&#181;&#195;&#247;</comment>
             </column>
         </property>
@@ -89,19 +87,23 @@
             <column name="FLAG_APPLYDATA" />
         </property>
         <property name="applyTime" type="string">
-            <column name="APPLY_TIME" length="255" />
+            <column name="APPLY_TIME" />
         </property>
         <property name="applyRejectReason" type="string">
-            <column name="APPLY_REJECT_REASON" length="255" />
+            <column name="APPLY_REJECT_REASON" />
         </property>
-         <property name="applyData" type="string">
-            <column name="APPLY_DATA" length="4000" />
+        <property name="applyData" type="string">
+            <column name="APPLY_DATA" length="65535" />
         </property>
         <property name="applyDataDir" type="string">
-            <column name="APPLY_DATA_DIR" length="255" />
+            <column name="APPLY_DATA_DIR">
+                <comment>&#201;&#234;&#199;&#235;&#202;&#253;&#190;&#221;zip&#203;&#249;&#212;&#218;&#206;&#187;&#214;&#195;</comment>
+            </column>
         </property>
-        <property name="dataExportType" type="string">
-            <column name="APPLY_DATA_EXPORT_TYPE" length="255" />
+        <property name="applyDataExportType" type="string">
+            <column name="APPLY_DATA_EXPORT_TYPE">
+                <comment>&#202;&#253;&#190;&#221;&#184;&#241;&#202;&#189;csv&#187;&#242;&#213;&#223;excel</comment>
+            </column>
         </property>
     </class>
 </hibernate-mapping>

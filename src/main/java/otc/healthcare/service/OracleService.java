@@ -1241,7 +1241,7 @@ public class OracleService implements IService {
 
 			hc_applydata.setDemandtype(hc_userDemandType);
 			hc_applydata.setDemand(hc_userDemand);
-			hc_applydata.setDataExportType(hc_dataExportType);
+			hc_applydata.setApplyDataExportType(hc_dataExportType);
 
 			hc_applydata.setProUsefield(hc_useFields);
 			hc_applydata.setProName(hc_projectName);
@@ -1297,7 +1297,7 @@ public class OracleService implements IService {
 
 		hc_applydata.setDemandtype(hc_userDemandType);
 		hc_applydata.setDemand(hc_userDemand);
-		hc_applydata.setDataExportType(hc_dataExportType);
+		hc_applydata.setApplyDataExportType(hc_dataExportType);
 		
 		hc_applydata.setProUsefield(hc_useFields);
 		hc_applydata.setProName(hc_projectName);
@@ -1448,7 +1448,7 @@ public class OracleService implements IService {
 
 			hc_applyenv.setDemandtype(hc_userDemandType);
 			hc_applyenv.setDemand(hc_userDemand);
-			hc_applyenv.setDataExportType(hc_dataExportType);
+			hc_applyenv.setApplyDataExportType(hc_dataExportType);
 
 			hc_applyenv.setProUsefield(hc_useFields);
 			hc_applyenv.setProName(hc_projectName);
@@ -1500,7 +1500,7 @@ public class OracleService implements IService {
 
 		hc_applyenv.setDemandtype(hc_userDemandType);
 		hc_applyenv.setDemand(hc_userDemand);
-		hc_applyenv.setDataExportType(hc_dataExportType);
+		hc_applyenv.setApplyDataExportType(hc_dataExportType);
 		
 		hc_applyenv.setProUsefield(hc_useFields);
 		hc_applyenv.setProName(hc_projectName);
