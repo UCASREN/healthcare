@@ -3,3 +3,6 @@ C:\Users\Andy\git\healthcare\maven-install>mvn install:install-file -DgroupId=On
 
 C:\Users\Andy\git\healthcare\maven-install>mvn install:install-file -DgroupId=sqljdbc2008 -DartifactId=sqljdbc2008 -Dversion=1.0 -Dpackaging=jar -Dfile=./sqljdbc2008.jar
 
+
+C:\Users\Andy\git\healthcare\maven-install>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.2.0 -Dpackaging=jar -Dfile=./ojdbc14-10.2.0.2.0.jar
+
