@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sun.star.awt.Key;
 
 import otc.healthcare.pojo.TableInfo;
+import otc.healthcare.service.MySQLServiceMetaData;
 import otc.healthcare.service.OracleService;
 
 /**
@@ -26,7 +27,7 @@ import otc.healthcare.service.OracleService;
 @Controller
 public class UserController {
 	@Autowired
-	private OracleService oracleSerive;
+	private MySQLServiceMetaData mySQLServiceMetaData;
 
 	@RequestMapping("/login")
 	public String login() {
@@ -38,20 +39,6 @@ public class UserController {
 	public Map<String, HashSet<String>> updateShoppingCart(
 			@RequestParam(value = "addinfolist", required = true) String addInfolist,
 			@RequestParam(value = "deleteinfolist", required = true) String deleteInfolist, HttpSession httpSession) {
-		// httpSession.removeAttribute("shoppingcart");
-		// if(httpSession.getAttribute("shoppingcart")==null)
-		// httpSession.setAttribute("shoppingcart", new
-		// HashMap<String,HashSet<String>>());
-		// Map<String,HashSet<String>> shoppingcartMap=(Map<String,
-		// HashSet<String>>) httpSession.getAttribute("shoppingcart");
-		// String[] infoArray=infolist.split(",");
-		// for(String info:infoArray){
-		// String database=info.split("_")[0];
-		// String table=info.split("_")[1];
-		// if(shoppingcartMap.get(database)==null) shoppingcartMap.put(database,
-		// new HashSet<String>());
-		// shoppingcartMap.get(database).add(table);
-		// }
 		deleteShoppingCart(deleteInfolist, httpSession);
 		addToShoppingCart(addInfolist, httpSession);
 		Map<String, HashSet<String>> shoppingcartMap = (Map<String, HashSet<String>>) httpSession
@@ -98,9 +85,9 @@ public class UserController {
 		for (String databaseid : shoppingcartMap.keySet()) {
 			ArrayList<String> tableinfoList = new ArrayList<String>();
 			for (String tableid : shoppingcartMap.get(databaseid)) {
-				tableinfoList.add(this.oracleSerive.getTableSummary(databaseid, tableid).get("name"));
+				tableinfoList.add(this.mySQLServiceMetaData.getTableSummary(databaseid, tableid).get("name"));
 			}
-			shoppingcartDetail.put(this.oracleSerive.getDatabaseSummary(databaseid).get("name"), tableinfoList);
+			shoppingcartDetail.put(this.mySQLServiceMetaData.getDatabaseSummary(databaseid).get("name"), tableinfoList);
 		}
 		return shoppingcartDetail;
 	}
@@ -113,11 +100,11 @@ public class UserController {
 
 		for (String databaseid : shoppingcartMap.keySet()) {
 			ArrayList<String> tableinfoList = new ArrayList<String>();
-			String dbName = this.oracleSerive.getDatabaseSummary(databaseid).get("name");
+			String dbName = this.mySQLServiceMetaData.getDatabaseSummary(databaseid).get("name");
 			for (String tableid : shoppingcartMap.get(databaseid)) {
 				tableinfoList.add(databaseid + "_" + dbName + "_" + tableid + "_"
-						+ this.oracleSerive.getTableSummary(databaseid, tableid).get("name") + "_"
-						+ this.oracleSerive.getTableSummary(databaseid, tableid).get("comments"));
+						+ this.mySQLServiceMetaData.getTableSummary(databaseid, tableid).get("name") + "_"
+						+ this.mySQLServiceMetaData.getTableSummary(databaseid, tableid).get("comments"));
 			}
 			AllShoppingcartDetail.put(databaseid + "_" + dbName, tableinfoList);
 		}
@@ -135,9 +122,9 @@ public class UserController {
 
 		String shopInfo = new String();
 		if (applyType.equals("data"))
-			shopInfo = this.oracleSerive.getApplyDataByDocId(docid);
+			shopInfo = this.mySQLServiceMetaData.getApplyDataByDocId(docid);
 		else if (applyType.equals("env"))
-			shopInfo = this.oracleSerive.getApplyDataByEnvDocId(docid);
+			shopInfo = this.mySQLServiceMetaData.getApplyDataByEnvDocId(docid);
 
 		if (shopInfo == null || shopInfo.equals(""))
 			return false;
@@ -167,9 +154,9 @@ public class UserController {
 			ArrayList<String> tableinfoList = new ArrayList<String>();
 			for (String tableid : shoppingcartMap.get(databaseid)) {
 				tableinfoList.add(databaseid + "_" + tableid + "_"
-						+ this.oracleSerive.getTableSummary(databaseid, tableid).get("name"));
+						+ this.mySQLServiceMetaData.getTableSummary(databaseid, tableid).get("name"));
 			}
-			shoppingcartDetail.put(databaseid + "_" + this.oracleSerive.getDatabaseSummary(databaseid).get("name"),
+			shoppingcartDetail.put(databaseid + "_" + this.mySQLServiceMetaData.getDatabaseSummary(databaseid).get("name"),
 					tableinfoList);
 		}
 		return shoppingcartDetail;
@@ -234,17 +221,18 @@ public class UserController {
 	}
 
 	/**
-	 * @return the oracleSerive
+	 * @return the mySQLServiceMetaData
 	 */
-	public OracleService getOracleSerive() {
-		return oracleSerive;
+	public MySQLServiceMetaData getMySQLServiceMetaData() {
+		return mySQLServiceMetaData;
 	}
 
 	/**
-	 * @param oracleSerive
-	 *            the oracleSerive to set
+	 * @param mySQLServiceMetaData the mySQLServiceMetaData to set
 	 */
-	public void setOracleSerive(OracleService oracleSerive) {
-		this.oracleSerive = oracleSerive;
+	public void setMySQLServiceMetaData(MySQLServiceMetaData mySQLServiceMetaData) {
+		this.mySQLServiceMetaData = mySQLServiceMetaData;
 	}
+
+
 }

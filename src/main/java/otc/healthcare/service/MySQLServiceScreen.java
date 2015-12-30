@@ -20,7 +20,7 @@ import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
 
 @Component
-public class MySQLService implements IService {
+public class MySQLServiceScreen implements IService {
 	@Autowired
 	private HealthcareConfiguration hcConfiguration;
 	private Map<String, HashMap<String, String>> yearMap;

@@ -21,12 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import otc.healthcare.pojo.BaseHospitalModel;
 import otc.healthcare.pojo.CommunityModel;
 import otc.healthcare.pojo.YearStatisticsModel;
-import otc.healthcare.service.MySQLService;
+import otc.healthcare.service.MySQLServiceScreen;
 
 @Controller
 public class ScreenController {
 	@Autowired
-	private MySQLService mySQLService;
+	private MySQLServiceScreen mySQLServiceScreen;
 
 	@RequestMapping(value = "cache_all")
 	@ResponseBody
@@ -65,7 +65,7 @@ public class ScreenController {
 		String check_year = getCheckYear(request);
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("joinbasehosiptalinfo") == null)
-			servletContext.setAttribute("joinbasehosiptalinfo", getMySQLService().getJoinBaseHosiptalInfo());
+			servletContext.setAttribute("joinbasehosiptalinfo", getMySQLServiceScreen().getJoinBaseHosiptalInfo());
 		List<BaseHospitalModel> list = ((Map<String, List<BaseHospitalModel>>) servletContext
 				.getAttribute("joinbasehosiptalinfo")).get(check_year);
 		return list;
@@ -105,7 +105,7 @@ public class ScreenController {
 		String check_year = getCheckYear(request);
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("joincommunityinfo") == null)
-			servletContext.setAttribute("joincommunityinfo", getMySQLService().getJoinCommunityInfo());
+			servletContext.setAttribute("joincommunityinfo", getMySQLServiceScreen().getJoinCommunityInfo());
 		List<CommunityModel> list = ((Map<String, List<CommunityModel>>) servletContext
 				.getAttribute("joincommunityinfo")).get(check_year);
 		return list;
@@ -129,7 +129,7 @@ public class ScreenController {
 	public Map<String, Object> provinceCityInfo(HttpServletRequest request) {
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("provincecityinfo") == null)
-			servletContext.setAttribute("provincecityinfo", getMySQLService().getProvinceCityInfo());
+			servletContext.setAttribute("provincecityinfo", getMySQLServiceScreen().getProvinceCityInfo());
 		return (Map<String, Object>) servletContext.getAttribute("provincecityinfo");
 	}
 
@@ -153,7 +153,7 @@ public class ScreenController {
 	public Map<String, String> provinceInfo(HttpServletRequest request) {
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("provinceinfo") == null)
-			servletContext.setAttribute("provinceinfo", getMySQLService().getProvinceInfo());
+			servletContext.setAttribute("provinceinfo", getMySQLServiceScreen().getProvinceInfo());
 		return (Map<String, String>) servletContext.getAttribute("provinceinfo");
 	}
 
@@ -161,7 +161,7 @@ public class ScreenController {
 	@ResponseBody
 	public Map<String, String> cityInfo(@RequestParam(value = "provinceid", required = false) String provinceid,
 			HttpServletRequest request) {
-		return getMySQLService().getCityInfo(provinceid);
+		return getMySQLServiceScreen().getCityInfo(provinceid);
 	}
 
 	@RequestMapping(value = "crowd_features")
@@ -175,7 +175,7 @@ public class ScreenController {
 	public Map<String, YearStatisticsModel> yearInfo(HttpServletRequest request) {
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("yearinfo") == null)
-			servletContext.setAttribute("yearinfo", getMySQLService().getYearInfo());
+			servletContext.setAttribute("yearinfo", getMySQLServiceScreen().getYearInfo());
 		return (Map<String, YearStatisticsModel>) servletContext.getAttribute("yearinfo");
 	}
 
@@ -186,7 +186,7 @@ public class ScreenController {
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
 			@RequestParam(value = "community", required = false) String community, HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-		return getMySQLService().getGenderInfo(provinceid, acCodeUp, community).get(check_year);
+		return getMySQLServiceScreen().getGenderInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 
 	@RequestMapping(value = "getageinfo")
@@ -196,7 +196,7 @@ public class ScreenController {
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
 			@RequestParam(value = "community", required = false) String community, HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-		return getMySQLService().getAgeInfo(provinceid, acCodeUp, community).get(check_year);
+		return getMySQLServiceScreen().getAgeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 
 	@RequestMapping(value = "getregioninfo")
@@ -206,7 +206,7 @@ public class ScreenController {
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
 			@RequestParam(value = "community", required = false) String community, HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-		return getMySQLService().getRegionInfo(provinceid, acCodeUp, community).get(check_year);
+		return getMySQLServiceScreen().getRegionInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 
 	@RequestMapping(value = "getgenderstrokeinfo")
@@ -216,7 +216,7 @@ public class ScreenController {
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
 			@RequestParam(value = "community", required = false) String community, HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-		return getMySQLService().getGenderWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
+		return getMySQLServiceScreen().getGenderWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 
 	@RequestMapping(value = "getagestrokeinfo")
@@ -226,7 +226,7 @@ public class ScreenController {
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
 			@RequestParam(value = "community", required = false) String community, HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-		return getMySQLService().getAgeWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
+		return getMySQLServiceScreen().getAgeWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 
 	@RequestMapping(value = "getregionstrokeinfo")
@@ -236,7 +236,7 @@ public class ScreenController {
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
 			@RequestParam(value = "community", required = false) String community, HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-		return getMySQLService().getRegionWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
+		return getMySQLServiceScreen().getRegionWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 
 	@RequestMapping(value = "geteducationstrokeinfo")
@@ -246,7 +246,7 @@ public class ScreenController {
 			@RequestParam(value = "accodeup", required = false) String acCodeUp,
 			@RequestParam(value = "community", required = false) String community, HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-		return getMySQLService().getEducationWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
+		return getMySQLServiceScreen().getEducationWithStrokeInfo(provinceid, acCodeUp, community).get(check_year);
 	}
 
 	@RequestMapping(value = "getgenderdangerfactorinfo")
@@ -268,7 +268,7 @@ public class ScreenController {
 //			e.printStackTrace();
 //		}
 //		return maps;
-		return getMySQLService().getGenderDangerFactorInfo(provinceid, dangertype, ageclassification).get(check_year);
+		return getMySQLServiceScreen().getGenderDangerFactorInfo(provinceid, dangertype, ageclassification).get(check_year);
 	  
 	}
 
@@ -278,7 +278,7 @@ public class ScreenController {
 		String check_year = getCheckYear(request);
 		ServletContext servletContext = request.getSession().getServletContext();
 		if (servletContext.getAttribute("beillmapdata") == null)
-			servletContext.setAttribute("beillmapdata", getMySQLService().getBeIllMapData());
+			servletContext.setAttribute("beillmapdata", getMySQLServiceScreen().getBeIllMapData());
 		Map<String, String> map = ((HashMap<String, HashMap<String, String>>) servletContext
 				.getAttribute("beillmapdata")).get(check_year);
 		return map;
@@ -312,18 +312,19 @@ public class ScreenController {
 	}
 
 	/**
-	 * @return the mySQLService
+	 * @return the mySQLServiceScreen
 	 */
-	public MySQLService getMySQLService() {
-		return mySQLService;
+	public MySQLServiceScreen getMySQLServiceScreen() {
+		return mySQLServiceScreen;
 	}
 
 	/**
-	 * @param mySQLService
-	 *            the mySQLService to set
+	 * @param mySQLServiceScreen the mySQLServiceScreen to set
 	 */
-	public void setMySQLService(MySQLService mySQLService) {
-		this.mySQLService = mySQLService;
+	public void setMySQLServiceScreen(MySQLServiceScreen mySQLServiceScreen) {
+		this.mySQLServiceScreen = mySQLServiceScreen;
 	}
+
+
 
 }

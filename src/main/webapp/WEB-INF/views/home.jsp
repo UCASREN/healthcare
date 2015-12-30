@@ -56,12 +56,13 @@
 		<div class="header">
 			<div class="wrap">
 				<div class="logo">
-					<a href="">
-						<img alt="图标" class="pngfix" src="home/images/home/change_logo.png" width="50px" height="50px" />
+					<a href=""> <img alt="图标" class="pngfix"
+						src="home/images/home/change_logo.png" width="50px" height="50px" />
 						<!-- <em><i class="icons16 icons16-home-white" title="首页"></i></em> -->
-					</a> 
+					</a>
 					<!-- <span style="color: #FFF; font-size: 20px; font-weight: bold;">中国心脑血管病临床大数据平台</span> -->
-					<span style="color:#FFF;font-size: 20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	
+					<span
+						style="color: #FFF; font-size: 20px; font-weight: bold; font-family: SimHei;">中国心脑血管病临床大数据平台</span>
 				</div>
 				<nav>
 					<!-- <ul>
@@ -70,6 +71,19 @@
 						<li data-name="haflow"><a href="http://124.16.137.206:8088/haflow/" target="_blank">haflow平台</a></li>
 					</ul> -->
 				</nav>
+				<sec:authorize access="hasAnyRole('ANONYMOUS')">
+					<div class="quick-menu">
+						<div class="quick-menu-unlogined">
+							<div id="NTGUID__2">
+								<div class="link-menu-list">
+									<span class="drop-menu-group"> <a href="login"
+										id="letslogin">登录</a>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</sec:authorize>
 				<sec:authorize access="hasAnyRole('USER','ADMIN','SU1','SU2')">
 					<div class="quick-menu">
 						<div class="quick-menu-unlogined">
