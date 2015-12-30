@@ -1182,7 +1182,6 @@ public class OracleService implements IService {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -1216,6 +1215,7 @@ public class OracleService implements IService {
 
 			String hc_userDemandType = req.getParameter("userDemandType");
 			String hc_userDemand = req.getParameter("userDemand");
+			String hc_dataExportType = req.getParameter("dataExportType");
 
 			String hc_useFields = req.getParameter("allUseField");//
 			String hc_projectName = req.getParameter("projectName");
@@ -1240,6 +1240,7 @@ public class OracleService implements IService {
 
 			hc_applydata.setDemandtype(hc_userDemandType);
 			hc_applydata.setDemand(hc_userDemand);
+			hc_applydata.setApplyDataExportType(hc_dataExportType);
 
 			hc_applydata.setProUsefield(hc_useFields);
 			hc_applydata.setProName(hc_projectName);
@@ -1270,7 +1271,8 @@ public class OracleService implements IService {
 
 		String hc_userDemandType = req.getParameter("userDemandType");
 		String hc_userDemand = req.getParameter("userDemand");
-
+		String hc_dataExportType = req.getParameter("dataExportType");
+		
 		String hc_useFields = req.getParameter("allUseField");//
 		String hc_projectName = req.getParameter("projectName");
 		String hc_projectChairman = req.getParameter("projectChairman");
@@ -1294,7 +1296,8 @@ public class OracleService implements IService {
 
 		hc_applydata.setDemandtype(hc_userDemandType);
 		hc_applydata.setDemand(hc_userDemand);
-
+		hc_applydata.setApplyDataExportType(hc_dataExportType);
+		
 		hc_applydata.setProUsefield(hc_useFields);
 		hc_applydata.setProName(hc_projectName);
 		hc_applydata.setProChair(hc_projectChairman);
@@ -1332,7 +1335,7 @@ public class OracleService implements IService {
 	 */
 	@Transactional
 	public List getDocByHcUserName(String hcUserName) {
-		List docDataList = hcApplydataDao.findByHcUserName(hcUserName);
+		List<HcApplydata> docDataList = hcApplydataDao.findByHcUserName(hcUserName);
 		return docDataList;
 	}
 
@@ -1371,14 +1374,14 @@ public class OracleService implements IService {
 
 	@Transactional
 	public void changeApplyDataStatus(String applyid, String status) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplydataDao.changeApplyStatus(bd, status);
+		long apply_id = Long.valueOf(applyid);
+		hcApplydataDao.changeApplyStatus(apply_id, status);
 	}
 
 	@Transactional
 	public void insertApplyDataFailReason(String applyid, String rejectReason) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplydataDao.setApplyFailReason(bd, rejectReason);
+		long apply_id = Long.valueOf(applyid);
+		hcApplydataDao.setApplyFailReason(apply_id, rejectReason);
 	}
 
 	/*
@@ -1420,7 +1423,8 @@ public class OracleService implements IService {
 
 			String hc_userDemandType = req.getParameter("userDemandType");
 			String hc_userDemand = req.getParameter("userDemand");
-
+			String hc_dataExportType = req.getParameter("dataExportType");
+			
 			String hc_useFields = req.getParameter("allUseField");//
 			String hc_projectName = req.getParameter("projectName");
 			String hc_projectChairman = req.getParameter("projectChairman");
@@ -1443,6 +1447,7 @@ public class OracleService implements IService {
 
 			hc_applyenv.setDemandtype(hc_userDemandType);
 			hc_applyenv.setDemand(hc_userDemand);
+			hc_applyenv.setApplyDataExportType(hc_dataExportType);
 
 			hc_applyenv.setProUsefield(hc_useFields);
 			hc_applyenv.setProName(hc_projectName);
@@ -1470,8 +1475,9 @@ public class OracleService implements IService {
 
 		String hc_userDemandType = req.getParameter("userDemandType");
 		String hc_userDemand = req.getParameter("userDemand");
+		String hc_dataExportType = req.getParameter("dataExportType");
 
-		String hc_useFields = req.getParameter("allUseField");//
+		String hc_useFields = req.getParameter("allUseField");
 		String hc_projectName = req.getParameter("projectName");
 		String hc_projectChairman = req.getParameter("projectChairman");
 		String hc_projectSource = req.getParameter("projectSource");
@@ -1493,7 +1499,8 @@ public class OracleService implements IService {
 
 		hc_applyenv.setDemandtype(hc_userDemandType);
 		hc_applyenv.setDemand(hc_userDemand);
-
+		hc_applyenv.setApplyDataExportType(hc_dataExportType);
+		
 		hc_applyenv.setProUsefield(hc_useFields);
 		hc_applyenv.setProName(hc_projectName);
 		hc_applyenv.setProChair(hc_projectChairman);
@@ -1532,20 +1539,20 @@ public class OracleService implements IService {
 
 	@Transactional
 	public void changeApplyEnvStatus(String applyid, String status) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.changeApplyStatus(bd, status);
+		long apply_id = Long.valueOf(applyid);
+		hcApplyenvDao.changeApplyStatus(apply_id, status);
 	}
 
 	@Transactional
 	public void insertApplyEnvFailReason(String applyid, String rejectReason) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.setApplyFailReason(bd, rejectReason);
+		long apply_id = Long.valueOf(applyid);
+		hcApplyenvDao.setApplyFailReason(apply_id, rejectReason);
 	}
 
 	@Transactional
 	public void updateEnvUrlByApplyID(String applyid, String envUrl) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.setApplyEnvUrl(bd, envUrl);
+		long apply_id = Long.valueOf(applyid);
+		hcApplyenvDao.setApplyEnvUrl(apply_id, envUrl);
 		System.out.println("update EnvUrl ok");
 	}
 

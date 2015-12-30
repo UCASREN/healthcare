@@ -1,10 +1,11 @@
 package otc.healthcare.dao;
 // default package
-// Generated 2015-9-15 15:54:40 by Hibernate Tools 4.0.0
+// Generated 2015-12-29 16:34:07 by Hibernate Tools 4.0.0
 
-import java.math.BigDecimal;
 import java.util.List;
+
 import javax.naming.InitialContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
@@ -22,6 +23,7 @@ import otc.healthcare.pojo.HcApplyenv;
  * @see .HcApplyenv
  * @author Hibernate Tools
  */
+
 @Transactional
 public class HcApplyenvDao {
 
@@ -98,9 +100,10 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
+
 	
 	//通过序列得到---不用这个
-	public HcApplyenv findById(java.math.BigDecimal id) {
+	public HcApplyenv findById(long id) {
 		log.debug("getting HcApplyenv instance with id: " + id);
 		try {
 			HcApplyenv instance = (HcApplyenv) sessionFactory.getCurrentSession().get("HcApplyenv", id);
@@ -191,7 +194,7 @@ public class HcApplyenvDao {
 	
 	
 	//缺少status参数
-	public void changeApplyStatus(BigDecimal applyID, String status) {
+	public void changeApplyStatus(long applyID, String status) {
 		String propertyName = "flagApplydata";
 		log.debug("update HcApplyenv instance with property: " + propertyName + ", id: " + applyID);
 		try {
@@ -208,7 +211,7 @@ public class HcApplyenvDao {
 		}
 	}
 
-	public void setApplyFailReason(BigDecimal applyID, String rejectReason) {
+	public void setApplyFailReason(long applyID, String rejectReason) {
 		String propertyName = "applyRejectReason";
 		log.debug("update HcApplyenv instance with property: " + propertyName + ", id: " + applyID);
 		try {
@@ -225,7 +228,7 @@ public class HcApplyenvDao {
 	}
 	
 	
-	public void setApplyEnvUrl(BigDecimal applyID, String EnvUrl) {
+	public void setApplyEnvUrl(long applyID, String EnvUrl) {
 		String propertyName = "envUrl";
 		log.debug("update HcApplyenv instance with property: " + propertyName + ", id: " + applyID);
 		try {
@@ -240,6 +243,4 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
-	
-	
 }

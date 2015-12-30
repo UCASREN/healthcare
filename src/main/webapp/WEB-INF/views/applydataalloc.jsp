@@ -58,7 +58,7 @@ request.setCharacterEncoding("UTF-8");
 					</h5> -->
 				</div>
 				<div class="modal-body">
-					<form action="/healthcare/dataresource/applydataupload?${_csrf.parameterName}=${_csrf.token}"
+					<form action="/healthcare/applymanager/applydataupload?${_csrf.parameterName}=${_csrf.token}"
 						class="dropzone" id="myDropzone" enctype="multipart/form-data"
 						method="post">
 						<input type="hidden" id='upload_applyid' name="upload_applyid" value="">
@@ -86,7 +86,7 @@ request.setCharacterEncoding("UTF-8");
 				<a href="/healthcare" id=""> <img src="/healthcare/img/change_logo_1.png"
 					alt="logo" class="" />
 				</a>
-				<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	
+				<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病大数据共享平台</span>	
 				<!-- <div class="menu-toggler sidebar-toggler"></div> -->
 			</div>
 		<!-- END LOGO -->
@@ -245,7 +245,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
 	<div class="page-footer-inner">
-		 2015 &copy; 中国心脑血管病临床大数据平台 --- 中国卒中数据中心
+		 2015 &copy; 中国心脑血管病大数据共享平台 --- 中国卒中数据中心
 	</div>
 	<div class="scroll-to-top">
 		<i class="icon-arrow-up"></i>

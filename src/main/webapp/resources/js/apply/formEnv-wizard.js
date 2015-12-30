@@ -53,6 +53,10 @@ var FormWizard = function () {
             	else if(hc_doc.demandtype == '数据使用需求')
             		$('#form_wizard_1 input[data-title="数据使用需求"]').iCheck('check');
             	$('#submit_form_userDemand').val(hc_doc.demand);
+            	if(hc_doc.dataExportType == '文本(CSV)')
+            		$('#form_wizard_1 input[data-title="文本(CSV)"]').iCheck('check');
+            	else if(hc_doc.dataExportType == 'Excel')
+            		$('#form_wizard_1 input[data-title="Excel"]').iCheck('check');
             	
             	arr = hc_doc.proUsefield.split(",");
             	console.log(arr)
@@ -213,6 +217,9 @@ var FormWizard = function () {
                     userDemandType:{
                     	required: true,
                     },
+                    dataExportType:{
+                    	required: true,
+                    },
                     userDemand: {
                         required: true
                     },
@@ -339,7 +346,7 @@ var FormWizard = function () {
                 if (current >= total) {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
-                    $('#form_wizard_1').find('.button-wordPreview').hide();
+                    $('#form_wizard_1').find('.button-wordPreview').show();
                     displayConfirm();
                 } else {
                     $('#form_wizard_1').find('.button-next').show();
@@ -400,18 +407,33 @@ var FormWizard = function () {
             		var allUseField_tmp = $('#allUseField').val();
                	 	$('#allUseField').val(allUseField_tmp.substring(0,allUseField_tmp.length-1)+""+$('#others').val());
             	}
-           	 	
+            	
+            	$('#submit_form').attr("action","/healthcare/applyenv/createdataword");
                 $('#submit_form').submit(); 
             }).hide();
             
+            //预览
             $('#form_wizard_1 .button-wordPreview').click(function () {
-                alert('word文档预览');
-                //window.open ("/healthcare/", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+            	if(!confirm('确定文档预览？\n（这需要等待一段时间）'))
+            		return false;
+                //表单异步提交
+	      		var ajax_url = "/healthcare/applyenv/firstwordonline"; //表单目标 
+	      		var ajax_type = $('#submit_form').attr('method'); //提交方法 
+	      		var ajax_data = $('#submit_form').serialize(); //表单数据 
+	          		
+	      		$.ajax({
+	      		url: ajax_url,
+	      		data: ajax_data,
+	      		type: ajax_type,
+	      		success: function(data){
+	                  window.open ("/healthcare/applyenv/first_documentView", "word预览", "height=800, width=600, target=_parent,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+	      		}
+	      		});
+          		
             }).hide();
 
             
             $('#db_select').click(function(){
-            	//确认按钮
             	if(confirm('选择数据加入购物车后，回到本界面加载购物车！')){
             		window.open ("/healthcare/userdatabaseview");
                   	return false;

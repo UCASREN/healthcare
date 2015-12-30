@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>管理员界面---中国心脑血管病临床大数据平台</title>
+<title>管理员界面---中国心脑血管病大数据共享平台</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -95,7 +95,7 @@
 					<a href="/healthcare" id=""> <img src="/healthcare/img/change_logo_1.png"
 						alt="logo" class="" />
 					</a>
-					<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病临床大数据平台</span>	
+					<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病大数据共享平台</span>	
 					<!-- <div class="menu-toggler sidebar-toggler"></div> -->
 				</div>
 			<!-- END LOGO -->

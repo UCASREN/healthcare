@@ -1,20 +1,20 @@
 package otc.healthcare.dao;
 // default package
-// Generated 2015-9-6 17:38:46 by Hibernate Tools 4.0.0
+// Generated 2015-12-29 16:34:07 by Hibernate Tools 4.0.0
 
-import java.math.BigDecimal;
 import java.util.List;
+
 import javax.naming.InitialContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import otc.healthcare.pojo.HcApplydata;
 
@@ -23,18 +23,19 @@ import otc.healthcare.pojo.HcApplydata;
  * @see .HcApplydata
  * @author Hibernate Tools
  */
+
 @Transactional
 public class HcApplydataDao {
 
 	private static final Log log = LogFactory.getLog(HcApplydataDao.class);
-
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
+	
 	protected SessionFactory getSessionFactory() {
 		try {
 			return (SessionFactory) new InitialContext().lookup("SessionFactory");
@@ -100,8 +101,9 @@ public class HcApplydataDao {
 		}
 	}
 
+
 	//通过序列得到---不用这个
-	public HcApplydata findById(java.math.BigDecimal id) {
+	public HcApplydata findById(long id) {
 		log.debug("getting HcApplydata instance with id: " + id);
 		try {
 			HcApplydata instance = (HcApplydata) sessionFactory.getCurrentSession().get("HcApplydata", id);
@@ -148,7 +150,7 @@ public class HcApplydataDao {
 	}
 	
 	//通过属性值得到
-	public List findByProperty(String propertyName, Object value) {
+	public List<HcApplydata> findByProperty(String propertyName, Object value) {
 		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
 		try {
 			String queryString = "from HcApplydata as model where model."
@@ -187,7 +189,7 @@ public class HcApplydataDao {
 	}
 
 	//缺少status参数
-	public void changeApplyStatus(BigDecimal applyID, String status) {
+	public void changeApplyStatus(long applyID, String status) {
 		String propertyName = "flagApplydata";
 		log.debug("update HcApplydata instance with property: " + propertyName + ", id: " + applyID);
 		try {
@@ -204,7 +206,7 @@ public class HcApplydataDao {
 		}
 	}
 
-	public void setApplyFailReason(BigDecimal applyID, String rejectReason) {
+	public void setApplyFailReason(long applyID, String rejectReason) {
 		String propertyName = "applyRejectReason";
 		log.debug("update HcApplydata instance with property: " + propertyName + ", id: " + applyID);
 		try {
@@ -219,5 +221,4 @@ public class HcApplydataDao {
 			throw re;
 		}
 	}
-	
 }
