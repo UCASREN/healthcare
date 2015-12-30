@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 2015-12-29 16:36:34 by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="HcApplyenv" table="hc_applyenv" catalog="healthcare">
+    <class name="otc.healthcare.pojo.HcApplyenv" table="hc_applyenv" catalog="healthcare">
         <id name="idApplydata" type="java.lang.Long">
             <column name="ID_APPLYDATA" />
             <generator class="identity" />
