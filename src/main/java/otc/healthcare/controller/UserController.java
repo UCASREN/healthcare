@@ -28,7 +28,8 @@ import otc.healthcare.service.OracleService;
 public class UserController {
 	@Autowired
 	private MySQLServiceMetaData mySQLServiceMetaData;
-
+	@Autowired
+	private OracleService oracleService;
 	@RequestMapping("/login")
 	public String login() {
 		return "login";
@@ -122,9 +123,9 @@ public class UserController {
 
 		String shopInfo = new String();
 		if (applyType.equals("data"))
-			shopInfo = this.mySQLServiceMetaData.getApplyDataByDocId(docid);
+			shopInfo = this.oracleService.getApplyDataByDocId(docid);
 		else if (applyType.equals("env"))
-			shopInfo = this.mySQLServiceMetaData.getApplyDataByEnvDocId(docid);
+			shopInfo = this.oracleService.getApplyDataByEnvDocId(docid);
 
 		if (shopInfo == null || shopInfo.equals(""))
 			return false;
@@ -232,6 +233,20 @@ public class UserController {
 	 */
 	public void setMySQLServiceMetaData(MySQLServiceMetaData mySQLServiceMetaData) {
 		this.mySQLServiceMetaData = mySQLServiceMetaData;
+	}
+
+	/**
+	 * @return the oracleService
+	 */
+	public OracleService getOracleService() {
+		return oracleService;
+	}
+
+	/**
+	 * @param oracleService the oracleService to set
+	 */
+	public void setOracleService(OracleService oracleService) {
+		this.oracleService = oracleService;
 	}
 
 
