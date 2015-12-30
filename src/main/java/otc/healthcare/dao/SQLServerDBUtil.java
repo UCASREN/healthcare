@@ -1,11 +1,8 @@
 package otc.healthcare.dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Types;
 
-import oracle.jdbc.OraclePreparedStatement;
+import otc.healthcare.util.DBUtil;
 
 
 public class SQLServerDBUtil extends DBUtil{

@@ -16,7 +16,7 @@
 	p:driverClass="com.mysql.jdbc.Driver"
 		p:jdbcUrl="jdbc:mysql://localhost:3306/healthcare"
 		p:user="root"
-		p:password="123456"
+		p:password="cuiguangfan"
 		p:maxPoolSize="20"
 		p:minPoolSize="2"
 		p:initialPoolSize="2"
@@ -24,7 +24,7 @@
 		destroy-method="close"/>
      
      
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" p:dataSource-ref="dataSource1">
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" p:dataSource-ref="dataSource">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml">
 		</property>
 	</bean>

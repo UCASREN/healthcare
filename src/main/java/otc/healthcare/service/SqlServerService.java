@@ -1,6 +1,5 @@
 package otc.healthcare.service;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -15,28 +14,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import javax.activation.MailcapCommandMap;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.xmlbeans.impl.jam.mutable.MMember;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import otc.healthcare.dao.ConnectionFactory;
-import otc.healthcare.dao.HcApplydataDao;
-import otc.healthcare.dao.HcApplyenvDao;
-import otc.healthcare.dao.OracleDBUtil;
 import otc.healthcare.dao.SQLServerDBUtil;
-import otc.healthcare.pojo.ClassificationInfo;
-import otc.healthcare.pojo.DatabaseInfo;
-import otc.healthcare.pojo.FieldInfo;
-import otc.healthcare.pojo.HcApplydata;
-import otc.healthcare.pojo.HcApplyenv;
-import otc.healthcare.pojo.TableInfo;
-import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
 
 @Component
