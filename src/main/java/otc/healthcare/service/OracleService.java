@@ -1182,7 +1182,6 @@ public class OracleService implements IService {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -1336,7 +1335,7 @@ public class OracleService implements IService {
 	 */
 	@Transactional
 	public List getDocByHcUserName(String hcUserName) {
-		List docDataList = hcApplydataDao.findByHcUserName(hcUserName);
+		List<HcApplydata> docDataList = hcApplydataDao.findByHcUserName(hcUserName);
 		return docDataList;
 	}
 
@@ -1375,14 +1374,14 @@ public class OracleService implements IService {
 
 	@Transactional
 	public void changeApplyDataStatus(String applyid, String status) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplydataDao.changeApplyStatus(bd, status);
+		long apply_id = Long.valueOf(applyid);
+		hcApplydataDao.changeApplyStatus(apply_id, status);
 	}
 
 	@Transactional
 	public void insertApplyDataFailReason(String applyid, String rejectReason) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplydataDao.setApplyFailReason(bd, rejectReason);
+		long apply_id = Long.valueOf(applyid);
+		hcApplydataDao.setApplyFailReason(apply_id, rejectReason);
 	}
 
 	/*
@@ -1540,20 +1539,20 @@ public class OracleService implements IService {
 
 	@Transactional
 	public void changeApplyEnvStatus(String applyid, String status) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.changeApplyStatus(bd, status);
+		long apply_id = Long.valueOf(applyid);
+		hcApplyenvDao.changeApplyStatus(apply_id, status);
 	}
 
 	@Transactional
 	public void insertApplyEnvFailReason(String applyid, String rejectReason) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.setApplyFailReason(bd, rejectReason);
+		long apply_id = Long.valueOf(applyid);
+		hcApplyenvDao.setApplyFailReason(apply_id, rejectReason);
 	}
 
 	@Transactional
 	public void updateEnvUrlByApplyID(String applyid, String envUrl) {
-		BigDecimal bd = new BigDecimal(applyid);
-		hcApplyenvDao.setApplyEnvUrl(bd, envUrl);
+		long apply_id = Long.valueOf(applyid);
+		hcApplyenvDao.setApplyEnvUrl(apply_id, envUrl);
 		System.out.println("update EnvUrl ok");
 	}
 
