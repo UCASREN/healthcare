@@ -8,5 +8,7 @@
         <property name="hibernate.connection.password">123456</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/healthcare</property>
         <property name="hibernate.connection.username">root</property>
+        <mapping resource="otc/healthcare/pojo/HcApplydata.hbm.xml" />
+        <mapping resource="otc/healthcare/pojo/HcApplyenv.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

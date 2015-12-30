@@ -259,7 +259,7 @@ public class ApplyDataController {
 				break;
 			}
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success motalButton\">审核通过</button>"
-					+ "&nbsp;<button id=\"a1"+ApplyID+"\"  title=\"点击下载数据资源\" onclick=\"window.location.href='/healthcare/dataresource/downLoadApplyData?ApplyID="+ApplyID+"'\" class"
+					+ "&nbsp;<button id=\"a1"+ApplyID+"\"  title=\"点击下载数据资源\" onclick=\"window.location.href='/healthcare/applymanager/downLoadApplyData?ApplyID="+ApplyID+"'\" class"
 							+ "=\"btn btn-xs btn-success data-download\">下载</button>";
 			break;
 		case "5"://审核失败
