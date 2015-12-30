@@ -1,4 +1,4 @@
-package otc.healthcare.dao;
+package otc.healthcare.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import oracle.jdbc.OraclePreparedStatement;
+import otc.healthcare.util.DBUtil;
 
 
 

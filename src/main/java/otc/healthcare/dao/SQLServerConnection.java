@@ -2,6 +2,8 @@ package otc.healthcare.dao;
 
 import java.util.List;
 
+import otc.healthcare.util.DBUtil;
+
 public class SQLServerConnection extends ConnectionBase implements IConnection {
 	private final static String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 

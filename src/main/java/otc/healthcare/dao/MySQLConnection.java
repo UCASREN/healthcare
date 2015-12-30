@@ -2,6 +2,8 @@ package otc.healthcare.dao;
 
 import java.util.List;
 
+import otc.healthcare.util.DBUtil;
+
 public class MySQLConnection extends ConnectionBase implements IConnection {
 
 	private final static String driverName = "com.mysql.jdbc.Driver";

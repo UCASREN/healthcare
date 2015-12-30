@@ -1,40 +1,19 @@
 package otc.healthcare.service;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.xmlbeans.impl.xb.xsdschema.All;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.beyondsphere.database.JDBCUtil;
 
 import otc.healthcare.dao.ConnectionFactory;
-import otc.healthcare.dao.HcApplydataDao;
-import otc.healthcare.dao.HcApplyenvDao;
-import otc.healthcare.dao.OracleDBUtil;
-import otc.healthcare.pojo.DatabaseInfo;
-import otc.healthcare.pojo.FieldInfo;
-import otc.healthcare.pojo.HcApplydata;
-import otc.healthcare.pojo.HcApplyenv;
-import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.pojo.VMUser;
-import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
+import otc.healthcare.util.OracleDBUtil;
 
 @Component
 public class VMService implements IService {
@@ -60,7 +39,7 @@ public class VMService implements IService {
 	public ArrayList<VMUser> listVMService() {
 		String vm_ip = hcConfiguration.getProperty(HealthcareConfiguration.VM_IP);
 		String vm_name = hcConfiguration.getProperty(HealthcareConfiguration.VM_USERNAME);
-		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
@@ -137,7 +116,7 @@ public class VMService implements IService {
 	public void saveVMService(String vmid, String vmName, String applydataid) {
 		String vm_ip = hcConfiguration.getProperty(HealthcareConfiguration.VM_IP);
 		String vm_name = hcConfiguration.getProperty(HealthcareConfiguration.VM_USERNAME);
-		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_URL);
+		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
 		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
 		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
 		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,

@@ -28,9 +28,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<BaseHospitalModel>> getJoinBaseHosiptalInfo() {
 		System.out.println("正在获取基地医院数据");
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		DBUtil dbUtil_inner = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<BaseHospitalModel>> map = new HashMap<String, List<BaseHospitalModel>>();
@@ -93,9 +93,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<CommunityModel>> getJoinCommunityInfo() {
 		System.out.println("正在获取社区数据");
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		DBUtil dbUtil_inner = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<CommunityModel>> map = new HashMap<String, List<CommunityModel>>();
@@ -162,9 +162,9 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, Object> getProvinceCityInfo() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		HashMap<String, ArrayList<String>> provinceCityMap = new HashMap<String, ArrayList<String>>();
@@ -200,9 +200,9 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, String> getProvinceInfo() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, String> provinceMap = new HashMap<String, String>();
 		try {
@@ -225,9 +225,9 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, String> getCityInfo(String provinceId) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, String> cityMap = new HashMap<String, String>();
 		try {
@@ -251,9 +251,9 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, HashMap<String, String>> getYearAcid() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, HashMap<String, String>> yearMap = new HashMap<String, HashMap<String, String>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -276,9 +276,9 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, YearStatisticsModel> getYearInfo() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, YearStatisticsModel> map = new HashMap<String, YearStatisticsModel>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -344,9 +344,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<HashMap<String, String>>> getGenderInfo(String province, String acCodeUp,
 			String community) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -391,9 +391,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<HashMap<String, String>>> getGenderWithStrokeInfo(String province, String acCodeUp,
 			String community) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -433,9 +433,9 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<HashMap<String, String>>> getAgeInfo(String province, String acCodeUp, String community) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -488,9 +488,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<HashMap<String, String>>> getAgeWithStrokeInfo(String province, String acCodeUp,
 			String community) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -544,9 +544,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<HashMap<String, String>>> getRegionInfo(String province, String acCodeUp,
 			String community) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -593,9 +593,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<HashMap<String, String>>> getRegionWithStrokeInfo(String province, String acCodeUp,
 			String community) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -635,9 +635,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, List<HashMap<String, String>>> getEducationWithStrokeInfo(String province, String acCodeUp,
 			String community) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -681,9 +681,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, Map<String, List<HashMap<String, String>>>> getGenderDangerFactorInfo(String province,
 			String dangertype, String ageclassification) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, Map<String, List<HashMap<String, String>>>> returnMap = new HashMap<String, Map<String, List<HashMap<String, String>>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -794,9 +794,9 @@ public class MySQLServiceScreen implements IService {
 	public Map<String, Map<String, List<HashMap<String, String>>>> getRegionDangerFactorInfo(String province,
 			String dangertype, String ageclassification) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		Map<String, Map<String, List<HashMap<String, String>>>> returnMap = new HashMap<String, Map<String, List<HashMap<String, String>>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
@@ -895,9 +895,9 @@ public class MySQLServiceScreen implements IService {
 
 	public HashMap<String, HashMap<String, String>> getBeIllMapData() {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_URL),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_USERNAME),
-				this.getHcConfiguration().getProperty(HealthcareConfiguration.MYSQL_DB_PASSWORD));
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_DATA_URL),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_USERNAME),
+				this.getHcConfiguration().getProperty(HealthcareConfiguration.DB_PASSWORD));
 		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
 		HashMap<String, HashMap<String, String>> returnMap = new HashMap<String, HashMap<String, String>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };

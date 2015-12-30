@@ -13,7 +13,8 @@ public class HealthcareConfiguration {
 	public static final String SWFTOOLS_PATH = "SWFToolsPath";
 	public static final String HC_DOCPATH = "hc_docpath";
 	
-	public static final String DB_URL = "db_url";
+	public static final String DB_BASIC_URL = "basic_url";
+	public static final String DB_DATA_URL = "data_url";
 	public static final String DB_USERNAME = "db_username";
 	public static final String DB_PASSWORD = "db_password";
 
@@ -21,9 +22,7 @@ public class HealthcareConfiguration {
 	public static final String SQLSERVER_USERNAME = "sqlserver_username";
 	public static final String SQLSERVER_PASSWORD = "sqlserver_password";
 	
-	public static final String MYSQL_DB_URL = "mysql_db_url";
-	public static final String MYSQL_DB_USERNAME = "mysql_db_username";
-	public static final String MYSQL_DB_PASSWORD = "mysql_db_password";
+	
 
 	public static final String VM_IP = "vm_ip";
 	public static final String VM_USERNAME = "vm_username";

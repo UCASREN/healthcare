@@ -1,9 +1,6 @@
 package otc.healthcare.controller;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
@@ -31,11 +27,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import otc.healthcare.pojo.ClassificationInfo;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
-import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.pojo.TreeJson;
 import otc.healthcare.service.MySQLServiceMetaData;
-import otc.healthcare.service.OracleService;
 import otc.healthcare.util.ExcelUtil;
 
 /**
@@ -102,11 +96,11 @@ public class MetadataController {
 		return returnList;
 	}
 
-	@RequestMapping(value = "/createhcDB")
-	public String createHealthCareDB() {
-		this.getMySQLServiceMetaData().createHcDB();
-		return "redirect:/";
-	}
+//	@RequestMapping(value = "/createhcDB")
+//	public String createHealthCareDB() {
+//		this.getMySQLServiceMetaData().createHcDB();
+//		return "redirect:/";
+//	}
 	@RequestMapping(value = "/testremoteconnect", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String,String> TestRemoteConnect(@RequestParam(value = "url", required = true) String url,
@@ -168,7 +162,7 @@ public class MetadataController {
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "password", required = false) String password,String selectedtables) {
 //		System.out.println("传过来的数据"+selectedtables);
-		this.getMySQLServiceMetaData().insertRemoteDB(url,username,password,selectedtables);
+		//this.getMySQLServiceMetaData().insertRemoteDB(url,username,password,selectedtables);
 		return null;
 	}
 	@RequestMapping(value = "/nodeoperation", method = RequestMethod.GET)
@@ -237,16 +231,9 @@ public class MetadataController {
 				this.getMySQLServiceMetaData().changeTable(parent.substring(parent.indexOf("_") + 1), operationId, text, zhcnname,comments,numrows);
 				operationResult = "success";
 			}
-			/*
-			 * operationResult = (operationType.equals("database") ?
-			 * this.mySQLServiceMetaData.changeDatabase(operationId, text, null) :
-			 * this.mySQLServiceMetaData.changeTable(parent.substring(parent.indexOf(
-			 * "_") + 1), operationId, text, comments)) ? "success" : "fail";
-			 */
 		}
 			break;
 		case "move_node":{
-//			System.out.println("输入参数："+id+","+parent+","+position);
 			this.getMySQLServiceMetaData().changeDatabase(operationId, null, null,parent.substring(parent.indexOf("_") + 1));
 			operationResult = "success";
 		}
