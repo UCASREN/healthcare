@@ -1,9 +1,6 @@
 package otc.healthcare.controller;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,17 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import otc.healthcare.service.SqlServerService;
+import otc.healthcare.service.MySQLServiceHospital;
 
 @Controller
 public class TopicAnalyController {
 	@Autowired
-	public SqlServerService SqlServerService;
+	private MySQLServiceHospital mySQLServiceHospital;
 	
 	@RequestMapping(value="/topicanalysis")
 	public String TopicAnalysis(){
@@ -77,8 +73,8 @@ public class TopicAnalyController {
 	@ResponseBody
 	public List<String> getInhospitalNum(@RequestParam(value = "timeType", required = true) String timeType){
 		List<String> InhospitalNum_list = new ArrayList<>();
-		String inHospital_num = this.SqlServerService.getInhospitalNum(timeType);
-		String inHospital_rate = this.SqlServerService.getInhospitalRate(timeType);
+		String inHospital_num = this.getMySQLServiceHospital().getInhospitalNum(timeType);
+		String inHospital_rate = this.getMySQLServiceHospital().getInhospitalRate(timeType);
 		if(inHospital_num.equals("Infinity"))
 			inHospital_num = "--";
 		InhospitalNum_list.add(inHospital_num);
@@ -91,8 +87,8 @@ public class TopicAnalyController {
 	@ResponseBody
 	public List<String> getInhospitalAverageDays(@RequestParam(value = "timeType", required = true) String timeType){
 		List<String> inhospitalAverageDays_list = new ArrayList<>();
-		String inhospitalAverageDays_num = this.SqlServerService.getInhospitalAverageDays_Num(timeType);
-		String inhospitalAverageDays_rate = this.SqlServerService.getInhospitalAverageDays_Rate(timeType);
+		String inhospitalAverageDays_num = this.getMySQLServiceHospital().getInhospitalAverageDays_Num(timeType);
+		String inhospitalAverageDays_rate = this.getMySQLServiceHospital().getInhospitalAverageDays_Rate(timeType);
 		if(inhospitalAverageDays_num.equals("Infinity"))
 			inhospitalAverageDays_num = "--";
 		inhospitalAverageDays_list.add(inhospitalAverageDays_num);
@@ -104,8 +100,8 @@ public class TopicAnalyController {
 	@ResponseBody
 	public List<String> getTreatmentAverageCost(@RequestParam(value = "timeType", required = true) String timeType){
 		List<String> TreatmentAverageCost_list = new ArrayList<>();
-		String TreatmentAverageCost_Num = this.SqlServerService.getTreatmentAverageCost_Num(timeType);
-		String TreatmentAverageCost_Rate = this.SqlServerService.getTreatmentAverageCost_Rate(timeType);
+		String TreatmentAverageCost_Num = this.getMySQLServiceHospital().getTreatmentAverageCost_Num(timeType);
+		String TreatmentAverageCost_Rate = this.getMySQLServiceHospital().getTreatmentAverageCost_Rate(timeType);
 		if(TreatmentAverageCost_Num.equals("Infinity"))
 			TreatmentAverageCost_Num = "--";
 		TreatmentAverageCost_list.add(TreatmentAverageCost_Num);
@@ -117,7 +113,7 @@ public class TopicAnalyController {
 	@ResponseBody
 	public List<String> getAllRYKB(){
 		List<String> RYKB_list = new ArrayList<>();
-		RYKB_list = this.SqlServerService.getAll_RYKB();
+		RYKB_list = this.getMySQLServiceHospital().getAll_RYKB();
 		return RYKB_list;
 	}
 	
@@ -131,7 +127,7 @@ public class TopicAnalyController {
 		Set<String> keys = requestMap.keySet();
 		for(String key:keys)
 			paramMap.put(key, requestMap.get(key)[0]);
-		map = this.SqlServerService.getInhospitalPatienConsist(paramMap);
+		map = this.getMySQLServiceHospital().getInhospitalPatienConsist(paramMap);
 		return map;
 	}
 	
@@ -143,7 +139,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "timeType", required = true) String timeType,
 			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps){
 		
-		List<Map<String,String>> rs_list = this.SqlServerService.getInhospitalPatienSexAgeConsist(bingZhong,timeType,hospitalDeps);
+		List<Map<String,String>> rs_list = this.getMySQLServiceHospital().getInhospitalPatienSexAgeConsist(bingZhong,timeType,hospitalDeps);
 	
 		//将男和女的数量相加---得到总数
 		Map<String,String> map = new TreeMap<>();
@@ -161,7 +157,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "timeType", required = true) String timeType,
 			@RequestParam(value = "hospitalDeps", required = true) String hospitalDeps){
 		
-		Map<String,String> map = this.SqlServerService.getInhospitalPatienNum_bytime(showSize,timeType,hospitalDeps);
+		Map<String,String> map = this.getMySQLServiceHospital().getInhospitalPatienNum_bytime(showSize,timeType,hospitalDeps);
 		return map;
 	}
 	
@@ -175,7 +171,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getInhospital_approach(bingZhong,timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getInhospital_approach(bingZhong,timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	
@@ -189,7 +185,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getInhospital_illstatus(bingZhong,timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getInhospital_illstatus(bingZhong,timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	
@@ -203,7 +199,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getOuthospital_approach(bingZhong,timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getOuthospital_approach(bingZhong,timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	
@@ -217,7 +213,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getOuthospital_illstatus(bingZhong,timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getOuthospital_illstatus(bingZhong,timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	
@@ -231,7 +227,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getbeInhospital_treatmentPayWay(bingZhong,timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getbeInhospital_treatmentPayWay(bingZhong,timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	
@@ -244,7 +240,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getbeInhospital_averageCost(timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getbeInhospital_averageCost(timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	
@@ -258,7 +254,7 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getbeInhospital_costConsist(bingZhong,timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getbeInhospital_costConsist(bingZhong,timeType,hospitalDeps,sex,age);
 		return map;
 	}
 	
@@ -271,17 +267,24 @@ public class TopicAnalyController {
 			@RequestParam(value = "sex", required = true) String sex,
 			@RequestParam(value = "age", required = true) String age){
 		
-		Map<String,String> map = this.SqlServerService.getbeInhospital_sickbedCostByDay(timeType,hospitalDeps,sex,age);
+		Map<String,String> map = this.getMySQLServiceHospital().getbeInhospital_sickbedCostByDay(timeType,hospitalDeps,sex,age);
 		return map;
 	}
-	
-	
-	public SqlServerService getSqlServerService() {
-		return SqlServerService;
+
+	/**
+	 * @return the mySQLServiceHospital
+	 */
+	public MySQLServiceHospital getMySQLServiceHospital() {
+		return mySQLServiceHospital;
 	}
 
-	public void setSqlServerService(SqlServerService sqlServerService) {
-		SqlServerService = sqlServerService;
+	/**
+	 * @param mySQLServiceHospital the mySQLServiceHospital to set
+	 */
+	public void setMySQLServiceHospital(MySQLServiceHospital mySQLServiceHospital) {
+		this.mySQLServiceHospital = mySQLServiceHospital;
 	}
+	
+	
 	
 }

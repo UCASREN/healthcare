@@ -1,11 +1,6 @@
 package otc.healthcare.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,18 +10,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import otc.healthcare.dao.ConnectionFactory;
 import otc.healthcare.dao.HcApplydataDao;
 import otc.healthcare.dao.HcApplyenvDao;
-import otc.healthcare.pojo.ClassificationInfo;
-import otc.healthcare.pojo.DatabaseInfo;
-import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
-import otc.healthcare.pojo.TableInfo;
-import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
-import otc.healthcare.util.OracleDBUtil;
 
 @Component
 public class MySQLServiceApply implements IService {

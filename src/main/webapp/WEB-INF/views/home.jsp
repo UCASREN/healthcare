@@ -93,7 +93,11 @@
 											data-icon="icons16-mobile-gray"
 											data-icon-hover="icons16-mobile-white"
 											class="icons16 icons16-mobile-gray"></i> <sec:authentication
-												property="name" /></a> <a href="#" id="logoutbutton">退出</a> <c:url
+												property="name" /></a> 
+												<sec:authorize access="hasAnyRole('ADMIN')">
+													<a href="adminpanel">控制面板</a>
+												</sec:authorize>
+												<a href="#" id="logoutbutton">退出</a> <c:url
 											value="/logout" var="logoutUrl" />
 
 									</span>

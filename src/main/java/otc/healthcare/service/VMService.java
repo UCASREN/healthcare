@@ -11,9 +11,10 @@ import org.springframework.stereotype.Component;
 import com.beyondsphere.database.JDBCUtil;
 
 import otc.healthcare.dao.ConnectionFactory;
+import otc.healthcare.dao.DataSourceFactory;
 import otc.healthcare.pojo.VMUser;
+import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
-import otc.healthcare.util.OracleDBUtil;
 
 @Component
 public class VMService implements IService {
@@ -39,12 +40,7 @@ public class VMService implements IService {
 	public ArrayList<VMUser> listVMService() {
 		String vm_ip = hcConfiguration.getProperty(HealthcareConfiguration.VM_IP);
 		String vm_name = hcConfiguration.getProperty(HealthcareConfiguration.VM_USERNAME);
-		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
-				oracle_password);
-		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		//从云平台获得所有虚拟机id， name, 
 		//再判断vmid是否在本地数据库表vmmanger中存在，如果存在表示已经分配。把虚拟机id， 名字，使用者显示到页面，不存在时只显示vmid， vmname
@@ -116,12 +112,7 @@ public class VMService implements IService {
 	public void saveVMService(String vmid, String vmName, String applydataid) {
 		String vm_ip = hcConfiguration.getProperty(HealthcareConfiguration.VM_IP);
 		String vm_name = hcConfiguration.getProperty(HealthcareConfiguration.VM_USERNAME);
-		String oracle_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String oracle_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String oracle_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("oracle", oracle_url, oracle_username,
-				oracle_password);
-		OracleDBUtil dbUtil = new OracleDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		String sSQL = "";
 		sSQL = String.format("insert into HC_VMMANAGER values( '%s','%s','%s') ",  vmid,vmName,applydataid);

@@ -708,7 +708,7 @@ var AjaxTree = function() {
 			}
 			//end恢复操作
 			//记录上次点击的是哪种元素
-			document.cookie="restoredatabase="+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+data.node.text;
+			document.cookie="restoredatabase="+data.node.id.substring(data.node.id.indexOf("_")+1)+"_"+encodeURI( data.node.text,   "UTF-8 ");
 			//记录上次带年纪的是哪种
 			document.cookie="lastclick="+"database";
 		}
@@ -751,7 +751,7 @@ var AjaxTree = function() {
 						});
 					});
 				});
-				$("#whichdatabase").text("数据库:"+$.cookie("restoredatabase").split("_")[1]);
+				$("#whichdatabase").text("数据库:"+decodeURI($.cookie("restoredatabase").split("_")[1],   "UTF-8 "));
 				$("#whichdatabaseid").text($.cookie("restoredatabase").split("_")[0]);
 			}
 			

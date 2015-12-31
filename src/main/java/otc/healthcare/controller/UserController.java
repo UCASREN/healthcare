@@ -3,7 +3,6 @@ package otc.healthcare.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sun.star.awt.Key;
-
-import otc.healthcare.pojo.TableInfo;
+import otc.healthcare.service.MySQLServiceApply;
 import otc.healthcare.service.MySQLServiceMetaData;
-import otc.healthcare.service.OracleService;
 
 /**
  * @author xingkong
@@ -29,7 +25,7 @@ public class UserController {
 	@Autowired
 	private MySQLServiceMetaData mySQLServiceMetaData;
 	@Autowired
-	private OracleService oracleService;
+	private MySQLServiceApply mySQLServiceApply;
 	@RequestMapping("/login")
 	public String login() {
 		return "login";
@@ -123,9 +119,9 @@ public class UserController {
 
 		String shopInfo = new String();
 		if (applyType.equals("data"))
-			shopInfo = this.oracleService.getApplyDataByDocId(docid);
+			shopInfo = this.mySQLServiceApply.getApplyDataByDocId(docid);
 		else if (applyType.equals("env"))
-			shopInfo = this.oracleService.getApplyDataByEnvDocId(docid);
+			shopInfo = this.mySQLServiceApply.getApplyDataByEnvDocId(docid);
 
 		if (shopInfo == null || shopInfo.equals(""))
 			return false;
@@ -235,18 +231,19 @@ public class UserController {
 		this.mySQLServiceMetaData = mySQLServiceMetaData;
 	}
 
+
 	/**
-	 * @return the oracleService
+	 * @return the mySQLServiceApply
 	 */
-	public OracleService getOracleService() {
-		return oracleService;
+	public MySQLServiceApply getMySQLServiceApply() {
+		return mySQLServiceApply;
 	}
 
 	/**
-	 * @param oracleService the oracleService to set
+	 * @param mySQLServiceApply the mySQLServiceApply to set
 	 */
-	public void setOracleService(OracleService oracleService) {
-		this.oracleService = oracleService;
+	public void setMySQLServiceApply(MySQLServiceApply mySQLServiceApply) {
+		this.mySQLServiceApply = mySQLServiceApply;
 	}
 
 

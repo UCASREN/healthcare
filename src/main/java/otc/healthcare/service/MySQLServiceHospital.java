@@ -18,7 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import otc.healthcare.dao.ConnectionFactory;
-import otc.healthcare.dao.SQLServerDBUtil;
+import otc.healthcare.dao.DataSourceFactory;
+import otc.healthcare.util.DBUtil;
 import otc.healthcare.util.HealthcareConfiguration;
 
 @Component
@@ -44,12 +45,7 @@ public class MySQLServiceHospital implements IService {
 
 	// 统计科室---RYKB（入院科别）
 	public List<String> getAll_RYKB() {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 
 		String sql = "select DISTINCT RYKBBM,RYKBMC FROM TB_Inpatient_FirstPage;";
 
@@ -79,13 +75,7 @@ public class MySQLServiceHospital implements IService {
 	}
 
 	public String getInhospitalNum(String t1, String t2) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
-
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String sql = "";
 		sql = String.format("SELECT COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE (RYSJ >= '%s') AND (RYSJ <= '%s');",
 				t1, t2);
@@ -136,12 +126,7 @@ public class MySQLServiceHospital implements IService {
 	}
 
 	public String getInhospitalAverageDays_Num(String t1, String t2) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 
 		String sql = "";
 		sql = String.format(
@@ -199,12 +184,7 @@ public class MySQLServiceHospital implements IService {
 	}
 
 	private String getTreatmentAverageCost_Num(String t1, String t2) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 
 		String sql = "";
 		sql = String.format(
@@ -253,13 +233,7 @@ public class MySQLServiceHospital implements IService {
 
 	// 入院患者病种构成
 	public Map<String, String> getInhospitalPatienConsist(Map<String, String> paramMap) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
-		
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String curDate = "";
 		String preDate = "";
 		String age1 = "";
@@ -346,12 +320,7 @@ public class MySQLServiceHospital implements IService {
 			String hospitalDeps) {
 		List<Map<String,String>> rs_list = new ArrayList<Map<String,String>>();
 		
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		String curDate = Calendar2String(getCurDate());
 		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
@@ -525,12 +494,7 @@ public class MySQLServiceHospital implements IService {
 	//入院患者时间变化
 	public Map<String, String> getInhospitalPatienNum_bytime(String showSize, String timeType,
 			String hospitalDeps) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		Map<String,String> map = new HashMap<String,String>(); 
 		switch (showSize) {
@@ -548,12 +512,7 @@ public class MySQLServiceHospital implements IService {
 	}
 	
 	public Map<String, String> getInhospitalPatienNum_bytime_day(String timeType, String hospitalDeps) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		List<String> dayList = new ArrayList<>();
 		String day_str = "(";
@@ -623,12 +582,7 @@ public class MySQLServiceHospital implements IService {
 	
 	private Map<String, String> getInhospital_approach(String bingZhong, String hospitalDeps, String sex, String age,
 			String preDate, String curDate) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		Map<String,String> rs_map = new HashMap();
 		String[] tmp = age.substring(1, age.length()-1).split(",");
@@ -783,12 +737,7 @@ public class MySQLServiceHospital implements IService {
 	
 	private Map<String, String> getInhospital_illstatus(String bingZhong, String hospitalDeps, String sex, String age,
 			String preDate, String curDate) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		Map<String,String> rs_map = new HashMap();
 		String[] tmp = age.substring(1, age.length()-1).split(",");
@@ -945,12 +894,7 @@ public class MySQLServiceHospital implements IService {
 
 	private Map<String, String> getOuthospital_approach(String bingZhong, String hospitalDeps, String sex, String age,
 			String preDate, String curDate) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		Map<String,String> rs_map = new HashMap();
 		String[] tmp = age.substring(1, age.length()-1).split(",");
@@ -1109,12 +1053,7 @@ public class MySQLServiceHospital implements IService {
 	
 	private Map<String, String> getOuthospital_illstatus(String bingZhong, String hospitalDeps, String sex, String age,
 			String preDate, String curDate) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		Map<String,String> rs_map = new HashMap();
 		String[] tmp = age.substring(1, age.length()-1).split(",");
@@ -1279,12 +1218,7 @@ public class MySQLServiceHospital implements IService {
 	
 	private Map<String, String> getbeInhospital_treatmentPayWay(String bingZhong, String hospitalDeps, String sex,
 			String age, String preDate, String curDate) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		Map<String,String> rs_map = new HashMap();
 		String[] tmp = age.substring(1, age.length()-1).split(",");
@@ -1402,12 +1336,7 @@ public class MySQLServiceHospital implements IService {
 	//住院情况 --- 平均费用--- X轴：病种---Y轴：平均费用
 	public Map<String, String> getbeInhospital_averageCost(String timeType, String hospitalDeps, String sex,
 			String age) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		String curDate = Calendar2String(getCurDate());
 		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
@@ -1524,12 +1453,7 @@ public class MySQLServiceHospital implements IService {
 	//费用构成---饼状图
 	public Map<String, String> getbeInhospital_costConsist(String bingZhong, String curDate, String preDate, String hospitalDeps, String sex,
 			String age) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		String[] tmp = age.substring(1, age.length()-1).split(",");
 		String age1 = tmp[0];
@@ -1705,12 +1629,7 @@ public class MySQLServiceHospital implements IService {
 	//住院情况---住院费用---每床日费用 X轴：病种    Y轴：每床日费用
 	public Map<String, String> getbeInhospital_sickbedCostByDay(String timeType, String hospitalDeps, String sex,
 			String age) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.MYSQL_HOSPITAL_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		SQLServerDBUtil dbUtil = new SQLServerDBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		
 		String curDate = Calendar2String(getCurDate());
 		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));

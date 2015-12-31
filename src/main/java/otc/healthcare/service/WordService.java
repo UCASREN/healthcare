@@ -47,19 +47,7 @@ public class WordService implements IService{
 	private HealthcareConfiguration hcConfiguration;
 	
 	@Autowired
-	OracleService oracleService;
-	public OracleService getOracleService() {
-		return oracleService;
-	}
-
-	public void setOracleService(OracleService oracleService) {
-		this.oracleService = oracleService;
-	}
-/*	private HealthcareConfiguration getHealthcareConfiguration() {
-		if (hcConfiguration == null)
-			hcConfiguration = SpringWiredBean.getInstance().getBeanByClass(HealthcareConfiguration.class);
-		return hcConfiguration;
-	}*/
+	private MySQLServiceApply mySQLServiceApply;
 	
 	@SuppressWarnings("deprecation")
 	public Configuration getConfiguration(){
@@ -289,9 +277,9 @@ public class WordService implements IService{
 		for(String applydataid : applydataidList){
 			String doc_name = "";
 			if(deleteType.equals("data"))
-				doc_name = oracleService.getDataDocByApplyDataID(applydataid).getDocName();
+				doc_name = this.mySQLServiceApply.getDataDocByApplyDataID(applydataid).getDocName();
 			else if(deleteType.equals("env"))
-				doc_name = oracleService.getDocEnvByApplyDataID(applydataid).getDocName();
+				doc_name = this.mySQLServiceApply.getDocEnvByApplyDataID(applydataid).getDocName();
 			
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext(); 
 		    ServletContext servletContext = webApplicationContext.getServletContext(); 
@@ -344,7 +332,19 @@ public class WordService implements IService{
 		return 0;
 	}
 
+	/**
+	 * @return the mySQLServiceApply
+	 */
+	public MySQLServiceApply getMySQLServiceApply() {
+		return mySQLServiceApply;
+	}
 
+	/**
+	 * @param mySQLServiceApply the mySQLServiceApply to set
+	 */
+	public void setMySQLServiceApply(MySQLServiceApply mySQLServiceApply) {
+		this.mySQLServiceApply = mySQLServiceApply;
+	}
 }
 
 

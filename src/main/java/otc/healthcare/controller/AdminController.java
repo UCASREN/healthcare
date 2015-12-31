@@ -4,20 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,15 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.beyondsphere.database.JDBCUtil;
-import com.thoughtworks.xstream.converters.basic.ThreadSafeSimpleDateFormat;
-
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
 import otc.healthcare.pojo.VMUser;
 import otc.healthcare.service.FilterService;
 import otc.healthcare.service.MySQLServiceApply;
-import otc.healthcare.service.OracleService;
 import otc.healthcare.service.VMService;
 import otc.healthcare.service.WordService;
 import otc.healthcare.util.HealthcareConfiguration;

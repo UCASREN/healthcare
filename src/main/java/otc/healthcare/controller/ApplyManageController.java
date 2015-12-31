@@ -4,24 +4,17 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,15 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import otc.healthcare.pojo.ClassificationInfo;
-import otc.healthcare.pojo.DatabaseInfo;
-import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.HcApplydata;
-import otc.healthcare.pojo.TableInfo;
-import otc.healthcare.pojo.TreeJson;
 import otc.healthcare.service.MySQLServiceApply;
-import otc.healthcare.service.OracleService;
-import otc.healthcare.util.ExcelUtil;
 
 @Controller
 @RequestMapping("/applymanager")
