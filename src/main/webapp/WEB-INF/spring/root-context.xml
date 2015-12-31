@@ -11,10 +11,11 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+		
 	<context:property-placeholder location="classpath:healthcare.properties"/>
 	
 	<bean id="dataSource_basic" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-	p:driverClass="com.mysql.Driver"
+		p:driverClass="com.mysql.Driver"
 		p:jdbcUrl="${basic_url}"
 		p:user="${db_username}"
 		p:password="${db_password}"
@@ -25,7 +26,7 @@
 		destroy-method="close"/>
 		
      <bean id="dataSource_screendata" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-	p:driverClass="com.mysql.Driver"
+		p:driverClass="com.mysql.Driver"
 		p:jdbcUrl="${screen_data_url}"
 		p:user="${db_username}"
 		p:password="${db_password}"
@@ -34,8 +35,9 @@
 		p:initialPoolSize="2"
 		p:maxIdleTime="2000"
 		destroy-method="close"/>
-     <bean id="dataSource_inhospitaldata" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-	p:driverClass="com.mysql.Driver"
+		
+     <bean id="dataSource_hospitaldata" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		p:driverClass="com.mysql.Driver"
 		p:jdbcUrl="${hospital_data_url}"
 		p:user="${db_username}"
 		p:password="${db_password}"
