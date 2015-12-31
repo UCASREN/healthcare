@@ -17,13 +17,16 @@ public class HealthcareConfiguration {
 	public static final String DB_DATA_URL = "data_url";
 	public static final String DB_USERNAME = "db_username";
 	public static final String DB_PASSWORD = "db_password";
-	public static final String DB_PASSWORD_NJZ = "db_password_njz";
 
-	public static final String MYSQL_HOSPITAL__URL = "mysql_hospital_url";
-	public static final String MYSQL_HOSPITAL__USERNAME = "mysql_hospital_username";
-	public static final String MYSQL_HOSPITAL__PASSWORD = "mysql_hospital_password";
+	public static final String SQLSERVER_URL = "sqlserver_url";
+	public static final String SQLSERVER_USERNAME = "sqlserver_username";
+	public static final String SQLSERVER_PASSWORD = "sqlserver_password";
+
+	public static final String MYSQL_HOSPITAL_URL = "mysql_hospital_url";
+	public static final String MYSQL_HOSPITAL_USERNAME = "mysql_hospital_username";
+	public static final String MYSQL_HOSPITAL_PASSWORD = "mysql_hospital_password";
 	
-	
+
 	public static final String VM_IP = "vm_ip";
 	public static final String VM_USERNAME = "vm_username";
 	
