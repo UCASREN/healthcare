@@ -1,5 +1,6 @@
 package otc.healthcare.dao;
 // default package
+
 // Generated 2015-12-29 16:34:07 by Hibernate Tools 4.0.0
 
 import java.util.List;
@@ -20,6 +21,7 @@ import otc.healthcare.pojo.HcApplydata;
 
 /**
  * Home object for domain model class HcApplydata.
+ * 
  * @see .HcApplydata
  * @author Hibernate Tools
  */
@@ -28,14 +30,14 @@ import otc.healthcare.pojo.HcApplydata;
 public class HcApplydataDao {
 
 	private static final Log log = LogFactory.getLog(HcApplydataDao.class);
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
 	protected SessionFactory getSessionFactory() {
 		try {
 			return (SessionFactory) new InitialContext().lookup("SessionFactory");
@@ -101,8 +103,7 @@ public class HcApplydataDao {
 		}
 	}
 
-
-	//通过序列得到---不用这个
+	// 通过序列得到---不用这个
 	public HcApplydata findById(long id) {
 		log.debug("getting HcApplydata instance with id: " + id);
 		try {
@@ -132,29 +133,27 @@ public class HcApplydataDao {
 		}
 	}
 
-	//通过applyid得到--hql
+	// 通过applyid得到--hql
 	public HcApplydata findByApplyID(Object value) {
 		String propertyName = "idApplydata";
 		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
 		try {
-			String queryString = "from HcApplydata as model where model."
-					+ propertyName + "= ?";
+			String queryString = "from HcApplydata as model where model." + propertyName + "= ?";
 			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
 			queryObject.setParameter(0, value);
-			List<HcApplydata> rs =  queryObject.list();
+			List<HcApplydata> rs = queryObject.list();
 			return rs.get(0);
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
 			throw re;
 		}
 	}
-	
-	//通过属性值得到
+
+	// 通过属性值得到
 	public List<HcApplydata> findByProperty(String propertyName, Object value) {
 		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
 		try {
-			String queryString = "from HcApplydata as model where model."
-					+ propertyName + "= ?";
+			String queryString = "from HcApplydata as model where model." + propertyName + "= ?";
 			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
 			queryObject.setParameter(0, value);
 			return queryObject.list();
@@ -163,8 +162,8 @@ public class HcApplydataDao {
 			throw re;
 		}
 	}
-	
-	//获得整个表内容
+
+	// 获得整个表内容
 	public List findAll() {
 		log.debug("finding all HcApplydata instance");
 		try {
@@ -176,19 +175,19 @@ public class HcApplydataDao {
 			throw re;
 		}
 	}
-	
-	//通过系统用户名得到对应申请内容---当前用户查看自己申请
-	public List findByHcUserName(String hcUserName){
+
+	// 通过系统用户名得到对应申请内容---当前用户查看自己申请
+	public List findByHcUserName(String hcUserName) {
 		List<HcApplydata> rs = findByProperty("hcUsername", hcUserName);
 		return rs;
 	}
-	
-	public HcApplydata findByDocName(String hcDocName){
+
+	public HcApplydata findByDocName(String hcDocName) {
 		List<HcApplydata> rs = findByProperty("docName", hcDocName);
 		return rs.get(0);
 	}
 
-	//缺少status参数
+	// 缺少status参数
 	public void changeApplyStatus(long applyID, String status) {
 		String propertyName = "flagApplydata";
 		log.debug("update HcApplydata instance with property: " + propertyName + ", id: " + applyID);
@@ -199,7 +198,7 @@ public class HcApplydataDao {
 			queryObject.setParameter(0, status);
 			queryObject.setParameter(1, applyID);
 			queryObject.executeUpdate();
-//			session.getTransaction().commit();
+			// session.getTransaction().commit();
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
 			throw re;

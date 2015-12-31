@@ -20,8 +20,7 @@ public class OracleConnection extends ConnectionBase implements IConnection {
 
 	@Override
 	public List<String> showFields(String tableName) {
-		String sql = "select column_name from user_tab_columns where table_name = '"
-				+ tableName.toUpperCase() + "'";
+		String sql = "select column_name from user_tab_columns where table_name = '" + tableName.toUpperCase() + "'";
 		DBUtil utils = new DBUtil(this.getConnection());
 		return utils.showListResults(sql);
 	}
@@ -35,5 +34,5 @@ public class OracleConnection extends ConnectionBase implements IConnection {
 			System.out.println(s);
 		}
 	}
-	
+
 }

@@ -133,7 +133,8 @@ public class DBUtil {
 	public Integer insertDataReturnKeyByReturnInto(String insertsql) {
 		int id = 0;
 		try {
-			PreparedStatement pstmt = (PreparedStatement) getConn().prepareStatement(insertsql,PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement pstmt = (PreparedStatement) getConn().prepareStatement(insertsql,
+					PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.executeUpdate();
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next())

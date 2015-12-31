@@ -26,6 +26,7 @@ public class UserController {
 	private MySQLServiceMetaData mySQLServiceMetaData;
 	@Autowired
 	private MySQLServiceApply mySQLServiceApply;
+
 	@RequestMapping("/login")
 	public String login() {
 		return "login";
@@ -153,7 +154,8 @@ public class UserController {
 				tableinfoList.add(databaseid + "_" + tableid + "_"
 						+ this.mySQLServiceMetaData.getTableSummary(databaseid, tableid).get("name"));
 			}
-			shoppingcartDetail.put(databaseid + "_" + this.mySQLServiceMetaData.getDatabaseSummary(databaseid).get("name"),
+			shoppingcartDetail.put(
+					databaseid + "_" + this.mySQLServiceMetaData.getDatabaseSummary(databaseid).get("name"),
 					tableinfoList);
 		}
 		return shoppingcartDetail;
@@ -225,12 +227,12 @@ public class UserController {
 	}
 
 	/**
-	 * @param mySQLServiceMetaData the mySQLServiceMetaData to set
+	 * @param mySQLServiceMetaData
+	 *            the mySQLServiceMetaData to set
 	 */
 	public void setMySQLServiceMetaData(MySQLServiceMetaData mySQLServiceMetaData) {
 		this.mySQLServiceMetaData = mySQLServiceMetaData;
 	}
-
 
 	/**
 	 * @return the mySQLServiceApply
@@ -240,11 +242,11 @@ public class UserController {
 	}
 
 	/**
-	 * @param mySQLServiceApply the mySQLServiceApply to set
+	 * @param mySQLServiceApply
+	 *            the mySQLServiceApply to set
 	 */
 	public void setMySQLServiceApply(MySQLServiceApply mySQLServiceApply) {
 		this.mySQLServiceApply = mySQLServiceApply;
 	}
-
 
 }

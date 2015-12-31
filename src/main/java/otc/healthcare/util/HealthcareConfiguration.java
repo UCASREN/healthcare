@@ -12,7 +12,7 @@ public class HealthcareConfiguration {
 
 	public static final String SWFTOOLS_PATH = "SWFToolsPath";
 	public static final String HC_DOCPATH = "hc_docpath";
-	
+
 	public static final String DB_BASIC_URL = "basic_url";
 	public static final String DB_DATA_URL = "data_url";
 	public static final String DB_USERNAME = "db_username";
@@ -25,11 +25,10 @@ public class HealthcareConfiguration {
 	public static final String MYSQL_HOSPITAL_URL = "mysql_hospital_url";
 	public static final String MYSQL_HOSPITAL_USERNAME = "mysql_hospital_username";
 	public static final String MYSQL_HOSPITAL_PASSWORD = "mysql_hospital_password";
-	
 
 	public static final String VM_IP = "vm_ip";
 	public static final String VM_USERNAME = "vm_username";
-	
+
 	private Properties properties;
 
 	public HealthcareConfiguration() {
@@ -38,8 +37,7 @@ public class HealthcareConfiguration {
 		try {
 			url = loader.getResource(HealthcareConfiguration.PROERTIES_FILE_NAME);
 			this.properties = new Properties();
-			FileInputStream inputFile = new FileInputStream(
-					java.net.URLDecoder.decode(url.getFile(), "utf-8"));
+			FileInputStream inputFile = new FileInputStream(java.net.URLDecoder.decode(url.getFile(), "utf-8"));
 
 			this.properties.load(inputFile);
 			inputFile.close();

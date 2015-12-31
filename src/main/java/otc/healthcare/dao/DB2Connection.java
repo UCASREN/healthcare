@@ -15,16 +15,14 @@ public class DB2Connection extends ConnectionBase implements IConnection {
 	@Override
 	public List<String> showTables() {
 		String[] tokens = url.split("/");
-		String sql = "select tabname from syscat.tables where tabschema='"
-				+ tokens[tokens.length - 1] + "'";
+		String sql = "select tabname from syscat.tables where tabschema='" + tokens[tokens.length - 1] + "'";
 		DBUtil utils = new DBUtil(this.getConnection());
 		return utils.showListResults(sql);
 	}
 
 	@Override
 	public List<String> showFields(String tableName) {
-		String sql = "select * from syscolumns where tbname='" + tableName
-				+ "'";
+		String sql = "select * from syscolumns where tbname='" + tableName + "'";
 		DBUtil utils = new DBUtil(this.getConnection());
 		return utils.showListResults(sql);
 	}

@@ -45,28 +45,31 @@ public class SimpleSavedRequestAwareAuthenticationSuccessHandler extends SimpleU
 
 		// Use the DefaultSavedRequest URL
 		String targetUrl = savedRequest.getRedirectUrl();
-		if(determineTargetUrl(authentication)){
-			targetUrl="/adminpanel";
+		if (determineTargetUrl(authentication)) {
+			targetUrl = "/adminpanel";
 			logger.debug("Redirecting to Admin Panel Url: " + targetUrl);
-		}else{
+		} else {
 			logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
 		}
-		
+
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
-	protected boolean determineTargetUrl(Authentication authentication) {  
-        boolean isAdmin = false;  
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();  
-        for (GrantedAuthority grantedAuthority : authorities) {  
-            if (grantedAuthority.getAuthority().equals("ROLE_ADMIN") || grantedAuthority.getAuthority().equals("ROLE_SU1")
-            		|| grantedAuthority.getAuthority().equals("ROLE_SU2")) {  
-                isAdmin = true;  
-                break;  
-            }  
-        }  
-   
-        return isAdmin; 
-    }  
+
+	protected boolean determineTargetUrl(Authentication authentication) {
+		boolean isAdmin = false;
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		for (GrantedAuthority grantedAuthority : authorities) {
+			if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")
+					|| grantedAuthority.getAuthority().equals("ROLE_SU1")
+					|| grantedAuthority.getAuthority().equals("ROLE_SU2")) {
+				isAdmin = true;
+				break;
+			}
+		}
+
+		return isAdmin;
+	}
+
 	public void setRequestCache(RequestCache requestCache) {
 		this.requestCache = requestCache;
 	}

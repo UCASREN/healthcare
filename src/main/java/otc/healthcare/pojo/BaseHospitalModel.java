@@ -7,60 +7,76 @@ public class BaseHospitalModel {
 	private Integer dangerCount;
 	private String uull;
 	private String uuProvince;
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Integer getEndCount() {
 		return endCount;
 	}
+
 	public void setEndCount(Integer endCount) {
 		this.endCount = endCount;
 	}
+
 	public Integer getDangerCount() {
 		return dangerCount;
 	}
+
 	public void setDangerCount(Integer dangerCount) {
 		this.dangerCount = dangerCount;
 	}
+
 	/**
 	 * @return the uull
 	 */
 	public String getUull() {
 		return uull;
 	}
+
 	/**
-	 * @param uull the uull to set
+	 * @param uull
+	 *            the uull to set
 	 */
 	public void setUull(String uull) {
 		this.uull = uull;
 	}
+
 	/**
 	 * @return the uuCode
 	 */
 	public String getUuCode() {
 		return uuCode;
 	}
+
 	/**
-	 * @param uuCode the uuCode to set
+	 * @param uuCode
+	 *            the uuCode to set
 	 */
 	public void setUuCode(String uuCode) {
 		this.uuCode = uuCode;
 	}
+
 	/**
 	 * @return the uuProvince
 	 */
 	public String getUuProvince() {
 		return uuProvince;
 	}
+
 	/**
-	 * @param uuProvince the uuProvince to set
+	 * @param uuProvince
+	 *            the uuProvince to set
 	 */
 	public void setUuProvince(String uuProvince) {
 		this.uuProvince = uuProvince;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -73,6 +89,7 @@ public class BaseHospitalModel {
 		result = prime * result + ((uull == null) ? 0 : uull.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -114,5 +131,5 @@ public class BaseHospitalModel {
 			return false;
 		return true;
 	}
-	
+
 }

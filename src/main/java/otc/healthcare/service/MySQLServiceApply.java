@@ -25,10 +25,11 @@ public class MySQLServiceApply implements IService {
 	private HcApplydataDao hcApplydataDao;
 	@Autowired
 	private HcApplyenvDao hcApplyenvDao;
-	
+
 	public HcApplydataDao getHcApplydataDao() {
 		return hcApplydataDao;
 	}
+
 	public void setHcApplydataDao(HcApplydataDao hcApplydataDao) {
 		this.hcApplydataDao = hcApplydataDao;
 	}
@@ -40,7 +41,6 @@ public class MySQLServiceApply implements IService {
 	public void setHcApplyenvDao(HcApplyenvDao hcApplyenvDao) {
 		this.hcApplyenvDao = hcApplyenvDao;
 	}
-
 
 	@Override
 	public String getName() {
@@ -140,7 +140,7 @@ public class MySQLServiceApply implements IService {
 		String hc_userDemandType = req.getParameter("userDemandType");
 		String hc_userDemand = req.getParameter("userDemand");
 		String hc_dataExportType = req.getParameter("dataExportType");
-		
+
 		String hc_useFields = req.getParameter("allUseField");//
 		String hc_projectName = req.getParameter("projectName");
 		String hc_projectChairman = req.getParameter("projectChairman");
@@ -165,7 +165,7 @@ public class MySQLServiceApply implements IService {
 		hc_applydata.setDemandtype(hc_userDemandType);
 		hc_applydata.setDemand(hc_userDemand);
 		hc_applydata.setApplyDataExportType(hc_dataExportType);
-		
+
 		hc_applydata.setProUsefield(hc_useFields);
 		hc_applydata.setProName(hc_projectName);
 		hc_applydata.setProChair(hc_projectChairman);
@@ -272,7 +272,7 @@ public class MySQLServiceApply implements IService {
 		HcApplyenv hcApplyenv = hcApplyenvDao.findByDocName(docid);
 		return hcApplyenv.getApplyData();
 	}
-	
+
 	@Transactional
 	public void insertApplyEnv(HttpServletRequest req, String f_name, boolean update) {
 
@@ -289,7 +289,7 @@ public class MySQLServiceApply implements IService {
 			String hc_userDemandType = req.getParameter("userDemandType");
 			String hc_userDemand = req.getParameter("userDemand");
 			String hc_dataExportType = req.getParameter("dataExportType");
-			
+
 			String hc_useFields = req.getParameter("allUseField");//
 			String hc_projectName = req.getParameter("projectName");
 			String hc_projectChairman = req.getParameter("projectChairman");
@@ -365,7 +365,7 @@ public class MySQLServiceApply implements IService {
 		hc_applyenv.setDemandtype(hc_userDemandType);
 		hc_applyenv.setDemand(hc_userDemand);
 		hc_applyenv.setApplyDataExportType(hc_dataExportType);
-		
+
 		hc_applyenv.setProUsefield(hc_useFields);
 		hc_applyenv.setProName(hc_projectName);
 		hc_applyenv.setProChair(hc_projectChairman);

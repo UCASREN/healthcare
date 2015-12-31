@@ -15,8 +15,7 @@ public abstract class ConnectionBase implements IConnection {
 	// private BoneCP connectionPool = null;
 	private Connection conn = null;
 
-	public ConnectionBase(String driverName, String url, String username,
-			String password) {
+	public ConnectionBase(String driverName, String url, String username, String password) {
 		this.driverName = driverName;
 		this.url = url;
 		this.username = username;

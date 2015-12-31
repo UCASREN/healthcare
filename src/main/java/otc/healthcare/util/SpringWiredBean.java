@@ -16,16 +16,16 @@ public class SpringWiredBean implements ApplicationContextAware {
 	}
 
 	private static SpringWiredBean instance;
-	
-	
+
 	static {
 
 		instance = new SpringWiredBean();
 	}
+
 	private static ApplicationContext ctx = null;
 
 	public <T> T getBeanByClass(Class<T> beanClass) {
-		return ctx.getBean(beanClass);	
+		return ctx.getBean(beanClass);
 	}
 
 	public static SpringWiredBean getInstance() {
@@ -33,11 +33,8 @@ public class SpringWiredBean implements ApplicationContextAware {
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext arg0)
-			throws BeansException {
+	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
 		ctx = arg0;
 
 	}
 }
-
-

@@ -10,22 +10,20 @@ public class ConnectionFactory {
 		initInstance(type, url, username, password);
 	}
 
-	public ConnectionFactory(String type, String url, String username,
-			String password) {
+	public ConnectionFactory(String type, String url, String username, String password) {
 		initInstance(type.trim().toLowerCase(), url, username, password);
 	}
 
-	private void initInstance(String type, String url, String username,
-			String password) {
+	private void initInstance(String type, String url, String username, String password) {
 		if (type.equals("mysql"))
 			iConnection = new MySQLConnection(url, username, password);
 		else if (type.equals("dm"))
 			iConnection = new DMConnection(url, username, password);
 		else if (type.equals("oracle")) {
 			iConnection = new OracleConnection(url, username, password);
-		}else if (type.equals("sqlserver")){
+		} else if (type.equals("sqlserver")) {
 			iConnection = new SQLServerConnection(url, username, password);
-		}else
+		} else
 			return;
 	}
 

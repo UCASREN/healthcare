@@ -48,13 +48,13 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "hospital_distribution_base")
-	public String hospitalDistributionBase(HttpServletResponse response){
+	public String hospitalDistributionBase(HttpServletResponse response) {
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "hospital_distribution_base";
 	}
 
 	@RequestMapping(value = "hospital_distribution_community")
-	public String hospitalDistributionCommunity(HttpServletResponse response){
+	public String hospitalDistributionCommunity(HttpServletResponse response) {
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "hospital_distribution_community";
 	}
@@ -165,7 +165,7 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "crowd_features")
-	public String stroke_patient(HttpServletResponse response){
+	public String stroke_patient(HttpServletResponse response) {
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "crowd_features";
 	}
@@ -257,19 +257,21 @@ public class ScreenController {
 			@RequestParam(value = "ageclassification", required = false) String ageclassification,
 			HttpServletRequest request) {
 		String check_year = getCheckYear(request);
-//		ObjectMapper objectMapper=new ObjectMapper();
-//		
-//		String str="{\"all\":[{\"count\":\"4\",\"age\":\"40-44\"},{\"count\":\"1059\",\"age\":\"45-49\"},{\"count\":\"1381\",\"age\":\"50-54\"},{\"count\":\"1619\",\"age\":\"55-59\"},{\"count\":\"1527\",\"age\":\"60-64\"},{\"count\":\"1263\",\"age\":\"65-69\"},{\"count\":\"862\",\"age\":\"70-74\"},{\"count\":\"595\",\"age\":\"75-79\"},{\"count\":\"356\",\"age\":\"80+\"}],\"1\":[{\"count\":\"2\",\"age\":\"40-44\"},{\"count\":\"523\",\"age\":\"45-49\"},{\"count\":\"608\",\"age\":\"50-54\"},{\"count\":\"608\",\"age\":\"55-59\"},{\"count\":\"557\",\"age\":\"60-64\"},{\"count\":\"506\",\"age\":\"65-69\"},{\"count\":\"343\",\"age\":\"70-74\"},{\"count\":\"265\",\"age\":\"75-79\"},{\"count\":\"156\",\"age\":\"80+\"}],\"2\":[{\"count\":\"2\",\"age\":\"40-44\"},{\"count\":\"536\",\"age\":\"45-49\"},{\"count\":\"773\",\"age\":\"50-54\"},{\"count\":\"1011\",\"age\":\"55-59\"},{\"count\":\"970\",\"age\":\"60-64\"},{\"count\":\"757\",\"age\":\"65-69\"},{\"count\":\"519\",\"age\":\"70-74\"},{\"count\":\"330\",\"age\":\"75-79\"},{\"count\":\"200\",\"age\":\"80+\"}]}";
-//		Map<String, List<HashMap<String, String>>> maps = null;
-//		try {
-//			maps = objectMapper.readValue(str, Map.class);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return maps;
-		return getMySQLServiceScreen().getGenderDangerFactorInfo(provinceid, dangertype, ageclassification).get(check_year);
-	  
+		// ObjectMapper objectMapper=new ObjectMapper();
+		//
+		// String
+		// str="{\"all\":[{\"count\":\"4\",\"age\":\"40-44\"},{\"count\":\"1059\",\"age\":\"45-49\"},{\"count\":\"1381\",\"age\":\"50-54\"},{\"count\":\"1619\",\"age\":\"55-59\"},{\"count\":\"1527\",\"age\":\"60-64\"},{\"count\":\"1263\",\"age\":\"65-69\"},{\"count\":\"862\",\"age\":\"70-74\"},{\"count\":\"595\",\"age\":\"75-79\"},{\"count\":\"356\",\"age\":\"80+\"}],\"1\":[{\"count\":\"2\",\"age\":\"40-44\"},{\"count\":\"523\",\"age\":\"45-49\"},{\"count\":\"608\",\"age\":\"50-54\"},{\"count\":\"608\",\"age\":\"55-59\"},{\"count\":\"557\",\"age\":\"60-64\"},{\"count\":\"506\",\"age\":\"65-69\"},{\"count\":\"343\",\"age\":\"70-74\"},{\"count\":\"265\",\"age\":\"75-79\"},{\"count\":\"156\",\"age\":\"80+\"}],\"2\":[{\"count\":\"2\",\"age\":\"40-44\"},{\"count\":\"536\",\"age\":\"45-49\"},{\"count\":\"773\",\"age\":\"50-54\"},{\"count\":\"1011\",\"age\":\"55-59\"},{\"count\":\"970\",\"age\":\"60-64\"},{\"count\":\"757\",\"age\":\"65-69\"},{\"count\":\"519\",\"age\":\"70-74\"},{\"count\":\"330\",\"age\":\"75-79\"},{\"count\":\"200\",\"age\":\"80+\"}]}";
+		// Map<String, List<HashMap<String, String>>> maps = null;
+		// try {
+		// maps = objectMapper.readValue(str, Map.class);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// return maps;
+		return getMySQLServiceScreen().getGenderDangerFactorInfo(provinceid, dangertype, ageclassification)
+				.get(check_year);
+
 	}
 
 	@RequestMapping(value = "get_beillmap_data")
@@ -285,7 +287,7 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "disease_burden")
-	public String diseaseBurden(HttpServletResponse response){
+	public String diseaseBurden(HttpServletResponse response) {
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "disease_burden";
 	}
@@ -296,16 +298,17 @@ public class ScreenController {
 	}
 
 	@RequestMapping(value = "danger_factor")
-	public String dangerFactor(HttpServletResponse response){
+	public String dangerFactor(HttpServletResponse response) {
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "danger_factor";
 	}
 
 	@RequestMapping(value = "be_ill_map")
-	public String beIllMap(HttpServletResponse response){
+	public String beIllMap(HttpServletResponse response) {
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "beillmap";
 	}
+
 	@RequestMapping(value = "topicanalysis_screen")
 	public String topicanalysisScreen() {
 		return "topicanalysis_screen";
@@ -319,12 +322,11 @@ public class ScreenController {
 	}
 
 	/**
-	 * @param mySQLServiceScreen the mySQLServiceScreen to set
+	 * @param mySQLServiceScreen
+	 *            the mySQLServiceScreen to set
 	 */
 	public void setMySQLServiceScreen(MySQLServiceScreen mySQLServiceScreen) {
 		this.mySQLServiceScreen = mySQLServiceScreen;
 	}
-
-
 
 }

@@ -170,9 +170,10 @@ public class MySQLServiceScreen implements IService {
 					provinceCityMap.put(neCode.substring(0, 2) + "_" + neName, new ArrayList());
 				} else if (neCode.indexOf("0000") != -1) {
 					cityMap.put(neCode.substring(0, 4), neName);
-					if(provinceCityMap.containsKey(neCode.substring(0, 2) + "_" + provinceMap.get(neCode.substring(0, 2))))
+					if (provinceCityMap
+							.containsKey(neCode.substring(0, 2) + "_" + provinceMap.get(neCode.substring(0, 2))))
 						provinceCityMap.get(neCode.substring(0, 2) + "_" + provinceMap.get(neCode.substring(0, 2)))
-							.add(neCode.substring(0, 4) + "_" + neName);
+								.add(neCode.substring(0, 4) + "_" + neName);
 				}
 			}
 		} catch (Exception e) {
@@ -700,22 +701,22 @@ public class MySQLServiceScreen implements IService {
 					}
 					List<HashMap<String, String>> tempList = new ArrayList<HashMap<String, String>>();
 					ResultSet res = dbUtil.query(sql);
-					Float allcount=0.0f;
+					Float allcount = 0.0f;
 					while (res.next()) {
 						// System.out.print(".");
 						Map<String, String> tempmap = new HashMap<String, String>();
-						if( res.getString(1)!=null){
+						if (res.getString(1) != null) {
 							tempmap.put("age", res.getString(1));
 							tempmap.put("count", res.getString(2));
-							allcount+=Float.parseFloat(res.getString(2));
+							allcount += Float.parseFloat(res.getString(2));
 							tempList.add((HashMap<String, String>) tempmap);
 						}
 					}
-					//将templist的count归一化
-					for(HashMap<String,String> templ:tempList){
-						templ.put("count", (Float.parseFloat(templ.get("count"))*100/allcount)+"");
+					// 将templist的count归一化
+					for (HashMap<String, String> templ : tempList) {
+						templ.put("count", (Float.parseFloat(templ.get("count")) * 100 / allcount) + "");
 					}
-					if(sex.equals(""))
+					if (sex.equals(""))
 						map.put("all", tempList);
 					else
 						map.put(sex, tempList);
@@ -843,7 +844,7 @@ public class MySQLServiceScreen implements IService {
 			for (int i = 0; i < yearArray.length; i++) {
 				System.out.println(yearArray[i]);
 				HashMap<String, String> tempMap = new HashMap<String, String>();
-				String max="0.0000";
+				String max = "0.0000";
 				for (int j = 0; j < provinceMap.length; j++) {
 					String provinceId = provinceMap[j].split("_")[0];
 					String provinceName = provinceMap[j].split("_")[1];
@@ -858,18 +859,18 @@ public class MySQLServiceScreen implements IService {
 							+ provinceId + "'");
 					if (res.next()) {
 						System.out.print(provinceName + ":" + res.getString(2));
-						if(res.getString(2)!=null){
-							if(yearArray[i].equals("2013")){
-								if(provinceName.equals("江西"))
+						if (res.getString(2) != null) {
+							if (yearArray[i].equals("2013")) {
+								if (provinceName.equals("江西"))
 									tempMap.put(provinceName, "0.0218");
-								else if(provinceName.equals("海南"))
+								else if (provinceName.equals("海南"))
 									tempMap.put(provinceName, "0.0100");
 								else
 									tempMap.put(provinceName, res.getString(2));
-							}else{
+							} else {
 								tempMap.put(provinceName, res.getString(2));
 							}
-							if( res.getString(2).compareTo(max)>0){
+							if (res.getString(2).compareTo(max) > 0) {
 								tempMap.put("max_value", res.getString(2));
 							}
 						}

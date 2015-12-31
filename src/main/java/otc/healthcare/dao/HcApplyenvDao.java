@@ -1,5 +1,6 @@
 package otc.healthcare.dao;
 // default package
+
 // Generated 2015-12-29 16:34:07 by Hibernate Tools 4.0.0
 
 import java.util.List;
@@ -20,6 +21,7 @@ import otc.healthcare.pojo.HcApplyenv;
 
 /**
  * Home object for domain model class HcApplyenv.
+ * 
  * @see .HcApplyenv
  * @author Hibernate Tools
  */
@@ -101,8 +103,7 @@ public class HcApplyenvDao {
 		}
 	}
 
-	
-	//通过序列得到---不用这个
+	// 通过序列得到---不用这个
 	public HcApplyenv findById(long id) {
 		log.debug("getting HcApplyenv instance with id: " + id);
 		try {
@@ -131,32 +132,28 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
-	
-	
-	//通过属性值得到--这个
+
+	// 通过属性值得到--这个
 	public HcApplyenv findByApplyID(Object value) {
 		String propertyName = "idApplydata";
 		log.debug("finding HcApplyenv instance with property: " + propertyName + ", value: " + value);
 		try {
-			String queryString = "from HcApplyenv as model where model."
-					+ propertyName + "= ?";
+			String queryString = "from HcApplyenv as model where model." + propertyName + "= ?";
 			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
 			queryObject.setParameter(0, value);
-			List<HcApplyenv> rs =  queryObject.list();
+			List<HcApplyenv> rs = queryObject.list();
 			return rs.get(0);
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
 			throw re;
 		}
 	}
-	
-	
-	//通过属性值得到
+
+	// 通过属性值得到
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding HcApplyenv instance with property: " + propertyName + ", value: " + value);
 		try {
-			String queryString = "from HcApplyenv as model where model."
-					+ propertyName + "= ?";
+			String queryString = "from HcApplyenv as model where model." + propertyName + "= ?";
 			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
 			queryObject.setParameter(0, value);
 			return queryObject.list();
@@ -165,9 +162,8 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
-	
-	
-	//获得整个表内容
+
+	// 获得整个表内容
 	public List findAll() {
 		log.debug("finding all HcApplyenv instance");
 		try {
@@ -179,21 +175,19 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
-	
-	
-	//通过系统用户名得到对应申请内容---当前用户查看自己申请
-	public List findByHcUserName(String hcUserName){
+
+	// 通过系统用户名得到对应申请内容---当前用户查看自己申请
+	public List findByHcUserName(String hcUserName) {
 		List<HcApplyenv> rs = findByProperty("hcUsername", hcUserName);
 		return rs;
 	}
-	
-	public HcApplyenv findByDocName(String hcDocName){
+
+	public HcApplyenv findByDocName(String hcDocName) {
 		List<HcApplyenv> rs = findByProperty("docName", hcDocName);
 		return rs.get(0);
 	}
-	
-	
-	//缺少status参数
+
+	// 缺少status参数
 	public void changeApplyStatus(long applyID, String status) {
 		String propertyName = "flagApplydata";
 		log.debug("update HcApplyenv instance with property: " + propertyName + ", id: " + applyID);
@@ -204,7 +198,7 @@ public class HcApplyenvDao {
 			queryObject.setParameter(0, status);
 			queryObject.setParameter(1, applyID);
 			queryObject.executeUpdate();
-//			session.getTransaction().commit();
+			// session.getTransaction().commit();
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
 			throw re;
@@ -226,8 +220,7 @@ public class HcApplyenvDao {
 			throw re;
 		}
 	}
-	
-	
+
 	public void setApplyEnvUrl(long applyID, String EnvUrl) {
 		String propertyName = "envUrl";
 		log.debug("update HcApplyenv instance with property: " + propertyName + ", id: " + applyID);

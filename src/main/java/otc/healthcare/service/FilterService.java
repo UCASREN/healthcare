@@ -55,143 +55,141 @@ public class FilterService implements IService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	//过滤函数
-	public List<HcApplydata> getFinalDataList(List<HcApplydata> aLLDataList, String applyData_id, 
-			String applyData_userName, String applyData_userDepartment, String applyData_projectName, String applyData_dataDemand, 
-			String from, String to, String product_status) {
-		if(aLLDataList == null || aLLDataList.size()==0)
+
+	// 过滤函数
+	public List<HcApplydata> getFinalDataList(List<HcApplydata> aLLDataList, String applyData_id,
+			String applyData_userName, String applyData_userDepartment, String applyData_projectName,
+			String applyData_dataDemand, String from, String to, String product_status) {
+		if (aLLDataList == null || aLLDataList.size() == 0)
 			return aLLDataList;
-		
+
 		List<HcApplydata> rsList = new ArrayList<>();
-		for(HcApplydata h : aLLDataList){
-			//(1)---id
-			if(notEmpty(applyData_id))
-				if(String.valueOf(h.getIdApplydata()).equals(applyData_id)){
+		for (HcApplydata h : aLLDataList) {
+			// (1)---id
+			if (notEmpty(applyData_id))
+				if (String.valueOf(h.getIdApplydata()).equals(applyData_id)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(2)---username
-			if(notEmpty(applyData_userName))
-				if(h.getName().contains(applyData_userName)){
+
+			// (2)---username
+			if (notEmpty(applyData_userName))
+				if (h.getName().contains(applyData_userName)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(3)---department
-			if(notEmpty(applyData_userDepartment))
-				if(h.getDepartment().contains(applyData_userDepartment)){
+
+			// (3)---department
+			if (notEmpty(applyData_userDepartment))
+				if (h.getDepartment().contains(applyData_userDepartment)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(4)---projectName
-			if(notEmpty(applyData_projectName))
-				if(h.getProName().contains(applyData_projectName)){
+
+			// (4)---projectName
+			if (notEmpty(applyData_projectName))
+				if (h.getProName().contains(applyData_projectName)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(5)---dataDemand
-			if(notEmpty(applyData_dataDemand))
-				if(h.getDemand().contains(applyData_dataDemand)){
+
+			// (5)---dataDemand
+			if (notEmpty(applyData_dataDemand))
+				if (h.getDemand().contains(applyData_dataDemand)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(6)---time
+
+			// (6)---time
 			String time = h.getApplyTime();
-			if(notEmpty(to) || notEmpty(from))
-				if(timeCompare(time, from ,to)){
+			if (notEmpty(to) || notEmpty(from))
+				if (timeCompare(time, from, to)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(7)---status
-			if(notEmpty(product_status)){
+
+			// (7)---status
+			if (notEmpty(product_status)) {
 				int flag = getApplyStatusFlag(product_status);
-				if(Integer.valueOf(h.getFlagApplydata()) == flag){
+				if (Integer.valueOf(h.getFlagApplydata()) == flag) {
 					rsList.add(h);
 					continue;
 				}
 			}
 		}
-		
-//		if(rsList.size()==0)
-//			return aLLDataList;
+
+		// if(rsList.size()==0)
+		// return aLLDataList;
 		return rsList;
 	}
-	
-	
+
 	public List<HcApplyenv> getFinalEnvList(List<HcApplyenv> aLLEnvList, String applyData_id, String applyData_userName,
-			String applyData_userDepartment, String applyData_projectName, String applyData_dataDemand,
-			String from, String to, String product_status) {
-		
-		if(aLLEnvList == null || aLLEnvList.size()==0)
+			String applyData_userDepartment, String applyData_projectName, String applyData_dataDemand, String from,
+			String to, String product_status) {
+
+		if (aLLEnvList == null || aLLEnvList.size() == 0)
 			return aLLEnvList;
-		
+
 		List<HcApplyenv> rsList = new ArrayList<>();
-		for(HcApplyenv h : aLLEnvList){
-			//(1)---id
-			if(notEmpty(applyData_id))
-				if(String.valueOf(h.getIdApplydata()).equals(applyData_id)){
+		for (HcApplyenv h : aLLEnvList) {
+			// (1)---id
+			if (notEmpty(applyData_id))
+				if (String.valueOf(h.getIdApplydata()).equals(applyData_id)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(2)---username
-			if(notEmpty(applyData_userName))
-				if(h.getName().contains(applyData_userName)){
+
+			// (2)---username
+			if (notEmpty(applyData_userName))
+				if (h.getName().contains(applyData_userName)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(3)---department
-			if(notEmpty(applyData_userDepartment))
-				if(h.getDepartment().contains(applyData_userDepartment)){
+
+			// (3)---department
+			if (notEmpty(applyData_userDepartment))
+				if (h.getDepartment().contains(applyData_userDepartment)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(4)---projectName
-			if(notEmpty(applyData_projectName))
-				if(h.getProName().contains(applyData_projectName)){
+
+			// (4)---projectName
+			if (notEmpty(applyData_projectName))
+				if (h.getProName().contains(applyData_projectName)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(5)---dataDemand
-			if(notEmpty(applyData_dataDemand))
-				if(h.getDemand().contains(applyData_dataDemand)){
+
+			// (5)---dataDemand
+			if (notEmpty(applyData_dataDemand))
+				if (h.getDemand().contains(applyData_dataDemand)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(6)---time
+
+			// (6)---time
 			String time = h.getApplyTime();
-			if(notEmpty(to) || notEmpty(from))
-				if(timeCompare(time, from ,to)){
+			if (notEmpty(to) || notEmpty(from))
+				if (timeCompare(time, from, to)) {
 					rsList.add(h);
 					continue;
 				}
-			
-			//(7)---status
-			if(notEmpty(product_status)){
+
+			// (7)---status
+			if (notEmpty(product_status)) {
 				int flag = getApplyStatusFlag(product_status);
-				if(Integer.valueOf(h.getFlagApplydata()) == flag){
+				if (Integer.valueOf(h.getFlagApplydata()) == flag) {
 					rsList.add(h);
 					continue;
 				}
 			}
 		}
-		
-//		if(rsList.size()==0)
-//			return aLLEnvList;
+
+		// if(rsList.size()==0)
+		// return aLLEnvList;
 		return rsList;
 	}
-	
-	
+
 	private static int getApplyStatusFlag(String product_status) {
 		int flag = 0;
 		switch (product_status) {
@@ -214,37 +212,39 @@ public class FilterService implements IService {
 		return flag;
 	}
 
-	private static boolean notEmpty(String s){
+	private static boolean notEmpty(String s) {
 		return !s.equals("");
 	}
-	
-	private static boolean timeCompare(String time, String from, String to){
-		if(notEmpty(to) && notEmpty(from)){
-			if(timeMorethan(time, from) && timeLessthan(time, to))	return true; 
-			
-		}else if(notEmpty(from)){
-			if(timeMorethan(time, from)) 	return true;
-		}else if(notEmpty(to)){
-			if(timeMorethan(time, from))	return true;
+
+	private static boolean timeCompare(String time, String from, String to) {
+		if (notEmpty(to) && notEmpty(from)) {
+			if (timeMorethan(time, from) && timeLessthan(time, to))
+				return true;
+
+		} else if (notEmpty(from)) {
+			if (timeMorethan(time, from))
+				return true;
+		} else if (notEmpty(to)) {
+			if (timeMorethan(time, from))
+				return true;
 		}
 		return false;
 	}
 
 	private static boolean timeLessthan(String time, String to) {
-		long time1 = Long.valueOf(time.replace("/",""));
+		long time1 = Long.valueOf(time.replace("/", ""));
 		long to1 = Long.valueOf(to.replace("/", ""));
-		if(time1 < to1)
+		if (time1 < to1)
 			return true;
 		return false;
 	}
 
 	private static boolean timeMorethan(String time, String from) {
-		long time1 = Long.valueOf(time.replace("/",""));
+		long time1 = Long.valueOf(time.replace("/", ""));
 		long from1 = Long.valueOf(from.replace("/", ""));
-		if(time1 > from1)
+		if (time1 > from1)
 			return true;
 		return false;
 	}
 
-
-}//end-class
+}// end-class
