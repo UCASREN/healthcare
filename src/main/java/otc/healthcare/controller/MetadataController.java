@@ -50,7 +50,7 @@ public class MetadataController {
 		if (parent.equals("#")) {
 			TreeJson tm = new TreeJson();
 			tm.setId("all_" + 1);
-			tm.setText("所有数据库");
+			tm.setText("所有类别");
 			tm.setChildren(true);
 			tm.setIcon("fa fa-folder icon-lg icon-state-success");
 			tm.setType("root");
@@ -123,7 +123,7 @@ public class MetadataController {
 		if (parent.equals("#")) {
 			TreeJson tm = new TreeJson();
 			tm.setId("all_" + 1);
-			tm.setText("所有数据库");
+			tm.setText("所有类别");
 			tm.setChildren(true);
 			tm.setIcon("fa fa-folder icon-lg icon-state-success");
 			tm.setType("root");
