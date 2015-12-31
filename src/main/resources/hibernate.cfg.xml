@@ -3,11 +3,7 @@
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory name="hc_mysql_sessionFactory">
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">cuiguangfan</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/healthcare</property>
-        <property name="hibernate.connection.username">root</property>
+    <session-factory>
         <mapping resource="otc/healthcare/pojo/HcApplydata.hbm.xml" />
         <mapping resource="otc/healthcare/pojo/HcApplyenv.hbm.xml" />
     </session-factory>
