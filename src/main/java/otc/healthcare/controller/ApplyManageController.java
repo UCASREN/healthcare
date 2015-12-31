@@ -35,6 +35,7 @@ import otc.healthcare.pojo.FieldInfo;
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.TableInfo;
 import otc.healthcare.pojo.TreeJson;
+import otc.healthcare.service.MySQLServiceApply;
 import otc.healthcare.service.OracleService;
 import otc.healthcare.util.ExcelUtil;
 
@@ -43,7 +44,7 @@ import otc.healthcare.util.ExcelUtil;
 public class ApplyManageController {
 
 	@Autowired
-	private OracleService oracleSerive;
+	private MySQLServiceApply mySQLServiceApply;
 	
 	@RequestMapping(value = "/downLoadApplyData", method = RequestMethod.GET)
 	@ResponseBody
@@ -51,7 +52,7 @@ public class ApplyManageController {
 			@RequestParam(value = "ApplyID", required = true) String ApplyID)  {
 		
 		System.out.println("开始下载  ------- "+ApplyID);
-		HcApplydata hcApplydata = this.oracleSerive.getDataDocByApplyDataID(ApplyID);
+		HcApplydata hcApplydata = this.mySQLServiceApply.getDataDocByApplyDataID(ApplyID);
 		String filePath = hcApplydata.getApplyDataDir();
 		String[] tmp = filePath.split("\\\\");
 		String fileName = tmp[tmp.length-1];
@@ -122,7 +123,7 @@ public class ApplyManageController {
 				
 				// 这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的
 				try {
-					HcApplydata hcApplydata = this.oracleSerive.getDataDocByApplyDataID(applyid);
+					HcApplydata hcApplydata = this.mySQLServiceApply.getDataDocByApplyDataID(applyid);
 					String hc_userName = hcApplydata.getHcUsername();
 					String applyName =  hcApplydata.getName();
 					String hc_projectName = hcApplydata.getProName();
@@ -132,7 +133,7 @@ public class ApplyManageController {
 					
 					hcApplydata.setFlagApplydata("4");
 					hcApplydata.setApplyDataDir(upload.getAbsolutePath());
-					this.oracleSerive.getHcApplydataDao().attachDirty(hcApplydata);	
+					this.mySQLServiceApply.getHcApplydataDao().attachDirty(hcApplydata);	
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -147,11 +148,4 @@ public class ApplyManageController {
 	}
 
 
-	public OracleService getOracleSerive() {
-		return oracleSerive;
-	}
-
-	public void setOracleSerive(OracleService oracleSerive) {
-		this.oracleSerive = oracleSerive;
-	}
 }

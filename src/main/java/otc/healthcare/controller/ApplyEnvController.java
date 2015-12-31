@@ -31,6 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
 import otc.healthcare.service.FilterService;
+import otc.healthcare.service.MySQLServiceApply;
 import otc.healthcare.service.OracleService;
 import otc.healthcare.service.WordService;
 import otc.healthcare.util.HealthcareConfiguration;
@@ -59,15 +60,15 @@ public class ApplyEnvController {
 	}
 	
 	@Autowired
-	OracleService oracleService;
-	public OracleService getOracleService() {
-		return oracleService;
+	MySQLServiceApply mySQLServiceApply;
+	public MySQLServiceApply getMySQLServiceApply() {
+		return mySQLServiceApply;
 	}
 
-	public void setOracleService(OracleService oracleService) {
-		this.oracleService = oracleService;
+	public void setMySQLServiceApply(MySQLServiceApply mySQLServiceApply) {
+		this.mySQLServiceApply = mySQLServiceApply;
 	}
-	
+
 	@Autowired
 	FilterService filterService;
 	public FilterService getFilterService() {
@@ -110,7 +111,7 @@ public class ApplyEnvController {
 			 return rs;
 		}
 		boolean word_flag = this.WordService.deleteDoc(applydataid, deleteType);
-		boolean sql_flag = this.oracleService.deleteApplyEnv(applydataid);
+		boolean sql_flag = this.mySQLServiceApply.deleteApplyEnv(applydataid);
 		if(sql_flag && word_flag){
 			rs.add(DELETE_APPLYDATA_SUCCESS);
 		}else{
@@ -128,12 +129,12 @@ public class ApplyEnvController {
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_name = UUID.randomUUID() + ".doc";
 				String f_path_name = docPath + "/" + f_name;
-				this.oracleService.insertApplyEnv(req, f_name, false);
+				this.mySQLServiceApply.insertApplyEnv(req, f_name, false);
 				this.WordService.createWordFromFtl(req, resp, f_path_name, "env");
 			}else{
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_path_name = docPath + "/" + docid;
-				this.oracleService.insertApplyEnv(req, docid, true);
+				this.mySQLServiceApply.insertApplyEnv(req, docid, true);
 				this.WordService.createWordFromFtl(req, resp, f_path_name, "env");
 			}
 			
@@ -147,14 +148,14 @@ public class ApplyEnvController {
 	@RequestMapping(value = "/getdocdatabydocid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplyenv getDocDataByDocId(@RequestParam(value = "docid", required = false) String docid){
-		HcApplyenv docData = this.oracleService.getEnvDocBydocID(docid);
+		HcApplyenv docData = this.mySQLServiceApply.getEnvDocBydocID(docid);
 		return docData;
 	}
 	
 	@RequestMapping(value = "/getdocdatabyapplyid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplyenv getDocDataByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
-		HcApplyenv docData = this.oracleService.getDocEnvByApplyDataID(applyid);
+		HcApplyenv docData = this.mySQLServiceApply.getDocEnvByApplyDataID(applyid);
 		return docData;
 	}
 	
@@ -180,7 +181,7 @@ public class ApplyEnvController {
 		String currentUserName = user.getUsername();
 		
 		List<HcApplyenv> docEnvList = new ArrayList<>();
-		List<HcApplyenv> userEnvList = this.oracleService.getEnvDocByHcUserName(currentUserName);
+		List<HcApplyenv> userEnvList = this.mySQLServiceApply.getEnvDocByHcUserName(currentUserName);
 		
 		//处理过滤逻辑
 		if(action!=null && action.equals("filter"))
@@ -251,7 +252,7 @@ public class ApplyEnvController {
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-warning motalButton\">环境分配中</button>";
 			break;
 		case "4"://分配虚拟环境---ok
-			HcApplyenv encDoc = this.oracleService.getDocEnvByApplyDataID(ApplyID);
+			HcApplyenv encDoc = this.mySQLServiceApply.getDocEnvByApplyDataID(ApplyID);
 			String targetUrl = encDoc.getEnvUrl();
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success motalButton\">审核通过</button>"
 					+ "&nbsp;<button id=\"a1"+ApplyID+"\"  onclick=\"window.open('"+targetUrl+"')\" title=\"点击进入虚拟环境\" "

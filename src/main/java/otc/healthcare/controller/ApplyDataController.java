@@ -31,7 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
 import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
 import otc.healthcare.service.FilterService;
-import otc.healthcare.service.OracleService;
+import otc.healthcare.service.MySQLServiceApply;
 import otc.healthcare.service.WordService;
 import otc.healthcare.util.HealthcareConfiguration;
 
@@ -59,13 +59,13 @@ public class ApplyDataController {
 	}
 	
 	@Autowired
-	OracleService oracleService;
-	public OracleService getOracleService() {
-		return oracleService;
+	MySQLServiceApply mySQLServiceApply;
+	public MySQLServiceApply getMySQLServiceApply() {
+		return mySQLServiceApply;
 	}
 
-	public void setOracleService(OracleService oracleService) {
-		this.oracleService = oracleService;
+	public void setMySQLServiceApply(MySQLServiceApply mySQLServiceApply) {
+		this.mySQLServiceApply = mySQLServiceApply;
 	}
 
 	@Autowired
@@ -109,7 +109,7 @@ public class ApplyDataController {
 			 return rs;
 		}
 		boolean word_flag = this.WordService.deleteDoc(applydataid, deleteType);
-		boolean sql_flag = this.oracleService.deleteApplyData(applydataid);
+		boolean sql_flag = this.mySQLServiceApply.deleteApplyData(applydataid);
 		if(sql_flag && word_flag){
 			rs.add(DELETE_APPLYDATA_SUCCESS);
 		}else{
@@ -127,12 +127,12 @@ public class ApplyDataController {
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_name = UUID.randomUUID() + ".doc";
 				String f_path_name = docPath + "/" + f_name;
-				this.oracleService.insertApplyData(req, f_name, false);
+				this.mySQLServiceApply.insertApplyData(req, f_name, false);
 				this.WordService.createWordFromFtl(req, resp, f_path_name, "data");
 			}else{//编辑
 				String docPath = hcConfiguration.getProperty(HealthcareConfiguration.HC_DOCPATH);
 				String f_path_name = docPath + "/" + docid;
-				this.oracleService.insertApplyData(req, docid, true);
+				this.mySQLServiceApply.insertApplyData(req, docid, true);
 				this.WordService.createWordFromFtl(req, resp, f_path_name, "data");
 			}
 			
@@ -146,14 +146,14 @@ public class ApplyDataController {
 	@RequestMapping(value = "/getdocdatabydocid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplydata getDocDataByDocId(@RequestParam(value = "docid", required = false) String docid){
-		HcApplydata docData = this.oracleService.getDocBydocID(docid);
+		HcApplydata docData = this.mySQLServiceApply.getDocBydocID(docid);
 		return docData;
 	}
 	
 	@RequestMapping(value = "/getdocdatabyapplyid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplydata getDocDataByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
-		HcApplydata docData = this.oracleService.getDataDocByApplyDataID(applyid);
+		HcApplydata docData = this.mySQLServiceApply.getDataDocByApplyDataID(applyid);
 		return docData;
 	}
 	
@@ -179,7 +179,7 @@ public class ApplyDataController {
 		String currentUserName = user.getUsername();
 		
 		List<HcApplydata> docDataList = new ArrayList<>();
-		List<HcApplydata> userDataList = this.oracleService.getDocByHcUserName(currentUserName);
+		List<HcApplydata> userDataList = this.mySQLServiceApply.getDocByHcUserName(currentUserName);
 		
 		//处理过滤逻辑
 		if(action!=null && action.equals("filter"))
@@ -252,7 +252,7 @@ public class ApplyDataController {
 			status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-info motalButton\">数据分配中</button>";
 			break;
 		case "4"://管理员---数据集发布ok---审核通过
-			HcApplydata hcApplydata = this.oracleService.getDataDocByApplyDataID(ApplyID);
+			HcApplydata hcApplydata = this.mySQLServiceApply.getDataDocByApplyDataID(ApplyID);
 			String filePath = hcApplydata.getApplyDataDir();
 			if(filePath==null || filePath.equals("")){
 				status= "<button id=\"a"+ApplyID+"\"  title=\"点击查看申请进度\" class=\"btn btn-xs btn-success motalButton\">审核通过</button>";

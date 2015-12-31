@@ -40,6 +40,7 @@ import otc.healthcare.pojo.HcApplydata;
 import otc.healthcare.pojo.HcApplyenv;
 import otc.healthcare.pojo.VMUser;
 import otc.healthcare.service.FilterService;
+import otc.healthcare.service.MySQLServiceApply;
 import otc.healthcare.service.OracleService;
 import otc.healthcare.service.VMService;
 import otc.healthcare.service.WordService;
@@ -78,13 +79,13 @@ public class AdminController {
 	}
 	
 	@Autowired
-	OracleService oracleService;
-	public OracleService getOracleService() {
-		return oracleService;
+	MySQLServiceApply mySQLServiceApply;
+	public MySQLServiceApply getMySQLServiceApply() {
+		return mySQLServiceApply;
 	}
 
-	public void setOracleService(OracleService oracleService) {
-		this.oracleService = oracleService;
+	public void setMySQLServiceApply(MySQLServiceApply mySQLServiceApply) {
+		this.mySQLServiceApply = mySQLServiceApply;
 	}
 
 	@Autowired
@@ -115,7 +116,7 @@ public class AdminController {
 		
 		//将选中的虚拟机id， 名字，使用者，插入到本地数据库vmManager中，并把拼接好的url，根据使用者名称插入到表HC_APPLYENV对应的字段ENV_URL中
 		this.VMService.saveVMService(vmid,vmName,vmuser_applydataid);
-		this.oracleService.changeApplyEnvStatus(vmuser_applydataid,"4");//改变状态
+		this.mySQLServiceApply.changeApplyEnvStatus(vmuser_applydataid,"4");//改变状态
 		return "redirect:/adminpanel/applyenvtable";
 	}
 	
@@ -149,20 +150,20 @@ public class AdminController {
 				authority = ((GrantedAuthority)it.next()).getAuthority();  
 		}
 		
-		HcApplydata docData = this.oracleService.getDataDocByApplyDataID(applydataid);
+		HcApplydata docData = this.mySQLServiceApply.getDataDocByApplyDataID(applydataid);
 		String curStatus = docData.getFlagApplydata();
 		
 		//中国卒中数据中心 --- 状态由1到2 --- 办公室
 		if(authority.equals("ROLE_SU1") && curStatus.equals("1"))
-			this.oracleService.changeApplyDataStatus(applydataid,"2");
+			this.mySQLServiceApply.changeApplyDataStatus(applydataid,"2");
 		
 		//国家卫生计生委脑卒中防治委员会办公室 --- 状态由2到3 --- 管理员分配
 		if(authority.equals("ROLE_SU2") && curStatus.equals("2"))
-			this.oracleService.changeApplyDataStatus(applydataid,"3");
+			this.mySQLServiceApply.changeApplyDataStatus(applydataid,"3");
 		
 		//系统管理员---状态变到4
 		if(authority.equals("ROLE_ADMIN"))
-			this.oracleService.changeApplyDataStatus(applydataid,"3");
+			this.mySQLServiceApply.changeApplyDataStatus(applydataid,"3");
 		
 		
 		return "applydatacheck";
@@ -173,11 +174,11 @@ public class AdminController {
 			,@RequestParam(value = "rejectReason", required = false) String rejectReason) {
 		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室
 		String status = "5";
-		this.oracleService.changeApplyDataStatus(applydataid,status);
+		this.mySQLServiceApply.changeApplyDataStatus(applydataid,status);
 		if(!rejectReason.equals("")){
 			try {
 				String reason = URLDecoder.decode(URLDecoder.decode(rejectReason,"UTF-8"),"UTF-8");
-				this.oracleService.insertApplyDataFailReason(applydataid, reason);
+				this.mySQLServiceApply.insertApplyDataFailReason(applydataid, reason);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} 
@@ -201,23 +202,23 @@ public class AdminController {
 				authority = ((GrantedAuthority)it.next()).getAuthority();  
 		}
 		
-		HcApplyenv docEnv = this.oracleService.getDocEnvByApplyDataID(applydataid);
+		HcApplyenv docEnv = this.mySQLServiceApply.getDocEnvByApplyDataID(applydataid);
 		String curStatus = docEnv.getFlagApplydata();
 		
 		//中国卒中数据中心 --- 状态由1到2 --- 办公室
 		if(authority.equals("ROLE_SU1") && curStatus.equals("1"))
-			this.oracleService.changeApplyEnvStatus(applydataid,"2");
+			this.mySQLServiceApply.changeApplyEnvStatus(applydataid,"2");
 		
 		//国家卫生计生委脑卒中防治委员会办公室 --- 状态由2到3 --- 管理员分配
 		if(authority.equals("ROLE_SU2") && curStatus.equals("2"))
-			this.oracleService.changeApplyEnvStatus(applydataid,"3");
+			this.mySQLServiceApply.changeApplyEnvStatus(applydataid,"3");
 		
 		//系统管理员 --- 状态变到4 --- 审核成功
 		if(authority.equals("ROLE_ADMIN")){
-			this.oracleService.changeApplyEnvStatus(applydataid,"3");
+			this.mySQLServiceApply.changeApplyEnvStatus(applydataid,"3");
 			//以下部分应该是新的界面中，分配按钮对应的内荣，这里仅仅是为了测试
-			this.oracleService.updateEnvUrlByApplyID(applydataid,"http://202.38.153.226:8989/novnc/console.html?id=aa2e9f8c");
-			this.oracleService.changeApplyEnvStatus(applydataid,"4");
+			this.mySQLServiceApply.updateEnvUrlByApplyID(applydataid,"http://202.38.153.226:8989/novnc/console.html?id=aa2e9f8c");
+			this.mySQLServiceApply.changeApplyEnvStatus(applydataid,"4");
 		}
 		
 		return "applyenvcheck";
@@ -243,11 +244,11 @@ public class AdminController {
 		
 		//中国卒中数据中心、国家卫生计生委脑卒中防治委员会办公室----拒绝申请
 		String status = "5";
-		this.oracleService.changeApplyEnvStatus(applydataid,status);
+		this.mySQLServiceApply.changeApplyEnvStatus(applydataid,status);
 		if(!rejectReason.equals("")){
 			try {
 				String reason = URLDecoder.decode(URLDecoder.decode(rejectReason,"UTF-8"),"UTF-8");
-				this.oracleService.insertApplyEnvFailReason(applydataid,reason);
+				this.mySQLServiceApply.insertApplyEnvFailReason(applydataid,reason);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} 
@@ -278,14 +279,14 @@ public class AdminController {
 	@RequestMapping(value = "/getdocdatabyapplyid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplydata getDocDataByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
-		HcApplydata docData = this.oracleService.getDataDocByApplyDataID(applyid);
+		HcApplydata docData = this.mySQLServiceApply.getDataDocByApplyDataID(applyid);
 		return docData;
 	}
 	
 	@RequestMapping(value = "/getdocenvbyapplyid", method = RequestMethod.GET)
 	@ResponseBody
 	public HcApplyenv getDocEnvByApplyID(@RequestParam(value = "applyid", required = false) String applyid){
-		HcApplyenv docEnv = this.oracleService.getDocEnvByApplyDataID(applyid);
+		HcApplyenv docEnv = this.mySQLServiceApply.getDocEnvByApplyDataID(applyid);
 		return docEnv;
 	}
 	
@@ -312,7 +313,7 @@ public class AdminController {
 //		String currentUserName = user.getUsername();
 		
 		List<HcApplyenv> docEnvList = new ArrayList<>();
-		List<HcApplyenv> ALLEnvList = this.oracleService.getAllDocEnv();
+		List<HcApplyenv> ALLEnvList = this.mySQLServiceApply.getAllDocEnv();
 		
 		//处理过滤逻辑
 		if(action!=null && action.equals("filter"))
@@ -441,7 +442,7 @@ public class AdminController {
 //		String currentUserName = user.getUsername();
 		
 		List<HcApplydata> docDataList = new ArrayList<>();
-		List<HcApplydata> ALLDataList = this.oracleService.getAllDocData();
+		List<HcApplydata> ALLDataList = this.mySQLServiceApply.getAllDocData();
 		
 		//处理过滤逻辑
 		if(action!=null && action.equals("filter"))
