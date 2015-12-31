@@ -1,6 +1,5 @@
 package otc.healthcare.util;
 
-import java.nio.channels.DatagramChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

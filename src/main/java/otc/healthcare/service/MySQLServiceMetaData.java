@@ -1,5 +1,6 @@
 package otc.healthcare.service;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import otc.healthcare.dao.ConnectionFactory;
+import otc.healthcare.dao.DataSourceFactory;
 import otc.healthcare.pojo.ClassificationInfo;
 import otc.healthcare.pojo.DatabaseInfo;
 import otc.healthcare.pojo.FieldInfo;
@@ -25,19 +27,14 @@ public class MySQLServiceMetaData implements IService {
 	public boolean testConnection(String mysql_url, String mysql_username, String mysql_password) {
 		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
 				mysql_password);
-		if (connectionFactory.getInstance().getConnection() != null)
+		if (connectionFactory.getInstance().getConnection()!= null)
 			return true;
 		return false;
 	}
 
 	public List<ClassificationInfo> getAllClassificationDatabaseInfoWithClass() {
 		List<ClassificationInfo> classificationInfoList = new ArrayList<ClassificationInfo>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from HC_CLASSIFICATION");
 			while (res.next()) {
@@ -82,12 +79,7 @@ public class MySQLServiceMetaData implements IService {
 
 	public List<DatabaseInfo> getALLDatabaseInfo() {
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from HC_DATABASE");
 			while (res.next()) {
@@ -121,12 +113,7 @@ public class MySQLServiceMetaData implements IService {
 
 	public List<DatabaseInfo> getDatabaseInfoWithClass(String classificationid) {
 		List<DatabaseInfo> resultList = new ArrayList<DatabaseInfo>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil
 					.query("select * from HC_DATABASE WHERE SUBJECTCLASSIFICATION=" + classificationid);
@@ -160,12 +147,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 	public Map<String,String> getClassificationSummary(String classificationid){
 		Map<String, String> classificationSummary = new HashMap<String, String>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from HC_CLASSIFICATION where CLASSIFICATIONID=" + classificationid);
 			while (res.next()) {
@@ -182,12 +164,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 	public Map<String, String> getDatabaseSummary(String databaseid) {
 		Map<String, String> databaseSummary = new HashMap<String, String>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from HC_DATABASE where DATABASEID=" + databaseid);
 			while (res.next()) {
@@ -219,12 +196,7 @@ public class MySQLServiceMetaData implements IService {
 
 	public List<TableInfo> getDatabaseInfo(String databaseid) {
 		List<TableInfo> resultList = new ArrayList<TableInfo>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil.query("select * from HC_TABLE where DATABASEID=" + databaseid);
 			while (res.next()) {
@@ -247,40 +219,35 @@ public class MySQLServiceMetaData implements IService {
 	}
 
 	//
-	public List<TableInfo> getDatabaseInfo(String mysql_url, String mysql_username, String mysql_password,
-			String databaseid) {
-		List<TableInfo> resultList = new ArrayList<TableInfo>();
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
-		try {
-			ResultSet res = dbUtil.query("select * from HC_TABLE where DATABASEID=" + databaseid);
-			while (res.next()) {
-
-				TableInfo tim = new TableInfo();
-				tim.setTableid(res.getString(1));
-				tim.setDatabaseid(res.getString(2));
-				tim.setName(res.getString(3));
-				tim.setComments(res.getString(4));
-				tim.setNumrows(res.getString(5) == null ? "0" : res.getString(5));
-				resultList.add(tim);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			dbUtil.close();
-		}
-		return resultList;
-	}
+//	public List<TableInfo> getDatabaseInfo(String mysql_url, String mysql_username, String mysql_password,
+//			String databaseid) {
+//		List<TableInfo> resultList = new ArrayList<TableInfo>();
+//		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
+//				mysql_password);
+//		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+//		try {
+//			ResultSet res = dbUtil.query("select * from HC_TABLE where DATABASEID=" + databaseid);
+//			while (res.next()) {
+//
+//				TableInfo tim = new TableInfo();
+//				tim.setTableid(res.getString(1));
+//				tim.setDatabaseid(res.getString(2));
+//				tim.setName(res.getString(3));
+//				tim.setComments(res.getString(4));
+//				tim.setNumrows(res.getString(5) == null ? "0" : res.getString(5));
+//				resultList.add(tim);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			dbUtil.close();
+//		}
+//		return resultList;
+//	}
 
 	public Map<String, String> getTableSummary(String databaseid, String tableid) {
 		Map<String, String> tableSummary = new HashMap<String, String>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil
 					.query("select * from HC_TABLE where DATABASEID=" + databaseid + " AND TABLEID=" + tableid);
@@ -300,12 +267,7 @@ public class MySQLServiceMetaData implements IService {
 
 	public List<FieldInfo> getTableInfo(String databaseid, String tableid) {
 		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil
 					.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS,DATADICTIONARY,ZHCNNAME from HC_FIELD where DATABASEID="
@@ -332,12 +294,7 @@ public class MySQLServiceMetaData implements IService {
 
 	public List<FieldInfo> getAllTableInfo() {
 		List<FieldInfo> resultList = new ArrayList<FieldInfo>();
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			ResultSet res = dbUtil.query("select FIELDID,TABLEID,DATABASEID,NAME,COMMENTS from HC_FIELD");
 			while (res.next()) {
@@ -467,131 +424,131 @@ public class MySQLServiceMetaData implements IService {
 //
 //	}
 
-	// 获取列相关信息
-	public static Map<String, List<FieldInfo>> getFieldMap(DBUtil dbUtil, Map<String, List<TableInfo>> tableMap) {
-		Map<String, List<FieldInfo>> fieldMap = new HashMap<String, List<FieldInfo>>();
-
-		try {
-			for (String dbName : tableMap.keySet()) {
-				for (TableInfo table : tableMap.get(dbName)) {
-					String tableName = table.getName();
-					List<FieldInfo> fieldList = new ArrayList<FieldInfo>();
-					String query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
-							+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
-							+ "and t1.OWNER = '" + dbName + "' and t1.TABLE_NAME='" + tableName + "'";
-					ResultSet rs = dbUtil.query(query_sql);
-					while (rs.next()) {
-						FieldInfo field = new FieldInfo();
-						field.setName(rs.getString(1));
-						field.setDatatype(rs.getString(2));
-						field.setDatalength(rs.getString(3));
-						field.setNullable(rs.getString(4));
-						field.setComments(rs.getString(5));
-						fieldList.add(field);
-					}
-					rs.close();
-					fieldMap.put(dbName + "," + tableName, fieldList);
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			dbUtil.close();
-		}
-		return fieldMap;
-	}
-
-	public Map<String, List<FieldInfo>> getFieldMap(String mysql_url, String mysql_username, String mysql_password,
-			Map<String, List<TableInfo>> tableMap) {
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
-		Map<String, List<FieldInfo>> fieldMap = new HashMap<String, List<FieldInfo>>();
-		try {
-			for (String dbName : tableMap.keySet()) {
-				for (TableInfo table : tableMap.get(dbName)) {
-					String tableName = table.getName();
-					List<FieldInfo> fieldList = new ArrayList<FieldInfo>();
-					String query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
-							+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
-							+ "and t1.OWNER = '" + dbName + "' and t1.TABLE_NAME='" + tableName + "'";
-					ResultSet rs = dbUtil.query(query_sql);
-					while (rs.next()) {
-						FieldInfo field = new FieldInfo();
-						field.setName(rs.getString(1));
-						field.setDatatype(rs.getString(2));
-						field.setDatalength(rs.getString(3));
-						field.setNullable(rs.getString(4));
-						field.setComments(rs.getString(5));
-						fieldList.add(field);
-					}
-					rs.close();
-					fieldMap.put(dbName + "," + tableName, fieldList);
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			dbUtil.close();
-		}
-		return fieldMap;
-	}
-
-	// 获取表相关信息
-	public static Map<String, List<TableInfo>> getTableMap(DBUtil dbUtil, List<String> dbList) {
-		Map<String, List<TableInfo>> TableMap = new HashMap<String, List<TableInfo>>();
-		try {
-			for (String dbName : dbList) {
-				List<TableInfo> tableList = new ArrayList<TableInfo>();
-				String query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='" + dbName
-						+ "' AND table_type='TABLE'";
-				ResultSet rs = dbUtil.query(query_sql);
-				while (rs.next()) {
-					TableInfo tableInfo = new TableInfo();
-					tableInfo.setName(rs.getString(1));
-					tableInfo.setComments(rs.getString(2));
-					tableList.add(tableInfo);
-				}
-				TableMap.put(dbName, tableList);
-				rs.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			dbUtil.close();
-		}
-		return TableMap;
-	}
-
-	// 获取表相关信息
-	public Map<String, List<TableInfo>> getTableMap(String mysql_url, String mysql_username, String mysql_password,
-			List<String> dbList) {
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
-		Map<String, List<TableInfo>> TableMap = new HashMap<String, List<TableInfo>>();
-		try {
-			for (String dbName : dbList) {
-				List<TableInfo> tableList = new ArrayList<TableInfo>();
-				String query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='" + dbName
-						+ "' AND table_type='TABLE'";
-				ResultSet rs = dbUtil.query(query_sql);
-				while (rs.next()) {
-					TableInfo tableInfo = new TableInfo();
-					tableInfo.setName(rs.getString(1));
-					tableInfo.setComments(rs.getString(2));
-					tableList.add(tableInfo);
-				}
-				TableMap.put(dbName, tableList);
-				rs.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			dbUtil.close();
-		}
-		return TableMap;
-	}
+//	// 获取列相关信息
+//	public static Map<String, List<FieldInfo>> getFieldMap(DBUtil dbUtil, Map<String, List<TableInfo>> tableMap) {
+//		Map<String, List<FieldInfo>> fieldMap = new HashMap<String, List<FieldInfo>>();
+//
+//		try {
+//			for (String dbName : tableMap.keySet()) {
+//				for (TableInfo table : tableMap.get(dbName)) {
+//					String tableName = table.getName();
+//					List<FieldInfo> fieldList = new ArrayList<FieldInfo>();
+//					String query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
+//							+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
+//							+ "and t1.OWNER = '" + dbName + "' and t1.TABLE_NAME='" + tableName + "'";
+//					ResultSet rs = dbUtil.query(query_sql);
+//					while (rs.next()) {
+//						FieldInfo field = new FieldInfo();
+//						field.setName(rs.getString(1));
+//						field.setDatatype(rs.getString(2));
+//						field.setDatalength(rs.getString(3));
+//						field.setNullable(rs.getString(4));
+//						field.setComments(rs.getString(5));
+//						fieldList.add(field);
+//					}
+//					rs.close();
+//					fieldMap.put(dbName + "," + tableName, fieldList);
+//				}
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			dbUtil.close();
+//		}
+//		return fieldMap;
+//	}
+//
+//	public Map<String, List<FieldInfo>> getFieldMap(String mysql_url, String mysql_username, String mysql_password,
+//			Map<String, List<TableInfo>> tableMap) {
+//		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
+//				mysql_password);
+//		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+//		Map<String, List<FieldInfo>> fieldMap = new HashMap<String, List<FieldInfo>>();
+//		try {
+//			for (String dbName : tableMap.keySet()) {
+//				for (TableInfo table : tableMap.get(dbName)) {
+//					String tableName = table.getName();
+//					List<FieldInfo> fieldList = new ArrayList<FieldInfo>();
+//					String query_sql = "SELECT t1.COLUMN_NAME, t1.DATA_TYPE, t1.DATA_LENGTH , t1.NULLABLE,t2.comments"
+//							+ " FROM ALL_TAB_COLS t1 inner join ALL_col_comments t2 on t2.TABLE_NAME = t1.TABLE_NAME and t1.COLUMN_NAME = t2.COLUMN_NAME "
+//							+ "and t1.OWNER = '" + dbName + "' and t1.TABLE_NAME='" + tableName + "'";
+//					ResultSet rs = dbUtil.query(query_sql);
+//					while (rs.next()) {
+//						FieldInfo field = new FieldInfo();
+//						field.setName(rs.getString(1));
+//						field.setDatatype(rs.getString(2));
+//						field.setDatalength(rs.getString(3));
+//						field.setNullable(rs.getString(4));
+//						field.setComments(rs.getString(5));
+//						fieldList.add(field);
+//					}
+//					rs.close();
+//					fieldMap.put(dbName + "," + tableName, fieldList);
+//				}
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			dbUtil.close();
+//		}
+//		return fieldMap;
+//	}
+//
+//	// 获取表相关信息
+//	public static Map<String, List<TableInfo>> getTableMap(DBUtil dbUtil, List<String> dbList) {
+//		Map<String, List<TableInfo>> TableMap = new HashMap<String, List<TableInfo>>();
+//		try {
+//			for (String dbName : dbList) {
+//				List<TableInfo> tableList = new ArrayList<TableInfo>();
+//				String query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='" + dbName
+//						+ "' AND table_type='TABLE'";
+//				ResultSet rs = dbUtil.query(query_sql);
+//				while (rs.next()) {
+//					TableInfo tableInfo = new TableInfo();
+//					tableInfo.setName(rs.getString(1));
+//					tableInfo.setComments(rs.getString(2));
+//					tableList.add(tableInfo);
+//				}
+//				TableMap.put(dbName, tableList);
+//				rs.close();
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			dbUtil.close();
+//		}
+//		return TableMap;
+//	}
+//
+//	// 获取表相关信息
+//	public Map<String, List<TableInfo>> getTableMap(String mysql_url, String mysql_username, String mysql_password,
+//			List<String> dbList) {
+//		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
+//				mysql_password);
+//		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+//		Map<String, List<TableInfo>> TableMap = new HashMap<String, List<TableInfo>>();
+//		try {
+//			for (String dbName : dbList) {
+//				List<TableInfo> tableList = new ArrayList<TableInfo>();
+//				String query_sql = "select TABLE_NAME,COMMENTS from all_tab_comments t2 WHERE OWNER='" + dbName
+//						+ "' AND table_type='TABLE'";
+//				ResultSet rs = dbUtil.query(query_sql);
+//				while (rs.next()) {
+//					TableInfo tableInfo = new TableInfo();
+//					tableInfo.setName(rs.getString(1));
+//					tableInfo.setComments(rs.getString(2));
+//					tableList.add(tableInfo);
+//				}
+//				TableMap.put(dbName, tableList);
+//				rs.close();
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			dbUtil.close();
+//		}
+//		return TableMap;
+//	}
 
 	// 获取表相关信息
 	public List<TableInfo> getTargetTableMap(String mysql_url, String mysql_username, String mysql_password,
@@ -703,11 +660,7 @@ public class MySQLServiceMetaData implements IService {
 //	}
 
 	public void insertTableToDatabase(String databaseId, List<TableInfo> tableInfoList) {
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql",
-				hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL),
-				hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME),
-				hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD));
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		for (TableInfo tableInfo : tableInfoList) {
 			Integer tableId=dbUtil.insertDataReturnKeyByReturnInto("insert into HC_TABLE(NAME,ZHCNNAME,COMMENTS,DATABASEID) values('"
 					+ tableInfo.getName() + "','" + tableInfo.getZhcnname() + "','" + tableInfo.getComments() + "',"
@@ -732,43 +685,38 @@ public class MySQLServiceMetaData implements IService {
 //		}
 //	}
 
-	private static String getTableID(DBUtil dbUtil, String tableName) {
-		String tableID = new String();
-		String query_sql = "select TABLEID from HC_TABLE where NAME = '" + tableName + "'";
-		ResultSet rs = dbUtil.query(query_sql);
-		try {
-			while (rs.next()) {
-				tableID = rs.getString(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		dbUtil.close();
-		return tableID;
-	}
-
-	private static String getDBid(DBUtil dbUtil, String dbName) {
-		String DBid = new String();
-		String query_sql = "select DATABASEID from HC_DATABASE where NAME = '" + dbName + "'";
-		ResultSet rs = dbUtil.query(query_sql);
-		try {
-			while (rs.next()) {
-				DBid = rs.getString(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		dbUtil.close();
-		return DBid;
-	}
+//	private static String getTableID(DBUtil dbUtil, String tableName) {
+//		String tableID = new String();
+//		String query_sql = "select TABLEID from HC_TABLE where NAME = '" + tableName + "'";
+//		ResultSet rs = dbUtil.query(query_sql);
+//		try {
+//			while (rs.next()) {
+//				tableID = rs.getString(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		dbUtil.close();
+//		return tableID;
+//	}
+//
+//	private static String getDBid(DBUtil dbUtil, String dbName) {
+//		String DBid = new String();
+//		String query_sql = "select DATABASEID from HC_DATABASE where NAME = '" + dbName + "'";
+//		ResultSet rs = dbUtil.query(query_sql);
+//		try {
+//			while (rs.next()) {
+//				DBid = rs.getString(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		dbUtil.close();
+//		return DBid;
+//	}
 
 	public boolean deleteClassification(String classificationid) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			// 首先检测这个类别下是否还有表
 			ResultSet res = dbUtil
@@ -792,12 +740,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 
 	public boolean deleteDatabase(String databaseid) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			dbUtil.execute("delete from HC_DATABASE where DATABASEID=" + databaseid);// 删除HC_DATABASE表
 			dbUtil.execute("delete from HC_TABLE where DATABASEID=" + databaseid);// 删除HC_TABLE表
@@ -812,12 +755,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 
 	public boolean deleteTable(String databaseid, String tableid) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			return dbUtil.execute(
 					"delete from HC_TABLE where DATABASEID=" + databaseid + " and " + "TABLEID=" + tableid);
@@ -830,12 +768,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 
 	public boolean deleteField(String databaseid, String tableid, String fieldid) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			return dbUtil.execute("delete from HC_FIELD where DATABASEID=" + databaseid + " and " + "TABLEID="
 					+ tableid + " and " + "FIELDID=" + fieldid);
@@ -848,12 +781,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 
 	public Integer createClassification(String classificationname,String comments) {// insert
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			String vsql = "insert into HC_CLASSIFICATION (NAME,COMMENTS) values("
 					+ "'" + classificationname + "','" + comments + "')";
@@ -866,17 +794,9 @@ public class MySQLServiceMetaData implements IService {
 		return null;
 	}
 
-	public Integer createDatabase(String classification,String databasename, String zhcnname, String comments) {// insert
-		// into
-		// database
-		// table
-		// row
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+	public Integer createDatabase(String classification,String databasename, String zhcnname, String comments) {
+		// insert into database table row
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			String vsql = "insert into HC_DATABASE (SUBJECTCLASSIFICATION,NAME,ZHCNNAME,COMMENTS) values("+classification
 					+ ",'" + databasename + "','"  + zhcnname + "','" + comments + "')";
@@ -889,17 +809,9 @@ public class MySQLServiceMetaData implements IService {
 		return null;
 	}
 
-	public Integer createTable(String databaseid, String tablename, String comments, String numRows) {// insert
-		// into
-		// database
-		// table
-		// row
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+	public Integer createTable(String databaseid, String tablename, String comments, String numRows) {
+		// insert into database table row
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			String vsql = "insert into HC_TABLE (DATABASEID,NAME,COMMENTS,NUMROWS) values("
 					+ databaseid + ",'" + tablename + "','" + comments + "','" + numRows + "')";
@@ -913,14 +825,9 @@ public class MySQLServiceMetaData implements IService {
 	}
 
 	public Integer createField(String databaseid, String tableid, String fieldname, String zhcnname, String comments,
-			String datadictionary) {// insert
-		// into database table one row
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+			String datadictionary) {
+		// insert into database table one row
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		try {
 			String vsql = "insert into HC_FIELD (TABLEID,DATABASEID,NAME,ZHCNNAME,COMMENTS,DATADICTIONARY) values("
 					+ tableid + "," + databaseid + ",'" + fieldname + "','" + zhcnname + "','" + comments + "','"
@@ -934,12 +841,7 @@ public class MySQLServiceMetaData implements IService {
 		return null;
 	}
 	public boolean changeClassification(String classificationid, String newName, String newComments) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String sql = "";
 		try {
 			if (newName != null) {
@@ -959,12 +861,7 @@ public class MySQLServiceMetaData implements IService {
 		return false;
 	}
 	public boolean changeDatabase(String databaseid, String newName, String newComments,String classification) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String sql = "";
 		try {
 			if (newName != null) {
@@ -989,12 +886,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 
 	public boolean changeDatabase(DatabaseInfo databaseinfo) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String sql = "";
 		try {
 			sql = "update HC_DATABASE set NAME='" + databaseinfo.getName() + "'," + "COMMENTS='"
@@ -1018,12 +910,7 @@ public class MySQLServiceMetaData implements IService {
 		return false;
 	}
 	public boolean changeClassification(ClassificationInfo classificationinfo) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String sql = "";
 		try {
 			sql = "update HC_CLASSIFICATION set NAME='" + classificationinfo.getName() + "'," + "COMMENTS='"
@@ -1040,12 +927,7 @@ public class MySQLServiceMetaData implements IService {
 	}
 	public boolean changeTable(String databaseid, String tableid, String newName, String zhcnname, String newComments,
 			String newNumRows) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String sql = "";
 		try {
 			if (newName != null) {
@@ -1079,12 +961,7 @@ public class MySQLServiceMetaData implements IService {
 
 	public boolean changeField(String fieldid, String databaseid, String tableid, String newName, String newZhcnname,
 			String newComments, String newDatadictionary) {
-		String mysql_url = hcConfiguration.getProperty(HealthcareConfiguration.DB_BASIC_URL);
-		String mysql_username = hcConfiguration.getProperty(HealthcareConfiguration.DB_USERNAME);
-		String mysql_password = hcConfiguration.getProperty(HealthcareConfiguration.DB_PASSWORD);
-		ConnectionFactory connectionFactory = new ConnectionFactory("mysql", mysql_url, mysql_username,
-				mysql_password);
-		DBUtil dbUtil = new DBUtil(connectionFactory.getInstance().getConnection());
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection());
 		String sql = "";
 		try {
 			if (newName != null) {
