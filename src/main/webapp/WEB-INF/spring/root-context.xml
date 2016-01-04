@@ -16,7 +16,7 @@
 	
 	<bean id="dataSource_basic" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		p:driverClass="com.mysql.jdbc.Driver"
-		p:jdbcUrl="${basic_url}"
+		p:jdbcUrl="${basic_url}?useUnicode=true&amp;characterEncoding=UTF-8"
 		p:user="${db_username}"
 		p:password="${db_password}"
 		p:maxPoolSize="20"
@@ -27,7 +27,7 @@
 		
      <bean id="dataSource_screendata" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		p:driverClass="com.mysql.jdbc.Driver"
-		p:jdbcUrl="${screen_data_url}"
+		p:jdbcUrl="${screen_data_url}?useUnicode=true&amp;characterEncoding=UTF-8"
 		p:user="${db_username}"
 		p:password="${db_password}"
 		p:maxPoolSize="20"
@@ -38,7 +38,7 @@
 		
      <bean id="dataSource_hospitaldata" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		p:driverClass="com.mysql.jdbc.Driver"
-		p:jdbcUrl="${hospital_data_url}"
+		p:jdbcUrl="${hospital_data_url}?useUnicode=true&amp;characterEncoding=UTF-8"
 		p:user="${db_username}"
 		p:password="${db_password}"
 		p:maxPoolSize="20"

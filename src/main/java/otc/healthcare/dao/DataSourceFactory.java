@@ -37,7 +37,7 @@ public class DataSourceFactory {
 			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 			DataSource dataSource = ctx.getBean(dataSourceName, DataSource.class);
 			dataSourceMap.put(dataSourceName, dataSource);
-			System.out.println("缓存数据源:" + dataSourceName);
+//			System.out.println("缓存数据源:" + dataSourceName);
 		}
 	}
 }

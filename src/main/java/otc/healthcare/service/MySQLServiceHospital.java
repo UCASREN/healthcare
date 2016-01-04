@@ -130,7 +130,7 @@ public class MySQLServiceHospital implements IService {
 		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection(DATASOURCE_HOSPITALDATA));
 
 		String sql = "";
-		sql = String.format("SELECT	CAST (SUM (DATEDIFF(DAY, RYSJ, CYSJ)) AS DECIMAL) / COUNT (ZYH) "
+		sql = String.format("SELECT	CAST(SUM(datediff(CYSJ, RYSJ)) as DECIMAL) / COUNT(ZYH) "
 				+ "FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s');", t1, t2);
 
 		String InhospitalAverageDays_Num = "";
@@ -187,7 +187,7 @@ public class MySQLServiceHospital implements IService {
 
 		String sql = "";
 		sql = String.format(
-				"SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END) / COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<'%s');",
+				"SELECT SUM(case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END) / COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<'%s');",
 				t1, t2);
 
 		String TreatmentAverageCost_Num = "";
@@ -327,12 +327,12 @@ public class MySQLServiceHospital implements IService {
 		if (bingZhong.equals("1")) {// 短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
-					"SELECT	XB,	SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN	1 ELSE 0 END ) AS '[0-20]',	"
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
-							+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]',	"
-							+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE	0 END ) AS '[61-80]',	"
-							+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1	ELSE 0 END ) AS '[81-100]',	"
-							+ "SUM ( CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END	) AS '[>101]' "
+					"SELECT	XB,	SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN	1 ELSE 0 END ) AS '[0-20]',	"
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+							+ "SUM( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]',	"
+							+ "SUM( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE	0 END ) AS '[61-80]',	"
+							+ "SUM( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1	ELSE 0 END ) AS '[81-100]',	"
+							+ "SUM( CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END	) AS '[>101]' "
 							+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s'<= RYSJ) AND (RYSJ <= '%s')"
 							+ " AND (RYKBBM = '%s' or '%s'='0')) AS a WHERE" + "("
 							+ "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'" + ")" + "GROUP BY	XB;",
@@ -359,12 +359,12 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("2")) {// 脑出血
 			String sql = "";
 			sql = String.format(
-					"SELECT	XB,	SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
+					"SELECT	XB,	SUM( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
 							+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
 							+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE" + "("
 							+ "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
@@ -396,12 +396,12 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("3")) {// 脑梗死
 			String sql = "";
 			sql = String.format(
-					"SELECT	XB,	SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
+					"SELECT	XB,	SUM( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
 							+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
 							+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE " + "("
 							+ "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
@@ -431,12 +431,12 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("4")) {// 蛛网膜下腔出血
 			String sql = "";
 			sql = String.format(
-					"SELECT	XB,	SUM ( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
-							+ "SUM (CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
+					"SELECT	XB,	SUM( CASE WHEN CAST(NL AS DECIMAL) BETWEEN 0 AND 20 THEN 1 ELSE 0 END ) AS '[0-20]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 21 AND 40 THEN 1 ELSE 0 END ) AS '[21-40]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 41 AND 60 THEN 1 ELSE 0 END ) AS '[41-60]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 61 AND 80 THEN 1 ELSE 0 END ) AS '[61-80]', "
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) BETWEEN 81 AND 100 THEN 1 ELSE 0 END	) AS '[81-100]',"
+							+ "SUM(CASE WHEN CAST(NL AS DECIMAL) > 101 THEN 1 ELSE 0 END) AS '[>101]' "
 							+ "FROM	(SELECT * FROM TB_Inpatient_FirstPage WHERE ('%s' <= RYSJ) AND (RYSJ <= '%s') "
 							+ "AND (RYKBBM = '%s' OR '%s' = '0') ) AS a WHERE " + "("
 							+ "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'" + ")" + "GROUP BY XB;",
@@ -511,7 +511,7 @@ public class MySQLServiceHospital implements IService {
 
 		String sql = "";
 		sql = String.format(
-				"SELECT RYSJ,COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE RYSJ in %s AND (RYKBBM = '%s' OR %s='0') GROUP BY RYSJ;",
+				"SELECT RYSJ,COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE RYSJ in %s AND (RYKBBM = '%s' OR %s='0') GROUP BY RYSJ;",
 				day_str, hospitalDeps, hospitalDeps);
 
 		Map<String, String> map = new TreeMap<String, String>();
@@ -577,7 +577,7 @@ public class MySQLServiceHospital implements IService {
 		if (bingZhong.equals("1")) {// 短暂性脑缺血发作
 			String sql = "";
 			sql = String.format(
-					"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+					"SELECT	RYTJBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
 							+ "(" + "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'" + ")" + "GROUP BY RYTJBM;",
 					preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
@@ -598,7 +598,7 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("2")) {// 脑出血
 			String sql = "";
 			sql = String.format(
-					"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+					"SELECT	RYTJBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
 							+ "(" + "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
 							+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
@@ -625,7 +625,7 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("3")) {// 脑梗死
 			String sql = "";
 			sql = String.format(
-					"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+					"SELECT	RYTJBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
 							+ "(" + "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
 							+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
@@ -650,7 +650,7 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("4")) {// 蛛网膜下腔出血
 			String sql = "";
 			sql = String.format(
-					"SELECT	RYTJBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+					"SELECT	RYTJBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
 							+ "(" + "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'" + ") " + "GROUP BY RYTJBM;",
 					preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
@@ -885,7 +885,7 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("2")) {// 脑出血
 			String sql = "";
 			sql = String.format(
-					"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+					"SELECT	LYFSBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
 							+ "(" + "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
 							+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
@@ -912,7 +912,7 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("3")) {// 脑梗死
 			String sql = "";
 			sql = String.format(
-					"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+					"SELECT	LYFSBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
 							+ "(" + "('I63' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I64') OR "
 							+ "('I65' <= UPPER (CYZDBM)	AND UPPER (CYZDBM) < 'I67') OR "
@@ -937,7 +937,7 @@ public class MySQLServiceHospital implements IService {
 		} else if (bingZhong.equals("4")) {// 蛛网膜下腔出血
 			String sql = "";
 			sql = String.format(
-					"SELECT	LYFSBM, COUNT (ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
+					"SELECT	LYFSBM, COUNT(ZYH) FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND "
 							+ "(" + "'I60' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I61'" + ") " + "GROUP BY LYFSBM;",
 					preDate, curDate, hospitalDeps, hospitalDeps, sex, sex, age1, age2);
@@ -1272,7 +1272,7 @@ public class MySQLServiceHospital implements IService {
 
 		String sql = "";
 		sql = String
-				.format("SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / COUNT (ZYH) AS '平均费用',"
+				.format("SELECT SUM(case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / COUNT(ZYH) AS '平均费用',"
 						+ "CASE WHEN (" + "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'" + ") THEN '短暂性脑缺血发作' "
 						+ "WHEN (" + "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
 						+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
@@ -1332,6 +1332,7 @@ public class MySQLServiceHospital implements IService {
 			String sex, String age) {
 		String curDate = Calendar2String(getCurDate());
 		String preDate = Calendar2String(getDateThisWeek(getCurDate(), timeType));
+		
 		Map<String, String> rs_map = getbeInhospital_costConsist(bingZhong, curDate, preDate, hospitalDeps, sex, age);
 
 		double sum = 0.0;
@@ -1368,14 +1369,14 @@ public class MySQLServiceHospital implements IService {
 			String sql = "";
 			sql = String.format(
 					"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
-							+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
-							+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+							+ "SUM(case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+							+ "SUM((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
 							+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
 							+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
 							+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
-							+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
 							+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
-							+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
 							+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
 							+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"
@@ -1404,14 +1405,14 @@ public class MySQLServiceHospital implements IService {
 			String sql = "";
 			sql = String.format(
 					"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
-							+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
-							+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+							+ "SUM(case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+							+ "SUM((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
 							+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
 							+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
 							+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
-							+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
 							+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
-							+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
 							+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
 							+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"
@@ -1446,14 +1447,14 @@ public class MySQLServiceHospital implements IService {
 			String sql = "";
 			sql = String.format(
 					"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
-							+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
-							+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+							+ "SUM(case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+							+ "SUM((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
 							+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
 							+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
 							+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
-							+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
 							+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
-							+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
 							+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
 							+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"
@@ -1486,14 +1487,14 @@ public class MySQLServiceHospital implements IService {
 			String sql = "";
 			sql = String.format(
 					"SELECT	*, 总费用 - 药费 - 手术费 - 检查检验费  AS '其他费用' FROM (SELECT "
-							+ "SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
-							+ "SUM ((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
+							+ "SUM(case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) AS '总费用',"
+							+ "SUM((case when XYF is not null and XYF!='' then CAST(XYF AS DECIMAL) else 0 END) + (case when KJYWF is not null and KJYWF!='' then CAST(KJYWF AS DECIMAL) else 0 END) "
 							+ "+ (case when ZCYF is not null and ZCYF!='' then CAST(ZCYF AS DECIMAL) else 0 END) + (case when ZCYF1 is not null and ZCYF1!='' then CAST(ZCYF1 AS DECIMAL) else 0 END) "
 							+ "+ (case when BDBLZPF is not null and BDBLZPF!='' then CAST(BDBLZPF AS DECIMAL) else 0 END) + (case when QDBLZPF is not null and QDBLZPF!='' then CAST(QDBLZPF AS DECIMAL) else 0 END) "
 							+ "+ (case when NXYZLZPF is not null and NXYZLZPF!='' then CAST(NXYZLZPF AS DECIMAL) else 0 END) + (case when XBYZLZPF is not null and XBYZLZPF!='' then CAST(XBYZLZPF AS DECIMAL) else 0 END)) AS '药费',"
-							+ "SUM ((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SSF is not null and SSF!='' then CAST(SSF AS DECIMAL) else 0 END) + (case when MAF is not null and MAF!='' then CAST(MAF AS DECIMAL) else 0 END) "
 							+ "+ (case when SSZLF is not null and SSZLF!='' then CAST(SSZLF AS DECIMAL) else 0 END) + (case when YCXYYCLF is not null and YCXYYCLF!='' then CAST(YCXYYCLF AS DECIMAL) else 0 END)) AS '手术费',"
-							+ "SUM ((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
+							+ "SUM((case when SYSZDF is not null and SYSZDF!='' then CAST(SYSZDF AS DECIMAL) else 0 END) + (case when YXXZDF is not null and YXXZDF!='' then CAST(YXXZDF AS DECIMAL) else 0 END) "
 							+ "+ (case when LCZDXMF is not null and LCZDXMF!='' then CAST(LCZDXMF AS DECIMAL) else 0 END)) AS '检查检验费' "
 							+ "FROM TB_Inpatient_FirstPage WHERE ('%s'<=RYSJ) AND (RYSJ<='%s') "
 							+ "AND (RYKBBM='%s' OR '%s'='0') AND (XB='%s' OR '%s'='0') AND CAST(NL AS DECIMAL) BETWEEN '%s' AND '%s' AND"
@@ -1536,7 +1537,7 @@ public class MySQLServiceHospital implements IService {
 
 		String sql = "";
 		sql = String
-				.format("SELECT SUM (case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
+				.format("SELECT SUM(case when ZFY is not null and ZFY!='' then CAST(ZFY AS DECIMAL) else 0 END ) / sum(cast(SJZYTS as decimal)) AS '每床日费用', "
 						+ "CASE WHEN (" + "'G45'<=UPPER(CYZDBM) AND UPPER(CYZDBM)<'G46.9'" + ") THEN '短暂性脑缺血发作' "
 						+ "WHEN (" + "('I61' <= UPPER (CYZDBM)	AND UPPER (cyzdbm) < 'I62') OR "
 						+ "('I62.0' <= UPPER (CYZDBM) AND UPPER (cyzdbm) < 'I62.04') OR "
