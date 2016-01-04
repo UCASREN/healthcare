@@ -15,6 +15,7 @@ public class HealthcareConfiguration {
 
 	public static final String DB_BASIC_URL = "basic_url";
 	public static final String DB_DATA_URL = "data_url";
+	public static final String DB_HOSPITAL_URL = "hospital_data_url";
 	public static final String DB_USERNAME = "db_username";
 	public static final String DB_PASSWORD = "db_password";
 

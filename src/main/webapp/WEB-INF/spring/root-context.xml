@@ -15,7 +15,7 @@
 	<context:property-placeholder location="classpath:healthcare.properties"/>
 	
 	<bean id="dataSource_basic" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		p:driverClass="com.mysql.Driver"
+		p:driverClass="com.mysql.jdbc.Driver"
 		p:jdbcUrl="${basic_url}"
 		p:user="${db_username}"
 		p:password="${db_password}"
@@ -26,7 +26,7 @@
 		destroy-method="close"/>
 		
      <bean id="dataSource_screendata" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		p:driverClass="com.mysql.Driver"
+		p:driverClass="com.mysql.jdbc.Driver"
 		p:jdbcUrl="${screen_data_url}"
 		p:user="${db_username}"
 		p:password="${db_password}"
@@ -37,7 +37,7 @@
 		destroy-method="close"/>
 		
      <bean id="dataSource_hospitaldata" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		p:driverClass="com.mysql.Driver"
+		p:driverClass="com.mysql.jdbc.Driver"
 		p:jdbcUrl="${hospital_data_url}"
 		p:user="${db_username}"
 		p:password="${db_password}"
