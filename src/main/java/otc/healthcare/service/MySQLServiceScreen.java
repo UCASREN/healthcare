@@ -28,7 +28,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<BaseHospitalModel>> getJoinBaseHosiptalInfo() {
 		System.out.println("正在获取基地医院数据");
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<BaseHospitalModel>> map = new HashMap<String, List<BaseHospitalModel>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -88,8 +88,8 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<CommunityModel>> getJoinCommunityInfo() {
 		System.out.println("正在获取社区数据");
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
-		DBUtil dbUtil_inner = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
+		DBUtil dbUtil_inner = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<CommunityModel>> map = new HashMap<String, List<CommunityModel>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -153,7 +153,7 @@ public class MySQLServiceScreen implements IService {
 	}
 
 	public Map<String, Object> getProvinceCityInfo() {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		HashMap<String, ArrayList<String>> provinceCityMap = new HashMap<String, ArrayList<String>>();
 		Map<String, String> provinceMap = new HashMap<String, String>();
@@ -188,7 +188,7 @@ public class MySQLServiceScreen implements IService {
 	}
 
 	public Map<String, String> getProvinceInfo() {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, String> provinceMap = new HashMap<String, String>();
 		try {
 			ResultSet res = dbUtil.query("SELECT DISTINCT neCode,neName FROM GB_native WHERE neCode LIKE '__000000'");
@@ -209,7 +209,7 @@ public class MySQLServiceScreen implements IService {
 	}
 
 	public Map<String, String> getCityInfo(String provinceId) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, String> cityMap = new HashMap<String, String>();
 		try {
 			ResultSet res = dbUtil
@@ -231,7 +231,7 @@ public class MySQLServiceScreen implements IService {
 	}
 
 	public Map<String, HashMap<String, String>> getYearAcid() {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, HashMap<String, String>> yearMap = new HashMap<String, HashMap<String, String>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		for (String year : yearArray) {
@@ -252,7 +252,7 @@ public class MySQLServiceScreen implements IService {
 	}
 
 	public Map<String, YearStatisticsModel> getYearInfo() {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, YearStatisticsModel> map = new HashMap<String, YearStatisticsModel>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -316,7 +316,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<HashMap<String, String>>> getGenderInfo(String province, String acCodeUp,
 			String community) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -359,7 +359,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<HashMap<String, String>>> getGenderWithStrokeInfo(String province, String acCodeUp,
 			String community) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -374,7 +374,7 @@ public class MySQLServiceScreen implements IService {
 						+ "JOIN GB_native ON UserUnit.uuprovince = GB_native.necode " + "JOIN DangerFactors"
 						+ yearArray[i] + " ON Archives.aid = DangerFactors" + yearArray[i] + ".aid " + "WHERE "
 						+ "	GB_native.necode = '" + province + "' or '" + province + "'='' "
-						+ "AND ArchivesCases.accodeup = '" + acCodeUp + "' or ''='' " + "AND ArchivesCases.uucode = '"
+						+ "AND ArchivesCases.accodeup = '" + acCodeUp + "' or '"+acCodeUp+"'='' " + "AND ArchivesCases.uucode = '"
 						+ community + "' or '" + community + "'='' " + "GROUP BY aSex";
 				ResultSet res = dbUtil.query(sql);
 				while (res.next()) {
@@ -397,7 +397,7 @@ public class MySQLServiceScreen implements IService {
 	}
 
 	public Map<String, List<HashMap<String, String>>> getAgeInfo(String province, String acCodeUp, String community) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -448,7 +448,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<HashMap<String, String>>> getAgeWithStrokeInfo(String province, String acCodeUp,
 			String community) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -500,7 +500,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<HashMap<String, String>>> getRegionInfo(String province, String acCodeUp,
 			String community) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -545,7 +545,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<HashMap<String, String>>> getRegionWithStrokeInfo(String province, String acCodeUp,
 			String community) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -583,7 +583,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, List<HashMap<String, String>>> getEducationWithStrokeInfo(String province, String acCodeUp,
 			String community) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, List<HashMap<String, String>>> returnMap = new HashMap<String, List<HashMap<String, String>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -625,7 +625,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, Map<String, List<HashMap<String, String>>>> getGenderDangerFactorInfo(String province,
 			String dangertype, String ageclassification) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, Map<String, List<HashMap<String, String>>>> returnMap = new HashMap<String, Map<String, List<HashMap<String, String>>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -734,7 +734,7 @@ public class MySQLServiceScreen implements IService {
 
 	public Map<String, Map<String, List<HashMap<String, String>>>> getRegionDangerFactorInfo(String province,
 			String dangertype, String ageclassification) {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		Map<String, Map<String, List<HashMap<String, String>>>> returnMap = new HashMap<String, Map<String, List<HashMap<String, String>>>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		try {
@@ -831,7 +831,7 @@ public class MySQLServiceScreen implements IService {
 	}
 
 	public HashMap<String, HashMap<String, String>> getBeIllMapData() {
-		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_data"));
+		DBUtil dbUtil = new DBUtil(DataSourceFactory.getConnection("dataSource_screendata"));
 		HashMap<String, HashMap<String, String>> returnMap = new HashMap<String, HashMap<String, String>>();
 		String[] yearArray = new String[] { "2011", "2012", "2013" };
 		String[] provinceMap = { "11000000_北京", "12000000_天津", "13000000_河北", "14000000_山西", "15000000_内蒙古",
