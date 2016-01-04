@@ -414,7 +414,7 @@ var FormWizard = function () {
                	 	$('#allUseField').val(allUseField_tmp.substring(0,allUseField_tmp.length-1)+""+$('#others').val());
             	}
             
-	            $('#submit_form').attr("action","/healthcare/applyenv/createdataword");
+	            $('#submit_form').attr("action","/healthcare/applydata/createdataword");
 	            $('#submit_form').submit(); 
 //	          	form.submit();
             }).hide();

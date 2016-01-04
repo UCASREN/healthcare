@@ -134,13 +134,14 @@ public class HcApplyenvDao {
 	}
 
 	// 通过属性值得到--这个
-	public HcApplyenv findByApplyID(Object value) {
+	public HcApplyenv findByApplyID(String value) {
+		long value_long = Long.valueOf(value);
 		String propertyName = "idApplydata";
 		log.debug("finding HcApplyenv instance with property: " + propertyName + ", value: " + value);
 		try {
 			String queryString = "from HcApplyenv as model where model." + propertyName + "= ?";
 			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
-			queryObject.setParameter(0, value);
+			queryObject.setParameter(0, value_long);
 			List<HcApplyenv> rs = queryObject.list();
 			return rs.get(0);
 		} catch (RuntimeException re) {
@@ -150,7 +151,7 @@ public class HcApplyenvDao {
 	}
 
 	// 通过属性值得到
-	public List findByProperty(String propertyName, Object value) {
+	public List findByProperty(String propertyName, String value) {
 		log.debug("finding HcApplyenv instance with property: " + propertyName + ", value: " + value);
 		try {
 			String queryString = "from HcApplyenv as model where model." + propertyName + "= ?";

@@ -134,13 +134,14 @@ public class HcApplydataDao {
 	}
 
 	// 通过applyid得到--hql
-	public HcApplydata findByApplyID(Object value) {
+	public HcApplydata findByApplyID(String value) {
+		long value_long = Long.valueOf(value);
 		String propertyName = "idApplydata";
 		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
 		try {
 			String queryString = "from HcApplydata as model where model." + propertyName + "= ?";
 			Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
-			queryObject.setParameter(0, value);
+			queryObject.setParameter(0, value_long);
 			List<HcApplydata> rs = queryObject.list();
 			return rs.get(0);
 		} catch (RuntimeException re) {
@@ -150,7 +151,7 @@ public class HcApplydataDao {
 	}
 
 	// 通过属性值得到
-	public List<HcApplydata> findByProperty(String propertyName, Object value) {
+	public List<HcApplydata> findByProperty(String propertyName, String value) {
 		log.debug("finding HcApplydata instance with property: " + propertyName + ", value: " + value);
 		try {
 			String queryString = "from HcApplydata as model where model." + propertyName + "= ?";
