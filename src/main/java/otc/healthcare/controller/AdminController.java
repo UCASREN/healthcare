@@ -112,6 +112,7 @@ public class AdminController {
 		this.mySQLServiceApply.changeApplyEnvStatus(vmuser_applydataid, "4");// 改变状态
 		return "redirect:/adminpanel/applyenvtable";
 	}
+	
 
 	@RequestMapping(value = "/applydataalloc", method = RequestMethod.GET)
 	public String applyDataAlloc(@RequestParam(value = "docid", required = false) String docid,

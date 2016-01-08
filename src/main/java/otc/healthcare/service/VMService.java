@@ -52,7 +52,7 @@ public class VMService implements IService {
 		ArrayList<VMUser> vmUserList = new ArrayList<VMUser>(); // 存放已经分配的
 
 		// 查找id在表vmmanger中是否存在
-		ResultSet rs = dbUtil.query("select * from SYSTEM.HC_VMMANAGER");
+		ResultSet rs = dbUtil.query("select * from HC_VMMANAGER");
 		try {
 			while (rs.next()) {
 				VMUser vms = new VMUser();
