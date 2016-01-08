@@ -3,8 +3,6 @@
 
 数据库密码修改位置：
 	healthcare.properties
-	hibernate.cfg.xml
-	root-context.xml
 	
 	
 word在线预览:

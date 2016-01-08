@@ -52,7 +52,7 @@ public class MySQLServiceScreen implements IService {
 				res.close();
 				System.out.println("筛选endCount和DangerCount");
 				ResultSet res1 = dbUtil
-						.query("select archivescases.uuCode,acEndState,acStatus from archivescases join (select distinct userunit.uuCode from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"
+						.query("select archivescases.acCodeUp,acEndState,acStatus from archivescases join (select distinct userunit.uuCode from userunit join archivescases on userunit.uuCode=archivescases.acCodeUp join acid"
 								+ yearArray[i] + " on " + "acid" + yearArray[i]
 								+ ".acid=archivescases.acid where userunit.uuType=3000) as tempt where tempt.uuCode=archivescases.acCodeUp");
 				Map<String, Integer> uuCodeEndCountMap = new HashMap<String, Integer>();
@@ -72,6 +72,7 @@ public class MySQLServiceScreen implements IService {
 				res1.close();
 				System.out.println("设置endCount和DangerCount");
 				for (BaseHospitalModel bhm : list) {
+					System.out.println(uuCodeEndCountMap.get(bhm.getUuCode())+":"+uuCodeDangerCountMap.get(bhm.getUuCode()));
 					bhm.setEndCount(uuCodeEndCountMap.get(bhm.getUuCode()));
 					bhm.setDangerCount(uuCodeDangerCountMap.get(bhm.getUuCode()));
 				}

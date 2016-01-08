@@ -75,11 +75,16 @@ public class WordService implements IService {
 	public void changeDocFormat(File openFile, ServletContext servletContext) {
 		String docPath = servletContext.getRealPath("/resources/swf");
 		String saveFileName = docPath + "/" + openFile.getName();
-		MSWordManager ms = new MSWordManager(false);
-		ms.openDocument(openFile.getAbsolutePath());
-		ms.save(saveFileName);
-		ms.close();
-		ms.closeDocument();
+		try {
+			MSWordManager ms = new MSWordManager(false);
+			ms.openDocument(openFile.getAbsolutePath());
+			ms.save(saveFileName);
+			ms.close();
+			ms.closeDocument();
+		} catch (Exception e) {
+			System.out.println("ms---保存出错");
+//			e.printStackTrace();
+		}
 		System.out.println("doc 格式转换成功!");
 	}
 
