@@ -335,9 +335,9 @@ request.setCharacterEncoding("UTF-8");
 													<div class="col-md-4">
 														<div class="icheck-list">
 															<label>
-																<input type="radio" name="dataExportType" class="icheck" value="文本(CSV)" 
-																data-title="文本(CSV)" data-radio="iradio_flat-blue">
-																文本(CSV) 
+																<input type="radio" name="dataExportType" class="icheck" value="CSV" 
+																data-title="CSV" data-radio="iradio_flat-blue" checked>
+																CSV 
 															</label>
 															<label>
 																<input type="radio" name="dataExportType" class="icheck" value="Excel" 
@@ -643,7 +643,7 @@ request.setCharacterEncoding("UTF-8");
 												<a href="javascript:;" class="btn green button-submit" >
 												提交 <i class="m-icon-swapright m-icon-white"></i>
 												</a>
-												<a href="javascript:;" target="_blank" class="btn purple button-wordPreview">Word预览 </a>
+												<a href="javascript:;" class="btn purple button-wordPreview">Word预览 </a>
 											</div>
 										</div>
 									</div>

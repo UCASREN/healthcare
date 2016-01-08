@@ -70,8 +70,8 @@ public class MySQLServiceApply implements IService {
 			HcApplydata hc_applydata = hcApplydataDao.findByDocName(f_name);
 
 			String curStatus = hc_applydata.getFlagApplydata();
-			if (!curStatus.equals("2")) {
-				System.out.println("applyData 状态不为2，此时已经无法更新申请！");
+			if (!curStatus.equals("1")) {
+				System.out.println("applyData 状态不为1，此时已经无法更新申请！");
 				return;
 			}
 
@@ -279,7 +279,13 @@ public class MySQLServiceApply implements IService {
 		if (update) {
 			// begin update envApply
 			HcApplyenv hc_applyenv = hcApplyenvDao.findByDocName(f_name);
+			String curStatus = hc_applyenv.getFlagApplydata();
 
+			if (!curStatus.equals("1")) {
+				System.out.println("applyData 状态不为1，此时已经无法更新申请！");
+				return;
+			}
+			
 			String hc_userName = req.getParameter("userName");
 			String hc_userDepartment = req.getParameter("userDepartment");
 			String hc_userAddress = req.getParameter("userAddress");

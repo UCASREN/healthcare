@@ -128,10 +128,11 @@ var FormWizard = function () {
             		$('#form_wizard_1 input[data-title="数据分析需求"]').iCheck('check');
             	else if(hc_doc.demandtype == '数据使用需求')
             		$('#form_wizard_1 input[data-title="数据使用需求"]').iCheck('check');
+            	
             	$('#submit_form_userDemand').val(hc_doc.demand);
-            	if(hc_doc.dataExportType == '文本(CSV)')
-            		$('#form_wizard_1 input[data-title="文本(CSV)"]').iCheck('check');
-            	else if(hc_doc.dataExportType == 'Excel')
+            	if(hc_doc.applyDataExportType == 'CSV')
+            		$('#form_wizard_1 input[data-title="CSV"]').iCheck('check');
+            	else if(hc_doc.applyDataExportType == 'Excel')
             		$('#form_wizard_1 input[data-title="Excel"]').iCheck('check');
             	
             	arr = hc_doc.proUsefield.split(",");
