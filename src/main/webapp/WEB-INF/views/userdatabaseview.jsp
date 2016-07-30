@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>元数据</title>
+<title>Membership</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -99,23 +99,12 @@
 				<a href="#" id="refreshalldatabaseinfo"> <img src="img/change_logo_1.png"
 					alt="logo" class="" />
 				</a>
-				<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">中国心脑血管病大数据共享平台</span>	
+				<span style="color:#FFF;font-size:20px;font-weight:bold;font-family:SimHei;">Membership Management Module</span>	
 				<!-- <div class="menu-toggler sidebar-toggler" style="margin:4px 15px 0px 0px;"></div> -->
 			</div>
 			<!-- END LOGO -->
 			<!-- BEGIN HORIZANTAL MENU -->
-			<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
-				<ul class="nav navbar-nav">
-					<li class="classic-menu-dropdown "><a href="userdatabaseview"  style="color:#c6cfda;">
-							元数据</a></li>
-					<li class="classic-menu-dropdown"><a
-						href="topicanalysis" target="_blank" style="color:#c6cfda;"> 主题分析</a></li>
-					<li class="classic-menu-dropdown"><a
-						href="applydata/applytable" target="_blank" style="color:#c6cfda;">数据服务 </a></li>
-					<li class="classic-menu-dropdown"><a href="applyenv/applytable"
-						target="_blank" style="color:#c6cfda;">虚拟计算 </a></li>
-				</ul>
-			</div>
+			
 			<!-- END HORIZANTAL MENU -->
 			<!-- BEGIN HEADER SEARCH BOX -->
 			
@@ -136,24 +125,9 @@
 							</span> <i class="fa fa-angle-down"></i>
 						</a>
 							<ul class="dropdown-menu dropdown-menu-default">
-								<li><a href="userpanel" target="_blank"> <i
-										class="icon-user"></i> 我的账户
-								</a></li>
-								<li><a href="applydata/applytable" target="_blank"> <i
-										class="icon-envelope-open"></i> 数据服务 <span
-										class="badge badge-danger"> 2 </span>
-								</a></li>
-								<li><a href="applyenv/applytable"> <i
-										class="icon-rocket"></i> 虚拟计算<span
-										class="badge badge-success"> 3 </span>
-								</a></li>
-								<li class="divider"></li>
-								<li><a href="javascript:;"> <i class="icon-lock"></i>
-										锁屏
-								</a></li>
 								<c:url value="/logout" var="logoutUrl" />
 								<li><a href="#" id="logoutbutton"> <i class="icon-key"></i>
-										登出
+										Sign out
 								</a>
 									<form action="${logoutUrl}" method="post"
 										style="display: none;" id="logoutform">
@@ -182,7 +156,7 @@
 					<li class="open">
 					<a href="javascript:;">
 					<i class="icon-folder"></i>
-					<span class="title">元数据类别</span>
+					<span class="title">Membership Manage</span>
 					<span class="arrow open"></span>
 					</a>
 					<ul class="sub-menu" id="allclassificationlist" style="display:block;">
@@ -201,72 +175,24 @@
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
 				<!-- Begin: life time stats -->
 				<label class="checkbox-inline" style="padding-left: 0px;"> <i
-					class="fa fa-database"></i> 数据库
+					class="fa fa-database"></i> Databases
 				</label> <label class="checkbox-inline" style="padding-left: 0px;">
 					<select id="database" class="form-control select2me"
 					data-placeholder="Select..." style="min-width: 100px;">
-						<option value="">请选择一个数据库...</option>
+						<option value="">Please choose a database</option>
 				</select>
 				</label> <label class="checkbox-inline" style="padding-left: 0px;">
-					<i class="fa fa-table"></i> 表
+					<i class="fa fa-table"></i> Table
 				</label> <label class="checkbox-inline" style="padding-left: 0px;">
 					<select id="table" class="form-control select2me"
 					data-placeholder="Select..." style="min-width: 100px;">
-						<option value="">请选择数据库下的表...</option>
+						<option value="">Please choose a table</option>
 				</select>
-				</label> <label class="checkbox-inline" style="padding-left: 20px;">
-					<a class="btn green" data-toggle="modal" href="#"
-					id="showshoppingcart">已选数据集</a>
-				</label>
+				</label> 
+				
 
 				<p></p>
-				<div id="showalldatabaseinfo" style="display: block;">
-					<p></p>
-					<div class="row">
-						<span id="showalldatabaseinfo_number" style="padding-left:15px;font-size:16px;"></span>
-					</div>
-					<p></p>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="table-container">
-								<div class="table-actions-wrapper">
-									<span> </span>
-								</div>
-
-								<table class="table table-striped table-bordered table-hover" style="display:none;"
-									id="datatable_ajax_alldatabase">
-									<thead>
-										<tr role="row" class="heading">
-											<th>编号</th>
-											<th>隐藏实际编号</th>
-											<th>数据库名</th>
-											<th>中文名</th>
-											<th>描述</th>
-											<th>标识符</th>
-											<th>语种</th>
-											<th>字符集</th>
-											<th>学科分类</th>
-											<th>关键词</th>
-											<th>可信度</th>
-											<th>负责单位</th>
-											<th>负责人</th>
-											<th>通讯地址</th>
-											<th>邮政编码</th>
-											<th>联系电话</th>
-											<th>电子邮件</th>
-											<th>资源链接</th>
-											<th>查看详情</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<!-- <div class="col-md-5"></div> -->
-					</div>
-
-				</div>
+				
 				<div id="showdetail" style="display: none;">
 					<div class="row">
 						<button type="button" class="btn btn-primary" style="margin-left:25px;" id="back">返回</button>

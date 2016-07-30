@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>用户登录</title>
+<title>Sign in</title>
 </head>
 <link rel="stylesheet" href="resources/css/base.css"  type="text/css"/>
 <body>
@@ -17,28 +17,28 @@
               <div class="login_content">
                            <div class="header">
                                     <span><img src="img/logo2.png" width="48" height="48" /></span>
-                                   <b>中国心脑血管病大数据共享平台</b>
+                                   <b>Hunter</b>
                            </div>
-                           <div class="zhdl"> 账号登陆</div>
+                           <div class="zhdl"> Sign in</div>
                            <form action="${loginUrl}" method="post">
 	                           <div class="login-md">
 	                                <dl>
 	                                        <dd>
-	                                                <input type="text" class="txt"  id="username" name="username" value="输入用户名/手机号"/>
+	                                                <input type="text" class="txt"  id="username" name="username" value="Username"/>
 	                                        </dd>
 	                                        <dd>
-	                                                <input type="password" class="pasd"  id="password" name="password" value="输入密码"/>
+	                                                <input type="password" class="pasd"  id="password" name="password" value="Password"/>
 	                                        </dd>
 	                                        <dd class="zddl">
-	                                                <input type="checkbox" class="jzmm"  id="remember-me" name="remember-me" value="1"/>下次自动登陆
+	                                                
 	                                        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	                                        </dd>
 	                                        <dd>
-	                                                <input type="submit" class="sub" value="立即登录"/>
+	                                                <input type="submit" class="sub" value="Sign"/>
 	                                        </dd>
 	                              </dl>
-		                            <p class="mmzc"><a href="#">忘记密码?</a> ∣ <a href="#">马上注册</a></p>
-		                            <p class="sq">Copyright © 2012-2015 中国心脑血管病网 All Rights Reserved 版权所有</p>
+		                            <p class="mmzc"><a href="#">Forgot Password?</a> ∣ <a href="#">Sign up now!</a></p>
+		                            <p class="sq">Copyright © 2016 Renlin All Rights Reserved </p>
 	                			</div>
                 		</form>
 		</div>

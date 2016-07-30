@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>中国心脑血管病大数据共享平台</title>
+<title>Hunter</title>
 <meta name="keywords" content="医疗,大数据,平台" />
 <meta name="description" content="包含数据集成及发布、流程申请、虚拟环境搭建等功能" />
 
@@ -58,10 +58,8 @@
 				<div class="logo">
 					<a href=""> <img alt="图标" class="pngfix"
 						src="home/images/home/change_logo.png" width="50px" height="50px" />
-						<!-- <em><i class="icons16 icons16-home-white" title="首页"></i></em> -->
 					</a> 
-					<!-- <span style="color: #FFF; font-size: 20px; font-weight: bold;">中国心脑血管病大数据共享平台</span> -->
-					<span style="color:#FFF;font-size: 20px;font-weight:bold;font-family:SimHei;">中国心脑血管病大数据共享平台</span>	
+					<span style="color:#FFF;font-size: 20px;font-weight:bold;font-family:SimHei;">Hunter</span>	
 				</div>
 				<nav>
 					<!-- <ul>
@@ -76,7 +74,7 @@
 							<div id="NTGUID__2">
 								<div class="link-menu-list">
 									<span class="drop-menu-group"> <a href="login"
-										id="letslogin">登录</a>
+										id="letslogin">Sign in</a>
 									</span>
 								</div>
 							</div>
@@ -95,9 +93,9 @@
 											class="icons16 icons16-mobile-gray"></i> <sec:authentication
 												property="name" /></a> 
 												<sec:authorize access="hasAnyRole('ADMIN')">
-													<a href="adminpanel">控制面板</a>
+													<a href="adminpanel">Dashbord</a>
 												</sec:authorize>
-												<a href="#" id="logoutbutton">退出</a> <c:url
+												<a href="#" id="logoutbutton">Sign out</a> <c:url
 											value="/logout" var="logoutUrl" />
 
 									</span>
@@ -189,13 +187,9 @@
 		<div class="wrap">
 			<p class="subsite-btn  clearfix">
 				<a href="userdatabaseview" target="_blank"> <span
-					class="icons48 icons48-it"></span> <b>元数据</b></a> <a
+					class="icons48 icons48-it"></span> <b>Membership Management</b></a> <a
 					href="topicanalysis" target="_blank"> <span
-					class="icons48 icons48-estate"></span> <b>主题分析</b></a> <a
-					href="applydata/applytable" target="_blank"> <span
-					class="icons48 icons48-financial"></span> <b>数据服务</b></a> <a
-					href="applyenv/applytable" target="_blank"> <span
-					class="icons48 icons48-medicine"></span> <b>虚拟计算</b></a>
+					class="icons48 icons48-estate"></span> <b>Data Analysis</b></a>
 			</p>
 		</div>
 
@@ -205,19 +199,7 @@
 	<footer id="footer-p-beta2">
 		<hr>
 		<div class="copy-footer">
-			<p>地址：西城区新街口外大街16号11楼403室（中国心脑血管病网） 邮编：100088 电话010-84022400
-				传真：010-84025262</p>
-			<p>Copyright © 2012-2015 中国心脑血管病网 All Rights Reserved 版权所有</p>
-			<p>技术支持：国家人口与健康科学数据共享平台-地方服务中心</p>
-			<p>京ICP备13002765号-2</p>
-			<p>
-				访客数:<span style="color: #FE6400; font-weight: bold;">9392401</span>
-			</p>
-			<p>
-				<a title="51.La 网站流量统计系统" target="_blank"
-					href="http://www.51.la/?15800568"><img style="border: none"
-					src="home/images/home//icon_9.gif" alt="51.La 网站流量统计系统"> </a>
-			</p>
+			<p>Copyright © 2016 Renlin All Rights Reserved </p>
 		</div>
 	</footer>
 
