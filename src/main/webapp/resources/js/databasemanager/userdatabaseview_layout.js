@@ -184,8 +184,8 @@ var Layout = function () {
 				    		databaseid:databaseid
 				    	},
 				    	success : function(data) {
-				    		$("#showdatabaseinfo_name").text("数据库名："+data.name);
-	                		$("#showdatabaseinfo_comments").text("描述："+data.comments);
+				    		$("#showdatabaseinfo_name").text("Database Name："+data.name);
+	                		$("#showdatabaseinfo_comments").text("Desc："+data.comments);
 	                		$("#showdatabaseinfo_identifier").text("标识符："+(data.identifier==null?"空":data.identifier));
 	                		$("#showdatabaseinfo_language").text("语种："+(data.language==null?"空":data.identifier));
 	                		$("#showdatabaseinfo_charset").text("字符集："+(data.charset==null?"空":data.charset));
@@ -199,7 +199,7 @@ var Layout = function () {
 	                		$("#showdatabaseinfo_resphone").text("联系电话："+(data.resphone==null?"空":data.identifier));
 	                		$("#showdatabaseinfo_resemail").text("电子邮件："+(data.resemail==null?"空":data.identifier));
 	                		$("#showdatabaseinfo_resourceurl").text("资源链接："+(data.resourceurl==null?"空":data.identifier));
-	                		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
+	                		$("#showdatabaseinfo_tablenumber").text("Number of Tables："+data.length);
 				    	}
 				    });
             	}

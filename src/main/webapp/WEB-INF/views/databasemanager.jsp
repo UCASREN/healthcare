@@ -3,8 +3,8 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="false"%>
-<jsp:useBean id="databaseinfo"  class="otc.healthcare.pojo.DatabaseInfo" scope="request" ></jsp:useBean>
-<jsp:useBean id="classificationinfo"  class="otc.healthcare.pojo.ClassificationInfo" scope="request" ></jsp:useBean>
+<jsp:useBean id="databaseinfo"  class="renlin.hunter.pojo.DatabaseInfo" scope="request" ></jsp:useBean>
+<jsp:useBean id="classificationinfo"  class="renlin.hunter.pojo.ClassificationInfo" scope="request" ></jsp:useBean>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->

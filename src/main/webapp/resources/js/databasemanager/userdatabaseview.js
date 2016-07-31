@@ -449,11 +449,11 @@ var TableAjax = function () {
 			    	},
 			    	success : function(data) {
 			    		//console.log(data);
-			    		$("#showtableinfo_name").text("表名："+data.name);
-			    		$("#showtableinfo_comments").text("描述："+data.comments);
+			    		$("#showtableinfo_name").text("Table name："+data.name);
+			    		$("#showtableinfo_comments").text("desc："+data.comments);
 //			    		$("#showtableinfo_others").text("其它："+data.others);
-			    		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
-			    		$("#showtableinfo_numrows").text("数据量："+data.numrows);
+			    		$("#showtableinfo_fieldnumber").text("Number of Records："+data.length);
+			    		$("#showtableinfo_numrows").text("Records："+data.numrows);
 			    	}
 			    });
 			});
@@ -464,7 +464,7 @@ var TableAjax = function () {
         $("#database").change(function(){
         	if($("#database").val()!=""){
         		$("#table").empty();
-        		$("#table").append("<option value=''>请选择数据库下的表...</option>"); 
+        		$("#table").append("<option value=''>Please select one table...</option>"); 
         		$.ajax({
         			type : "get",//请求方式
         			url : "dataresource/getdatabaseinfo",//发送请求地址
@@ -489,8 +489,8 @@ var TableAjax = function () {
                 		databaseid:$("#database").select2("val")
                 	},
                 	success : function(data) {
-                		$("#showdatabaseinfo_name").text("数据库名："+data.name);
-                		$("#showdatabaseinfo_comments").text("描述："+data.comments);
+                		$("#showdatabaseinfo_name").text("Database Name："+data.name);
+                		$("#showdatabaseinfo_comments").text("Desc："+data.comments);
 //                		$("#showdatabaseinfo_identifier").text("标识符："+data.identifier==null?"空":data.identifier);
 //                		$("#showdatabaseinfo_language").text("语种："+data.language==null?"空":data.identifier);
 //                		$("#showdatabaseinfo_charset").text("字符集："+data.charset==null?"空":data.identifier);
@@ -504,7 +504,7 @@ var TableAjax = function () {
 //                		$("#showdatabaseinfo_resphone").text("联系电话："+data.resphone==null?"空":data.identifier);
 //                		$("#showdatabaseinfo_resemail").text("电子邮件："+data.resemail==null?"空":data.identifier);
 //                		$("#showdatabaseinfo_resourceurl").text("资源链接："+data.resourceurl==null?"空":data.identifier);
-                		$("#showdatabaseinfo_tablenumber").text("包含表的个数："+data.length);
+                		$("#showdatabaseinfo_tablenumber").text("Number of Tables："+data.length);
                 		$("#showtableinfo").hide();
                     	$("#showdatabaseinfo").show();
                     	$("#showalldatabaseinfo").hide();
@@ -529,10 +529,10 @@ var TableAjax = function () {
                 	},
                 	success : function(data) {
                 		console.log(data);
-                		$("#showtableinfo_name").text("表名："+data.name);
-                		$("#showtableinfo_comments").text("描述："+data.comments);
-                		$("#showtableinfo_others").text("其它："+data.others);
-                		$("#showtableinfo_fieldnumber").text("包含列的个数："+data.length);
+                		$("#showtableinfo_name").text("Table Name："+data.name);
+                		$("#showtableinfo_comments").text("Desc："+data.comments);
+                		$("#showtableinfo_others").text("Other："+data.others);
+                		$("#showtableinfo_fieldnumber").text("Number of Columns："+data.length);
                 		$("#showtableinfo").show();
                     	$("#showdatabaseinfo").hide();
                     	$("#showalldatabaseinfo").hide();

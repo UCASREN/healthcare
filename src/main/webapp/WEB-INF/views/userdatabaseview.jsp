@@ -263,11 +263,11 @@
 											<tr role="row" class="heading">
 												<th width="1%"><input type="checkbox"
 													class="group-checkable"></th>
-												<th width="5%">编号</th>
+												<th width="5%">id</th>
 												<th>隐藏实际编号</th>
-												<th width="5%">表名</th>
-												<th width="5%">中文名</th>
-												<th width="20%">描述</th>
+												<th width="5%">table_name</th>
+												<th width="5%">desc</th>
+												<th width="20%">content</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -276,11 +276,7 @@
 								</div>
 							</div>
 							<div class="col-md-3">
-								<div class="row">
-									<button class="btn btn-sm yellow table-group-action-submit">
-										<i class="fa fa-check"></i> 添加/更新数据集
-									</button>
-								</div>
+								
 								<p></p>
 								<div class="row"></div>
 							</div>
@@ -325,7 +321,7 @@
 											<tr role="row" class="heading">
 												<th width="1%"><input type="checkbox"
 													class="group-checkable"></th>
-												<th width="5%">编号</th>
+												<th width="5%">id</th>
 												<th>隐藏实际编号</th>
 												<th width="5%">列名</th>
 												<th width="5%">中文名</th>

@@ -13,7 +13,7 @@
 <%@ page import= "com.beyondsphere.xenapi.VM" %>
 <%@ page import= "java.awt.Window" %>
 <%@ page import= "java.sql.DriverManager" %>
-<%@ page import= "otc.healthcare.pojo.VMUser;"%>
+<%@ page import= "renlin.hunter.pojo.VMUser;"%>
 
 
 <%
